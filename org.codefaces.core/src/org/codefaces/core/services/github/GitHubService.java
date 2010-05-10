@@ -18,6 +18,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
+import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.services.RepoServiceException;
@@ -107,21 +108,23 @@ public class GitHubService {
 					GitHubResourcesDto.class);
 
 			for(GitHubResourceDto rscDto: retrievedResources.getResources()){
-				RepoResourceType type;
+				RepoResource child;
 				String gitHubRscType= rscDto.getType();
 				if(gitHubRscType.equals(GITHUB_TYPE_BLOB)){
-					type = RepoResourceType.FILE;
+					// do we really need a RepoFile class.. or have to make it 
+					// mutable??
+					child = new RepoResource(rscDto.getSha(), 
+							rscDto.getName(), RepoResourceType.FILE, resource);
 				}
 				else if (gitHubRscType.equals(GITHUB_TYPE_TREE)){
-					type = RepoResourceType.FOLDER;
+					child = new RepoFolder(rscDto.getSha(), rscDto
+							.getName(), resource);
 				}
 				else { 
 					throw new UnsupportedOperationException(
 							"Unknown Resource Type: " + gitHubRscType); 
 				}
-				
-				RepoResource child = new RepoResource(rscDto.getSha(), rscDto
-						.getName(), type, resource);
+
 				children.add(child);
 			}
 			
