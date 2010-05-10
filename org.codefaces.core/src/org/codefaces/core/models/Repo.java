@@ -10,8 +10,8 @@ public class Repo extends RepoResource {
 	
 	private RepoCredential credential; 
 
-	public Repo(String url, Collection<RepoBranch> branches, RepoCredential credential) {
-		super(url, url, RepoResourceType.REPO, null);
+	public Repo(String url, String name, Collection<RepoBranch> branches, RepoCredential credential) {
+		super(url, name, RepoResourceType.REPO, null);
 		this.url = url;
 		this.branches = branches;
 		this.credential =  credential;
