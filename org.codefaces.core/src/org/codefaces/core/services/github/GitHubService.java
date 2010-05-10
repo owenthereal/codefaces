@@ -16,6 +16,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.services.RepoServiceException;
 
 import com.google.gson.Gson;
@@ -71,8 +72,12 @@ public class GitHubService {
 	}
 	
 	public String createGitHubListChildrenUrl(Repo repo, RepoResource resource) {
-		return SHOW_GITHUB_CHILDREN + "/" + repo.getCredential().getOwner() + "/" + repo.getName()
-				+ "/" + resource.getId();
+		if (resource.getType() != RepoResourceType.BRANCH
+				&& resource.getType() != RepoResourceType.FOLDER) {
+			throw new UnsupportedOperationException("RepoResourceType should be BRANCH or FOLDER");
+		}
+		return SHOW_GITHUB_CHILDREN + "/" + repo.getCredential().getOwner()
+				+ "/" + repo.getName() + "/" + resource.getId();
 	}
 
 	private void executeMethod(HttpMethod method) throws RepoServiceException {

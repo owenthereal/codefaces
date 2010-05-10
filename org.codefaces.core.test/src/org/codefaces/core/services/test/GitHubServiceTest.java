@@ -1,6 +1,8 @@
 package org.codefaces.core.services.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -74,11 +76,36 @@ public class GitHubServiceTest {
 		RepoCredential credential = new RepoCredential(TEST_USER_NAME,
 				null, null);
 		Repo mock_repo = new Repo(TEST_GITHUB_URL,TEST_REPO_NAME, null, credential);
-
-		RepoResource resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
-				TEST_BRANCH_MASTER, RepoResourceType.BRANCH, null);
+		RepoResource mock_resource;
 		
-		String githubListChildrenUrl = gitHubService.createGitHubListChildrenUrl(mock_repo, resource);
+		// valid setting (type = Branch or Folder)
+		mock_resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
+				TEST_BRANCH_MASTER, RepoResourceType.BRANCH, null);
+		String githubListChildrenUrl = gitHubService.createGitHubListChildrenUrl(mock_repo, mock_resource);
 		assertEquals(TEST_GITHUB_LIST_CHILDREN_URL, githubListChildrenUrl);
+	    
+		// no exception for Folder
+		mock_resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
+				TEST_BRANCH_MASTER, RepoResourceType.FOLDER, null);
+		gitHubService.createGitHubListChildrenUrl(mock_repo, mock_resource);
+		
+		//throw exceptions if type == REPO
+		try{
+			mock_resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
+					TEST_BRANCH_MASTER, RepoResourceType.REPO, null);
+			gitHubService.createGitHubListChildrenUrl(mock_repo, mock_resource);
+			fail("Operation not supported by GitHub");
+		}catch(Exception ex){
+			 assertTrue(ex instanceof UnsupportedOperationException);
+		}
+		//throw exceptions if type == FILE
+		try{
+			mock_resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
+					TEST_BRANCH_MASTER, RepoResourceType.FILE, null);
+			gitHubService.createGitHubListChildrenUrl(mock_repo, mock_resource);
+			fail("Operation not supported by GitHub");
+		}catch(Exception ex){
+			 assertTrue(ex instanceof UnsupportedOperationException);
+		} 
 	}
 }
