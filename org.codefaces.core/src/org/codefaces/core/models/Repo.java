@@ -7,11 +7,14 @@ public class Repo extends RepoResource {
 	private String url;
 	
 	private Collection<RepoBranch> branches;
+	
+	private RepoCredential credential; 
 
-	public Repo(String url, Collection<RepoBranch> branches) {
+	public Repo(String url, Collection<RepoBranch> branches, RepoCredential credential) {
 		super(url, url, RepoResourceType.REPO, null);
 		this.url = url;
 		this.branches = branches;
+		this.credential =  credential;
 	}
 
 	public Collection<RepoBranch> getBranches() {
@@ -20,5 +23,9 @@ public class Repo extends RepoResource {
 	
 	public String getUrl() {
 		return url;
+	}
+	
+	public RepoCredential getCredential(){
+		return credential;
 	}
 }

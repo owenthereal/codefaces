@@ -61,8 +61,8 @@ public class GitHubService {
 		return null;
 	}
 
-	public String createGitHubShowBranchesUrl(String userName, String repoName) {
-		return SHOW_GITHUB_BRANCHES + "/" + userName + "/" + repoName
+	public String createGitHubShowBranchesUrl(String owner, String repoName) {
+		return SHOW_GITHUB_BRANCHES + "/" + owner + "/" + repoName
 				+ "/branches";
 	}
 
