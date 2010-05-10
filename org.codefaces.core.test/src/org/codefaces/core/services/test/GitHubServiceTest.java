@@ -2,9 +2,15 @@ package org.codefaces.core.services.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoCredential;
+import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.services.github.GitHubBranchesDto;
 import org.codefaces.core.services.github.GitHubService;
 import org.junit.Before;
@@ -22,6 +28,8 @@ public class GitHubServiceTest {
 	private static final String TEST_REPO_NAME = "ruby_grep";
 
 	private static final String TEST_USER_NAME = "jingweno";
+
+	private static final String TEST_GITHUB_LIST_CHILDREN_URL = "http://github.com/api/v2/json/tree/show/jingweno/ruby_grep/7b12ed0f174aaf84e426209986665c13d1170706";
 
 	private GitHubService gitHubService;
 
@@ -57,5 +65,20 @@ public class GitHubServiceTest {
 
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
 		assertEquals(1, gitHubRepo.getBranches().size());
+
+		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
+	}
+
+	@Test
+	public void test_createGitHubListChildrenUrl() {
+		RepoCredential credential = new RepoCredential(TEST_USER_NAME,
+				null, null);
+		Repo mock_repo = new Repo(TEST_GITHUB_URL,TEST_REPO_NAME, null, credential);
+
+		RepoResource resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
+				TEST_BRANCH_MASTER, RepoResourceType.BRANCH, null);
+		
+		String githubListChildrenUrl = gitHubService.createGitHubListChildrenUrl(mock_repo, resource);
+		assertEquals(TEST_GITHUB_LIST_CHILDREN_URL, githubListChildrenUrl);
 	}
 }
