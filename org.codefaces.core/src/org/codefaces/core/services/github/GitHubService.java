@@ -1,6 +1,9 @@
 package org.codefaces.core.services.github;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -21,6 +24,7 @@ import org.codefaces.core.services.RepoServiceException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 public class GitHubService {
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
@@ -35,6 +39,9 @@ public class GitHubService {
 	
 	private static final String SHOW_GITHUB_CHILDREN = "http://github.com/api/v2/json/tree/show";
 
+	private static final String GITHUB_TYPE_BLOB = "blob";
+	private static final String GITHUB_TYPE_TREE = "tree";
+	
 	private final HttpClient httpClient;
 
 	private Gson gson;
@@ -71,6 +78,10 @@ public class GitHubService {
 				+ "/branches";
 	}
 	
+	/**
+	 * @throw UnsupportedOperationException when RepoResourceType is not BRANCH
+	 * 		  or FOLDER 
+	 */
 	public String createGitHubListChildrenUrl(Repo repo, RepoResource resource) {
 		if (resource.getType() != RepoResourceType.BRANCH
 				&& resource.getType() != RepoResourceType.FOLDER) {
@@ -78,6 +89,57 @@ public class GitHubService {
 		}
 		return SHOW_GITHUB_CHILDREN + "/" + repo.getCredential().getOwner()
 				+ "/" + repo.getName() + "/" + resource.getId();
+	}
+	
+	public Set<RepoResource> getGitHubChildren(Repo repo, 
+			RepoResource resource){
+			
+		String listChildrenUrl = createGitHubListChildrenUrl(repo, resource);			
+		PostMethod method = null;
+		method = new PostMethod(listChildrenUrl);
+		Set<RepoResource> children = new HashSet<RepoResource>();
+		
+		try {
+			executeMethod(method);
+
+			GitHubResourcesDto retrievedResources = gson.fromJson(
+					new String(method.getResponseBody()), 
+					GitHubResourcesDto.class);
+
+			for(GitHubResourceDto rscDto: retrievedResources.getResources()){
+				RepoResourceType type;
+				String gitHubRscType= rscDto.getType();
+				if(gitHubRscType.equals(GITHUB_TYPE_BLOB)){
+					type = RepoResourceType.FILE;
+				}
+				else if (gitHubRscType.equals(GITHUB_TYPE_TREE)){
+					type = RepoResourceType.FOLDER;
+				}
+				else { 
+					throw new UnsupportedOperationException(
+							"Unknown Resource Type: " + gitHubRscType); 
+				}
+				
+				RepoResource child = new RepoResource(rscDto.getSha(), rscDto
+						.getName(), type, resource);
+				children.add(child);
+			}
+			
+		} catch (UnsupportedOperationException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();		
+		} catch (RepoServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return children;
 	}
 
 	private void executeMethod(HttpMethod method) throws RepoServiceException {
@@ -110,10 +172,8 @@ public class GitHubService {
 			String repoName = matcher.group(2);
 			
 			//at this stage, set user & passwd to null
-			RepoCredential credential = new RepoCredential(owner, null, null);
-			
-			Repo repo = new Repo(url, repoName, branches, credential);
-			
+			RepoCredential credential = new RepoCredential(owner, null, null);			
+			Repo repo = new Repo(url, repoName, branches, credential);			
 			populateGitHubBranches(repo, branches, owner, repoName);
 
 			return repo;

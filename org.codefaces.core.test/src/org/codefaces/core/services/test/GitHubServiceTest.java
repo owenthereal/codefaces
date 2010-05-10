@@ -67,7 +67,7 @@ public class GitHubServiceTest {
 
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
 		assertEquals(1, gitHubRepo.getBranches().size());
-
+		
 		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
 	}
 
@@ -108,4 +108,16 @@ public class GitHubServiceTest {
 			 assertTrue(ex instanceof UnsupportedOperationException);
 		} 
 	}
+	
+	@Test
+	public void test_getGitHubChildren(){
+		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
+		RepoResource mock_resource = new RepoResource(TEST_BRANCH_MASTER_SHA,
+				TEST_BRANCH_MASTER, RepoResourceType.BRANCH, null);
+		
+		Set<RepoResource> children = gitHubService.getGitHubChildren(
+				gitHubRepo, mock_resource); 
+		assertEquals(6, children.size());
+	}
+
 }
