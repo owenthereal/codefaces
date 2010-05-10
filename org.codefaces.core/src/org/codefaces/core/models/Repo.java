@@ -1,19 +1,24 @@
 package org.codefaces.core.models;
 
-public class Repo {
-	private String userName;
-	private String repoName;
+import java.util.Collection;
+import java.util.Collections;
 
-	public Repo(String userName, String repoName) {
-		this.userName = userName;
-		this.repoName = repoName;
+public class Repo extends RepoResource {
+	private String url;
+	
+	private Collection<RepoBranch> branches;
+
+	public Repo(String url, Collection<RepoBranch> branches) {
+		super(url, url, RepoResourceType.REPO, null);
+		this.url = url;
+		this.branches = branches;
 	}
 
-	public String getUserName() {
-		return userName;
+	public Collection<RepoBranch> getBranches() {
+		return Collections.unmodifiableCollection(this.branches);
 	}
-
-	public String getRepoName() {
-		return repoName;
+	
+	public String getUrl() {
+		return url;
 	}
 }
