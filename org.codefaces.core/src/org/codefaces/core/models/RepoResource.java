@@ -8,7 +8,7 @@ public class RepoResource extends PlatformObject {
 	protected final RepoResourceType type;
 	private final RepoResource parent;
 
-	public RepoResource(String id, String name, RepoResourceType type,
+	protected RepoResource(String id, String name, RepoResourceType type,
 			RepoResource parent) {
 		this.id = id;
 		this.name = name;

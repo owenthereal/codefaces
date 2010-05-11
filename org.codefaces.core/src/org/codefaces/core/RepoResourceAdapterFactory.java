@@ -9,11 +9,12 @@ public class RepoResourceAdapterFactory implements IAdapterFactory {
 
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if (!(adaptableObject instanceof RepoResource)) {
-			return null;
+		if (adaptableObject instanceof Repo) {
+			return adaptableObject;
 		}
 
-		if (adapterType == Repo.class) {
+		if (adaptableObject instanceof RepoResource
+				&& adapterType == Repo.class) {
 			return getRepo((RepoResource) adaptableObject);
 		}
 
@@ -21,14 +22,15 @@ public class RepoResourceAdapterFactory implements IAdapterFactory {
 	}
 
 	/**
-	 * Recursively getting the parent to find the repo. Repo is the root of the tree.
+	 * Recursively getting the parent to find the repo. Repo is the root of the
+	 * tree.
 	 * 
 	 * @param repoResource
 	 * @return
 	 */
 	private Repo getRepo(RepoResource repoResource) {
 		RepoResource parentResource = repoResource.getParent();
-		
+
 		if (parentResource instanceof Repo) {
 			return (Repo) parentResource;
 		}

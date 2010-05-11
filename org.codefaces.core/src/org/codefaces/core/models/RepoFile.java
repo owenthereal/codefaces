@@ -1,6 +1,6 @@
 package org.codefaces.core.models;
 
-public class RepoFile extends RepoResource {
+public class RepoFile extends RepoFileLite {
 	private String mimeType;
 
 	private String mode;
@@ -9,7 +9,7 @@ public class RepoFile extends RepoResource {
 
 	public RepoFile(String id, String name, String mimeType, String mode,
 			int size, RepoResource parent) {
-		super(id, name, RepoResourceType.FILE, parent);
+		super(id, name, parent);
 		this.mimeType = mimeType;
 		this.mode = mode;
 		this.size = size;
