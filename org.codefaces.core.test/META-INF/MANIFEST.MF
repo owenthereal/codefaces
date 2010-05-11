@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: org.codefaces.core.test
+Bundle-SymbolicName: org.codefaces.core.test;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- org.codefaces.core;bundle-version="1.0.0",
- org.junit4;bundle-version="4.5.0"
+ org.codefaces.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
