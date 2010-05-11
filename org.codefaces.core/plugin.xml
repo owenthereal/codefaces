@@ -17,6 +17,13 @@
                type="org.codefaces.core.models.Repo">
          </adapter>
       </factory>
+      <factory
+            adaptableType="org.codefaces.core.models.RepoFileLite"
+            class="org.codefaces.core.RepoFileAdapterFactory">
+         <adapter
+               type="org.codefaces.core.models.RepoFile">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>
