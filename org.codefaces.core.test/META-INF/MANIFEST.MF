@@ -4,6 +4,6 @@ Bundle-Name: Test
 Bundle-SymbolicName: org.codefaces.core.test;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- org.codefaces.core;bundle-version="1.0.0"
+ org.codefaces.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

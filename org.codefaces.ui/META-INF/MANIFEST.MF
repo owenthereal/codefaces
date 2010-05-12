@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.codefaces.ui.CodeFacesUIActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui;bundle-version="1.2.2",
- org.eclipse.rap.ui.views;bundle-version="1.2.2"
+ org.eclipse.rap.ui.views;bundle-version="1.2.2",
+ org.codefaces.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
