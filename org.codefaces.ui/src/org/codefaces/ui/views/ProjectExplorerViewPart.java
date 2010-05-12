@@ -1,9 +1,13 @@
 package org.codefaces.ui.views;
 
+import java.net.MalformedURLException;
+
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoManager;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.services.RepoConnectionException;
+import org.codefaces.core.services.RepoResponseException;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -97,9 +101,22 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 * FIXME: testing data now.
 	 */
 	private RepoResource createDummyModel() {
-		Repo repo = RepoManager.getInstance().getRepoService().getRepo(
-				"http://github.com/jingweno/ruby_grep");
-		return repo.getBranches().iterator().next();
+		try {
+			Repo repo = RepoManager.getInstance().getRepoService().getRepo(
+					"http://github.com/jingweno/ruby_grep");
+			return repo.getBranches().iterator().next();
+		} catch (RepoConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RepoResponseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	/**

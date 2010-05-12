@@ -1,6 +1,7 @@
 package org.codefaces.core.services;
 
 import java.util.Collections;
+import java.net.MalformedURLException;
 import java.util.Set;
 
 import org.codefaces.core.models.Repo;
@@ -17,11 +18,13 @@ public class RepoService {
 		githubService = new GitHubService();
 	}
 
-	public Repo getRepo(String url) {
+	public Repo getRepo(String url) throws RepoConnectionException,
+			RepoResponseException, MalformedURLException {
 		return githubService.createGithubRepo(url);
 	}
 
-	public Set<RepoResource> listChildren(RepoContainer repoContainer) {
+	public Set<RepoResource> listChildren(RepoContainer repoContainer)
+			throws RepoResponseException, RepoConnectionException {
 		Repo repo = (Repo) repoContainer.getAdapter(Repo.class);
 		if (repo == null) {
 			Collections.emptySet();
