@@ -1,6 +1,7 @@
 package org.codefaces.ui.views;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoContainer;
@@ -8,7 +9,10 @@ import org.codefaces.core.models.RepoManager;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -19,6 +23,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
@@ -103,7 +109,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private RepoResource createDummyModel() {
 		try {
 			Repo repo = RepoManager.getInstance().getRepoService().getRepo(
-					"http://github.com/jingweno/ruby_grep");
+					"http://github.com/jnunemaker/mongomapper");
 			return repo.getBranches().iterator().next();
 		} catch (RepoConnectionException e) {
 			// TODO Auto-generated catch block
@@ -115,8 +121,29 @@ public class ProjectExplorerViewPart extends ViewPart {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
+	}
+
+	class DoubleClickListener implements IDoubleClickListener {
+		@Override
+		public void doubleClick(DoubleClickEvent event) {
+			IStructuredSelection selection = (IStructuredSelection) event
+					.getSelection();
+			RepoResource clickedRepoResource = (RepoResource) selection
+					.getFirstElement();
+
+			IWorkbenchBrowserSupport browserSupport;
+			browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+			try {
+				int style = IWorkbenchBrowserSupport.AS_EDITOR;
+				IWebBrowser browser = browserSupport.createBrowser(style,
+						clickedRepoResource.getId(), "", "");
+				browser.openURL(new URL("http://eclipse.org/rap"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -130,6 +157,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.setLabelProvider(new ProjectExplorerLabelProvider());
 		viewer.setInput(createDummyModel());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
+		viewer.addDoubleClickListener(new DoubleClickListener());
 	}
 
 	/**
