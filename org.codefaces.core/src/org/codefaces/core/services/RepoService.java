@@ -1,5 +1,6 @@
 package org.codefaces.core.services;
 
+import java.net.MalformedURLException;
 import java.util.Set;
 
 import org.codefaces.core.models.Repo;
@@ -15,7 +16,8 @@ public class RepoService {
 		githubService = new GitHubService();
 	}
 
-	public Repo getRepo(String url) {
+	public Repo getRepo(String url) throws RepoConnectionException,
+			RepoResponseException, MalformedURLException {
 		return githubService.createGithubRepo(url);
 	}
 
