@@ -7,6 +7,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoManager;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -133,15 +134,31 @@ public class ProjectExplorerViewPart extends ViewPart {
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
 
-			IWorkbenchBrowserSupport browserSupport;
-			browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
-			try {
-				int style = IWorkbenchBrowserSupport.AS_EDITOR;
-				IWebBrowser browser = browserSupport.createBrowser(style,
-						clickedRepoResource.getId(), "", "");
-				browser.openURL(new URL("http://eclipse.org/rap"));
-			} catch (Exception e) {
-				e.printStackTrace();
+			Viewer viewer = event.getViewer();
+			if (clickedRepoResource.getType() == RepoResourceType.FOLDER
+					&& viewer instanceof TreeViewer) {
+				TreeViewer treeViewer = (TreeViewer) viewer;
+				if (treeViewer.isExpandable(clickedRepoResource)) {
+					treeViewer.setExpandedState(clickedRepoResource,
+							!treeViewer.getExpandedState(clickedRepoResource));
+				}
+
+				return;
+			}
+
+			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
+				IWorkbenchBrowserSupport browserSupport;
+				browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+				try {
+					int style = IWorkbenchBrowserSupport.AS_EDITOR;
+					IWebBrowser browser = browserSupport.createBrowser(style,
+							clickedRepoResource.getId(), "", "");
+					browser.openURL(new URL("http://eclipse.org/rap"));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				return;
 			}
 		}
 	}

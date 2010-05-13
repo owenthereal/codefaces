@@ -35,5 +35,23 @@
             title="Code Faces">
       </branding>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Mail"
+            id="maildemo.category">
+      </category>
+      <command
+            name="Open Mailbox"
+            description="Opens a mailbox"
+            categoryId="maildemo.category"
+            id="maildemo.open">
+      </command>
+      <command
+            name="Open Message Dialog"
+            description="Opens a message dialog"
+            categoryId="maildemo.category"
+            id="maildemo.openMessage">
+      </command>
+   </extension>
 </plugin>
