@@ -176,6 +176,15 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 		viewer.addDoubleClickListener(new DoubleClickListener());
 	}
+	
+	/**
+	 * Set the Explorer input to the given RepoResource. It is called when 
+	 * the user switch to another repository
+	 * @param repoResource the 
+	 */
+	public void setRepoModel(RepoResource repoResource){
+		viewer.setInput(repoResource);
+	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
