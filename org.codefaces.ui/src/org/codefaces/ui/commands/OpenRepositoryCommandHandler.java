@@ -28,7 +28,6 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements IHa
 		String explorerViewId = event.getParameter(PARAM_EXPLORER_VIEW_ID);
 		String repoUrl = event.getParameter(PARAM_REPO_URL_ID);
 		
-	
 		try {
 			ProjectExplorerViewPart explorerView = 
 				(ProjectExplorerViewPart) PlatformUI.getWorkbench()
@@ -48,10 +47,6 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements IHa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//Repo repo = RepoManager.getInstance().getRepoService().getRepo(
-		//"http://github.com/jnunemaker/mongomapper");
-		//repo.getBranches().iterator().next();
-		//viewer.setInput(createDummyModel());
 		return null;
 	}
 	
@@ -59,7 +54,7 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements IHa
 			throws RepoConnectionException, RepoResponseException,
 			MalformedURLException {
 		Repo repo = RepoManager.getInstance().getRepoService().getRepo(repoUrl);
-		return repo.getBranches().iterator().next();
+		return RepoManager.getInstance().getRepoService().getDefaultRoot(repo);
 	}
 
 }

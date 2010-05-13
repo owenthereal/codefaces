@@ -1,15 +1,10 @@
 package org.codefaces.ui.views;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoContainer;
-import org.codefaces.core.models.RepoManager;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
-import org.codefaces.core.services.RepoConnectionException;
-import org.codefaces.core.services.RepoResponseException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -104,28 +99,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-	/**
-	 * FIXME: testing data now.
-	 */
-	private RepoResource createDummyModel() {
-		try {
-			Repo repo = RepoManager.getInstance().getRepoService().getRepo(
-					"http://github.com/jnunemaker/mongomapper");
-			return repo.getBranches().iterator().next();
-		} catch (RepoConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepoResponseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 	class DoubleClickListener implements IDoubleClickListener {
 		@Override
 		public void doubleClick(DoubleClickEvent event) {
@@ -172,7 +145,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 				| SWT.BORDER);
 		viewer.setContentProvider(new ProjectExplorerContentProvider());
 		viewer.setLabelProvider(new ProjectExplorerLabelProvider());
-		viewer.setInput(createDummyModel());
+		viewer.setInput(null);
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 		viewer.addDoubleClickListener(new DoubleClickListener());
 	}
@@ -180,7 +153,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 	/**
 	 * Set the Explorer input to the given RepoResource. It is called when 
 	 * the user switch to another repository
-	 * @param repoResource the 
+	 * 
+	 * @param repoResource the root of the RepoResource
 	 */
 	public void setRepoModel(RepoResource repoResource){
 		viewer.setInput(repoResource);

@@ -2,6 +2,7 @@ package org.codefaces.core.services.github;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -41,6 +42,8 @@ public class GitHubService {
 
 	private static final String GITHUB_TYPE_BLOB = "blob";
 	private static final String GITHUB_TYPE_TREE = "tree";
+	
+	private static final String GITHUB_DEFAULT_BRANCH = "master";
 
 	private final HttpClient httpClient;
 
@@ -198,5 +201,21 @@ public class GitHubService {
 			branches.add(new RepoBranch(giHubBranchEntry.getValue(),
 					giHubBranchEntry.getKey(), repo));
 		}
+	}
+
+	/**
+	 * @return the default GitHub branch
+	 * @param repo the repository
+	 * @throws RepoResponseException if the default branch is not found
+	 */
+	public RepoContainer getGitHubDefaultRoot(Repo repo) throws RepoResponseException {
+		Collection<RepoBranch> branches = repo.getBranches();
+		for(RepoBranch branch: branches){
+			if(branch.getName().equals(GITHUB_DEFAULT_BRANCH)){
+				return branch;
+			}
+		}
+		throw new RepoResponseException(GITHUB_DEFAULT_BRANCH
+				+ " branch not found.");
 	}
 }

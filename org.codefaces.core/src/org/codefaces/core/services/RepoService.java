@@ -33,6 +33,21 @@ public class RepoService {
 		return githubService.listGitHubChildren(repo, repoContainer);
 	}
 
+	/**
+	 * @return the default RepoContainer to be opened
+	 * @param repo the repository 
+	 */
+	public RepoContainer getDefaultRoot(Repo repo){
+		try {
+			return githubService.getGitHubDefaultRoot(repo);
+		} catch (RepoResponseException e) {
+			//there may be some repository provider allows the user to 
+			//remove/rename the default branch. In this case, we return null
+			return null;
+		}
+	}
+	
+	
 	public RepoFile getRepoFile(RepoFileLite adaptableObject) {
 		// TODO
 		return null;
