@@ -17,6 +17,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoCredential;
+import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileLite;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
@@ -39,6 +40,8 @@ public class GitHubService {
 
 	private static final String SHOW_GITHUB_CHILDREN = "http://github.com/api/v2/json/tree/show";
 
+	private static final String GET_GITHUB_FILE = "http://github.com/api/v2/json/blob/show";
+
 	private static final String GITHUB_TYPE_BLOB = "blob";
 	private static final String GITHUB_TYPE_TREE = "tree";
 
@@ -52,8 +55,10 @@ public class GitHubService {
 	}
 
 	/**
-	 * @throws RepoConnectionException when there is connection error
-	 * @throws RepoResponseException when unable to parse the server's response
+	 * @throws RepoConnectionException
+	 *             when there is connection error
+	 * @throws RepoResponseException
+	 *             when unable to parse the server's response
 	 */
 	public GitHubBranchesDto getGitHubBranches(String showGitHubBranchesUrl)
 			throws RepoConnectionException, RepoResponseException {
@@ -85,8 +90,10 @@ public class GitHubService {
 	}
 
 	/**
-	 * @throws RepoConnectionException when there is connection error
-	 * @throws RepoResponseException when unable to parse the server's response
+	 * @throws RepoConnectionException
+	 *             when there is connection error
+	 * @throws RepoResponseException
+	 *             when unable to parse the server's response
 	 */
 	public Set<RepoResource> listGitHubChildren(Repo repo,
 			RepoContainer container) throws RepoResponseException,
@@ -118,7 +125,7 @@ public class GitHubService {
 
 				children.add(child);
 			}
-			
+
 			return children;
 
 		} catch (UnsupportedOperationException e) {
@@ -134,7 +141,8 @@ public class GitHubService {
 		}
 	}
 
-	private void executeMethod(HttpMethod method) throws RepoConnectionException {
+	private void executeMethod(HttpMethod method)
+			throws RepoConnectionException {
 		int status;
 		try {
 			status = httpClient.executeMethod(method);
@@ -146,11 +154,11 @@ public class GitHubService {
 		case HttpStatus.SC_OK:
 			break;
 		case HttpStatus.SC_NOT_FOUND:
-			throw new RepoConnectionException("HTTP Error: " + status 
+			throw new RepoConnectionException("HTTP Error: " + status
 					+ ". Request Resource Not Found.");
 		case HttpStatus.SC_UNAUTHORIZED:
 		case HttpStatus.SC_FORBIDDEN:
-			throw new RepoConnectionException("HTTP Error: " + status 
+			throw new RepoConnectionException("HTTP Error: " + status
 					+ "Unauthorized Request.");
 		default:
 			throw new RepoConnectionException("HTTP Error: " + status);
@@ -158,9 +166,12 @@ public class GitHubService {
 	}
 
 	/**
-	 * @throws RepoConnectionException when there is connection error
-	 * @throws RepoResponseException when unable to parse the server's response
-	 * @throws MalformedURLException when unable to parse the given url
+	 * @throws RepoConnectionException
+	 *             when there is connection error
+	 * @throws RepoResponseException
+	 *             when unable to parse the server's response
+	 * @throws MalformedURLException
+	 *             when unable to parse the given url
 	 */
 	public Repo createGithubRepo(String url) throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
@@ -177,15 +188,16 @@ public class GitHubService {
 			populateGitHubBranches(repo, branches, owner, repoName);
 
 			return repo;
-		}
-		else{
+		} else {
 			throw new MalformedURLException("Unable to parse the url: " + url);
 		}
 	}
 
 	/**
-	 * @throws RepoConnectionException when there is connection error
-	 * @throws RepoResponseException when unable to parse the server's response
+	 * @throws RepoConnectionException
+	 *             when there is connection error
+	 * @throws RepoResponseException
+	 *             when unable to parse the server's response
 	 */
 	private void populateGitHubBranches(Repo repo, Set<RepoBranch> branches,
 			String userName, String repoName) throws RepoConnectionException,
@@ -198,5 +210,41 @@ public class GitHubService {
 			branches.add(new RepoBranch(giHubBranchEntry.getValue(),
 					giHubBranchEntry.getKey(), repo));
 		}
+	}
+
+	public RepoFile getGitHubFile(Repo repo, RepoFileLite repoFileLite)
+			throws RepoResponseException, RepoConnectionException {
+		String getGitHubFileUrl = createGetGitHubFileUrl(repo, repoFileLite);
+
+		PostMethod method = null;
+		try {
+			method = new PostMethod(getGitHubFileUrl);
+			executeMethod(method);
+
+			GitHubFileDto gitHubFileDto = gson.fromJson(new String(method
+					.getResponseBody()), GitHubFileDto.class);
+			GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
+
+			return new RepoFile(gitHubFileDataDto.getSha(), gitHubFileDataDto
+					.getName(), gitHubFileDataDto.getData(), gitHubFileDataDto
+					.getMime_type(), gitHubFileDataDto.getMode(),
+					gitHubFileDataDto.getSize(), repoFileLite.getParent());
+		} catch (UnsupportedOperationException e) {
+			throw new RepoResponseException(e);
+		} catch (JsonParseException e) {
+			throw new RepoResponseException(e);
+		} catch (IOException e) {
+			throw new RepoResponseException(e);
+		} finally {
+			if (method != null) {
+				method.releaseConnection();
+			}
+		}
+	}
+
+	public String createGetGitHubFileUrl(Repo repo, RepoFileLite repoFileLite) {
+		return GET_GITHUB_FILE + "/" + repo.getCredential().getOwner() + "/"
+				+ repo.getName() + "/" + repoFileLite.getParent().getId() + "/"
+				+ repoFileLite.getName();
 	}
 }

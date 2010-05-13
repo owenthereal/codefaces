@@ -9,7 +9,7 @@ public class RepoResourceAdapterFactory implements IAdapterFactory {
 
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if (adaptableObject instanceof Repo) {
+		if (adaptableObject instanceof Repo && adapterType == Repo.class) {
 			return adaptableObject;
 		}
 

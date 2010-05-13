@@ -33,8 +33,13 @@ public class RepoService {
 		return githubService.listGitHubChildren(repo, repoContainer);
 	}
 
-	public RepoFile getRepoFile(RepoFileLite adaptableObject) {
-		// TODO
-		return null;
+	public RepoFile getRepoFile(RepoFileLite adaptableObject)
+			throws RepoResponseException, RepoConnectionException {
+		Repo repo = (Repo) adaptableObject.getAdapter(Repo.class);
+		if (repo == null) {
+			return null;
+		}
+
+		return githubService.getGitHubFile(repo, adaptableObject);
 	}
 }

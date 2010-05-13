@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoContainer;
+import org.codefaces.core.models.RepoFile;
+import org.codefaces.core.models.RepoFileLite;
 import org.codefaces.core.models.RepoManager;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
@@ -161,8 +163,10 @@ public class ProjectExplorerViewPart extends ViewPart {
 							CodeExplorerViewPart.ID, clickedRepoResource
 									.getId(), IWorkbenchPage.VIEW_ACTIVATE);
 					if (viewPart instanceof CodeExplorerViewPart) {
-						((CodeExplorerViewPart) viewPart)
-								.setInput(clickedRepoResource);
+						RepoFileLite repoFileLite = (RepoFileLite) clickedRepoResource;
+						RepoFile repoFile = (RepoFile) repoFileLite
+								.getAdapter(RepoFile.class);
+						((CodeExplorerViewPart) viewPart).setInput(repoFile);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

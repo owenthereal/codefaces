@@ -3,9 +3,9 @@ package org.codefaces.core.models;
 import org.eclipse.core.runtime.PlatformObject;
 
 public class RepoResource extends PlatformObject {
-	protected final String id;
-	protected final String name;
-	protected final RepoResourceType type;
+	private final String id;
+	private final String name;
+	private final RepoResourceType type;
 	private final RepoResource parent;
 
 	protected RepoResource(String id, String name, RepoResourceType type,
