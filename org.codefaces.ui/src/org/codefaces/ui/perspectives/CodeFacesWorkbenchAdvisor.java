@@ -5,7 +5,6 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class CodeFacesWorkbenchAdvisor extends WorkbenchAdvisor {
-
 	@Override
 	public String getInitialWindowPerspectiveId() {
 		return CodeFacesPerspectiveFactory.ID;

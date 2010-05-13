@@ -1,7 +1,6 @@
 package org.codefaces.ui.views;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoContainer;
@@ -23,9 +22,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
@@ -126,7 +125,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		return null;
 	}
 
-	class DoubleClickListener implements IDoubleClickListener {
+	class FolderDoubleClickListener implements IDoubleClickListener {
 		@Override
 		public void doubleClick(DoubleClickEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
@@ -142,46 +141,54 @@ public class ProjectExplorerViewPart extends ViewPart {
 					treeViewer.setExpandedState(clickedRepoResource,
 							!treeViewer.getExpandedState(clickedRepoResource));
 				}
-
-				return;
-			}
-
-			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
-				IWorkbenchBrowserSupport browserSupport;
-				browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
-				try {
-					int style = IWorkbenchBrowserSupport.AS_EDITOR;
-					IWebBrowser browser = browserSupport.createBrowser(style,
-							clickedRepoResource.getId(), "", "");
-					browser.openURL(new URL("http://eclipse.org/rap"));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				return;
 			}
 		}
 	}
 
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize
-	 * it.
-	 */
+	class FileDoubleClickListener implements IDoubleClickListener {
+		@Override
+		public void doubleClick(DoubleClickEvent event) {
+			IStructuredSelection selection = (IStructuredSelection) event
+					.getSelection();
+			RepoResource clickedRepoResource = (RepoResource) selection
+					.getFirstElement();
+
+			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
+				IWorkbenchPage activePage = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage();
+				try {
+					IViewPart viewPart = activePage.showView(
+							CodeExplorerViewPart.ID, clickedRepoResource
+									.getId(), IWorkbenchPage.VIEW_ACTIVATE);
+					if (viewPart instanceof CodeExplorerViewPart) {
+						((CodeExplorerViewPart) viewPart)
+								.setInput(clickedRepoResource);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.BORDER);
 		viewer.setContentProvider(new ProjectExplorerContentProvider());
 		viewer.setLabelProvider(new ProjectExplorerLabelProvider());
-		viewer.setInput(createDummyModel());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
-		viewer.addDoubleClickListener(new DoubleClickListener());
+		viewer.addDoubleClickListener(new FolderDoubleClickListener());
+		viewer.addDoubleClickListener(new FileDoubleClickListener());
+		viewer.setInput(createDummyModel());
 	}
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
+	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
 
+	public TreeViewer getViewer() {
+		return viewer;
+	}
 }

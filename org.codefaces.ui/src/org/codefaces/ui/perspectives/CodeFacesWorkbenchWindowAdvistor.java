@@ -21,7 +21,7 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 		configurer.setShowCoolBar(true);
 		configurer.setShowPerspectiveBar(true);
 		configurer.setShowProgressIndicator(true);
-		getWindowConfigurer().setShellStyle(SWT.NO_TRIM);
+		getWindowConfigurer().setShellStyle(SWT.NO_TRIM | SWT.TITLE);
 	}
 
 	@Override
