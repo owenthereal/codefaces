@@ -112,7 +112,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		try {
 			Repo repo = RepoManager.getInstance().getRepoService().getRepo(
 					"http://github.com/jnunemaker/mongomapper");
-			return repo.getBranches().iterator().next();
+			return repo.getChildren().iterator().next();
 		} catch (RepoConnectionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

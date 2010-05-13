@@ -3,7 +3,6 @@ package org.codefaces.core.services.github;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -173,43 +172,20 @@ public class GitHubService {
 	 * @throws MalformedURLException
 	 *             when unable to parse the given url
 	 */
-	public Repo createGithubRepo(String url) throws RepoConnectionException,
-			RepoResponseException, MalformedURLException {
+	public Repo createGithubRepo(String url) throws RepoResponseException,
+			MalformedURLException {
 		Matcher matcher = URL_PATTERN.matcher(url);
 		if (matcher.matches()) {
-			Set<RepoBranch> branches = new LinkedHashSet<RepoBranch>();
-
 			String owner = matcher.group(1);
 			String repoName = matcher.group(2);
 
 			// at this stage, set user & passwd to null
 			RepoCredential credential = new RepoCredential(owner, null, null);
-			Repo repo = new Repo(url, repoName, branches, credential);
-			populateGitHubBranches(repo, branches, owner, repoName);
 
-			return repo;
-		} else {
-			throw new MalformedURLException("Unable to parse the url: " + url);
+			return new Repo(url, repoName, credential);
 		}
-	}
 
-	/**
-	 * @throws RepoConnectionException
-	 *             when there is connection error
-	 * @throws RepoResponseException
-	 *             when unable to parse the server's response
-	 */
-	private void populateGitHubBranches(Repo repo, Set<RepoBranch> branches,
-			String userName, String repoName) throws RepoConnectionException,
-			RepoResponseException {
-		String gitHubShowBranchesUrl = createGitHubShowBranchesUrl(userName,
-				repoName);
-		GitHubBranchesDto gitHubBranches = getGitHubBranches(gitHubShowBranchesUrl);
-		for (Entry<String, String> giHubBranchEntry : gitHubBranches
-				.getBrances().entrySet()) {
-			branches.add(new RepoBranch(giHubBranchEntry.getValue(),
-					giHubBranchEntry.getKey(), repo));
-		}
+		throw new MalformedURLException("Unable to parse the url: " + url);
 	}
 
 	public RepoFile getGitHubFile(Repo repo, RepoFileLite repoFileLite)
@@ -246,5 +222,20 @@ public class GitHubService {
 		return GET_GITHUB_FILE + "/" + repo.getCredential().getOwner() + "/"
 				+ repo.getName() + "/" + repoFileLite.getParent().getId() + "/"
 				+ repoFileLite.getName();
+	}
+
+	public Set<RepoBranch> listGitHubBranches(Repo repo)
+			throws RepoConnectionException, RepoResponseException {
+		Set<RepoBranch> branches = new HashSet<RepoBranch>();
+		String gitHubShowBranchesUrl = createGitHubShowBranchesUrl(repo
+				.getCredential().getOwner(), repo.getName());
+		GitHubBranchesDto gitHubBranches = getGitHubBranches(gitHubShowBranchesUrl);
+		for (Entry<String, String> giHubBranchEntry : gitHubBranches
+				.getBrances().entrySet()) {
+			branches.add(new RepoBranch(giHubBranchEntry.getValue(),
+					giHubBranchEntry.getKey(), repo));
+		}
+
+		return branches;
 	}
 }

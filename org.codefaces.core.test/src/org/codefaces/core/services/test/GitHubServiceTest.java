@@ -99,7 +99,6 @@ public class GitHubServiceTest {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
-		assertEquals(1, gitHubRepo.getBranches().size());
 		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
 
 		// Test if the repository is private
@@ -134,8 +133,7 @@ public class GitHubServiceTest {
 	public void test_createGitHubListChildrenUrl() {
 		RepoCredential credential = new RepoCredential(TEST_USER_NAME, null,
 				null);
-		Repo mock_repo = new Repo(TEST_GITHUB_URL, TEST_REPO_NAME, null,
-				credential);
+		Repo mock_repo = new Repo(TEST_GITHUB_URL, TEST_REPO_NAME, credential);
 		RepoBranch mock_resource;
 
 		mock_resource = new RepoBranch(TEST_BRANCH_MASTER_SHA,
