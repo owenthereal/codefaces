@@ -2,7 +2,6 @@ package org.codefaces.ui.events;
 
 import java.util.EnumSet;
 import java.util.EventObject;
-import java.util.HashSet;
 
 
 import org.codefaces.core.models.Repo;

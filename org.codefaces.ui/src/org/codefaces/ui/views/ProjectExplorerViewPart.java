@@ -1,7 +1,6 @@
 package org.codefaces.ui.views;
 
 import java.net.URL;
-import java.util.EnumSet;
 
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoResource;
