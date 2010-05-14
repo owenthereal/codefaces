@@ -2,7 +2,7 @@ package org.codefaces.ui.events;
 
 import java.util.EnumSet;
 import java.util.EventObject;
-import static java.util.EnumSet.of;
+import java.util.HashSet;
 
 
 import org.codefaces.core.models.Repo;
@@ -12,22 +12,10 @@ import org.codefaces.ui.resources.WorkSpace.Resources;
 public class WorkSpaceChangeEvent extends EventObject {
 	private static final long serialVersionUID = 5870469991944398567L;
 
-	private EnumSet<Resources> resourcesChanged;
-	private Repo newRepo;
-	private RepoBranch newRepoBranch;
+	private final EnumSet<Resources> resourcesChanged;
+	private final Repo newRepo;
+	private final RepoBranch newRepoBranch;
 	
-	
-	/**
-	 * Constructor for working repository changed
-	 * @param source the event source object
-	 * @param newRepo the new repository
-	 */
-	public WorkSpaceChangeEvent(Object source, Repo newRepo){
-		super(source);
-		this.newRepo = newRepo;
-		this.newRepoBranch = null;
-		this.resourcesChanged = of(Resources.REPO);
-	}
 
 	/**
 	 * Constructor for working branch changed
@@ -38,13 +26,15 @@ public class WorkSpaceChangeEvent extends EventObject {
 		super(source);
 		this.newRepo = null;
 		this.newRepoBranch = newRepoBranch;
-		this.resourcesChanged = of(Resources.BRANCHE);
+		this.resourcesChanged = EnumSet.of(Resources.BRANCH);
 	}
 
 	
 	
 	/**
-	 * Constructor for both working repository and branches are changed
+	 * Constructor for both working repository and branches are changed.
+	 * Changing Repository must associated with a branch change
+	 * 
 	 * @param source the event source object
 	 * @param newRepo the new repository
 	 * @param newRepoBranch the new repository branch
@@ -54,7 +44,7 @@ public class WorkSpaceChangeEvent extends EventObject {
 		super(source);
 		this.newRepo = newRepo;
 		this.newRepoBranch = newRepoBranch;
-		this.resourcesChanged = of(Resources.REPO, Resources.BRANCHE);
+		this.resourcesChanged = EnumSet.of(Resources.REPO, Resources.BRANCH);
 	}
 	
 	
