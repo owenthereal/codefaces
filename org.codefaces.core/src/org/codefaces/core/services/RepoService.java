@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.Set;
 
 import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileLite;
@@ -34,12 +35,12 @@ public class RepoService {
 	}
 
 	/**
-	 * @return the default RepoContainer to be opened
+	 * @return the default branch to be opened
 	 * @param repo the repository 
 	 */
-	public RepoContainer getDefaultRoot(Repo repo){
+	public RepoBranch getDefaultBranch(Repo repo){
 		try {
-			return githubService.getGitHubDefaultRoot(repo);
+			return githubService.getGitHubDefaultBranch(repo);
 		} catch (RepoResponseException e) {
 			//there may be some repository provider allows the user to 
 			//remove/rename the default branch. In this case, we return null

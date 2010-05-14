@@ -208,7 +208,7 @@ public class GitHubService {
 	 * @param repo the repository
 	 * @throws RepoResponseException if the default branch is not found
 	 */
-	public RepoContainer getGitHubDefaultRoot(Repo repo) throws RepoResponseException {
+	public RepoBranch getGitHubDefaultBranch(Repo repo) throws RepoResponseException {
 		Collection<RepoBranch> branches = repo.getBranches();
 		for(RepoBranch branch: branches){
 			if(branch.getName().equals(GITHUB_DEFAULT_BRANCH)){

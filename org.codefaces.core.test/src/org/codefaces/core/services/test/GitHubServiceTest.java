@@ -159,7 +159,7 @@ public class GitHubServiceTest {
 	
 	public void test_getDefaultRoot() throws RepoConnectionException, RepoResponseException, MalformedURLException{
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
-		assertEquals(TEST_BRANCH_MASTER, gitHubService.getGitHubDefaultRoot(
+		assertEquals(TEST_BRANCH_MASTER, gitHubService.getGitHubDefaultBranch(
 				gitHubRepo).getName());
 	}
 
