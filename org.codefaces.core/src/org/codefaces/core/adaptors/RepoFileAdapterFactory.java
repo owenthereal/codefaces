@@ -1,4 +1,4 @@
-package org.codefaces.core;
+package org.codefaces.core.adaptors;
 
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileLite;

@@ -1,7 +1,9 @@
-package org.codefaces.core;
+package org.codefaces.core.adaptors;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoResourceType;
 import org.eclipse.core.runtime.IAdapterFactory;
 
 public class RepoResourceAdapterFactory implements IAdapterFactory {
@@ -9,10 +11,6 @@ public class RepoResourceAdapterFactory implements IAdapterFactory {
 
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if (adaptableObject instanceof Repo && adapterType == Repo.class) {
-			return adaptableObject;
-		}
-
 		if (adaptableObject instanceof RepoResource
 				&& adapterType == Repo.class) {
 			return getRepo((RepoResource) adaptableObject);
@@ -29,12 +27,15 @@ public class RepoResourceAdapterFactory implements IAdapterFactory {
 	 * @return
 	 */
 	private Repo getRepo(RepoResource repoResource) {
-		RepoResource parentResource = repoResource.getParent();
-
-		if (parentResource instanceof Repo) {
-			return (Repo) parentResource;
+		if (repoResource.getType() == RepoResourceType.REPO) {
+			return (Repo) repoResource;
 		}
 
+		if (repoResource.getType() == RepoResourceType.BRANCH) {
+			return ((RepoBranch) repoResource).getRepo();
+		}
+
+		RepoResource parentResource = repoResource.getParent();
 		if (parentResource != null) {
 			return getRepo(parentResource);
 		}

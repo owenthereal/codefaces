@@ -1,6 +1,5 @@
-package org.codefaces.core;
+package org.codefaces.core.adaptors;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.codefaces.core.models.Repo;

@@ -13,11 +13,7 @@ public class RepoResource extends PlatformObject {
 		this.id = id;
 		this.name = name;
 		this.type = type;
-		
 		this.parent = parent;
-		if (parent != null) {
-			parent.addChild(this);
-		}
 	}
 
 	public RepoContainer getParent() {

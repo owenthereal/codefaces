@@ -2,19 +2,17 @@ package org.codefaces.core.services.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.net.MalformedURLException;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileLite;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.github.GitHubBranchesDto;
@@ -100,33 +98,6 @@ public class GitHubServiceTest {
 
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
 		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
-
-		// Test if the repository is private
-		try {
-			gitHubRepo = gitHubService
-					.createGithubRepo(TEST_GITHUB_PRIVATE_URL);
-			fail("Should throw a RepoConnectionException");
-		} catch (Exception e) {
-			assertTrue(e instanceof RepoConnectionException);
-		}
-
-		// Test if there is no such repository
-		try {
-			gitHubRepo = gitHubService
-					.createGithubRepo(TEST_GITHUB_NO_REPO_URL);
-			fail("Should throw a RepoConnectionException");
-		} catch (Exception e) {
-			assertTrue(e instanceof RepoConnectionException);
-		}
-
-		// Test if the url is malformed
-		try {
-			gitHubRepo = gitHubService
-					.createGithubRepo(TEST_GITHUB_MALFORMED_URL);
-			fail("Should throw an MalformedURLException");
-		} catch (Exception e) {
-			assertTrue(e instanceof MalformedURLException);
-		}
 	}
 
 	@Test
