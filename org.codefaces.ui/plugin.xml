@@ -64,11 +64,6 @@
             id="org.codefaces.ui.commands.openRepositoryCommand"
             name="OpenRepositoryCommand">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.openRepository.explorerViewID"
-               name="explorerViewID"
-               optional="true">
-         </commandParameter>
-         <commandParameter
                id="org.codefaces.ui.commands.parameters.openRepository.repoUrl"
                name="repoUrl"
                optional="true">

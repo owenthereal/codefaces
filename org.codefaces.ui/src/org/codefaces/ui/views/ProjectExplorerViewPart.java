@@ -1,10 +1,18 @@
 package org.codefaces.ui.views;
 
 import java.net.URL;
+import java.util.EnumSet;
 
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
+import org.codefaces.ui.actions.ExplorerSwitchRootAction;
+import org.codefaces.ui.events.WorkSpaceChangeEvent;
+import org.codefaces.ui.events.WorkSpaceChangeEventListener;
+import org.codefaces.ui.resources.WorkSpace;
+import org.codefaces.ui.resources.WorkSpaceManager;
+import org.codefaces.ui.resources.WorkSpace.Resources;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -137,27 +145,47 @@ public class ProjectExplorerViewPart extends ViewPart {
 	}
 
 	/**
-	 * This is a callback that will allow us to create the viewer and initialize
-	 * it.
+	 * Initialize the ExplorerView 
 	 */
 	public void createPartControl(Composite parent) {
+		// create a tool bar
+		createToolBar(parent);
+		// create the project viewer
+		createViewer(parent);
+		//register WorkSpaceChangeEventListener
+		WorkSpace ws = WorkSpaceManager.getInstance().getWorkSpace();
+		ws.addWorkSpaceChangeListener(new WorkSpaceChangeEventListener(){
+			@Override
+			public void workSpaceChanged(WorkSpaceChangeEvent evt) {
+				//we are only interested in the working branch change
+				if (evt.getResourcesChanged().contains(Resources.BRANCH)){
+					update(evt.getRepoBranch());
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create and initialize the viewer
+	 */
+	private void createViewer(Composite parent) {		
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.BORDER);
 		viewer.setContentProvider(new ProjectExplorerContentProvider());
 		viewer.setLabelProvider(new ProjectExplorerLabelProvider());
-		viewer.setInput(null);
+		viewer.setInput(WorkSpaceManager.getInstance().getWorkSpace()
+				.getWorkingRepoBranch());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
-		viewer.addDoubleClickListener(new DoubleClickListener());
+		//viewer.addDoubleClickListener(new DoubleClickListener());
 	}
 	
 	/**
-	 * Set the Explorer input to the given RepoResource. It is called when 
-	 * the user switch to another repository
+	 * Update the Explorer input to the given RepoResource.
 	 * 
-	 * @param repoResource the root of the RepoResource
+	 * @param workingBranch the new working branch
 	 */
-	public void setRepoModel(RepoResource repoResource){
-		viewer.setInput(repoResource);
+	public void update(RepoContainer workingBranch){
+		viewer.setInput(workingBranch);
 	}
 
 	/**
@@ -166,5 +194,13 @@ public class ProjectExplorerViewPart extends ViewPart {
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
+	
+	/**
+	 * Create and fill in the tool bar
+	 */
+	private void createToolBar(Composite parent){
+		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager(); 
+    	toolbar.add(new ExplorerSwitchRootAction());
+    }
 
 }

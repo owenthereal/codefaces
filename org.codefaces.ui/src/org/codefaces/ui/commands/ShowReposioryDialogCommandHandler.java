@@ -47,18 +47,12 @@ public class ShowReposioryDialogCommandHandler extends AbstractHandler
 		Command openRepositoryCmd = cmdService
 				.getCommand(OpenRepositoryCommandHandler.ID);
 		try {
-			IParameter explorerIdParam = openRepositoryCmd
-					.getParameter(OpenRepositoryCommandHandler.PARAM_EXPLORER_VIEW_ID);
 			IParameter repoUrlParam = openRepositoryCmd
 					.getParameter(OpenRepositoryCommandHandler.PARAM_REPO_URL_ID);
-
-			Parameterization param1 = new Parameterization(explorerIdParam,
-					ProjectExplorerViewPart.ID);
-			Parameterization param2 = new Parameterization(repoUrlParam,
+			Parameterization paramRepoUrl = new Parameterization(repoUrlParam,
 					repoUrl);
 			ParameterizedCommand parmCommand = new ParameterizedCommand(
-					openRepositoryCmd, new Parameterization[] { param1,
-							param2 });
+					openRepositoryCmd, new Parameterization[] { paramRepoUrl });
 			handlerService.executeCommand(parmCommand, null);
 			
 		} catch (NotDefinedException e) {
