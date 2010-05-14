@@ -9,7 +9,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.ui.resources.WorkSpace.Resources;
 
-public class WorkSpaceChangedEvent extends EventObject {
+public class WorkSpaceChangeEvent extends EventObject {
 	private static final long serialVersionUID = 5870469991944398567L;
 
 	private EnumSet<Resources> resourcesChanged;
@@ -22,7 +22,7 @@ public class WorkSpaceChangedEvent extends EventObject {
 	 * @param source the event source object
 	 * @param newRepo the new repository
 	 */
-	public WorkSpaceChangedEvent(Object source, Repo newRepo){
+	public WorkSpaceChangeEvent(Object source, Repo newRepo){
 		super(source);
 		this.newRepo = newRepo;
 		this.newRepoBranch = null;
@@ -34,7 +34,7 @@ public class WorkSpaceChangedEvent extends EventObject {
 	 * @param source the event source object
 	 * @param newRepoBranch the new repository branch
 	 */
-	public WorkSpaceChangedEvent(Object source, RepoBranch newRepoBranch){
+	public WorkSpaceChangeEvent(Object source, RepoBranch newRepoBranch){
 		super(source);
 		this.newRepo = null;
 		this.newRepoBranch = newRepoBranch;
@@ -49,7 +49,7 @@ public class WorkSpaceChangedEvent extends EventObject {
 	 * @param newRepo the new repository
 	 * @param newRepoBranch the new repository branch
 	 */
-	public WorkSpaceChangedEvent(Object source, Repo newRepo,
+	public WorkSpaceChangeEvent(Object source, Repo newRepo,
 			RepoBranch newRepoBranch) {
 		super(source);
 		this.newRepo = newRepo;
