@@ -6,24 +6,24 @@ import java.util.Set;
 public class RepoContainer extends RepoResource {
 	private Set<RepoResource> children;
 
-	protected RepoContainer(String id, String name, RepoResourceType type,
-			RepoContainer parent) {
-		super(id, name, type, parent);
+	protected RepoContainer(Repo repo, RepoContainer parent, String id, String name,
+			RepoResourceType type) {
+		super(repo, parent, id, name, type);
 	}
 
 	public Set<RepoResource> getChildren() {
-		return Collections.unmodifiableSet(getChildrenMuutable());
-	}
-
-	protected Set<RepoResource> getChildrenMuutable() {
 		if (children == null) {
 			children = (Set<RepoResource>) getAdapter(Set.class);
 		}
 
-		return children;
+		if (children == null) {
+			return Collections.emptySet();
+		}
+
+		return Collections.unmodifiableSet(children);
 	}
 
-	void addChild(RepoResource repoResource) {
-		getChildrenMuutable().add(repoResource);
+	public boolean hasChildren() {
+		return getChildren().isEmpty();
 	}
 }

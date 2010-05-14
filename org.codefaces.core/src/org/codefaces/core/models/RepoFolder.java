@@ -1,7 +1,7 @@
 package org.codefaces.core.models;
 
 public class RepoFolder extends RepoContainer {
-	public RepoFolder(String id, String name, RepoContainer parent) {
-		super(id, name, RepoResourceType.FOLDER, parent);
+	public RepoFolder(Repo repo, RepoContainer parent, String id, String name) {
+		super(repo, parent, id, name, RepoResourceType.FOLDER);
 	}
 }

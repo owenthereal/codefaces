@@ -107,8 +107,8 @@ public class GitHubServiceTest {
 		Repo mock_repo = new Repo(TEST_GITHUB_URL, TEST_REPO_NAME, credential);
 		RepoBranch mock_resource;
 
-		mock_resource = new RepoBranch(TEST_BRANCH_MASTER_SHA,
-				TEST_BRANCH_MASTER, mock_repo);
+		mock_resource = new RepoBranch(mock_repo, TEST_BRANCH_MASTER_SHA,
+				TEST_BRANCH_MASTER);
 		String githubListChildrenUrl = gitHubService
 				.createGitHubListChildrenUrl(mock_repo, mock_resource);
 		assertEquals(TEST_GITHUB_LIST_CHILDREN_URL, githubListChildrenUrl);
@@ -118,18 +118,18 @@ public class GitHubServiceTest {
 	public void test_getGitHubChildren() throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
-		RepoBranch mock_resource = new RepoBranch(TEST_BRANCH_MASTER_SHA,
-				TEST_BRANCH_MASTER, gitHubRepo);
+		RepoBranch mock_resource = new RepoBranch(gitHubRepo,
+				TEST_BRANCH_MASTER_SHA, TEST_BRANCH_MASTER);
 
-		Set<RepoResource> children = gitHubService.listGitHubChildren(
-				gitHubRepo, mock_resource);
+		Set<RepoResource> children = gitHubService
+				.listGitHubChildren(mock_resource);
 		assertEquals(6, children.size());
 
 		// Test if the branch is empty
 		gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_EMPTY_URL);
-		mock_resource = new RepoBranch(TEST_GITHUB_EMPTY_MASTER_SHA,
-				TEST_BRANCH_MASTER, gitHubRepo);
-		children = gitHubService.listGitHubChildren(gitHubRepo, mock_resource);
+		mock_resource = new RepoBranch(gitHubRepo,
+				TEST_GITHUB_EMPTY_MASTER_SHA, TEST_BRANCH_MASTER);
+		children = gitHubService.listGitHubChildren(mock_resource);
 		assertEquals(0, children.size());
 	}
 
@@ -137,10 +137,10 @@ public class GitHubServiceTest {
 	public void test_createGetGitHubFileUrl() throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
-		RepoBranch gitHubRepoBranch = new RepoBranch(TEST_BRANCH_MASTER_SHA,
-				TEST_BRANCH_MASTER, gitHubRepo);
-		RepoFileLite repoFileLite = new RepoFileLite(TEST_GITHUB_BRANCH_SHA,
-				TEST_GITHUB_FILE_NAME, gitHubRepoBranch);
+		RepoBranch gitHubRepoBranch = new RepoBranch(gitHubRepo,
+				TEST_BRANCH_MASTER_SHA, TEST_BRANCH_MASTER);
+		RepoFileLite repoFileLite = new RepoFileLite(gitHubRepo,
+				gitHubRepoBranch, TEST_GITHUB_BRANCH_SHA, TEST_GITHUB_FILE_NAME);
 
 		assertEquals(TEST_GET_GITHUB_FILE_URL, gitHubService
 				.createGetGitHubFileUrl(gitHubRepo, repoFileLite));
@@ -150,13 +150,12 @@ public class GitHubServiceTest {
 	public void test_getGitHubFile() throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
-		RepoBranch gitHubRepoBranch = new RepoBranch(TEST_BRANCH_MASTER_SHA,
-				TEST_BRANCH_MASTER, gitHubRepo);
-		RepoFileLite repoFileLite = new RepoFileLite(TEST_GITHUB_BRANCH_SHA,
-				TEST_GITHUB_FILE_NAME, gitHubRepoBranch);
+		RepoBranch gitHubRepoBranch = new RepoBranch(gitHubRepo,
+				TEST_BRANCH_MASTER_SHA, TEST_BRANCH_MASTER);
+		RepoFileLite repoFileLite = new RepoFileLite(gitHubRepo,
+				gitHubRepoBranch, TEST_GITHUB_BRANCH_SHA, TEST_GITHUB_FILE_NAME);
 
-		RepoFile repoFile = gitHubService.getGitHubFile(gitHubRepo,
-				repoFileLite);
+		RepoFile repoFile = gitHubService.getGitHubFile(repoFileLite);
 
 		assertEquals(TEST_GITHUB_FILE_SHA, repoFile.getId());
 		assertEquals(TEST_GITHUB_FILE_NAME, repoFile.getName());

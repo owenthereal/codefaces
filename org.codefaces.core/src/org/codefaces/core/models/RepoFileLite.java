@@ -1,9 +1,8 @@
 package org.codefaces.core.models;
 
 public class RepoFileLite extends RepoResource {
-
-	public RepoFileLite(String id, String name, RepoContainer parent) {
-		super(id, name, RepoResourceType.FILE, parent);
+	public RepoFileLite(Repo repo, RepoContainer parent, String id, String name) {
+		super(repo, parent, id, name, RepoResourceType.FILE);
 	}
 
 }

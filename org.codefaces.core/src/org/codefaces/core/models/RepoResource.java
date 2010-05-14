@@ -7,13 +7,19 @@ public class RepoResource extends PlatformObject {
 	private final String name;
 	private final RepoResourceType type;
 	private final RepoContainer parent;
+	private final Repo repo;
 
-	protected RepoResource(String id, String name, RepoResourceType type,
-			RepoContainer parent) {
+	protected RepoResource(Repo repo, RepoContainer parent, String id, String name,
+			RepoResourceType type) {
+		this.repo = repo;
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.parent = parent;
+	}
+
+	public Repo getRepo() {
+		return repo;
 	}
 
 	public RepoContainer getParent() {

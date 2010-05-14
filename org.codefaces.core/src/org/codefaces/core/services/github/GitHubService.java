@@ -94,9 +94,9 @@ public class GitHubService {
 	 * @throws RepoResponseException
 	 *             when unable to parse the server's response
 	 */
-	public Set<RepoResource> listGitHubChildren(Repo repo,
-			RepoContainer container) throws RepoResponseException,
-			RepoConnectionException {
+	public Set<RepoResource> listGitHubChildren(RepoContainer container)
+			throws RepoResponseException, RepoConnectionException {
+		Repo repo = container.getRepo();
 		String listChildrenUrl = createGitHubListChildrenUrl(repo, container);
 
 		PostMethod method = null;
@@ -112,11 +112,11 @@ public class GitHubService {
 				RepoResource child;
 				String gitHubRscType = rscDto.getType();
 				if (gitHubRscType.equals(GITHUB_TYPE_BLOB)) {
-					child = new RepoFileLite(rscDto.getSha(), rscDto.getName(),
-							container);
+					child = new RepoFileLite(repo, container, rscDto.getSha(),
+							rscDto.getName());
 				} else if (gitHubRscType.equals(GITHUB_TYPE_TREE)) {
-					child = new RepoFolder(rscDto.getSha(), rscDto.getName(),
-							container);
+					child = new RepoFolder(repo, container, rscDto.getSha(),
+							rscDto.getName());
 				} else {
 					throw new UnsupportedOperationException(
 							"Unknown Resource Type: " + gitHubRscType);
@@ -188,8 +188,9 @@ public class GitHubService {
 		throw new MalformedURLException("Unable to parse the url: " + url);
 	}
 
-	public RepoFile getGitHubFile(Repo repo, RepoFileLite repoFileLite)
+	public RepoFile getGitHubFile(RepoFileLite repoFileLite)
 			throws RepoResponseException, RepoConnectionException {
+		Repo repo = repoFileLite.getRepo();
 		String getGitHubFileUrl = createGetGitHubFileUrl(repo, repoFileLite);
 
 		PostMethod method = null;
@@ -201,10 +202,11 @@ public class GitHubService {
 					.getResponseBody()), GitHubFileDto.class);
 			GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
 
-			return new RepoFile(gitHubFileDataDto.getSha(), gitHubFileDataDto
-					.getName(), gitHubFileDataDto.getData(), gitHubFileDataDto
-					.getMime_type(), gitHubFileDataDto.getMode(),
-					gitHubFileDataDto.getSize(), repoFileLite.getParent());
+			return new RepoFile(repo, gitHubFileDataDto.getSha(),
+					gitHubFileDataDto.getName(), gitHubFileDataDto.getData(),
+					gitHubFileDataDto.getMime_type(), gitHubFileDataDto
+							.getMode(), gitHubFileDataDto.getSize(),
+					repoFileLite.getParent());
 		} catch (UnsupportedOperationException e) {
 			throw new RepoResponseException(e);
 		} catch (JsonParseException e) {
@@ -232,8 +234,8 @@ public class GitHubService {
 		GitHubBranchesDto gitHubBranches = getGitHubBranches(gitHubShowBranchesUrl);
 		for (Entry<String, String> giHubBranchEntry : gitHubBranches
 				.getBrances().entrySet()) {
-			branches.add(new RepoBranch(giHubBranchEntry.getValue(),
-					giHubBranchEntry.getKey(), repo));
+			branches.add(new RepoBranch(repo, giHubBranchEntry.getValue(),
+					giHubBranchEntry.getKey()));
 		}
 
 		return branches;

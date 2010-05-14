@@ -9,9 +9,9 @@ public class RepoFile extends RepoFileLite {
 
 	private String content;
 
-	public RepoFile(String id, String name, String content, String mimeType,
-			String mode, int size, RepoContainer parent) {
-		super(id, name, parent);
+	public RepoFile(Repo repo, String id, String name, String content,
+			String mimeType, String mode, int size, RepoContainer parent) {
+		super(repo, parent, id, name);
 		this.content = content;
 		this.mimeType = mimeType;
 		this.mode = mode;

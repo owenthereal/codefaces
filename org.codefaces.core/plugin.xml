@@ -11,13 +11,6 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="org.codefaces.core.models.RepoResource"
-            class="org.codefaces.core.adaptors.RepoResourceAdapterFactory">
-         <adapter
-               type="org.codefaces.core.models.Repo">
-         </adapter>
-      </factory>
-      <factory
             adaptableType="org.codefaces.core.models.RepoFileLite"
             class="org.codefaces.core.adaptors.RepoFileAdapterFactory">
          <adapter

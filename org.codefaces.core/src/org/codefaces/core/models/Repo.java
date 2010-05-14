@@ -1,13 +1,12 @@
 package org.codefaces.core.models;
 
-
 public class Repo extends RepoContainer {
 	private String url;
 
 	private RepoCredential credential;
 
 	public Repo(String url, String name, RepoCredential credential) {
-		super(url, name, RepoResourceType.REPO, null);
+		super(null, null, url, name, RepoResourceType.REPO);
 		this.url = url;
 		this.credential = credential;
 	}
@@ -18,5 +17,10 @@ public class Repo extends RepoContainer {
 
 	public RepoCredential getCredential() {
 		return credential;
+	}
+
+	@Override
+	public Repo getRepo() {
+		return this;
 	}
 }
