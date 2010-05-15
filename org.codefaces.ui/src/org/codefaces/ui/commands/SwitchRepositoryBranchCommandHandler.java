@@ -15,6 +15,12 @@ public class SwitchRepositoryBranchCommandHandler extends AbstractHandler
 	public static final String PARAM_NEW_BRANCH_ID = 
 		"org.codefaces.ui.commands.parameters.switchRepositoryBranch.newBranch";
 	
+	/**
+	 * This command calls WorkSpace to update. However, if the given branch 
+	 * name cannot be found in the working repository. The repository is probably 
+	 * be updated by some other commands. Instead of throwing an Exception, 
+	 * this command job the update request silently. 
+	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String newBranchName = event.getParameter(PARAM_NEW_BRANCH_ID);
