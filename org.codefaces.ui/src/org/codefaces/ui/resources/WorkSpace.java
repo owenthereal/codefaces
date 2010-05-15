@@ -54,6 +54,11 @@ public class WorkSpace{
 	public void update(RepoBranch newRepoBranch){
 		WorkSpaceChangeEvent evt;
 		synchronized(lock1){
+			if(!newRepoBranch.getParent().getId().equals(workingRepo.getId())){
+				// if the new repobranch's repo is not the same as current repo,
+				// the update is outdated. Discard the update
+				return;
+			}
 			workingRepoBranch = newRepoBranch;
 			evt = new WorkSpaceChangeEvent(new EventObject(this), newRepoBranch);
 		}
