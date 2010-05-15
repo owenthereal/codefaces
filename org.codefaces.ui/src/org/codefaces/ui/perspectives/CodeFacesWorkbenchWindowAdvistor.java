@@ -1,5 +1,6 @@
 package org.codefaces.ui.perspectives;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -17,11 +18,11 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setShowMenuBar(true);
-		//configurer.setShowCoolBar(true);
+		configurer.setShowCoolBar(true);
 		configurer.setShowStatusLine(true);
-		//configurer.setShowPerspectiveBar(true);
+		configurer.setShowPerspectiveBar(true);
 		configurer.setShowProgressIndicator(true);
-		//getWindowConfigurer().setShellStyle(SWT.NO_TRIM);
+		getWindowConfigurer().setShellStyle(SWT.NO_TRIM);
 	}
 
 	@Override

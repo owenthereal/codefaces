@@ -5,13 +5,19 @@ import java.net.URL;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
-import org.codefaces.ui.actions.ExplorerSwitchRootAction;
+import org.codefaces.ui.CodeFacesUIActivator;
+import org.codefaces.ui.IImages;
+import org.codefaces.ui.actions.ExplorerSwitchBranchAction;
 import org.codefaces.ui.events.WorkSpaceChangeEvent;
 import org.codefaces.ui.events.WorkSpaceChangeEventListener;
 import org.codefaces.ui.resources.WorkSpace;
 import org.codefaces.ui.resources.WorkSpaceManager;
 import org.codefaces.ui.resources.WorkSpace.Resources;
+import org.codefaces.ui.utils.Util;
+import org.eclipse.core.internal.runtime.Activator;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -29,6 +35,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class ProjectExplorerViewPart extends ViewPart {
 
@@ -193,13 +200,17 @@ public class ProjectExplorerViewPart extends ViewPart {
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
-	
+
 	/**
 	 * Create and fill in the tool bar
 	 */
 	private void createToolBar(Composite parent){
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager(); 
-    	toolbar.add(new ExplorerSwitchRootAction());
+		Action switchBranchAction = new ExplorerSwitchBranchAction();
+		
+		switchBranchAction.setImageDescriptor(Util
+				.getImageDescriptor(IImages.IMG_BRANCHES));
+    	toolbar.add(switchBranchAction);
     }
 
 }

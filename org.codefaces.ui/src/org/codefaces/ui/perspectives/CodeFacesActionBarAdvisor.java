@@ -1,11 +1,22 @@
 package org.codefaces.ui.perspectives;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarContributionItem;
+import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
 public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
+	
+	private IWorkbenchAction exitAction; 
+	
 	public CodeFacesActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
@@ -26,11 +37,12 @@ public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
         // The corresponding commands keybindings are defined in the plugin.xml file.
         // Registering also provides automatic disposal of the actions when
         // the window is closed.
-
-        /*exitAction = ActionFactory.QUIT.create(window);
-        register(exitAction);
+    	
         
-        aboutAction = new AboutAction(window);
+    	exitAction = ActionFactory.QUIT.create(window);
+    	register(exitAction);
+        
+        /*aboutAction = new AboutAction(window);
         register(aboutAction);
         
         openViewAction = new OpenViewAction(window, "Open Another Message View", ProjectExplorerViewPart.ID);
@@ -65,10 +77,11 @@ public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
         helpMenu.add(aboutAction);*/
     }
     
-    /*protected void fillCoolBar(ICoolBarManager coolBar) {
+    protected void fillCoolBar(ICoolBarManager coolBar) {
         IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-        coolBar.add(new ToolBarContributionItem(toolbar, "main"));   
-        toolbar.add(openViewAction);
-        toolbar.add(messagePopupAction);
-    }*/
+        coolBar.add(new ToolBarContributionItem(toolbar, "main"));
+        toolbar.add(exitAction);
+        /*toolbar.add(openViewAction);
+        toolbar.add(messagePopupAction);*/
+    }
 }
