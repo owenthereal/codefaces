@@ -26,9 +26,12 @@ public class WorkSpace{
 	private RepoBranch workingRepoBranch;
 	
 	private final List<WorkSpaceChangeEventListener> changeListeners;
-	private final Object lock1 = new Object();//a lock object
-	private final Object lock2 = new Object();//a lock object
-	
+	private final Object lock = new Object();//a lock object
+
+	/**
+	 * Note: should obtain a WorkSpace via
+	 * WorkSpaceManager.getInstance().getWorkSpace() method.
+	 */
 	public WorkSpace(){
 		workingRepo = null;
 		workingRepoBranch = null;
@@ -53,7 +56,7 @@ public class WorkSpace{
 	 */
 	public void update(RepoBranch newRepoBranch){
 		WorkSpaceChangeEvent evt;
-		synchronized(lock1){
+		synchronized(lock){
 			if(!newRepoBranch.getParent().getId().equals(workingRepo.getId())){
 				// if the new repobranch's repo is not the same as current repo,
 				// the update is outdated. Discard the update
@@ -74,12 +77,10 @@ public class WorkSpace{
 	 */
 	public void update(Repo newRepo, RepoBranch newRepoBranch){
 		WorkSpaceChangeEvent evt;
-		synchronized(lock2){
-			workingRepo = newRepo;
-			workingRepoBranch = newRepoBranch;
-			evt = new WorkSpaceChangeEvent(new EventObject(this), newRepo,
-					newRepoBranch);
-		}
+		workingRepo = newRepo;
+		workingRepoBranch = newRepoBranch;
+		evt = new WorkSpaceChangeEvent(new EventObject(this), newRepo,
+				newRepoBranch);
 		notifyChange(evt);
 	}
 	
