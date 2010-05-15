@@ -2,9 +2,7 @@ package org.codefaces.ui.actions;
 
 import java.util.Collection;
 
-import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.ui.commands.OpenRepositoryCommandHandler;
 import org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler;
 import org.codefaces.ui.events.WorkSpaceChangeEvent;
 import org.codefaces.ui.events.WorkSpaceChangeEventListener;
@@ -20,8 +18,6 @@ import org.eclipse.core.commands.Parameterization;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,7 +25,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;

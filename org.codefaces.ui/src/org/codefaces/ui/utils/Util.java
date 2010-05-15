@@ -1,7 +1,6 @@
 package org.codefaces.ui.utils;
 
 import org.codefaces.ui.CodeFacesUIActivator;
-import org.codefaces.ui.IImages;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 

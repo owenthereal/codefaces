@@ -1,6 +1,5 @@
 package org.codefaces.ui.perspectives;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
