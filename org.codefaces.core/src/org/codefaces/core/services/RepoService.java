@@ -21,7 +21,11 @@ public class RepoService {
 
 	public Repo getRepo(String url) throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
-		return githubService.createGithubRepo(url);
+		String trimed_url = url.trim();
+		if(trimed_url.endsWith("/")){
+			trimed_url = trimed_url.substring(0, trimed_url.length()-1); 
+		}
+		return githubService.createGithubRepo(trimed_url);
 	}
 
 	public Set<RepoResource> listChildren(RepoContainer repoContainer)
