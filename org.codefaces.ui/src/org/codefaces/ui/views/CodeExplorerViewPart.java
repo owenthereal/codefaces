@@ -1,7 +1,7 @@
 package org.codefaces.ui.views;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.models.RepoFile;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -15,6 +15,7 @@ public class CodeExplorerViewPart extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
+
 	}
 
 	@Override
@@ -24,6 +25,16 @@ public class CodeExplorerViewPart extends ViewPart {
 
 	public void setInput(RepoFile repoFile) {
 		setPartName(repoFile.getName());
-		browser.setText(StringEscapeUtils.escapeHtml(repoFile.getContent()));
+		browser.setText(CodeFacesUIActivator.getDefault().getCodeHTML(
+				getFileExtension(repoFile.getName()), repoFile.getContent()));
+	}
+
+	private String getFileExtension(String fileName) {
+		int index = fileName.lastIndexOf(".");
+		if (index != -1) {
+			fileName.substring(index);
+		}
+
+		return "plain";
 	}
 }
