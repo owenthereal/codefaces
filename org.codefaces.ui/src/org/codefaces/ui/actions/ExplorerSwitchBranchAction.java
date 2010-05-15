@@ -64,7 +64,7 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator{
 		setEnabled(false);
 		
 		WorkSpaceManager.getInstance().getWorkSpace()
-				.addWorkSpaceChangeListener(new WorkSpaceChangeEventListener() {
+				.addWorkSpaceChangeEventListener(new WorkSpaceChangeEventListener() {
 					@Override
 					public void workSpaceChanged(WorkSpaceChangeEvent evt) {
 						if (evt.getResourcesChanged().contains(Resources.REPO)) {

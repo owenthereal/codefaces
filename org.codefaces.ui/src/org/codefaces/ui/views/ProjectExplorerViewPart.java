@@ -156,7 +156,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		createViewer(parent);
 		//register WorkSpaceChangeEventListener
 		WorkSpace ws = WorkSpaceManager.getInstance().getWorkSpace();
-		ws.addWorkSpaceChangeListener(new WorkSpaceChangeEventListener(){
+		ws.addWorkSpaceChangeEventListener(new WorkSpaceChangeEventListener(){
 			@Override
 			public void workSpaceChanged(WorkSpaceChangeEvent evt) {
 				//we are only interested in the working branch change

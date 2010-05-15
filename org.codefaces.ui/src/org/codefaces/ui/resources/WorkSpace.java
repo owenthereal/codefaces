@@ -57,7 +57,8 @@ public class WorkSpace{
 	public void update(RepoBranch newRepoBranch){
 		WorkSpaceChangeEvent evt;
 		synchronized(lock){
-			if(!newRepoBranch.getParent().getId().equals(workingRepo.getId())){
+			//TODO: use the getRepo() method in the new Repo model
+			if(!newRepoBranch.getParent().getName().equals(workingRepo.getName())){
 				// if the new repobranch's repo is not the same as current repo,
 				// the update is outdated. Discard the update
 				return;
@@ -88,7 +89,7 @@ public class WorkSpace{
 	 * Attach a listener to the listener list
 	 * @param w a listener
 	 */
-	public void addWorkSpaceChangeListener(WorkSpaceChangeEventListener w){
+	public void addWorkSpaceChangeEventListener(WorkSpaceChangeEventListener w){
 		if(w != null) changeListeners.add(w);
 	}
 	
@@ -96,7 +97,7 @@ public class WorkSpace{
 	 * Remove the given listener from the listener list
 	 * @param w the listener being removed
 	 */
-	public void removeWorkSpaceChangeListener(WorkSpaceChangeEventListener w){
+	public void removeWorkSpaceChangeEventListener(WorkSpaceChangeEventListener w){
 		changeListeners.remove(w);
 	}
 	
