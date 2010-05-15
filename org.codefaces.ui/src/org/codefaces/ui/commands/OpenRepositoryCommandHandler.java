@@ -30,16 +30,12 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements IHa
 			WorkSpaceManager.getInstance().getWorkSpace().update(repo, branch);
 			
 		} catch (RepoConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ExecutionException("Repository Connection Problem", e);
 		} catch (RepoResponseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ExecutionException("Unknown Repository Responce", e);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ExecutionException("Malformed repository URL", e);
 		}
-		
 		
 		return null;
 	}
