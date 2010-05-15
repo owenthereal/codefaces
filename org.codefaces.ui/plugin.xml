@@ -69,5 +69,16 @@
                optional="true">
          </commandParameter>
       </command>
+      <command
+            defaultHandler="org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler"
+            description="Switch to another Repository Branch without switching the repository"
+            id="org.codefaces.ui.commands.switchRepositoryBranchCommand"
+            name="switchRepositoryBranchCommand">
+         <commandParameter
+               id="org.codefaces.ui.commands.parameters.switchRepositoryBranch.newBranch"
+               name="newBranch"
+               optional="true">
+         </commandParameter>
+      </command>
    </extension>
 </plugin>

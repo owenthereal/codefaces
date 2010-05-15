@@ -1,6 +1,5 @@
 package org.codefaces.ui.commands;
 
-import org.codefaces.ui.views.ProjectExplorerViewPart;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
