@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.Set;
 
 import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileLite;
@@ -20,7 +21,11 @@ public class RepoService {
 
 	public Repo getRepo(String url) throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
-		return githubService.createGithubRepo(url);
+		String trimed_url = url.trim();
+		if(trimed_url.endsWith("/")){
+			trimed_url = trimed_url.substring(0, trimed_url.length()-1); 
+		}
+		return githubService.createGithubRepo(trimed_url);
 	}
 
 	public Set<RepoResource> listChildren(RepoContainer repoContainer)
@@ -33,6 +38,21 @@ public class RepoService {
 		return githubService.listGitHubChildren(repo, repoContainer);
 	}
 
+	/**
+	 * @return the default branch to be opened
+	 * @param repo the repository 
+	 */
+	public RepoBranch getDefaultBranch(Repo repo){
+		try {
+			return githubService.getGitHubDefaultBranch(repo);
+		} catch (RepoResponseException e) {
+			//there may be some repository provider allows the user to 
+			//remove/rename the default branch. In this case, we return null
+			return null;
+		}
+	}
+	
+	
 	public RepoFile getRepoFile(RepoFileLite adaptableObject) {
 		// TODO
 		return null;

@@ -19,6 +19,7 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setShowMenuBar(true);
 		configurer.setShowCoolBar(true);
+		configurer.setShowStatusLine(true);
 		configurer.setShowPerspectiveBar(true);
 		configurer.setShowProgressIndicator(true);
 		getWindowConfigurer().setShellStyle(SWT.NO_TRIM);
