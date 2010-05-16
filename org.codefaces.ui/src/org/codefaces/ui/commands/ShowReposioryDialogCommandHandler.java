@@ -21,15 +21,18 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 public class ShowReposioryDialogCommandHandler extends AbstractHandler
 		implements IHandler {
+	
+	private static final String SAMPLE_URL = "http://github.com/defunkt/facebox";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);  
 		String title = "Open Repository";  
-		String sampleText = "http://github.com/defunkt/facebox";
-		  
-		InputDialog dlg = new InputDialog(shell, title,
-				"Enter the GitHub Repository URL", sampleText, null);
+		String description = "Enter the GitHub Repository URL:\n" + 
+			"e.g. " + SAMPLE_URL;
+		
+		InputDialog dlg = new InputDialog(shell, title, description, null, null);
+		
 		if (dlg.open() == Window.OK) {
 			executeOpenRepositoryCommand(dlg.getValue());
 		}
