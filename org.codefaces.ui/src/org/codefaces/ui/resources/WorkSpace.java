@@ -17,7 +17,7 @@ import org.eclipse.rwt.SessionSingletonBase;
  * 
  * @author kklo
  */
-public class Workspace {
+public class WorkSpace {
 
 	public enum Resources {
 		REPO, BRANCH
@@ -33,7 +33,7 @@ public class Workspace {
 	 * Note: should obtain a WorkSpace via
 	 * WorkSpaceManager.getInstance().getWorkSpace() method.
 	 */
-	public Workspace() {
+	public WorkSpace() {
 		workingRepo = null;
 		workingRepoBranch = null;
 		// CopyOnWriteArrayList is ideal for implementing observer pattern
@@ -123,7 +123,7 @@ public class Workspace {
 		}
 	}
 
-	public static Workspace getCurrent() {
-		return (Workspace) SessionSingletonBase.getInstance(Workspace.class);
+	public static WorkSpace getCurrent() {
+		return (WorkSpace) SessionSingletonBase.getInstance(WorkSpace.class);
 	}
 }

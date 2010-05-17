@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.ui.resources.Workspace.Resources;
+import org.codefaces.ui.resources.WorkSpace.Resources;
 import org.junit.Before;
 import org.junit.Test;
 
