@@ -1,20 +1,20 @@
 package org.codefaces.ui.resources;
 
-public class WorkSpaceManager {
+public class WorkspaceManager {
 
-	private static WorkSpaceManager INSTANCE;
+	private static WorkspaceManager INSTANCE;
 
-	private WorkSpaceManager() {
+	private WorkspaceManager() {
 	}
 
-	public static WorkSpaceManager getInstance() {
+	public static WorkspaceManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new WorkSpaceManager();
+			INSTANCE = new WorkspaceManager();
 		}
 		return INSTANCE;
 	}
 
-	public WorkSpace getCurrentWorkspace() {
-		return WorkSpace.getCurrent();
+	public Workspace getCurrentWorkspace() {
+		return Workspace.getCurrent();
 	}
 }

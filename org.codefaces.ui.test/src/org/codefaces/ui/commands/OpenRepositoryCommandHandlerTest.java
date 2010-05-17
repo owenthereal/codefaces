@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.ui.resources.WorkSpace;
+import org.codefaces.ui.resources.Workspace;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.junit.Before;
@@ -28,12 +28,12 @@ public class OpenRepositoryCommandHandlerTest {
 	private static final String TEST_GITHUB_UGLY_REPO_2 = "  http://github.com/kklo/empty_testing_project";
 	private static final String TEST_GITHUB_UGLY_REPO_3 = "http://github.com/kklo/empty_testing_project  ";
 
-	private WorkSpace ws;
+	private Workspace ws;
 	private OpenRepositoryCommandHandler cmd;
 
 	@Before
 	public void setUp() {
-		ws = WorkSpace.getCurrent();
+		ws = Workspace.getCurrent();
 		cmd = new OpenRepositoryCommandHandler();
 	}
 
