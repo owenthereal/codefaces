@@ -50,22 +50,49 @@
       </branding>
    </extension>
    <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="File">
+            <command
+                  commandId="org.codefaces.ui.commands.ShowRepositoryDialogCommand"
+                  label="Open Repository"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
-      <category
-            name="Mail"
-            id="maildemo.category">
-      </category>
       <command
-            name="Open Mailbox"
-            description="Opens a mailbox"
-            categoryId="maildemo.category"
-            id="maildemo.open">
+            defaultHandler="org.codefaces.ui.commands.ShowReposioryDialogCommandHandler"
+            description="Show an input dialog for opening a repository"
+            id="org.codefaces.ui.commands.ShowRepositoryDialogCommand"
+            name="ShowRepositoryDialogCommand">
       </command>
       <command
-            name="Open Message Dialog"
-            description="Opens a message dialog"
-            categoryId="maildemo.category"
-            id="maildemo.openMessage">
+            defaultHandler="org.codefaces.ui.commands.OpenRepositoryCommandHandler"
+            description="Open a repository and update the explorer"
+            id="org.codefaces.ui.commands.openRepositoryCommand"
+            name="OpenRepositoryCommand">
+         <commandParameter
+               id="org.codefaces.ui.commands.parameters.openRepository.repoUrl"
+               name="repoUrl"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            defaultHandler="org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler"
+            description="Switch to another Repository Branch without switching the repository"
+            id="org.codefaces.ui.commands.switchRepositoryBranchCommand"
+            name="switchRepositoryBranchCommand">
+         <commandParameter
+               id="org.codefaces.ui.commands.parameters.switchRepositoryBranch.newBranch"
+               name="newBranch"
+               optional="true">
+         </commandParameter>
       </command>
    </extension>
 </plugin>

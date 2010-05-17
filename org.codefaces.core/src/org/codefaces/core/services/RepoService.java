@@ -20,7 +20,11 @@ public class RepoService {
 
 	public Repo getRepo(String url) throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
-		return githubService.createGithubRepo(url);
+		String trimed_url = url.trim();
+		if (trimed_url.endsWith("/")) {
+			trimed_url = trimed_url.substring(0, trimed_url.length() - 1);
+		}
+		return githubService.createGithubRepo(trimed_url);
 	}
 
 	public Set<RepoBranch> listBranches(Repo repo)
@@ -37,4 +41,20 @@ public class RepoService {
 			throws RepoResponseException, RepoConnectionException {
 		return githubService.getGitHubFile(adaptableObject);
 	}
+
+	/**
+	 * @return the default branch to be opened
+	 * @param repo
+	 *            the repository
+	 */
+	public RepoBranch getDefaultBranch(Repo repo) {
+		try {
+			return githubService.getGitHubDefaultBranch(repo);
+		} catch (RepoResponseException e) {
+			// there may be some repository provider allows the user to
+			// remove/rename the default branch. In this case, we return null
+			return null;
+		}
+	}
+
 }

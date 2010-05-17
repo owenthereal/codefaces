@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -91,4 +92,23 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 			throw new IllegalStateException();
 		}
 	}
+	/**
+	 * Initialize the image registry
+	 */
+    protected void initializeImageRegistry(ImageRegistry registry) {
+    	putImageInRegistry(registry, "IMG_BRANCHES", "icons/branches.gif");
+    }
+    
+    /**
+     * Put an image into the image registry
+     * @param registry the image registry
+     * @param imgID a image ID
+     * @param path the path of the image. e.g. icons/abc.gif
+     */
+	private void putImageInRegistry(ImageRegistry registry,
+			final String imgID, final String path) {
+		registry.put(imgID, AbstractUIPlugin.imageDescriptorFromPlugin(
+				PLUGIN_ID, path));
+    }
+
 }

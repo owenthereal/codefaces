@@ -44,6 +44,8 @@ public class GitHubService {
 	private static final String GITHUB_TYPE_BLOB = "blob";
 	private static final String GITHUB_TYPE_TREE = "tree";
 
+	private static final String GITHUB_DEFAULT_BRANCH = "master";
+
 	private final HttpClient httpClient;
 
 	private Gson gson;
@@ -239,5 +241,24 @@ public class GitHubService {
 		}
 
 		return branches;
+	}
+
+	/**
+	 * @return the default GitHub branch
+	 * @param repo
+	 *            the repository
+	 * @throws RepoResponseException
+	 *             if the default branch is not found
+	 */
+	public RepoBranch getGitHubDefaultBranch(Repo repo)
+			throws RepoResponseException {
+		Set<RepoResource> branches = repo.getChildren();
+		for (RepoResource branch : branches) {
+			if (branch.getName().equals(GITHUB_DEFAULT_BRANCH)) {
+				return (RepoBranch) branch;
+			}
+		}
+		throw new RepoResponseException(GITHUB_DEFAULT_BRANCH
+				+ " branch not found.");
 	}
 }
