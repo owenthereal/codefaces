@@ -7,7 +7,7 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoManager;
 import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
-import org.codefaces.ui.resources.Workspace;
+import org.codefaces.ui.resources.WorkSpace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -27,7 +27,7 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements
 					repoUrl);
 			RepoBranch branch = RepoManager.getInstance().getRepoService()
 					.getDefaultBranch(repo);
-			Workspace.getCurrent().update(repo, branch);
+			WorkSpace.getCurrent().update(repo, branch);
 
 		} catch (RepoConnectionException e) {
 			throw new ExecutionException("Repository Connection Problem", e);

@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.ui.resources.Workspace;
-import org.codefaces.ui.resources.WorkspaceManager;
+import org.codefaces.ui.resources.WorkSpace;
+import org.codefaces.ui.resources.WorkSpaceManager;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.junit.Before;
@@ -24,7 +24,7 @@ public class SwitchRepositoryBranchTest {
 	private static final String TEST_GITHUB_REPO_NAME_2 = "empty_testing_project";
 	private static final String[] TEST_GITHUB_REPO_BRANCHES_2 = new String[] { "master" };
 
-	private Workspace ws;
+	private WorkSpace ws;
 	private OpenRepositoryCommandHandler openRepocmd;
 	private SwitchRepositoryBranchCommandHandler switchCmd;
 
@@ -34,7 +34,7 @@ public class SwitchRepositoryBranchTest {
 
 	@Before
 	public void setUp() {
-		ws = WorkspaceManager.getInstance().getCurrentWorkspace();
+		ws = WorkSpaceManager.getInstance().getCurrentWorkspace();
 		openRepocmd = new OpenRepositoryCommandHandler();
 		switchCmd = new SwitchRepositoryBranchCommandHandler();
 	}

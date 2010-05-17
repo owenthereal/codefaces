@@ -13,7 +13,7 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.events.WorkSpaceChangeEvent;
 import org.codefaces.ui.events.WorkSpaceChangeEventListener;
-import org.codefaces.ui.resources.Workspace.Resources;
+import org.codefaces.ui.resources.WorkSpace.Resources;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,11 +26,11 @@ public class WorkSpaceTest {
 	private Repo mockBazRepo;
 	private RepoBranch mockBazBranch;
 
-	private Workspace ws;
+	private WorkSpace ws;
 
 	@Before
 	public void setUp() {
-		ws = new Workspace();
+		ws = new WorkSpace();
 
 		final Set<RepoResource> branchesForFooRepo = new HashSet<RepoResource>();
 		mockFooRepo = new Repo("http://abc.com", "foo", null) {
