@@ -6,7 +6,7 @@ import java.util.EventObject;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.ui.resources.WorkSpace.Resources;
+import org.codefaces.ui.resources.Workspace.Resources;
 
 public class WorkSpaceChangeEvent extends EventObject {
 	private static final long serialVersionUID = 5870469991944398567L;

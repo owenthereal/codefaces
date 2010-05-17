@@ -9,16 +9,16 @@ public class WorkSpaceManagerTest {
 	@Test
 	public void test_getInstance(){
 		//Singleton test
-		WorkSpaceManager instance1 = WorkSpaceManager.getInstance();
-		WorkSpaceManager instance2 = WorkSpaceManager.getInstance();
+		WorkspaceManager instance1 = WorkspaceManager.getInstance();
+		WorkspaceManager instance2 = WorkspaceManager.getInstance();
 		assertEquals(instance1, instance2);
 	}
 	
 	@Test
 	public void test_getWorkSpace(){
 		//Singleton test
-		WorkSpace ws1 = WorkSpaceManager.getInstance().getCurrentWorkspace();
-		WorkSpace ws2 = WorkSpaceManager.getInstance().getCurrentWorkspace();
+		Workspace ws1 = WorkspaceManager.getInstance().getCurrentWorkspace();
+		Workspace ws2 = WorkspaceManager.getInstance().getCurrentWorkspace();
 		assertEquals(ws1, ws2);
 	}
 	

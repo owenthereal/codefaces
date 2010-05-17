@@ -7,8 +7,8 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler;
 import org.codefaces.ui.events.WorkSpaceChangeEvent;
 import org.codefaces.ui.events.WorkSpaceChangeEventListener;
-import org.codefaces.ui.resources.WorkSpace;
-import org.codefaces.ui.resources.WorkSpace.Resources;
+import org.codefaces.ui.resources.Workspace;
+import org.codefaces.ui.resources.Workspace.Resources;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IParameter;
@@ -62,7 +62,7 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 		setMenuCreator(this);
 		setEnabled(false);
 
-		WorkSpace.getCurrent().addWorkSpaceChangeEventListener(
+		Workspace.getCurrent().addWorkSpaceChangeEventListener(
 				new WorkSpaceChangeEventListener() {
 					@Override
 					public void workSpaceChanged(WorkSpaceChangeEvent evt) {
@@ -117,7 +117,7 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 	 */
 	private Menu createMenu(Control parent) {
 		Menu menu = new Menu(parent);
-		WorkSpace ws = WorkSpace.getCurrent();
+		Workspace ws = Workspace.getCurrent();
 
 		if (ws.getWorkingRepo() != null) {
 

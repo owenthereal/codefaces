@@ -3,8 +3,8 @@ package org.codefaces.ui.commands;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.ui.resources.WorkSpace;
-import org.codefaces.ui.resources.WorkSpaceManager;
+import org.codefaces.ui.resources.Workspace;
+import org.codefaces.ui.resources.WorkspaceManager;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,7 +24,7 @@ public class SwitchRepositoryBranchCommandHandler extends AbstractHandler
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String newBranchName = event.getParameter(PARAM_NEW_BRANCH_ID);
-		WorkSpace ws = WorkSpaceManager.getInstance().getCurrentWorkspace();
+		Workspace ws = WorkspaceManager.getInstance().getCurrentWorkspace();
 		Repo repo = ws.getWorkingRepo();
 
 		RepoResource newRepoBranch = null;

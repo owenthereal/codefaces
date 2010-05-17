@@ -9,9 +9,9 @@ import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.ExplorerSwitchBranchAction;
 import org.codefaces.ui.events.WorkSpaceChangeEvent;
 import org.codefaces.ui.events.WorkSpaceChangeEventListener;
-import org.codefaces.ui.resources.WorkSpace;
-import org.codefaces.ui.resources.WorkSpaceManager;
-import org.codefaces.ui.resources.WorkSpace.Resources;
+import org.codefaces.ui.resources.Workspace;
+import org.codefaces.ui.resources.WorkspaceManager;
+import org.codefaces.ui.resources.Workspace.Resources;
 import org.codefaces.ui.utils.Util;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -39,7 +39,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	private TreeViewer viewer;
 
-	private WorkSpace workspace;
+	private Workspace workspace;
 
 	class ProjectExplorerContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
@@ -168,7 +168,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		createToolBar(parent);
 		// create the project viewer
 		createViewer(parent);
-		workspace = WorkSpaceManager.getInstance().getCurrentWorkspace();
+		workspace = WorkspaceManager.getInstance().getCurrentWorkspace();
 		workspace.addWorkSpaceChangeEventListener(new WorkSpaceChangeEventListener() {
 			@Override
 			public void workSpaceChanged(WorkSpaceChangeEvent evt) {
@@ -191,7 +191,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 		viewer.addDoubleClickListener(new FileDoubleClickListener());
 		viewer.addDoubleClickListener(new FolderDoubleClickListener());
-		viewer.setInput(WorkSpaceManager.getInstance().getCurrentWorkspace()
+		viewer.setInput(WorkspaceManager.getInstance().getCurrentWorkspace()
 				.getWorkingRepoBranch());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 	}
