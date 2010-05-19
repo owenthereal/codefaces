@@ -1,4 +1,4 @@
-package org.codefaces.ui.resources;
+package org.codefaces.core.models.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -18,7 +18,7 @@ import org.codefaces.core.models.Workspace.Resources;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WorkSpaceTest {
+public class WorkspaceTest {
 
 	private Repo mockFooRepo;
 	private RepoBranch mockFooBranch;

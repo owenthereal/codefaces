@@ -1,17 +1,17 @@
 package org.codefaces.ui.views;
 
+import org.codefaces.core.events.WorkspaceChangeEvent;
+import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoFile;
-import org.codefaces.core.models.RepoFileLite;
+import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
+import org.codefaces.core.models.Workspace;
+import org.codefaces.core.models.Workspace.Resources;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.ExplorerSwitchBranchAction;
-import org.codefaces.ui.events.WorkSpaceChangeEvent;
-import org.codefaces.ui.events.WorkSpaceChangeEventListener;
-import org.codefaces.ui.resources.Workspace;
 import org.codefaces.ui.resources.WorkspaceManager;
-import org.codefaces.ui.resources.Workspace.Resources;
 import org.codefaces.ui.utils.Util;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -147,7 +147,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 							CodeExplorerViewPart.ID, clickedRepoResource
 									.getId(), IWorkbenchPage.VIEW_ACTIVATE);
 					if (viewPart instanceof CodeExplorerViewPart) {
-						RepoFileLite repoFileLite = (RepoFileLite) clickedRepoResource;
+						RepoFile repoFileLite = (RepoFile) clickedRepoResource;
 						RepoFile repoFile = (RepoFile) repoFileLite
 								.getAdapter(RepoFile.class);
 						((CodeExplorerViewPart) viewPart).setInput(repoFile);
@@ -169,9 +169,9 @@ public class ProjectExplorerViewPart extends ViewPart {
 		// create the project viewer
 		createViewer(parent);
 		workspace = WorkspaceManager.getInstance().getCurrentWorkspace();
-		workspace.addWorkSpaceChangeEventListener(new WorkSpaceChangeEventListener() {
+		workspace.addWorkSpaceChangeEventListener(new WorkspaceChangeEventListener() {
 			@Override
-			public void workSpaceChanged(WorkSpaceChangeEvent evt) {
+			public void workSpaceChanged(WorkspaceChangeEvent evt) {
 				// we are only interested in the working branch change
 				if (evt.getResourcesChanged().contains(Resources.BRANCH)) {
 					update(evt.getRepoBranch());

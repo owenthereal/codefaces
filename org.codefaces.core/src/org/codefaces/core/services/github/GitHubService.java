@@ -2,6 +2,7 @@ package org.codefaces.core.services.github;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -14,11 +15,11 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoFile;
-import org.codefaces.core.models.RepoFileLite;
+import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
@@ -96,9 +97,10 @@ public class GitHubService {
 	 * @throws RepoResponseException
 	 *             when unable to parse the server's response
 	 */
-	public Set<RepoResource> listGitHubChildren(RepoContainer container)
+	public Collection<RepoResource> fetchGitHubChildren(RepoResource container)
 			throws RepoResponseException, RepoConnectionException {
-		Repo repo = container.getRepo();
+		RepoFolderRoot root = container.getRoot();
+		Repo repo = root.getBranch().getRepo();
 		String listChildrenUrl = createGitHubListChildrenUrl(repo, container);
 
 		PostMethod method = null;
@@ -114,10 +116,10 @@ public class GitHubService {
 				RepoResource child;
 				String gitHubRscType = rscDto.getType();
 				if (gitHubRscType.equals(GITHUB_TYPE_BLOB)) {
-					child = new RepoFileLite(repo, container, rscDto.getSha(),
+					child = new RepoFile(root, container, rscDto.getSha(),
 							rscDto.getName());
 				} else if (gitHubRscType.equals(GITHUB_TYPE_TREE)) {
-					child = new RepoFolder(repo, container, rscDto.getSha(),
+					child = new RepoFolder(root, container, rscDto.getSha(),
 							rscDto.getName());
 				} else {
 					throw new UnsupportedOperationException(
@@ -190,9 +192,9 @@ public class GitHubService {
 		throw new MalformedURLException("Unable to parse the url: " + url);
 	}
 
-	public RepoFile getGitHubFile(RepoFileLite repoFileLite)
+	public RepoFileInfo fetchGitHubFileInfo(RepoFile repoFileLite)
 			throws RepoResponseException, RepoConnectionException {
-		Repo repo = repoFileLite.getRepo();
+		Repo repo = repoFileLite.getRoot().getBranch().getRepo();
 		String getGitHubFileUrl = createGetGitHubFileUrl(repo, repoFileLite);
 
 		PostMethod method = null;
@@ -204,11 +206,9 @@ public class GitHubService {
 					.getResponseBody()), GitHubFileDto.class);
 			GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
 
-			return new RepoFile(repo, gitHubFileDataDto.getSha(),
-					gitHubFileDataDto.getName(), gitHubFileDataDto.getData(),
+			return new RepoFileInfo(repoFileLite, gitHubFileDataDto.getData(),
 					gitHubFileDataDto.getMime_type(), gitHubFileDataDto
-							.getMode(), gitHubFileDataDto.getSize(),
-					repoFileLite.getParent());
+							.getMode(), gitHubFileDataDto.getSize());
 		} catch (UnsupportedOperationException e) {
 			throw new RepoResponseException(e);
 		} catch (JsonParseException e) {
@@ -222,13 +222,13 @@ public class GitHubService {
 		}
 	}
 
-	public String createGetGitHubFileUrl(Repo repo, RepoFileLite repoFileLite) {
+	public String createGetGitHubFileUrl(Repo repo, RepoFile repoFileLite) {
 		return GET_GITHUB_FILE + "/" + repo.getCredential().getOwner() + "/"
 				+ repo.getName() + "/" + repoFileLite.getParent().getId() + "/"
 				+ repoFileLite.getName();
 	}
 
-	public Set<RepoBranch> listGitHubBranches(Repo repo)
+	public Collection<RepoBranch> fetchGitHubBranches(Repo repo)
 			throws RepoConnectionException, RepoResponseException {
 		Set<RepoBranch> branches = new HashSet<RepoBranch>();
 		String gitHubShowBranchesUrl = createGitHubShowBranchesUrl(repo
@@ -252,7 +252,7 @@ public class GitHubService {
 	 */
 	public RepoBranch getGitHubDefaultBranch(Repo repo)
 			throws RepoResponseException {
-		Set<RepoResource> branches = repo.getChildren();
+		Collection<RepoResource> branches = repo.getChildren();
 		for (RepoResource branch : branches) {
 			if (branch.getName().equals(GITHUB_DEFAULT_BRANCH)) {
 				return (RepoBranch) branch;

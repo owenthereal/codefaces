@@ -1,11 +1,11 @@
-package org.codefaces.ui.resources;
+package org.codefaces.core.models.test;
 
 import static org.junit.Assert.*;
 
 import org.codefaces.core.models.Workspace;
 import org.junit.Test;
 
-public class WorkSpaceManagerTest {
+public class WorkspaceManagerTest {
 	
 	@Test
 	public void test_getInstance(){

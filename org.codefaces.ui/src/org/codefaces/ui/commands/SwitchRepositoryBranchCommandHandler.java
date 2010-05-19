@@ -3,7 +3,7 @@ package org.codefaces.ui.commands;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.ui.resources.Workspace;
+import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.resources.WorkspaceManager;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

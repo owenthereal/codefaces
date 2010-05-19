@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.ui.resources.Workspace;
+import org.codefaces.core.models.Workspace;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.junit.Before;

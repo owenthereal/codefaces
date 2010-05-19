@@ -2,13 +2,13 @@ package org.codefaces.ui.actions;
 
 import java.util.Set;
 
+import org.codefaces.core.events.WorkspaceChangeEvent;
+import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.Workspace;
+import org.codefaces.core.models.Workspace.Resources;
 import org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler;
-import org.codefaces.ui.events.WorkSpaceChangeEvent;
-import org.codefaces.ui.events.WorkSpaceChangeEventListener;
-import org.codefaces.ui.resources.Workspace;
-import org.codefaces.ui.resources.Workspace.Resources;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IParameter;
@@ -63,9 +63,9 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 		setEnabled(false);
 
 		Workspace.getCurrent().addWorkSpaceChangeEventListener(
-				new WorkSpaceChangeEventListener() {
+				new WorkspaceChangeEventListener() {
 					@Override
-					public void workSpaceChanged(WorkSpaceChangeEvent evt) {
+					public void workSpaceChanged(WorkspaceChangeEvent evt) {
 						if (evt.getResourcesChanged().contains(Resources.REPO)) {
 							if (menu != null)
 								menu.dispose();

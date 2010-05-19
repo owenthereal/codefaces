@@ -1,4 +1,4 @@
-package org.codefaces.ui.resources;
+package org.codefaces.core.models;
 
 public class WorkspaceManager {
 

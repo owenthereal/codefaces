@@ -5,9 +5,9 @@ import java.net.MalformedURLException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoManager;
+import org.codefaces.core.models.Workspace;
 import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
-import org.codefaces.ui.resources.Workspace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -23,7 +23,7 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String repoUrl = event.getParameter(PARAM_REPO_URL_ID);
 		try {
-			Repo repo = RepoManager.getInstance().getRepoService().getRepo(
+			Repo repo = RepoManager.getInstance().getRepoService().createRepo(
 					repoUrl);
 			RepoBranch branch = RepoManager.getInstance().getRepoService()
 					.getDefaultBranch(repo);

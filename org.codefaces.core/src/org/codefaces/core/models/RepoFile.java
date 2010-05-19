@@ -1,36 +1,35 @@
 package org.codefaces.core.models;
 
-public class RepoFile extends RepoFileLite {
-	private String mimeType;
+public class RepoFile extends RepoResource {
+	private RepoFileInfo info;
 
-	private String mode;
+	public RepoFile(RepoFolderRoot root, RepoResource parent, String id,
+			String name) {
+		super(root, parent, id, name, RepoResourceType.FILE);
+	}
 
-	private int size;
+	@Override
+	protected RepoFileInfo getInfo() {
+		if (info == null) {
+			info = (RepoFileInfo) super.getInfo();
+		}
 
-	private String content;
-
-	public RepoFile(Repo repo, String id, String name, String content,
-			String mimeType, String mode, int size, RepoContainer parent) {
-		super(repo, parent, id, name);
-		this.content = content;
-		this.mimeType = mimeType;
-		this.mode = mode;
-		this.size = size;
+		return info;
 	}
 
 	public String getContent() {
-		return content;
+		return getInfo().getContent();
 	}
 
 	public String getMimeType() {
-		return mimeType;
+		return getInfo().getMimeType();
 	}
 
 	public String getMode() {
-		return mode;
+		return getInfo().getMode();
 	}
 
 	public int getSize() {
-		return size;
+		return getInfo().getSize();
 	}
 }

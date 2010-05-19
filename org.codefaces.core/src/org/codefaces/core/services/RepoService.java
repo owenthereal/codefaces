@@ -1,13 +1,12 @@
 package org.codefaces.core.services;
 
 import java.net.MalformedURLException;
-import java.util.Set;
+import java.util.Collection;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.core.models.RepoContainer;
 import org.codefaces.core.models.RepoFile;
-import org.codefaces.core.models.RepoFileLite;
+import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.services.github.GitHubService;
 
@@ -18,7 +17,7 @@ public class RepoService {
 		githubService = new GitHubService();
 	}
 
-	public Repo getRepo(String url) throws RepoConnectionException,
+	public Repo createRepo(String url) throws RepoConnectionException,
 			RepoResponseException, MalformedURLException {
 		String trimed_url = url.trim();
 		if (trimed_url.endsWith("/")) {
@@ -27,19 +26,19 @@ public class RepoService {
 		return githubService.createGithubRepo(trimed_url);
 	}
 
-	public Set<RepoBranch> listBranches(Repo repo)
+	public Collection<RepoBranch> fetchBranches(Repo repo)
 			throws RepoConnectionException, RepoResponseException {
-		return githubService.listGitHubBranches(repo);
+		return githubService.fetchGitHubBranches(repo);
 	}
 
-	public Set<RepoResource> listChildren(RepoContainer repoContainer)
+	public Collection<RepoResource> fetchChildren(RepoResource repoContainer)
 			throws RepoResponseException, RepoConnectionException {
-		return githubService.listGitHubChildren(repoContainer);
+		return githubService.fetchGitHubChildren(repoContainer);
 	}
 
-	public RepoFile getRepoFile(RepoFileLite adaptableObject)
+	public RepoFileInfo fetchFileInfo(RepoFile repoFile)
 			throws RepoResponseException, RepoConnectionException {
-		return githubService.getGitHubFile(adaptableObject);
+		return githubService.fetchGitHubFileInfo(repoFile);
 	}
 
 	/**

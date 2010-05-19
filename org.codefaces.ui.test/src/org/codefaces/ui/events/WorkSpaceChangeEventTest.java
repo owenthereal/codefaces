@@ -4,9 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.EnumSet;
 
+import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.ui.resources.Workspace.Resources;
+import org.codefaces.core.models.Workspace.Resources;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class WorkSpaceChangeEventTest {
 	
 	@Test
 	public void test_constructor_branch_changed(){
-		WorkSpaceChangeEvent evt = new WorkSpaceChangeEvent(new Object(), mockBranch);
+		WorkspaceChangeEvent evt = new WorkspaceChangeEvent(new Object(), mockBranch);
 		assertEquals(evt.getResourcesChanged(), EnumSet.of(Resources.BRANCH));
 		assertNull(evt.getRepo());
 		assertEquals(evt.getRepoBranch(), mockBranch);
@@ -31,7 +32,7 @@ public class WorkSpaceChangeEventTest {
 	
 	@Test
 	public void test_constructor_repo_changed(){
-		WorkSpaceChangeEvent evt = new WorkSpaceChangeEvent(new Object(), mockRepo,
+		WorkspaceChangeEvent evt = new WorkspaceChangeEvent(new Object(), mockRepo,
 				mockBranch);
 		assertEquals(evt.getResourcesChanged(), EnumSet.of(Resources.BRANCH, Resources.REPO));
 		assertEquals(evt.getRepo(), mockRepo);

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.ui.resources.Workspace;
+import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.resources.WorkspaceManager;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

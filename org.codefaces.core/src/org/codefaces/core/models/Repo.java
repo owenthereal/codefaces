@@ -1,26 +1,29 @@
 package org.codefaces.core.models;
 
-public class Repo extends RepoContainer {
-	private String url;
+import java.util.Collection;
 
+public class Repo extends RepoResource {
 	private RepoCredential credential;
 
 	public Repo(String url, String name, RepoCredential credential) {
 		super(null, null, url, name, RepoResourceType.REPO);
-		this.url = url;
 		this.credential = credential;
 	}
 
 	public String getUrl() {
-		return url;
+		return getId();
 	}
 
 	public RepoCredential getCredential() {
 		return credential;
 	}
 
+	public Collection<RepoBranch> getBranches() {
+		return getInfo().getBranches();
+	}
+
 	@Override
-	public Repo getRepo() {
-		return this;
+	protected RepoInfo getInfo() {
+		return (RepoInfo) super.getInfo();
 	}
 }

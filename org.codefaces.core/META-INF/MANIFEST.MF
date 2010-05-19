@@ -8,7 +8,8 @@ Export-Package: org.codefaces.core.models,
  org.codefaces.core.services,
  org.codefaces.core.services.github
 Require-Bundle: org.eclipse.core.runtime,
- org.codefaces.lib;visibility:=reexport
+ org.codefaces.lib;visibility:=reexport,
+ org.eclipse.rap.rwt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
