@@ -33,7 +33,7 @@ public class OpenRepositoryCommandHandlerTest {
 
 	@Before
 	public void setUp() {
-		ws = Workspace.getCurrent();
+		ws = new Workspace();
 		cmd = new OpenRepositoryCommandHandler();
 	}
 
@@ -41,14 +41,14 @@ public class OpenRepositoryCommandHandlerTest {
 	public void test_executation_normal() throws ExecutionException {
 		ExecutionEvent e = eventFactory(TEST_GITHUB_REPO_1);
 		cmd.execute(e);
-		assertEquals(TEST_GITHUB_REPO_NAME_1, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_1, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 
 		// Switch to another repo
 		e = eventFactory(TEST_GITHUB_REPO_2);
 		cmd.execute(e);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 	}
@@ -67,19 +67,19 @@ public class OpenRepositoryCommandHandlerTest {
 	public void test_execution_ugly_url() throws ExecutionException {
 		ExecutionEvent evt = eventFactory(TEST_GITHUB_UGLY_REPO_1);
 		cmd.execute(evt);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 
 		evt = eventFactory(TEST_GITHUB_UGLY_REPO_2);
 		cmd.execute(evt);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 
 		evt = eventFactory(TEST_GITHUB_UGLY_REPO_3);
 		cmd.execute(evt);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 	}

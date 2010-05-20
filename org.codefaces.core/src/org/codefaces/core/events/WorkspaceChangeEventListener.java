@@ -4,6 +4,6 @@ import java.util.EventListener;
 
 public interface WorkspaceChangeEventListener extends EventListener {
 
-	public void workSpaceChanged(WorkspaceChangeEvent evt);
+	public void workspaceChanged(WorkspaceChangeEvent evt);
 	
 }

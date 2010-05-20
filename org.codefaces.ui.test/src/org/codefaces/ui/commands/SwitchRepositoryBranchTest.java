@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.codefaces.core.models.Workspace;
-import org.codefaces.ui.resources.WorkspaceManager;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.junit.Before;
@@ -34,7 +33,7 @@ public class SwitchRepositoryBranchTest {
 
 	@Before
 	public void setUp() {
-		ws = WorkspaceManager.getInstance().getCurrentWorkspace();
+		ws = new Workspace();
 		openRepocmd = new OpenRepositoryCommandHandler();
 		switchCmd = new SwitchRepositoryBranchCommandHandler();
 	}
@@ -43,7 +42,7 @@ public class SwitchRepositoryBranchTest {
 	public void test_execution_normal() throws ExecutionException {
 		ExecutionEvent e = eventFactory(TEST_GITHUB_REPO_1, Event.OPEN);
 		openRepocmd.execute(e);
-		assertEquals(TEST_GITHUB_REPO_NAME_1, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_1, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 
@@ -51,7 +50,7 @@ public class SwitchRepositoryBranchTest {
 			ExecutionEvent evt = eventFactory(TEST_GITHUB_REPO_BRANCHES_1[i],
 					Event.SWITCH);
 			switchCmd.execute(evt);
-			assertEquals(TEST_GITHUB_REPO_NAME_1, ws.getWorkingRepo().getName());
+			assertEquals(TEST_GITHUB_REPO_NAME_1, ws.getWorkingRepoBranch().getRepo().getName());
 			assertEquals(TEST_GITHUB_REPO_BRANCHES_1[i], ws
 					.getWorkingRepoBranch().getName());
 		}
@@ -64,21 +63,21 @@ public class SwitchRepositoryBranchTest {
 	public void test_execution_no_such_branch() throws ExecutionException {
 		ExecutionEvent e = eventFactory(TEST_GITHUB_REPO_2, Event.OPEN);
 		openRepocmd.execute(e);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_DEFAULT_BRANCH, ws.getWorkingRepoBranch()
 				.getName());
 
 		ExecutionEvent evt = eventFactory(TEST_GITHUB_REPO_BRANCHES_2[0],
 				Event.SWITCH);
 		switchCmd.execute(evt);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_REPO_BRANCHES_2[0], ws.getWorkingRepoBranch()
 				.getName());
 
 		evt = eventFactory(TEST_GITHUB_REPO_BRANCHES_1[2], Event.SWITCH);
 		// Should be no change and no exception as update is not executed
 		switchCmd.execute(evt);
-		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepo().getName());
+		assertEquals(TEST_GITHUB_REPO_NAME_2, ws.getWorkingRepoBranch().getRepo().getName());
 		assertEquals(TEST_GITHUB_REPO_BRANCHES_2[0], ws.getWorkingRepoBranch()
 				.getName());
 	}

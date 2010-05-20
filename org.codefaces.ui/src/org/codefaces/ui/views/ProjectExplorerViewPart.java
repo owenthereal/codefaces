@@ -2,16 +2,15 @@ package org.codefaces.ui.views;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
-import org.codefaces.core.models.RepoContainer;
+import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
-import org.codefaces.core.models.RepoFile;
+import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.core.models.Workspace.Resources;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.ExplorerSwitchBranchAction;
-import org.codefaces.ui.resources.WorkspaceManager;
 import org.codefaces.ui.utils.Util;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -62,8 +61,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 
 		public Object[] getChildren(Object parent) {
-			if (parent instanceof RepoContainer) {
-				return ((RepoContainer) parent).getChildren().toArray();
+			if (parent instanceof RepoResource) {
+				return ((RepoResource) parent).getChildren().toArray();
 			}
 			return new Object[0];
 		}
@@ -75,6 +74,12 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	class ProjectExplorerLabelProvider extends LabelProvider {
 		public String getText(Object obj) {
+			if (obj instanceof RepoFolderRoot) {
+				RepoFolderRoot root = (RepoFolderRoot) obj;
+				return root.getName() + "@"
+						+ root.getBranch().getRepo().getUrl();
+			}
+
 			if (obj instanceof RepoResource) {
 				return ((RepoResource) obj).getName();
 			}
@@ -84,9 +89,14 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 		public Image getImage(Object obj) {
 			String imageKey = ISharedImages.IMG_OBJ_FILE;
-			if (obj instanceof RepoContainer) {
+			if (obj instanceof RepoFolder) {
 				imageKey = ISharedImages.IMG_OBJ_FOLDER;
 			}
+
+			if (obj instanceof RepoFolderRoot) {
+				imageKey = ISharedImages.IMG_OBJ_PROJECT;
+			}
+
 			return PlatformUI.getWorkbench().getSharedImages().getImage(
 					imageKey);
 		}
@@ -95,15 +105,15 @@ public class ProjectExplorerViewPart extends ViewPart {
 	class ProjectExplorerViewerComparator extends ViewerComparator {
 		@Override
 		public int compare(Viewer viewer, Object obj1, Object obj2) {
-			if (obj1 instanceof RepoResource && obj2 instanceof RepoContainer) {
+			if (obj1 instanceof RepoFile && obj2 instanceof RepoFolder) {
 				return 1;
 			}
 
-			if (obj1 instanceof RepoContainer && obj2 instanceof RepoResource) {
+			if (obj1 instanceof RepoFolder && obj2 instanceof RepoFile) {
 				return -1;
 			}
 
-			if (obj1 instanceof RepoResource && obj2 instanceof RepoResource) {
+			if (obj1 instanceof RepoFile && obj2 instanceof RepoFile) {
 				super.compare(viewer, obj1, obj2);
 			}
 
@@ -168,16 +178,14 @@ public class ProjectExplorerViewPart extends ViewPart {
 		createToolBar(parent);
 		// create the project viewer
 		createViewer(parent);
-		workspace = WorkspaceManager.getInstance().getCurrentWorkspace();
-		workspace.addWorkSpaceChangeEventListener(new WorkspaceChangeEventListener() {
-			@Override
-			public void workSpaceChanged(WorkspaceChangeEvent evt) {
-				// we are only interested in the working branch change
-				if (evt.getResourcesChanged().contains(Resources.BRANCH)) {
-					update(evt.getRepoBranch());
-				}
-			}
-		});
+		workspace = Workspace.getCurrent();
+		workspace
+				.addWorkSpaceChangeEventListener(new WorkspaceChangeEventListener() {
+					@Override
+					public void workspaceChanged(WorkspaceChangeEvent evt) {
+						update(evt.getRepoBranch());
+					}
+				});
 	}
 
 	/**
@@ -191,8 +199,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 		viewer.addDoubleClickListener(new FileDoubleClickListener());
 		viewer.addDoubleClickListener(new FolderDoubleClickListener());
-		viewer.setInput(WorkspaceManager.getInstance().getCurrentWorkspace()
-				.getWorkingRepoBranch());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 	}
 
@@ -202,7 +208,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 * @param workingBranch
 	 *            the new working branch
 	 */
-	public void update(RepoContainer workingBranch) {
+	public void update(RepoBranch workingBranch) {
 		viewer.setInput(workingBranch);
 	}
 

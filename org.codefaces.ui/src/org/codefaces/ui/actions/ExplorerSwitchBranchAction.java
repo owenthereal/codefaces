@@ -1,5 +1,6 @@
 package org.codefaces.ui.actions;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
@@ -7,7 +8,6 @@ import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.core.models.Workspace.Resources;
 import org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionException;
@@ -65,15 +65,14 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 		Workspace.getCurrent().addWorkSpaceChangeEventListener(
 				new WorkspaceChangeEventListener() {
 					@Override
-					public void workSpaceChanged(WorkspaceChangeEvent evt) {
-						if (evt.getResourcesChanged().contains(Resources.REPO)) {
-							if (menu != null)
-								menu.dispose();
-							menu = null; // enforce a new menu to be
-							// created
-							setEnabled(true); // repo change must come
-							// with a branch change
+					public void workspaceChanged(WorkspaceChangeEvent evt) {
+						if (menu != null) {
+							menu.dispose();
 						}
+						menu = null; // enforce a new menu to be
+						// created
+						setEnabled(true); // repo change must come
+						// with a branch change
 					}
 				});
 
@@ -119,10 +118,10 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 		Menu menu = new Menu(parent);
 		Workspace ws = Workspace.getCurrent();
 
-		if (ws.getWorkingRepo() != null) {
-
-			Set<RepoResource> branches = ws.getWorkingRepo().getChildren();
+		if (ws.getWorkingRepoBranch() != null) {
 			RepoBranch currentBranch = ws.getWorkingRepoBranch();
+			Collection<RepoBranch> branches = currentBranch.getRepo()
+					.getBranches();
 
 			BranchMenuItemSelectionListener menuListener = new BranchMenuItemSelectionListener();
 
@@ -132,12 +131,12 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 			currentBranchitem.setSelection(true);
 			menuListener.setCurrentSelected(currentBranchitem);
 
-			for (RepoResource b : branches) {
+			for (RepoBranch branch : branches) {
 				// skip the current branch
-				if (b.getId().equals(currentBranch.getId()) == false) {
+				if (!currentBranch.equals(branch)) {
 					MenuItem item = new MenuItem(menu, SWT.CHECK);
 					item.addSelectionListener(menuListener);
-					item.setText(b.getName());
+					item.setText(branch.getName());
 				}
 			}
 		}

@@ -27,7 +27,7 @@ public class OpenRepositoryCommandHandler extends AbstractHandler implements
 					repoUrl);
 			RepoBranch branch = RepoManager.getInstance().getRepoService()
 					.getDefaultBranch(repo);
-			Workspace.getCurrent().update(repo, branch);
+			Workspace.getCurrent().update(branch);
 
 		} catch (RepoConnectionException e) {
 			throw new ExecutionException("Repository Connection Problem", e);

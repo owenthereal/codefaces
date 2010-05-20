@@ -4,7 +4,6 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.ui.resources.WorkspaceManager;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,13 +23,13 @@ public class SwitchRepositoryBranchCommandHandler extends AbstractHandler
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String newBranchName = event.getParameter(PARAM_NEW_BRANCH_ID);
-		Workspace ws = WorkspaceManager.getInstance().getCurrentWorkspace();
-		Repo repo = ws.getWorkingRepo();
+		Workspace ws = Workspace.getCurrent();
+		Repo repo = ws.getWorkingRepoBranch().getRepo();
 
 		RepoResource newRepoBranch = null;
 		// the repository may already changed. so it is possible that we cannot
 		// find the branch
-		for (RepoResource b : repo.getChildren()) {
+		for (RepoBranch b : repo.getBranches()) {
 			if (b.getName().equals(newBranchName)) {
 				newRepoBranch = b;
 				break;

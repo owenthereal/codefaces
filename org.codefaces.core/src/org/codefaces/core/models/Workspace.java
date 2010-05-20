@@ -18,7 +18,7 @@ public class Workspace {
 
 	
 	/**
-	 * This constructor is meant for testing purpose.
+	 * This constructor is only used for testing purpose.
 	 */
 	public Workspace() {
 		changeListeners = new CopyOnWriteArrayList<WorkspaceChangeEventListener>();
@@ -79,7 +79,7 @@ public class Workspace {
 	 */
 	private void notifyChange(WorkspaceChangeEvent event) {
 		for (WorkspaceChangeEventListener listener : changeListeners) {
-			listener.workSpaceChanged(event);
+			listener.workspaceChanged(event);
 		}
 	}
 
