@@ -1,0 +1,69 @@
+# This file is the configuration file that set up the build enviroment. 
+# You can find a template of this file in the template folder
+---
+
+# Setting the paths for fetch, build and package 
+environment:
+  # source_dir is the directory where the source code is fetched from the 
+  # repository
+  source_dir: ../source
+
+  # build_dir is the directory where the code is compiled
+  build_dir: ../build
+  
+  # package_dir is the directory where the compiled code is packaged and ready 
+  # to be deployed
+  package_dir: ../package
+
+# The standard workflow is fetch, build and package. If you want to skip the
+# fetching step, you can disable it in here, but the source_dir must already 
+# exist.
+workflow:
+  do_fetch: true
+  do_build: true
+  do_package: true
+
+# Setting the fetching repository
+fetch:
+  git:
+    - desciption: codefaces main repository
+      repository: "git@github.com:jingweno/code_faces.git"
+      # notices that we cannot fetch individual item from git repository
+  
+  cvs:
+    - description: repository for org.eclipse.equinox.http.servletbridge
+      repository: ":pserver:anonymous@dev.eclipse.org:/cvsroot/rt"
+      module_path: org.eclipse.equinox/server-side/bundles
+      item: org.eclipse.equinox.http.servletbridge
+    
+    - description: org.eclipse.equinox.servletbridge
+      repository: ":pserver:anonymous@dev.eclipse.org:/cvsroot/rt"
+      module_path: org.eclipse.equinox/server-side/bundles
+      item: org.eclipse.equinox.servletbridge
+
+# Setting the build environment
+build:
+  # The name of the application
+  app_name: codefaces
+
+  # the eclipse project name of the codefaces feature 
+  codefaces_feature: org.codefaces.feature
+  
+  # Builder eclipse home. We will use this eclipse for building our application
+  eclipse_home: /Users/kklo/Desktop/eclipse
+  
+  # Equinox Launcher Jar file
+  equinox_launcher: org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar
+  
+  # PDE builder directory
+  pde_build_dir: org.eclipse.pde.build_3.5.2.R35x_20100114
+  
+  # Target Platform setting directory. This folder contains the pre-compiled 
+  # plugins and features that match with the plugins stated in feature.xml
+  base_dir: /Applications/eclipse/configuration/org.eclipse.rap.target-1.3/eclipse
+  
+  # Jave source version
+  java_src_version: 1.6
+  
+  # Java target version
+  java_target_version: 1.6
