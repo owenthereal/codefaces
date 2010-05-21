@@ -39,7 +39,7 @@ fetch:
     - description: org.eclipse.equinox.servletbridge
       repository: ":pserver:anonymous@dev.eclipse.org:/cvsroot/rt"
       module_path: org.eclipse.equinox/server-side/bundles
-      item: org.eclipse.equinox/server-side/bundles
+      item: org.eclipse.equinox.servletbridge
 
 # Setting the build environment
 build:
