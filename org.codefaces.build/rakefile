@@ -1,0 +1,47 @@
+require 'rake/clean'
+Dir.glob('tasks/*.rake').each { |r| import r } #import all the rake files
+
+# source directory. 
+# the source code will be fetched from the repository to this directory. 
+# Due to the limitations of CVS. This directory must not contain any ".." and 
+# cannot be a full path
+SRC_DIR = "source"
+
+# build directory.
+BUILD_DIR = "build"
+
+# files to clean.
+# rake clean - remove the build directory
+# rake clobber - also remove the source directory
+CLEAN.include(BUILD_DIR)
+CLOBBER.include(SRC_DIR, BUILD_DIR)
+
+
+
+# build configuration directory
+BUILD_CONF_DIR = File.expand_path("buildConfig")
+
+#Eclipse location
+ECLIPSE_HOME = "/Users/kklo/Desktop/eclipse"
+EQUINOX_LAUNCHER = "org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar"
+PDE_BUILD = "org.eclipse.pde.build_3.5.2.R35x_20100114"
+APP = "org.eclipse.ant.core.antRunner"
+CP = File.join(ECLIPSE_HOME, "plugins", EQUINOX_LAUNCHER)
+BUILDFILE = File.join(ECLIPSE_HOME, "plugins", PDE_BUILD, "scripts", "build.xml")
+
+# codefaces feature
+CODEFACES_FEATURE = "org.codefaces.feature"
+CODEFACES_FEATURE_DIR = File.join(SRC_DIR, CODEFACES_FEATURE)
+
+# WAR name
+WEBAPP_NAME = "codefaces"
+
+# the codeFaces repository
+GIT_CODEFACES_REPO = "git@github.com:jingweno/code_faces.git"
+
+
+# WAR template directory
+WAR_TEMPLATE_DIR = File.join(CODEFACES_FEATURE_DIR, "templates")
+
+# servletbridge directory
+SERVLETBRIDGE  = File.join(SRC_DIR, "org.eclipse.equinox.servletbridge")
