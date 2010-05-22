@@ -13,4 +13,4 @@ CLOBBER.include(env['source_dir'])
 
 
 desc "Fetch, build and package the application"
-task :default => ["fetch:default", "build:default"]
+task :default => ["fetch:default", "build:default", "package:default"]

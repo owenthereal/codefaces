@@ -1,9 +1,11 @@
 
 namespace :build do
   
-  PDE_BUILD_DIR = File.join(CONFIGS['environment']['build_dir'], "build")
-  PDE_CONFIG_DIR = File.join(CONFIGS['environment']['build_dir'], "config")
-  
+  PDE_BUILD_DIR = File.join(CONFIGS['environment']['build_dir'], 
+                            CONFIGS['build']['pde_build_dir'])
+  PDE_CONFIG_DIR = File.join(CONFIGS['environment']['build_dir'],
+                             CONFIGS['build']['pde_build_config_dir'])
+                             
   FEATURES_BUILD_DIR = File.join(PDE_BUILD_DIR, "features")
   PLUGINS_BUILD_DIR = File.join(PDE_BUILD_DIR, "plugins")
   
@@ -75,7 +77,7 @@ namespace :build do
   desc "run the PDE build"
   task :build => :prepare_pde_environment do
     eclipse_home = File.expand_path(CONFIGS['build']['eclipse_home'])
-    pde_builde_dir = CONFIGS['build']['pde_build_dir']
+    pde_builde_dir = CONFIGS['build']['pde_dir']
     launcher = CONFIGS['build']['equinox_launcher']
     class_path =  File.join(eclipse_home, "plugins", launcher)
     app = "org.eclipse.ant.core.antRunner"

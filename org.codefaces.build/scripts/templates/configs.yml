@@ -28,7 +28,7 @@ fetch:
   git:
     - desciption: codefaces main repository
       repository: "git@github.com:jingweno/code_faces.git"
-      # notices that we cannot fetch individual item from git repository
+      # notice that we cannot fetch individual item from git repository
   
   cvs:
     - description: repository for org.eclipse.equinox.http.servletbridge
@@ -54,13 +54,19 @@ build:
   codefaces_feature: org.codefaces.feature
   
   # Builder eclipse home. We will use this eclipse for building our application
-  eclipse_home: /Users/kklo/Desktop/eclipse
+  eclipse_home: /Applications/eclipse
   
   # Equinox Launcher Jar file
   equinox_launcher: org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar
   
-  # PDE builder directory
-  pde_build_dir: org.eclipse.pde.build_3.5.2.R35x_20100114
+  # PDE builder directory name
+  pde_dir: org.eclipse.pde.build_3.5.2.R35x_20100114
+  
+  # PDE config directory name for build
+  pde_build_config_dir: config
+  
+  # PDE build dirctory name for build
+  pde_build_dir: build 
   
   # Target Platform setting directory. This folder contains the pre-compiled 
   # plugins and features that match with the plugins stated in feature.xml
@@ -74,3 +80,8 @@ build:
   
   # Java target version
   java_target_version: 1.6
+  
+# Settings for packaging
+package:
+  # The path of the WAR archive template
+  war_template_path: ../templates/war
