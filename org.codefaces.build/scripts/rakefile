@@ -1,7 +1,7 @@
 require 'rake/clean'
 Dir.glob('tasks/*.rake').each { |r| import r } #import all the rake files
 
-CONFIGS = YAML::load(File.read('configs/configs.yml'))
+CONFIGS = YAML.load(File.read('configs/configs.yml'))
 
 
 # files to clean.
@@ -12,31 +12,5 @@ CLEAN.include(env['build_dir'], env['package_dir'])
 CLOBBER.include(env['source_dir'])
 
 
-#
-## build configuration directory
-#BUILD_CONF_DIR = File.expand_path("buildConfig")
-#
-##Eclipse location
-#ECLIPSE_HOME = "/Users/kklo/Desktop/eclipse"
-#EQUINOX_LAUNCHER = "org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar"
-#PDE_BUILD = "org.eclipse.pde.build_3.5.2.R35x_20100114"
-#APP = "org.eclipse.ant.core.antRunner"
-#CP = File.join(ECLIPSE_HOME, "plugins", EQUINOX_LAUNCHER)
-#BUILDFILE = File.join(ECLIPSE_HOME, "plugins", PDE_BUILD, "scripts", "build.xml")
-#
-## codefaces feature
-#CODEFACES_FEATURE = "org.codefaces.feature"
-#CODEFACES_FEATURE_DIR = File.join(SRC_DIR, CODEFACES_FEATURE)
-#
-## WAR name
-#WEBAPP_NAME = "codefaces"
-#
-## the codeFaces repository
-#GIT_CODEFACES_REPO = "git@github.com:jingweno/code_faces.git"
-#
-#
-## WAR template directory
-#WAR_TEMPLATE_DIR = File.join(CODEFACES_FEATURE_DIR, "templates")
-#
-## servletbridge directory
-#SERVLETBRIDGE  = File.join(SRC_DIR, "org.eclipse.equinox.servletbridge")
+desc "Fetch, build and package the application"
+task :default => ["fetch:default", "build:default"]

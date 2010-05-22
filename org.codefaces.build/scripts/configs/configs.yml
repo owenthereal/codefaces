@@ -45,6 +45,10 @@ fetch:
 build:
   # The name of the application
   app_name: codefaces
+  
+  # The folder containing the finished build.
+  # It will be inside the build_dir/build directory
+  build_label: build_result
 
   # the eclipse project name of the codefaces feature 
   codefaces_feature: org.codefaces.feature
@@ -61,6 +65,9 @@ build:
   # Target Platform setting directory. This folder contains the pre-compiled 
   # plugins and features that match with the plugins stated in feature.xml
   base_dir: /Applications/eclipse/configuration/org.eclipse.rap.target-1.3/eclipse
+  
+  # The path of the build.porperties file template
+  build_properties_path: ../templates/buildConfig/build.properties
   
   # Jave source version
   java_src_version: 1.6
