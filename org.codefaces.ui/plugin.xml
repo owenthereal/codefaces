@@ -46,7 +46,7 @@
             defaultEntrypointId="org.codefaces.ui.entrypoint.codefaces"
             id="org.codefaces.ui.branding.codefaces"
             servletName="explore"
-            themeId="org.eclipse.rap.design.example.fancy.theme"
+            themeId="org.eclipse.rap.design.example.business.theme"
             title="Code Faces">
       </branding>
    </extension>
