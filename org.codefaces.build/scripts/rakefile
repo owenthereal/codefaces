@@ -1,7 +1,7 @@
 require 'rake/clean'
 Dir.glob('tasks/*.rake').each { |r| import r } #import all the rake files
 
-CONFIGS = YAML.load(File.read('configs/configs.yml'))
+CONFIGS = YAML.load(File.read('configs/config.yml'))
 
 
 # files to clean.
