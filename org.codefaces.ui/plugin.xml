@@ -57,8 +57,8 @@
                id="fileMenu"
                label="File">
             <command
-                  commandId="org.codefaces.ui.commands.ShowRepositoryDialogCommand"
-                  label="Open Repository"
+                  commandId="org.codefaces.ui.commands.ImportRepositoryCommand"
+                  label="Import..."
                   style="push">
             </command>
          </menu>
@@ -67,21 +67,10 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.codefaces.ui.commands.ShowReposioryDialogCommandHandler"
-            description="Show an input dialog for opening a repository"
-            id="org.codefaces.ui.commands.ShowRepositoryDialogCommand"
-            name="ShowRepositoryDialogCommand">
-      </command>
-      <command
-            defaultHandler="org.codefaces.ui.commands.OpenRepositoryCommandHandler"
-            description="Open a repository and update the explorer"
-            id="org.codefaces.ui.commands.openRepositoryCommand"
-            name="OpenRepositoryCommand">
-         <commandParameter
-               id="org.codefaces.ui.commands.parameters.openRepository.repoUrl"
-               name="repoUrl"
-               optional="true">
-         </commandParameter>
+            defaultHandler="org.codefaces.ui.commands.ImportRepositoryCommandHandler"
+            description="Import from a repository"
+            id="org.codefaces.ui.commands.ImportRepositoryCommand"
+            name="ImportRepositoryCommand">
       </command>
       <command
             defaultHandler="org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler"

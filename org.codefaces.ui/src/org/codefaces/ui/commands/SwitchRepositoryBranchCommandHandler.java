@@ -24,7 +24,7 @@ public class SwitchRepositoryBranchCommandHandler extends AbstractHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String newBranchName = event.getParameter(PARAM_NEW_BRANCH_ID);
 		Workspace ws = Workspace.getCurrent();
-		Repo repo = ws.getWorkingRepoBranch().getRepo();
+		Repo repo = ws.getWorkingBranch().getRepo();
 
 		RepoResource newRepoBranch = null;
 		// the repository may already changed. so it is possible that we cannot

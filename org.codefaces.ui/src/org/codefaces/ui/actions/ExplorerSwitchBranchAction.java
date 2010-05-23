@@ -1,12 +1,10 @@
 package org.codefaces.ui.actions;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler;
 import org.eclipse.core.commands.Command;
@@ -118,8 +116,8 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 		Menu menu = new Menu(parent);
 		Workspace ws = Workspace.getCurrent();
 
-		if (ws.getWorkingRepoBranch() != null) {
-			RepoBranch currentBranch = ws.getWorkingRepoBranch();
+		if (ws.getWorkingBranch() != null) {
+			RepoBranch currentBranch = ws.getWorkingBranch();
 			Collection<RepoBranch> branches = currentBranch.getRepo()
 					.getBranches();
 

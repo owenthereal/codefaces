@@ -26,15 +26,6 @@ public class CodeExplorerViewPart extends ViewPart {
 	public void setInput(RepoFile repoFile) {
 		setPartName(repoFile.getName());
 		browser.setText(CodeFacesUIActivator.getDefault().getCodeHTML(
-				getFileExtension(repoFile.getName()), repoFile.getContent()));
-	}
-
-	private String getFileExtension(String fileName) {
-		int index = fileName.lastIndexOf(".");
-		if (index != -1) {
-			fileName.substring(index);
-		}
-
-		return "plain";
+				repoFile.getContent()));
 	}
 }

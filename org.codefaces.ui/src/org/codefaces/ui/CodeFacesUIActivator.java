@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -66,7 +67,7 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public String getCodeHTML(String lang, String code) {
+	public String getCodeHTML(String code) {
 		try {
 			InputStream inputStream = FileLocator.openStream(getBundle(),
 					new Path(EDITOR_TEMPLATE_PATH), false);
@@ -79,36 +80,39 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 				builder.append(inputLine);
 			}
 
-			int langInsertIndex = builder.indexOf(LANG);
-			builder.replace(langInsertIndex, langInsertIndex + LANG.length(),
-					lang);
-
 			int codeInsertIndex = builder.indexOf(CODE);
 			builder.replace(codeInsertIndex, codeInsertIndex + CODE.length(),
-					code);
+					StringEscapeUtils.escapeHtml(code));
 
 			return builder.toString();
 		} catch (IOException e) {
 			throw new IllegalStateException();
 		}
 	}
+
 	/**
 	 * Initialize the image registry
 	 */
-    protected void initializeImageRegistry(ImageRegistry registry) {
-    	putImageInRegistry(registry, "IMG_BRANCHES", "icons/branches.gif");
-    }
-    
-    /**
-     * Put an image into the image registry
-     * @param registry the image registry
-     * @param imgID a image ID
-     * @param path the path of the image. e.g. icons/abc.gif
-     */
-	private void putImageInRegistry(ImageRegistry registry,
-			final String imgID, final String path) {
+	@Override
+	protected void initializeImageRegistry(ImageRegistry registry) {
+		putImageInRegistry(registry, Images.IMG_BRANCHES, "icons/branches.gif");
+		putImageInRegistry(registry, Images.IMG_ERRORS, "icons/errors.gif");
+	}
+
+	/**
+	 * Put an image into the image registry
+	 * 
+	 * @param registry
+	 *            the image registry
+	 * @param imgID
+	 *            a image ID
+	 * @param path
+	 *            the path of the image. e.g. icons/abc.gif
+	 */
+	private void putImageInRegistry(ImageRegistry registry, final String imgID,
+			final String path) {
 		registry.put(imgID, AbstractUIPlugin.imageDescriptorFromPlugin(
 				PLUGIN_ID, path));
-    }
+	}
 
 }

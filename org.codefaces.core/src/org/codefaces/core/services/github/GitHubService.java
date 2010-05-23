@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -189,7 +190,7 @@ public class GitHubService {
 			return new Repo(url, repoName, credential);
 		}
 
-		throw new MalformedURLException("Unable to parse the url: " + url);
+		throw new MalformedURLException("Invalid repository url: " + url);
 	}
 
 	public RepoFileInfo fetchGitHubFileInfo(RepoFile repoFileLite)
@@ -230,7 +231,7 @@ public class GitHubService {
 
 	public Collection<RepoBranch> fetchGitHubBranches(Repo repo)
 			throws RepoConnectionException, RepoResponseException {
-		Set<RepoBranch> branches = new HashSet<RepoBranch>();
+		Set<RepoBranch> branches = new LinkedHashSet<RepoBranch>();
 		String gitHubShowBranchesUrl = createGitHubShowBranchesUrl(repo
 				.getCredential().getOwner(), repo.getName());
 		GitHubBranchesDto gitHubBranches = getGitHubBranches(gitHubShowBranchesUrl);

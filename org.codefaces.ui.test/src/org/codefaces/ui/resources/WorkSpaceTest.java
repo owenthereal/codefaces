@@ -57,11 +57,11 @@ public class WorkSpaceTest {
 
 	@Test
 	public void test_update_repo_branch() {
-		assertNull(ws.getWorkingRepoBranch());
+		assertNull(ws.getWorkingBranch());
 
 		ws.update(mockFooBranch);
-		assertEquals(mockFooRepo, ws.getWorkingRepoBranch());
-		assertEquals(mockFooBranch, ws.getWorkingRepoBranch());
+		assertEquals(mockFooRepo, ws.getWorkingBranch());
+		assertEquals(mockFooBranch, ws.getWorkingBranch());
 
 		for (int i = 0; i < 3; i++) {
 			WorkspaceChangeEventListener listener = new WorkspaceChangeEventListener() {
@@ -115,8 +115,8 @@ public class WorkSpaceTest {
 		}
 
 		ws.update(mockBazBranch);
-		assertEquals(mockFooBranch, ws.getWorkingRepoBranch());
-		assertEquals(mockFooRepo, ws.getWorkingRepoBranch().getRepo());
+		assertEquals(mockFooBranch, ws.getWorkingBranch());
+		assertEquals(mockFooRepo, ws.getWorkingBranch().getRepo());
 
 	}
 

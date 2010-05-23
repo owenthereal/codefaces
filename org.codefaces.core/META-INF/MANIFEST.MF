@@ -4,7 +4,8 @@ Bundle-Name: Core
 Bundle-SymbolicName: org.codefaces.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.codefaces.core.CodeFacesCoreActivator
-Export-Package: org.codefaces.core.events,
+Export-Package: org.codefaces.core,
+ org.codefaces.core.events,
  org.codefaces.core.models,
  org.codefaces.core.services,
  org.codefaces.core.services.github

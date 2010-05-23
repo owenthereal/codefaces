@@ -11,7 +11,6 @@ import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.ExplorerSwitchBranchAction;
-import org.codefaces.ui.utils.Util;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -94,7 +93,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 			}
 
 			if (obj instanceof RepoFolderRoot) {
-				imageKey = ISharedImages.IMG_OBJ_PROJECT;
+				imageKey = ISharedImages.IMG_OBJ_ELEMENT;
 			}
 
 			return PlatformUI.getWorkbench().getSharedImages().getImage(
@@ -229,7 +228,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 				.getToolBarManager();
 		Action switchBranchAction = new ExplorerSwitchBranchAction();
 
-		switchBranchAction.setImageDescriptor(Util
+		switchBranchAction.setImageDescriptor(Images
 				.getImageDescriptor(Images.IMG_BRANCHES));
 		toolbar.add(switchBranchAction);
 	}
