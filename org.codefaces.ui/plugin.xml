@@ -46,6 +46,7 @@
             defaultEntrypointId="org.codefaces.ui.entrypoint.codefaces"
             id="org.codefaces.ui.branding.codefaces"
             servletName="explore"
+            themeId="org.eclipse.rap.design.example.business.theme"
             title="Code Faces">
       </branding>
    </extension>
@@ -54,12 +55,13 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               id="fileMenu"
-               label="File">
+               id="org.codefaces.menu.repository"
+               label="Repository">
             <command
                   commandId="org.codefaces.ui.commands.ImportRepositoryCommand"
                   label="Import..."
-                  style="push">
+                  style="push"
+                  tooltip="Import project from a repository">
             </command>
          </menu>
       </menuContribution>
