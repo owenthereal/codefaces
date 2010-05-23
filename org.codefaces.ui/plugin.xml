@@ -86,4 +86,11 @@
          </commandParameter>
       </command>
    </extension>
+   <extension
+         point="org.eclipse.equinox.http.registry.resources">
+      <resource
+            alias="/"
+            base-name="public">
+      </resource>
+   </extension>
 </plugin>
