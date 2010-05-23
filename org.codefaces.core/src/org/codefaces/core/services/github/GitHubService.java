@@ -65,20 +65,13 @@ public class GitHubService {
 	 */
 	public GitHubBranchesDto getGitHubBranches(String showGitHubBranchesUrl)
 			throws RepoConnectionException, RepoResponseException {
-		PostMethod method = null;
 		try {
-			method = new PostMethod(showGitHubBranchesUrl);
-			executeMethod(method);
-			return gson.fromJson(new String(method.getResponseBody()),
+			return gson.fromJson(getResponseBody(showGitHubBranchesUrl),
 					GitHubBranchesDto.class);
 		} catch (JsonParseException e) {
 			throw new RepoResponseException(e);
 		} catch (IOException e) {
 			throw new RepoResponseException(e);
-		} finally {
-			if (method != null) {
-				method.releaseConnection();
-			}
 		}
 	}
 
@@ -104,14 +97,10 @@ public class GitHubService {
 		Repo repo = root.getBranch().getRepo();
 		String listChildrenUrl = createGitHubListChildrenUrl(repo, container);
 
-		PostMethod method = null;
 		Set<RepoResource> children = new HashSet<RepoResource>();
 		try {
-			method = new PostMethod(listChildrenUrl);
-			executeMethod(method);
-
-			GitHubResourcesDto retrievedResources = gson.fromJson(new String(
-					method.getResponseBody()), GitHubResourcesDto.class);
+			GitHubResourcesDto retrievedResources = gson.fromJson(
+					getResponseBody(listChildrenUrl), GitHubResourcesDto.class);
 
 			for (GitHubResourceDto rscDto : retrievedResources.getResources()) {
 				RepoResource child;
@@ -138,10 +127,6 @@ public class GitHubService {
 			throw new RepoResponseException(e);
 		} catch (IOException e) {
 			throw new RepoResponseException(e);
-		} finally {
-			if (method != null) {
-				method.releaseConnection();
-			}
 		}
 	}
 
@@ -198,13 +183,9 @@ public class GitHubService {
 		Repo repo = repoFileLite.getRoot().getBranch().getRepo();
 		String getGitHubFileUrl = createGetGitHubFileUrl(repo, repoFileLite);
 
-		PostMethod method = null;
 		try {
-			method = new PostMethod(getGitHubFileUrl);
-			executeMethod(method);
-
-			GitHubFileDto gitHubFileDto = gson.fromJson(new String(method
-					.getResponseBody()), GitHubFileDto.class);
+			GitHubFileDto gitHubFileDto = gson.fromJson(
+					getResponseBody(getGitHubFileUrl), GitHubFileDto.class);
 			GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
 
 			return new RepoFileInfo(repoFileLite, gitHubFileDataDto.getData(),
@@ -216,6 +197,16 @@ public class GitHubService {
 			throw new RepoResponseException(e);
 		} catch (IOException e) {
 			throw new RepoResponseException(e);
+		}
+	}
+
+	private synchronized String getResponseBody(String url)
+			throws RepoConnectionException, IOException {
+		PostMethod method = null;
+		try {
+			method = new PostMethod(url);
+			executeMethod(method);
+			return new String(method.getResponseBody());
 		} finally {
 			if (method != null) {
 				method.releaseConnection();
