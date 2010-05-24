@@ -67,8 +67,6 @@ public class ValidatableComboViewer {
 
 	private Label errorMessageLabel;
 
-	private Object input;
-
 	private final IProgressMonitorInputValidator inputValidator;
 
 	private boolean isValidInput = false;
@@ -133,10 +131,6 @@ public class ValidatableComboViewer {
 		return composite;
 	}
 
-	public synchronized Object getInput() {
-		return input;
-	}
-
 	public synchronized Object getSelectedObject() {
 		return selectedObject;
 	}
@@ -175,7 +169,6 @@ public class ValidatableComboViewer {
 	}
 
 	public synchronized void setInput(Object input) {
-		this.input = input;
 		viewer.setInput(input);
 	}
 
@@ -185,7 +178,7 @@ public class ValidatableComboViewer {
 	}
 
 	private synchronized void validateText(final IProgressMonitor monitor) {
-		display.asyncExec(new Runnable() {
+		display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				final String text = viewer.getCCombo().getText();

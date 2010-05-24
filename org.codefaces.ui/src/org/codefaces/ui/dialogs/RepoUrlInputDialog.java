@@ -34,10 +34,12 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				Collection<RepoBranch> branches = repo.getBranches();
 				final Object[] input = branches.toArray();
 
-				branchInputViewer.setInput(new Object[0]);
-				branchInputViewer.setInput(input);
-				if (input.length > 0) {
-					branchInputViewer.setSelectedObject(input[0]);
+				if (!branchInputViewer.getViewer().getCCombo().isDisposed()) {
+					branchInputViewer.setInput(new Object[0]);
+					branchInputViewer.setInput(input);
+					if (input.length > 0) {
+						branchInputViewer.setSelectedObject(input[0]);
+					}
 				}
 
 				monitor.worked(70);
@@ -51,7 +53,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private ValidatableComboViewer urlInputViewer;
 
-	private volatile ValidatableComboViewer branchInputViewer;
+	private ValidatableComboViewer branchInputViewer;
 
 	public static final String TITLE = "Open Repository";
 
