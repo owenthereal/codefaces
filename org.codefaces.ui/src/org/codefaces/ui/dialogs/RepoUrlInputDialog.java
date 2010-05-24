@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -21,6 +23,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 public class RepoUrlInputDialog extends TitleAreaDialog {
+	private static final String NO_BRANCH_IS_SELECTED = "No branch is selected.";
+
 	private class UrlInputValidator implements IProgressMonitorInputValidator {
 		@Override
 		public String validate(String newText, IProgressMonitor monitor) {
@@ -35,15 +39,18 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				final Object[] input = branches.toArray();
 
 				if (!branchInputViewer.getViewer().getCCombo().isDisposed()) {
-					branchInputViewer.setInput(new Object[0]);
 					branchInputViewer.setInput(input);
 					if (input.length > 0) {
 						branchInputViewer.setSelectedObject(input[0]);
+					} else {
+						branchInputViewer.setSelectedObject(null);
 					}
 				}
 
 				monitor.worked(70);
 			} catch (Exception e) {
+				branchInputViewer.setInput(null);
+				branchInputViewer.setSelectedObject(null);
 				return e.getMessage();
 			}
 
@@ -55,11 +62,11 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private ValidatableComboViewer branchInputViewer;
 
-	public static final String TITLE = "Open Repository";
+	public static final String TITLE = "Checkout projects from a repository";
 
-	private static final String SAMPLE_URL = "http://github.com/defunkt/facebox";
+	private static final String SAMPLE_URL = "https://github.com/jingweno/code_faces";
 
-	public static final String DESCRIPTION = "Enter the GitHub Repository URL, e.g.,"
+	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g.,"
 			+ SAMPLE_URL;
 
 	public RepoUrlInputDialog(Shell parentShell) {
@@ -106,6 +113,20 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				return branch.getName();
 			}
 		});
+		branchInputViewer.getViewer().addSelectionChangedListener(
+				new ISelectionChangedListener() {
+					@Override
+					public void selectionChanged(SelectionChangedEvent event) {
+						if (event.getSelection().isEmpty()) {
+							branchInputViewer
+									.setErrorMessages(NO_BRANCH_IS_SELECTED);
+							getButton(IDialogConstants.OK_ID).setEnabled(false);
+						} else {
+							branchInputViewer.setErrorMessages(null);
+							getButton(IDialogConstants.OK_ID).setEnabled(true);
+						}
+					}
+				});
 
 		setTitle(TITLE);
 		setMessage(DESCRIPTION);
@@ -119,11 +140,12 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		super.createButtonsForButtonBar(parent);
 		urlInputViewer
 				.attachToCancelComponent(getButton(IDialogConstants.CANCEL_ID));
+		getButton(IDialogConstants.OK_ID).setEnabled(false);
 	}
 
 	@Override
 	protected void okPressed() {
-		if (urlInputViewer.isValidInput()) {
+		if (branchInputViewer.getSelectedObject() != null) {
 			super.okPressed();
 		}
 	}
