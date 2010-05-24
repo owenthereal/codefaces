@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
 
 public class RepoInfo extends RepoResourceInfo {
@@ -33,8 +32,6 @@ public class RepoInfo extends RepoResourceInfo {
 		try {
 			return CodeFacesCoreActivator.getDefault().getRepoService()
 					.fetchBranches(getContext());
-		} catch (RepoConnectionException e) {
-			e.printStackTrace();
 		} catch (RepoResponseException e) {
 			e.printStackTrace();
 		}

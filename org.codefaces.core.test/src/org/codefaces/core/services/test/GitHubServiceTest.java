@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
@@ -14,7 +15,7 @@ import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.RepoConnectionException;
+import org.codefaces.core.services.ManagedHttpClient;
 import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.github.GitHubBranchesDto;
 import org.codefaces.core.services.github.GitHubService;
@@ -60,7 +61,7 @@ public class GitHubServiceTest {
 
 	@Before
 	public void setUp() {
-		gitHubService = new GitHubService();
+		gitHubService = new GitHubService(new ManagedHttpClient().getClient());
 	}
 
 	@Test
@@ -72,8 +73,7 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_getGitHubBranches() throws RepoConnectionException,
-			RepoResponseException {
+	public void test_getGitHubBranches() throws RepoResponseException {
 		GitHubBranchesDto branches = gitHubService
 				.getGitHubBranches(TEST_GITHUB_SHOW_BRANCHES_URL);
 
@@ -92,8 +92,8 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_createGithubRepo() throws RepoConnectionException,
-			RepoResponseException, MalformedURLException {
+	public void test_createGithubRepo() throws RepoResponseException,
+			MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
@@ -113,8 +113,8 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_getGitHubChildren() throws RepoConnectionException,
-			RepoResponseException, MalformedURLException {
+	public void test_getGitHubChildren() throws RepoResponseException,
+			MalformedURLException {
 		Repo repo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER);
@@ -131,22 +131,21 @@ public class GitHubServiceTest {
 		assertEquals(0, children.size());
 	}
 
-	public void test_getDefaultRoot() throws RepoConnectionException,
-			RepoResponseException, MalformedURLException {
+	public void test_getDefaultRoot() throws RepoResponseException,
+			MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		assertEquals(TEST_BRANCH_MASTER, gitHubService.getGitHubDefaultBranch(
 				gitHubRepo).getName());
 	}
 
 	@Test
-	public void test_createGetGitHubFileUrl() throws RepoConnectionException,
-			RepoResponseException, MalformedURLException {
+	public void test_createGetGitHubFileUrl() throws RepoResponseException,
+			MalformedURLException {
 		Repo repo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
-		RepoBranch branch = new RepoBranch(repo,
-				TEST_BRANCH_MASTER_SHA, TEST_BRANCH_MASTER);
+		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
+				TEST_BRANCH_MASTER);
 		RepoFolderRoot root = branch.getRoot();
-		RepoFile file = new RepoFile(root,
-				root, TEST_GITHUB_BRANCH_SHA,
+		RepoFile file = new RepoFile(root, root, TEST_GITHUB_BRANCH_SHA,
 				TEST_GITHUB_FILE_NAME);
 
 		assertEquals(TEST_GET_GITHUB_FILE_URL, gitHubService
@@ -154,8 +153,8 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_getGitHubFile() throws RepoConnectionException,
-			RepoResponseException, MalformedURLException {
+	public void test_getGitHubFile() throws RepoResponseException,
+			MalformedURLException {
 		Repo repo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER);

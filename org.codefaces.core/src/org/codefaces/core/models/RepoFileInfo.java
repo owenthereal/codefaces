@@ -1,7 +1,6 @@
 package org.codefaces.core.models;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.RepoService;
 
@@ -39,8 +38,6 @@ public class RepoFileInfo extends RepoResourceInfo {
 			RepoFileInfo info = repoService.fetchFileInfo(file);
 			fill(info.content, info.mimeType, info.mode, info.size);
 		} catch (RepoResponseException e) {
-			e.printStackTrace();
-		} catch (RepoConnectionException e) {
 			e.printStackTrace();
 		}
 	}
