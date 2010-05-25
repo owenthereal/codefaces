@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map.Entry;
 
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
@@ -61,7 +60,7 @@ public class GitHubServiceTest {
 
 	@Before
 	public void setUp() {
-		gitHubService = new GitHubService(new ManagedHttpClient().getClient());
+		gitHubService = new GitHubService(new ManagedHttpClient());
 	}
 
 	@Test

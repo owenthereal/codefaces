@@ -1,6 +1,5 @@
 package org.codefaces.core.services.github;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,12 +9,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
@@ -24,6 +17,7 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.services.ManagedHttpClient;
 import org.codefaces.core.services.RepoResponseException;
 
 import com.google.gson.Gson;
@@ -48,13 +42,17 @@ public class GitHubService {
 
 	private static final String GITHUB_DEFAULT_BRANCH = "master";
 
-	private final HttpClient httpClient;
+	private final ManagedHttpClient managedClient;
 
 	private Gson gson;
 
-	public GitHubService(HttpClient httpClient) {
-		this.httpClient = httpClient;
+	public GitHubService(ManagedHttpClient managedClient) {
+		this.managedClient = managedClient;
 		gson = new Gson();
+	}
+
+	private String getResponseBody(String url) throws RepoResponseException {
+		return managedClient.getResponseBody(url);
 	}
 
 	/**
@@ -165,35 +163,6 @@ public class GitHubService {
 		} catch (Exception e) {
 			throw new RepoResponseException(e.getMessage(), e);
 		}
-	}
-
-	private String getResponseBody(String url) throws RepoResponseException {
-		try {
-			HttpGet httpGet = new HttpGet(url);
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			return httpClient.execute(httpGet, responseHandler);
-		} catch (HttpResponseException exception) {
-			throw handleHttpExceptionStatus(exception);
-		} catch (IOException exception) {
-			throw new RepoResponseException(exception.getMessage(), exception);
-		}
-	}
-
-	private RepoResponseException handleHttpExceptionStatus(
-			HttpResponseException exception) {
-		int status = exception.getStatusCode();
-		switch (status) {
-		case HttpStatus.SC_NOT_FOUND:
-			return new RepoResponseException(status, "HTTP Error: " + status
-					+ ". Request Resource Not Found.", exception);
-		case HttpStatus.SC_UNAUTHORIZED:
-		case HttpStatus.SC_FORBIDDEN:
-			return new RepoResponseException(status, "HTTP Error: " + status
-					+ "Unauthorized Request.", exception);
-		}
-
-		return new RepoResponseException(status, "HTTP Error: " + status,
-				exception);
 	}
 
 	public String createGetGitHubFileUrl(Repo repo, RepoFile repoFileLite) {

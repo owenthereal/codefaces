@@ -1,8 +1,13 @@
 package org.codefaces.core.services;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnPerRouteBean;
@@ -10,6 +15,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -80,11 +86,40 @@ public class ManagedHttpClient {
 		return new DefaultHttpClient(cm, params);
 	}
 
-	public HttpClient getClient() {
-		if (httpClient == null) {
-			httpClient = createClient();
+	public ManagedHttpClient() {
+		httpClient = createClient();
+	}
+
+	public String getResponseBody(String url) throws RepoResponseException {
+		try {
+			HttpGet httpGet = new HttpGet(url);
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			return httpClient.execute(httpGet, responseHandler);
+		} catch (HttpResponseException exception) {
+			throw handleHttpExceptionStatus(exception);
+		} catch (IOException exception) {
+			throw new RepoResponseException(exception.getMessage(), exception);
 		}
-		
+	}
+
+	private RepoResponseException handleHttpExceptionStatus(
+			HttpResponseException exception) {
+		int status = exception.getStatusCode();
+		switch (status) {
+		case HttpStatus.SC_NOT_FOUND:
+			return new RepoResponseException(status, "HTTP Error: " + status
+					+ ". Request Resource Not Found.", exception);
+		case HttpStatus.SC_UNAUTHORIZED:
+		case HttpStatus.SC_FORBIDDEN:
+			return new RepoResponseException(status, "HTTP Error: " + status
+					+ "Unauthorized Request.", exception);
+		}
+
+		return new RepoResponseException(status, "HTTP Error: " + status,
+				exception);
+	}
+
+	public HttpClient getClient() {
 		return httpClient;
 	}
 

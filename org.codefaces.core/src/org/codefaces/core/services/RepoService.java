@@ -17,7 +17,7 @@ public class RepoService {
 
 	public RepoService() {
 		managedClient = new ManagedHttpClient();
-		githubService = new GitHubService(managedClient.getClient());
+		githubService = new GitHubService(managedClient);
 	}
 	
 	public ManagedHttpClient getManagedHttpClient() {
