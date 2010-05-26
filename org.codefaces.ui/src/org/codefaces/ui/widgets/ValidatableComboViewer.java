@@ -67,8 +67,6 @@ public class ValidatableComboViewer {
 
 	private Label errorMessageLabel;
 
-	private Object input;
-
 	private final IProgressMonitorInputValidator inputValidator;
 
 	private boolean isValidInput = false;
@@ -122,30 +120,26 @@ public class ValidatableComboViewer {
 		}
 	}
 
-	public synchronized void attachToCancelComponent(Control cancelComponent) {
+	public void attachToCancelComponent(Control cancelComponent) {
 		Assert.isNotNull(inputValidator);
 		Assert.isNotNull(cancelComponent);
 		this.cancelComponent = cancelComponent;
 		this.cancelComponent.addListener(SWT.Selection, cancelListener);
 	}
 
-	public synchronized Control getControl() {
+	public Control getControl() {
 		return composite;
 	}
 
-	public synchronized Object getInput() {
-		return input;
-	}
-
-	public synchronized Object getSelectedObject() {
+	public Object getSelectedObject() {
 		return selectedObject;
 	}
 
-	public synchronized ComboViewer getViewer() {
+	public ComboViewer getViewer() {
 		return viewer;
 	}
 
-	public synchronized boolean isValidInput() {
+	public boolean isValidInput() {
 		return isValidInput;
 	}
 
@@ -154,7 +148,7 @@ public class ValidatableComboViewer {
 	 * 
 	 * @param cc
 	 */
-	public synchronized void removeFromCancelComponent(Control cancelComponent) {
+	public void removeFromCancelComponent(Control cancelComponent) {
 		Assert.isNotNull(inputValidator);
 		Assert.isTrue(this.cancelComponent == cancelComponent
 				&& this.cancelComponent != null);
@@ -162,30 +156,30 @@ public class ValidatableComboViewer {
 		this.cancelComponent = null;
 	}
 
-	private void setErrorMessages(String msg) {
+	public void setErrorMessages(String msg) {
 		if (msg == null) {
 			errorMessageLabel.setToolTipText(null);
 			errorMessageLabel.setVisible(false);
-			isValidInput = true;
 		} else {
 			errorMessageLabel.setToolTipText(msg);
 			errorMessageLabel.setVisible(true);
-			isValidInput = false;
 		}
 	}
 
-	public synchronized void setInput(Object input) {
-		this.input = input;
+	public void setInput(Object input) {
 		viewer.setInput(input);
 	}
 
-	public synchronized void setSelectedObject(Object selectedObject) {
-		this.selectedObject = selectedObject;
-		viewer.setSelection(new StructuredSelection(selectedObject));
+	public void setSelectedObject(Object selectedObject) {
+		if (selectedObject == null) {
+			viewer.setSelection(null);
+		} else {
+			viewer.setSelection(new StructuredSelection(selectedObject));
+		}
 	}
 
-	private synchronized void validateText(final IProgressMonitor monitor) {
-		display.asyncExec(new Runnable() {
+	private void validateText(final IProgressMonitor monitor) {
+		display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				final String text = viewer.getCCombo().getText();

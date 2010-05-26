@@ -42,6 +42,7 @@ public class CodeFacesCoreActivator extends Plugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		repoService.getManagedHttpClient().dispose();
 		plugin = null;
 		super.stop(context);
 	}
@@ -58,5 +59,4 @@ public class CodeFacesCoreActivator extends Plugin {
 	public RepoService getRepoService() {
 		return repoService;
 	}
-
 }

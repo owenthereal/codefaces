@@ -1,6 +1,5 @@
 package org.codefaces.core.services.github;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,10 +9,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
@@ -22,11 +17,10 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.RepoConnectionException;
+import org.codefaces.core.services.ManagedHttpClient;
 import org.codefaces.core.services.RepoResponseException;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 
 public class GitHubService {
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
@@ -48,13 +42,17 @@ public class GitHubService {
 
 	private static final String GITHUB_DEFAULT_BRANCH = "master";
 
-	private final HttpClient httpClient;
+	private final ManagedHttpClient managedClient;
 
 	private Gson gson;
 
-	public GitHubService() {
-		httpClient = new HttpClient();
+	public GitHubService(ManagedHttpClient managedClient) {
+		this.managedClient = managedClient;
 		gson = new Gson();
+	}
+
+	private String getResponseBody(String url) throws RepoResponseException {
+		return managedClient.getResponseBody(url);
 	}
 
 	/**
@@ -64,14 +62,12 @@ public class GitHubService {
 	 *             when unable to parse the server's response
 	 */
 	public GitHubBranchesDto getGitHubBranches(String showGitHubBranchesUrl)
-			throws RepoConnectionException, RepoResponseException {
+			throws RepoResponseException {
 		try {
 			return gson.fromJson(getResponseBody(showGitHubBranchesUrl),
 					GitHubBranchesDto.class);
-		} catch (JsonParseException e) {
-			throw new RepoResponseException(e);
-		} catch (IOException e) {
-			throw new RepoResponseException(e);
+		} catch (Exception e) {
+			throw new RepoResponseException(e.getMessage(), e);
 		}
 	}
 
@@ -92,7 +88,7 @@ public class GitHubService {
 	 *             when unable to parse the server's response
 	 */
 	public Collection<RepoResource> fetchGitHubChildren(RepoResource container)
-			throws RepoResponseException, RepoConnectionException {
+			throws RepoResponseException {
 		RepoFolderRoot root = container.getRoot();
 		Repo repo = root.getBranch().getRepo();
 		String listChildrenUrl = createGitHubListChildrenUrl(repo, container);
@@ -121,36 +117,8 @@ public class GitHubService {
 
 			return children;
 
-		} catch (UnsupportedOperationException e) {
-			throw new RepoResponseException(e);
-		} catch (JsonParseException e) {
-			throw new RepoResponseException(e);
-		} catch (IOException e) {
-			throw new RepoResponseException(e);
-		}
-	}
-
-	private void executeMethod(HttpMethod method)
-			throws RepoConnectionException {
-		int status;
-		try {
-			status = httpClient.executeMethod(method);
 		} catch (Exception e) {
-			throw new RepoConnectionException(e.getMessage());
-		}
-
-		switch (status) {
-		case HttpStatus.SC_OK:
-			break;
-		case HttpStatus.SC_NOT_FOUND:
-			throw new RepoConnectionException("HTTP Error: " + status
-					+ ". Request Resource Not Found.");
-		case HttpStatus.SC_UNAUTHORIZED:
-		case HttpStatus.SC_FORBIDDEN:
-			throw new RepoConnectionException("HTTP Error: " + status
-					+ "Unauthorized Request.");
-		default:
-			throw new RepoConnectionException("HTTP Error: " + status);
+			throw new RepoResponseException(e.getMessage(), e);
 		}
 	}
 
@@ -179,38 +147,21 @@ public class GitHubService {
 	}
 
 	public RepoFileInfo fetchGitHubFileInfo(RepoFile repoFileLite)
-			throws RepoResponseException, RepoConnectionException {
+			throws RepoResponseException {
 		Repo repo = repoFileLite.getRoot().getBranch().getRepo();
 		String getGitHubFileUrl = createGetGitHubFileUrl(repo, repoFileLite);
 
+		GitHubFileDto gitHubFileDto;
 		try {
-			GitHubFileDto gitHubFileDto = gson.fromJson(
-					getResponseBody(getGitHubFileUrl), GitHubFileDto.class);
+			gitHubFileDto = gson.fromJson(getResponseBody(getGitHubFileUrl),
+					GitHubFileDto.class);
 			GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
 
 			return new RepoFileInfo(repoFileLite, gitHubFileDataDto.getData(),
 					gitHubFileDataDto.getMime_type(), gitHubFileDataDto
 							.getMode(), gitHubFileDataDto.getSize());
-		} catch (UnsupportedOperationException e) {
-			throw new RepoResponseException(e);
-		} catch (JsonParseException e) {
-			throw new RepoResponseException(e);
-		} catch (IOException e) {
-			throw new RepoResponseException(e);
-		}
-	}
-
-	private synchronized String getResponseBody(String url)
-			throws RepoConnectionException, IOException {
-		PostMethod method = null;
-		try {
-			method = new PostMethod(url);
-			executeMethod(method);
-			return new String(method.getResponseBody());
-		} finally {
-			if (method != null) {
-				method.releaseConnection();
-			}
+		} catch (Exception e) {
+			throw new RepoResponseException(e.getMessage(), e);
 		}
 	}
 
@@ -221,7 +172,7 @@ public class GitHubService {
 	}
 
 	public Collection<RepoBranch> fetchGitHubBranches(Repo repo)
-			throws RepoConnectionException, RepoResponseException {
+			throws RepoResponseException {
 		Set<RepoBranch> branches = new LinkedHashSet<RepoBranch>();
 		String gitHubShowBranchesUrl = createGitHubShowBranchesUrl(repo
 				.getCredential().getOwner(), repo.getName());
@@ -250,6 +201,7 @@ public class GitHubService {
 				return (RepoBranch) branch;
 			}
 		}
+
 		throw new RepoResponseException(GITHUB_DEFAULT_BRANCH
 				+ " branch not found.");
 	}

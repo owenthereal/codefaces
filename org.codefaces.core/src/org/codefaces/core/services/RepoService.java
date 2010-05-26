@@ -12,12 +12,19 @@ import org.codefaces.core.services.github.GitHubService;
 
 public class RepoService {
 	private GitHubService githubService;
+	
+	private ManagedHttpClient managedClient;
 
 	public RepoService() {
-		githubService = new GitHubService();
+		managedClient = new ManagedHttpClient();
+		githubService = new GitHubService(managedClient);
+	}
+	
+	public ManagedHttpClient getManagedHttpClient() {
+		return managedClient;
 	}
 
-	public Repo createRepo(String url) throws RepoConnectionException,
+	public Repo createRepo(String url) throws RepoResponseException,
 			RepoResponseException, MalformedURLException {
 		String trimed_url = url.trim();
 		if (trimed_url.endsWith("/")) {
@@ -27,17 +34,17 @@ public class RepoService {
 	}
 
 	public Collection<RepoBranch> fetchBranches(Repo repo)
-			throws RepoConnectionException, RepoResponseException {
+			throws RepoResponseException, RepoResponseException {
 		return githubService.fetchGitHubBranches(repo);
 	}
 
 	public Collection<RepoResource> fetchChildren(RepoResource repoContainer)
-			throws RepoResponseException, RepoConnectionException {
+			throws RepoResponseException, RepoResponseException {
 		return githubService.fetchGitHubChildren(repoContainer);
 	}
 
 	public RepoFileInfo fetchFileInfo(RepoFile repoFile)
-			throws RepoResponseException, RepoConnectionException {
+			throws RepoResponseException, RepoResponseException {
 		return githubService.fetchGitHubFileInfo(repoFile);
 	}
 

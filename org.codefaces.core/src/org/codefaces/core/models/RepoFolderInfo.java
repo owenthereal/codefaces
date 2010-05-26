@@ -3,7 +3,6 @@ package org.codefaces.core.models;
 import java.util.Collection;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.core.services.RepoConnectionException;
 import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.RepoService;
 
@@ -30,9 +29,7 @@ public class RepoFolderInfo extends RepoResourceInfo {
 			return repoService.fetchChildren(getContext());
 		} catch (RepoResponseException e) {
 			e.printStackTrace();
-		} catch (RepoConnectionException e) {
-			e.printStackTrace();
-		}
+		} 
 
 		return EMPTY_CHILDREN;
 	}
