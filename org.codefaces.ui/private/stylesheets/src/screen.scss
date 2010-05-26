@@ -6,6 +6,7 @@
 
 @import "compass/utilities/text/replacement";
 @import "compass/utilities/lists/horizontal-list";
+@import "compass/utilities/general/float";
 @import "compass/layout/sticky-footer";
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
@@ -17,7 +18,7 @@
 $text_normalize_percentage: 75%;
 
 $header_height: 3.5em;
-$header_logo_width: 21px;
+$header_logo_width: 48px;
 $header_bgcolor: #0D1C28;
 $header_border_hightlight: #08333F;
 $header_border_shadow: #000406;
@@ -65,14 +66,14 @@ body{
     font-size: 100%;
     margin: 0;
     padding: 0;
+    @include float-left;
     
     a {
       @include replace-text("logo.png");
-      float: left;
       display: block;
       height: $header_height;
       width: $header_logo_width;
-      padding: 0 2em;
+      padding: 0 1.5em;
       border-right:solid 1px $header_border_shadow;
     }
   }// end of h1
@@ -112,7 +113,7 @@ body{
     
     a{
       @include replace-text("social/rss.png");
-      float: right;
+      @include float-right;
       padding-right: 2em;
       display: block;
       height: $header_height;
