@@ -6,7 +6,7 @@ import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler;
+import org.codefaces.ui.commands.SwitchBranchCommandHandler;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IParameter;
@@ -27,9 +27,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
-public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
+public class SwitchBranchAction extends Action implements IMenuCreator {
 
-	public static final String ID = "org.codefaces.ui.actions.explorerSwitchRootAction";
+	public static final String ID = "org.codefaces.ui.actions.switchBranchAction";
 
 	private Menu menu;
 
@@ -55,7 +55,7 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 		}
 	}
 
-	public ExplorerSwitchBranchAction() {
+	public SwitchBranchAction() {
 		setId(ID);
 		setMenuCreator(this);
 		setEnabled(false);
@@ -155,11 +155,11 @@ public class ExplorerSwitchBranchAction extends Action implements IMenuCreator {
 				.getWorkbench().getService(ICommandService.class);
 
 		Command switchBranchCmd = cmdService
-				.getCommand(SwitchRepositoryBranchCommandHandler.ID);
+				.getCommand(SwitchBranchCommandHandler.ID);
 
 		try {
 			IParameter newBranchParam = switchBranchCmd
-					.getParameter(SwitchRepositoryBranchCommandHandler.PARAM_NEW_BRANCH_ID);
+					.getParameter(SwitchBranchCommandHandler.PARAM_NEW_BRANCH_ID);
 			Parameterization paramNewBranch = new Parameterization(
 					newBranchParam, newBranch);
 			ParameterizedCommand parmCommand = new ParameterizedCommand(

@@ -7,12 +7,10 @@ import org.codefaces.core.models.Workspace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 
-public class SwitchRepositoryBranchCommandHandler extends AbstractHandler
-		implements IHandler {
-	public static final String ID = "org.codefaces.ui.commands.switchRepositoryBranchCommand";
-	public static final String PARAM_NEW_BRANCH_ID = "org.codefaces.ui.commands.parameters.switchRepositoryBranch.newBranch";
+public class SwitchBranchCommandHandler extends AbstractHandler {
+	public static final String ID = "org.codefaces.ui.commands.switchBranchCommand";
+	public static final String PARAM_NEW_BRANCH_ID = "org.codefaces.ui.commands.parameters.switchBranchCommand.newBranch";
 
 	/**
 	 * This command calls WorkSpace to update. However, if the given branch name

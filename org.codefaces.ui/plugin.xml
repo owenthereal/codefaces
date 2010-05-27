@@ -14,14 +14,14 @@
       <perspective
             class="org.codefaces.ui.perspectives.CodeFacesPerspectiveFactory"
             id="org.codefaces.ui.perspective.codefaces"
-            name="Code Faces">
+            name="CodeFaces">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <category
             id="org.codefaces.ui.category.codefaces"
-            name="Code Faces">
+            name="CodeFaces">
       </category>
       <view
             allowMultiple="false"
@@ -39,6 +39,14 @@
             name="Code Explorer"
             restorable="true">
       </view>
+      <view
+            allowMultiple="false"
+            category="org.codefaces.ui.category.codefaces"
+            class="org.codefaces.ui.views.WelcomePage"
+            id="org.codefaces.ui.view.welcomePage"
+            name="Welcome Page"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">
@@ -47,7 +55,7 @@
             id="org.codefaces.ui.branding.codefaces"
             servletName="explore"
             themeId="org.eclipse.rap.design.example.business.theme"
-            title="Code Faces">
+            title="CodeFaces">
       </branding>
    </extension>
    <extension
@@ -58,39 +66,64 @@
                id="org.codefaces.menu.repository"
                label="Repository">
             <command
-                  commandId="org.codefaces.ui.commands.ImportRepositoryCommand"
+                  commandId="org.codefaces.ui.commands.importRepositoryCommand"
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
             </command>
          </menu>
+         <menu
+               id="org.codefaces.menu.help"
+               label="Help">
+            <command
+                  commandId="org.codefaces.ui.command1"
+                  style="push">
+            </command>
+         </menu>
+         <toolbar
+               id="org.codefaces.ui.toolbar.codefaces">
+            <command
+                  commandId="org.codefaces.ui.commands.importRepositoryCommand"
+                  icon="icons/errors.gif"
+                  label="Import..."
+                  mode="FORCE_TEXT"
+                  style="push"
+                  tooltip="Import project from a repository">
+            </command>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <category
+            id="org.codefaces.ui.category.command"
+            name="CodeFaces Command">
+      </category>
       <command
+            categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.commands.ImportRepositoryCommandHandler"
             description="Import from a repository"
-            id="org.codefaces.ui.commands.ImportRepositoryCommand"
+            id="org.codefaces.ui.commands.importRepositoryCommand"
             name="ImportRepositoryCommand">
       </command>
       <command
-            defaultHandler="org.codefaces.ui.commands.SwitchRepositoryBranchCommandHandler"
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.SwitchBranchCommandHandler"
             description="Switch to another Repository Branch without switching the repository"
-            id="org.codefaces.ui.commands.switchRepositoryBranchCommand"
+            id="org.codefaces.ui.commands.switchBranchCommand"
             name="switchRepositoryBranchCommand">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.switchRepositoryBranch.newBranch"
+               id="org.codefaces.ui.commands.parameters.switchBranchCommand.newBranch"
                name="newBranch"
                optional="true">
          </commandParameter>
       </command>
-   </extension>
-   <extension
-         point="org.eclipse.equinox.http.registry.resources">
-      <resource
-            alias="/"
-            base-name="public">
-      </resource>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.AboutCommandHandler"
+            description="About CodeFaces"
+            id="org.codefaces.ui.command1"
+            name="About">
+      </command>
    </extension>
 </plugin>

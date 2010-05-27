@@ -10,7 +10,7 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.Images;
-import org.codefaces.ui.actions.ExplorerSwitchBranchAction;
+import org.codefaces.ui.actions.SwitchBranchAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -226,7 +226,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private void createToolBar(Composite parent) {
 		IToolBarManager toolbar = getViewSite().getActionBars()
 				.getToolBarManager();
-		Action switchBranchAction = new ExplorerSwitchBranchAction();
+		Action switchBranchAction = new SwitchBranchAction();
 
 		switchBranchAction.setImageDescriptor(Images
 				.getImageDescriptor(Images.IMG_BRANCHES));

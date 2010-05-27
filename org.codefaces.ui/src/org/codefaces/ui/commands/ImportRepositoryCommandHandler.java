@@ -6,13 +6,11 @@ import org.codefaces.ui.dialogs.RepoUrlInputDialog;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ImportRepositoryCommandHandler extends AbstractHandler
-		implements IHandler {
+public class ImportRepositoryCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -26,7 +24,7 @@ public class ImportRepositoryCommandHandler extends AbstractHandler
 				Workspace.getCurrent().update(branch);
 			}
 		}
-		
+
 		return null;
 	}
 
