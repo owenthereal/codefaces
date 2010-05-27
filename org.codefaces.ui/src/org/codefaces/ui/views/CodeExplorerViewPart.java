@@ -1,5 +1,6 @@
 package org.codefaces.ui.views;
 
+import org.codefaces.core.langs.LangParser;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.eclipse.swt.SWT;
@@ -25,7 +26,8 @@ public class CodeExplorerViewPart extends ViewPart {
 
 	public void setInput(RepoFile repoFile) {
 		setPartName(repoFile.getName());
-		browser.setText(CodeFacesUIActivator.getDefault().getCodeHTML(
+		browser.setText(CodeFacesUIActivator.getDefault().getCodeEditorHTML(
+				LangParser.parse(repoFile.getName()).getName(),
 				repoFile.getContent()));
 	}
 }
