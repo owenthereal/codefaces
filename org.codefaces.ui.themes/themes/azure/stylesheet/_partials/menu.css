@@ -1,0 +1,70 @@
+/*
+Syntax error: Undefined variable: "$global_background_color".
+        on line 7 of /Users/kklo/Development/code_faces/code_faces/org.codefaces.ui.themes/private/azure/src/_partials/menu.scss
+
+Backtrace:
+/Users/kklo/Development/code_faces/code_faces/org.codefaces.ui.themes/private/azure/src/_partials/menu.scss:7
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/script/variable.rb:39:in `_perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/script/node.rb:61:in `perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/prop_node.rb:132:in `perform!'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:301:in `_perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:209:in `perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:322:in `perform_children'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:322:in `map'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:322:in `perform_children'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:313:in `perform!'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/rule_node.rb:188:in `perform!'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:301:in `_perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:209:in `perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:322:in `perform_children'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:322:in `map'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:322:in `perform_children'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:313:in `perform!'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/root_node.rb:59:in `perform!'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:301:in `_perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/node.rb:209:in `perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/root_node.rb:37:in `perform'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/tree/root_node.rb:29:in `render'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/engine.rb:160:in `render'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/haml/util.rb:242:in `silence_haml_warnings'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/lib/sass/engine.rb:160:in `render'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/compiler.rb:103:in `compile'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/logger.rb:43:in `red'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/compiler.rb:102:in `compile'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/compiler.rb:93:in `compile_if_required'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/compiler.rb:84:in `run'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/compiler.rb:82:in `each'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/compiler.rb:82:in `run'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/commands/watch_project.rb:92:in `recompile'
+/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `to_proc'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/path.rb:71:in `call'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/path.rb:71:in `run_callback'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/path.rb:54:in `callback_action'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/path.rb:34:in `update'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/state/directory.rb:32:in `modified'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/state/directory.rb:31:in `each'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/state/directory.rb:31:in `modified'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/state/directory.rb:16:in `refresh'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/fsevents.rb:15:in `add_handler'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/fsevents.rb:14:in `each'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/fsevents.rb:14:in `add_handler'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/rubycocoa/fsevents.rb:107:in `call'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/rubycocoa/fsevents.rb:107:in `initialize'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/fsevents.rb:27:in `call'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/fsevents.rb:27:in `CFRunLoopRun'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/backends/fsevents.rb:27:in `run'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm/monitor.rb:24:in `run'
+/Library/Ruby/Gems/1.8/gems/haml-3.0.4/vendor/fssm/lib/fssm.rb:17:in `monitor'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/commands/watch_project.rb:61:in `perform'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/commands/base.rb:18:in `execute'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/commands/project_base.rb:19:in `execute'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/exec/sub_command_ui.rb:38:in `perform!'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/lib/compass/exec/sub_command_ui.rb:15:in `run!'
+/Library/Ruby/Gems/1.8/gems/compass-0.10.1/bin/compass:26
+/usr/bin/compass:19:in `load'
+/usr/bin/compass:19
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Undefined variable: \"$global_background_color\".\A         on line 7 of /Users/kklo/Development/code_faces/code_faces/org.codefaces.ui.themes/private/azure/src/_partials/menu.scss"; }

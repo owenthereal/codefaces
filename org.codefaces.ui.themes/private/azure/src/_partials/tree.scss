@@ -1,0 +1,15 @@
+Tree {
+  background-color: #FFFFFF;
+}
+
+TreeItem {
+  background-color: transparent;
+}
+
+TreeItem:selected {
+  background-color: $global_selection_color;
+}
+
+TreeItem:selected:unfocused {
+  background-color: $global_selection_off_focus_color;
+}

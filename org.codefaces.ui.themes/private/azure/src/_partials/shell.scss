@@ -1,0 +1,67 @@
+
+$shell_padding: 5px;
+
+$canvas_border_width: 10px;
+$canvas_border_color: $global_foreground_color;
+
+$window_border_width: 6px;
+$window_border_color: $global_foreground_color;
+$window_border_radius: 5px;
+
+//A Shell without window. In here, we mean the main carvas
+Shell {
+  padding: $shell_padding;
+  border: $canvas_border_width solid $canvas_border_color;
+}
+
+//A normal window
+Shell[TITLE], Shell[BORDER] {
+  border: $window_border_width solid $window_border_color;
+  border-radius: $window_border_radius;
+}
+
+//The title bar
+Shell-Titlebar {
+    background-image: gradient(linear, left top, left bottom,
+                              from($window_border_color), to(#2C738F) );
+    background-color: $window_border_color;
+    height: 2 * $global_font_size_title;
+    font: $global_font_title;
+    color: $global_text_color_on_dark_bg;                     
+}
+
+//Overlay
+Shell-DisplayOverlay{
+  animation: fadeIn 120ms linear, fadeOut 200ms ease-out;
+  background-image: none;
+  background-color: black;
+  opacity: 0.3;
+}
+
+//Buttons
+Shell-CloseButton {
+  background-image: url($icon_path + "shell-close.png");
+  margin: 0px 5px 0px 0px;
+}
+
+Shell-MaxButton {
+  background-image: url($icon_path + "shell-max.png");
+  margin: 0px 6px 0px 0px;
+}
+
+Shell-MinButton {
+  background-image: url($icon_path + "shell-min.png");
+  margin: 0px 6px 0px 0px;
+}
+
+Shell-CloseButton:hover {
+  background-image: url($icon_path + "shell-close-hover.png");
+}
+
+Shell-MaxButton:hover {
+  background-image: url($icon_path + "shell-max-hover.png");
+}
+
+Shell-MinButton:hover {
+  background-image: url($icon_path + "shell-min-hover.png");
+}
