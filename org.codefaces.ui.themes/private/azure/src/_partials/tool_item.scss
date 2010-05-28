@@ -1,0 +1,19 @@
+
+ToolBar{
+  background-color: transparent;
+}
+
+ToolItem {
+  background-color: transparent;
+  border: none;
+  padding: 3px;
+}
+
+ToolItem:hover, ToolItem:selected {
+  background-color: $global_selection_color;
+}
+
+ToolItem:pressed {
+  background-color: transparent;
+  border: 1px $global_selection_color;
+}

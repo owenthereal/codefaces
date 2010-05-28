@@ -1,0 +1,24 @@
+
+
+CTabFolder {
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+CTabItem {
+  background-color: transparent;
+  padding: 2px 15px 2px 10px;
+  spacing: 4px;
+}
+
+CTabItem:selected {
+  background-color: $global_selection_color;
+}
+
+CTabFolder-DropDownButton-Icon {
+  background-image: url($icon_path + "ctabfolder-dropdown.png" );
+}
+
+CTabFolder-DropDownButton-Icon:hover {
+  background-image: url($icon_path + "ctabfolder-dropdown-hover.png");
+}
