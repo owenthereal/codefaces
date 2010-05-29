@@ -44,7 +44,7 @@
             category="org.codefaces.ui.category.codefaces"
             class="org.codefaces.ui.views.WelcomePage"
             id="org.codefaces.ui.view.welcomePage"
-            name="Welcome Page"
+            name="Welcome"
             restorable="true">
       </view>
    </extension>
