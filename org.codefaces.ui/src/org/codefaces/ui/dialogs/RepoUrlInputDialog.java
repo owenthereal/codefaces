@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 public class RepoUrlInputDialog extends TitleAreaDialog {
+	private static final String WINDOW_TITLE = "Import from a repository";
+
 	private static final String NO_BRANCH_IS_SELECTED = "No branch is selected.";
 
 	private class UrlInputValidator implements IProgressMonitorInputValidator {
@@ -64,7 +66,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	public static final String TITLE = "Checkout projects from a repository";
 
-	private static final String SAMPLE_URL = "https://github.com/jingweno/code_faces";
+	private static final String SAMPLE_URL = "http://github.com/jingweno/code_faces";
 
 	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g.,"
 			+ SAMPLE_URL;
@@ -130,9 +132,20 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 		setTitle(TITLE);
 		setMessage(DESCRIPTION);
+		setWindowTitle(WINDOW_TITLE);
 		applyDialogFont(dialogAreaComposite);
 
 		return composite;
+	}
+
+	private void setWindowTitle(String windowTitle) {
+		if (getShell() == null) {
+			// Not created yet
+			return;
+		}
+
+		getShell().setText(windowTitle);
+
 	}
 
 	@Override
