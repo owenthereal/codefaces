@@ -1,0 +1,14 @@
+
+Composite {
+  background-color: transparent;
+}
+
+Composite[BORDER] {
+  background-color: $global_background_color;
+  background-image: none;
+}
+
+Composite.inactiveButton {
+  background-color: transparent;
+  border: none;
+}

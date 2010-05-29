@@ -1,0 +1,37 @@
+
+
+$icon_path: "/themes/azure/images/";
+
+//Font settings
+$global_font_face: "Helvetica Neue", Arial, Helvetica, sans-serif;
+$global_font_size_normal: 12px;
+$global_font_size_title: $global_font_size_normal * 1.1;
+$global_font_normal: $global_font_size_normal $global_font_face;
+$global_font_title: $global_font_size_title $global_font_face;  
+
+$global_text_color: #222222;
+$global_text_color_on_dark_bg: #FFFFFF;
+$global_text_color_disabled: #CFCFCF;
+
+$global_foreground_color: #0A648C;//86D9FF
+$global_background_color: #FFFFFF;//#F4F9FA;
+$global_selection_color: #BBD8E0;
+$global_selection_off_focus_color: #CCCCCC;
+
+$global_border_color_inner: #AAAAAA;
+$global_border_color_outer: #447099;
+
+// Global Settings:
+* {
+  color: $global_text_color;
+  font: $global_font_normal;
+  background-color: $global_background_color;
+}
+
+*:disable{
+  color: $global_text_color_disabled;
+}
+
+*[BORDER] {
+  border: 1px solid $global_border_color_inner;
+}

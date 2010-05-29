@@ -1,0 +1,322 @@
+/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+* {
+  color: #222222;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+*:disable {
+  color: #cfcfcf;
+}
+
+/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+*[BORDER] {
+  border: 1px solid #aaaaaa;
+}
+
+/* line 2, ../../../private/azure/src/_partials/display.scss */
+Display {
+  rwt-selectionmarker-color: #bbd8e0;
+}
+
+/* line 12, ../../../private/azure/src/_partials/shell.scss */
+Shell {
+  padding: 5px;
+  border: 10px solid #0a648c;
+}
+
+/* line 18, ../../../private/azure/src/_partials/shell.scss */
+Shell[TITLE], Shell[BORDER] {
+  border: 6px solid #0a648c;
+  border-radius: 5px;
+}
+
+/* line 24, ../../../private/azure/src/_partials/shell.scss */
+Shell-Titlebar {
+  background-image: gradient(linear, left top, left bottom, from(#0a648c), to(#2c738f));
+  background-color: #0a648c;
+  height: 26.4px;
+  font: 13.2px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: white;
+}
+
+/* line 34, ../../../private/azure/src/_partials/shell.scss */
+Shell-DisplayOverlay {
+  animation: fadeIn 120ms linear, fadeOut 200ms ease-out;
+  background-image: none;
+  background-color: black;
+  opacity: 0.3;
+}
+
+/* line 42, ../../../private/azure/src/_partials/shell.scss */
+Shell-CloseButton {
+  background-image: url("/themes/azure/images/shell-close.png");
+  margin: 0px 5px 0px 0px;
+}
+
+/* line 47, ../../../private/azure/src/_partials/shell.scss */
+Shell-MaxButton {
+  background-image: url("/themes/azure/images/shell-max.png");
+  margin: 0px 6px 0px 0px;
+}
+
+/* line 52, ../../../private/azure/src/_partials/shell.scss */
+Shell-MinButton {
+  background-image: url("/themes/azure/images/shell-min.png");
+  margin: 0px 6px 0px 0px;
+}
+
+/* line 57, ../../../private/azure/src/_partials/shell.scss */
+Shell-CloseButton:hover {
+  background-image: url("/themes/azure/images/shell-close-hover.png");
+}
+
+/* line 61, ../../../private/azure/src/_partials/shell.scss */
+Shell-MaxButton:hover {
+  background-image: url("/themes/azure/images/shell-max-hover.png");
+}
+
+/* line 65, ../../../private/azure/src/_partials/shell.scss */
+Shell-MinButton:hover {
+  background-image: url("/themes/azure/images/shell-min-hover.png");
+}
+
+/* line 2, ../../../private/azure/src/_partials/composite.scss */
+Composite {
+  background-color: transparent;
+}
+
+/* line 6, ../../../private/azure/src/_partials/composite.scss */
+Composite[BORDER] {
+  background-color: white;
+  background-image: none;
+}
+
+/* line 11, ../../../private/azure/src/_partials/composite.scss */
+Composite.inactiveButton {
+  background-color: transparent;
+  border: none;
+}
+
+/* line 6, ../../../private/azure/src/_partials/menu.scss */
+Menu {
+  background-color: white;
+  border: 1px #0a648c;
+  border-radius: 1px;
+  color: black;
+  opacity: 0.9;
+}
+
+/* line 14, ../../../private/azure/src/_partials/menu.scss */
+MenuItem {
+  background-color: transparent;
+}
+
+/* line 18, ../../../private/azure/src/_partials/menu.scss */
+MenuItem:hover {
+  background-color: #bbd8e0;
+}
+
+/* line 2, ../../../private/azure/src/_partials/tool_item.scss */
+ToolBar {
+  background-color: transparent;
+}
+
+/* line 6, ../../../private/azure/src/_partials/tool_item.scss */
+ToolItem {
+  background-color: transparent;
+  border: none;
+  padding: 3px;
+}
+
+/* line 12, ../../../private/azure/src/_partials/tool_item.scss */
+ToolItem:hover, ToolItem:selected {
+  background-color: #bbd8e0;
+}
+
+/* line 16, ../../../private/azure/src/_partials/tool_item.scss */
+ToolItem:pressed {
+  background-color: transparent;
+  border: 1px #bbd8e0;
+}
+
+/* line 3, ../../../private/azure/src/_partials/ctab.scss */
+CTabFolder {
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+/* line 8, ../../../private/azure/src/_partials/ctab.scss */
+CTabItem {
+  background-color: transparent;
+  padding: 2px 15px 2px 10px;
+  spacing: 4px;
+}
+
+/* line 14, ../../../private/azure/src/_partials/ctab.scss */
+CTabItem:selected {
+  background-color: #bbd8e0;
+}
+
+/* line 18, ../../../private/azure/src/_partials/ctab.scss */
+CTabFolder-DropDownButton-Icon {
+  background-image: url("/themes/azure/images/ctabfolder-dropdown.png");
+}
+
+/* line 22, ../../../private/azure/src/_partials/ctab.scss */
+CTabFolder-DropDownButton-Icon:hover {
+  background-image: url("/themes/azure/images/ctabfolder-dropdown-hover.png");
+}
+
+/* line 1, ../../../private/azure/src/_partials/tree.scss */
+Tree {
+  background-color: #FFFFFF;
+}
+
+/* line 5, ../../../private/azure/src/_partials/tree.scss */
+TreeItem {
+  background-color: transparent;
+}
+
+/* line 9, ../../../private/azure/src/_partials/tree.scss */
+TreeItem:selected {
+  background-color: #bbd8e0;
+}
+
+/* line 13, ../../../private/azure/src/_partials/tree.scss */
+TreeItem:selected:unfocused {
+  background-color: #cccccc;
+}
+
+/* line 1, ../../../private/azure/src/_partials/button.scss */
+Button {
+  background-color: white;
+}
+
+/* line 5, ../../../private/azure/src/_partials/button.scss */
+Button[PUSH], Button[TOGGLE], Button[BORDER] {
+  border-radius: 3px;
+  padding: 2px 5px;
+  background-image: gradient(linear, left top, left bottom, from(white), color-stop(48%, #f0f0f0), color-stop(52%, #e0e0e0), to(white));
+  animation: hoverOut 500ms ease-out;
+}
+
+/* line 18, ../../../private/azure/src/_partials/button.scss */
+Button[PUSH], Button[TOGGLE] {
+  cursor: pointer;
+}
+
+/* line 22, ../../../private/azure/src/_partials/button.scss */
+Button[PUSH]:disabled, Button[TOGGLE]:disabled {
+  cursor: default;
+  background-image: none;
+  color: #cfcfcf;
+  background-color: transparent;
+}
+
+/* line 29, ../../../private/azure/src/_partials/button.scss */
+Button[TOGGLE]:selected {
+  /* background-color: #d3d3d3; */
+  background-image: gradient(linear, left top, left bottom, from(#e0e0e0), color-stop(30%, #f0f0f0), color-stop(70%, #e0e0e0), to(#b0b0b0));
+}
+
+/* line 40, ../../../private/azure/src/_partials/button.scss */
+Button[TOGGLE]:selected:hover {
+  /* background-color: #d3d3d3; */
+  background-image: gradient(linear, left top, left bottom, from(#e0e0e0), color-stop(52%, #e0e0e0), to(#b0b0b0));
+}
+
+/* line 50, ../../../private/azure/src/_partials/button.scss */
+Button[PUSH]:hover, Button[TOGGLE]:hover {
+  background-image: gradient(linear, left top, left bottom, from(white), color-stop(48%, #f0f0f0), color-stop(52%, #e0e0e0), to(#cccccc));
+}
+
+/* line 60, ../../../private/azure/src/_partials/button.scss */
+Button[PUSH]:pressed, Button[TOGGLE]:pressed {
+  background-image: gradient(linear, left top, left bottom, from(#e0e0e0), color-stop(52%, #e0e0e0), to(#b0b0b0));
+  padding: 4px 5px 2px 7px;
+}
+
+/* line 70, ../../../private/azure/src/_partials/button.scss */
+Button[CHECK][BORDER] {
+  background-image: none;
+}
+
+/* line 74, ../../../private/azure/src/_partials/button.scss */
+Button[RADIO][BORDER] {
+  background-image: none;
+}
+
+/* line 78, ../../../private/azure/src/_partials/button.scss */
+Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
+  background-color: transparent;
+  border: 1px dotted #b8b8b8;
+  margin: 2px;
+  padding: 0px;
+  opacity: 1;
+}
+
+/* line 86, ../../../private/azure/src/_partials/button.scss */
+Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
+  background-color: transparent;
+  border: 1px dotted #b8b8b8;
+  padding: 2px 2px 2px 1px;
+  margin: 0px;
+  opacity: 1;
+}
+
+/* line 94, ../../../private/azure/src/_partials/button.scss */
+Button.clearButton {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  padding: 2px;
+}
+
+/* line 1, ../../../private/azure/src/_partials/combo.scss */
+Combo, CCombo {
+  background-color: #FFFFFF;
+}
+
+/* line 5, ../../../private/azure/src/_partials/combo.scss */
+Combo, CCombo[BORDER] {
+  border-radius: 2px;
+}
+
+/* line 9, ../../../private/azure/src/_partials/combo.scss */
+Combo-Button-Icon, CCombo-Button-Icon {
+  background-image: url("/themes/azure/images/down.png");
+}
+
+/* line 13, ../../../private/azure/src/_partials/combo.scss */
+Combo-Button-Icon:hover, CCombo-Button-Icon:hover {
+  background-image: url("/themes/azure/images/down-hover.png");
+}
+
+/* line 17, ../../../private/azure/src/_partials/combo.scss */
+Combo-Button, CCombo-Button {
+  background-color: transparent;
+  border: none;
+  border-radius: 0px 2px 2px 0px;
+  background-image: gradient(linear, left top, left bottom, from(white), color-stop(48%, #f0f0f0), color-stop(52%, #e0e0e0), to(#cccccc));
+  width: 18px;
+}
+
+/* line 31, ../../../private/azure/src/_partials/combo.scss */
+Combo-Button:pressed, CCombo-Button:pressed {
+  background-image: gradient(linear, left top, left bottom, from(#e0e0e0), color-stop(52%, #e0e0e0), to(#b0b0b0));
+}
+
+/* line 40, ../../../private/azure/src/_partials/combo.scss */
+Combo-List, CCombo-List {
+  border: 1px solid #c1c1c1;
+  border-radius: 0px 0px 2px 2px;
+}
+
+/* line 45, ../../../private/azure/src/_partials/combo.scss */
+Combo-FocusIndicator, CCombo-FocusIndicator {
+  border: 1px dotted #b8b8b8;
+  margin: 1px 19px 1px 1px;
+}

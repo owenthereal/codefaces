@@ -1,0 +1,20 @@
+
+
+//we need a darker font due to transparency
+$menu_font_color: #000000;
+
+Menu {
+  background-color: $global_background_color;
+  border: 1px $global_foreground_color;
+  border-radius: 1px;
+  color: $menu_font_color;
+  opacity: 0.9;
+}
+
+MenuItem {
+  background-color: transparent;
+}
+
+MenuItem:hover {
+  background-color: $global_selection_color;
+}

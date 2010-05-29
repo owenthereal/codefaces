@@ -1,0 +1,16 @@
+/* line 25, ../../../../private/azure/src/_partials/global_settings.scss */
+* {
+  color: #222222;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* line 31, ../../../../private/azure/src/_partials/global_settings.scss */
+*:disable {
+  color: #cfcfcf;
+}
+
+/* line 35, ../../../../private/azure/src/_partials/global_settings.scss */
+*[BORDER] {
+  border: 1px solid #aaaaaa;
+}

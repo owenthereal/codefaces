@@ -1,0 +1,17 @@
+ProgressBar {
+  background-color: transparent;
+  background-image: none;
+  border-radius: 2px;
+}
+
+ProgressBar-Indicator {
+  background-color: $global_selection_color;
+}
+
+ProgressBar-Indicator:paused {
+  background-color: $global_selection_off_focus_color;
+}
+
+ProgressBar-Indicator:error {
+  background-color: #CC6C6C;
+}
