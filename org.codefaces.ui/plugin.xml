@@ -126,4 +126,10 @@
             name="About">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.rap.ui.phaselistener">
+      <listener
+            class="org.codefaces.ui.UrlPhaseListener">
+      </listener>
+   </extension>
 </plugin>
