@@ -27,6 +27,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 
 public class ValidatableComboViewer {
+	private final class CancelListener implements Listener {
+		@Override
+		public void handleEvent(Event event) {
+			validateJob.cancel();
+		}
+	}
+
 	private final class SchedulingJob extends Job {
 		private SchedulingJob(String name) {
 			super(name);
@@ -38,13 +45,6 @@ public class ValidatableComboViewer {
 
 			return new Status(IStatus.OK, CodeFacesUIActivator.PLUGIN_ID,
 					IStatus.OK, "", null);
-		}
-	}
-
-	private final class CancelListener implements Listener {
-		@Override
-		public void handleEvent(Event event) {
-			validateJob.cancel();
 		}
 	}
 
