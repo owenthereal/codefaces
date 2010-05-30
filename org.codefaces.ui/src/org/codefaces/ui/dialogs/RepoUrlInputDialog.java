@@ -30,6 +30,8 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	private class UrlInputValidator implements IProgressMonitorInputValidator {
 		@Override
 		public String validate(String newText, IProgressMonitor monitor) {
+			setErrorMessage(null);
+
 			try {
 				monitor.beginTask("Connecting to repository: " + newText, 100);
 				Repo repo = CodeFacesCoreActivator.getDefault()
@@ -53,6 +55,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 			} catch (Exception e) {
 				branchInputViewer.setInput(null);
 				branchInputViewer.setSelectedObject(null);
+				setErrorMessage(e.getMessage());
 				return e.getMessage();
 			}
 
@@ -123,9 +126,11 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 							branchInputViewer
 									.setErrorMessages(NO_BRANCH_IS_SELECTED);
 							getButton(IDialogConstants.OK_ID).setEnabled(false);
+							setErrorMessage(NO_BRANCH_IS_SELECTED);
 						} else {
 							branchInputViewer.setErrorMessages(null);
 							getButton(IDialogConstants.OK_ID).setEnabled(true);
+							setErrorMessage(null);
 						}
 					}
 				});
