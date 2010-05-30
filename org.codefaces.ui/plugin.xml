@@ -73,6 +73,17 @@
             </command>
          </menu>
          <menu
+               id="org.codefaces.ui.menu.window"
+               label="Window">
+            <menu
+                  label="Show View">
+               <dynamic
+                     class="org.eclipse.ui.actions.ShowViewMenu"
+                     id="org.codefaces.ui.actions.showViewMenu">
+               </dynamic>
+            </menu>
+         </menu>
+         <menu
                id="org.codefaces.menu.help"
                label="Help">
             <command
@@ -91,6 +102,9 @@
                   tooltip="Import project from a repository">
             </command>
          </toolbar>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:window">
       </menuContribution>
    </extension>
    <extension
