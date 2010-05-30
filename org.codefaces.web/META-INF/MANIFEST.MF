@@ -4,7 +4,8 @@ Bundle-Name: Web
 Bundle-SymbolicName: org.codefaces.web;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.equinox.http.registry
+ org.eclipse.equinox.http.registry,
+ org.codefaces.lib
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: javax.servlet,

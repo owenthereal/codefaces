@@ -1,4 +1,4 @@
-package org.codefaces.ui.resources;
+package org.codefaces.core.models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -60,11 +60,12 @@ public class WorkspaceTest {
 		assertNull(ws.getWorkingBranch());
 
 		ws.update(mockFooBranch);
-		assertEquals(mockFooRepo, ws.getWorkingBranch());
+		assertEquals(mockFooRepo, ws.getWorkingBranch().getRepo());
 		assertEquals(mockFooBranch, ws.getWorkingBranch());
 
 		for (int i = 0; i < 3; i++) {
 			WorkspaceChangeEventListener listener = new WorkspaceChangeEventListener() {
+
 				@Override
 				public void workspaceChanged(WorkspaceChangeEvent evt) {
 					assertEquals(mockBazBranch, evt.getRepoBranch());
@@ -88,7 +89,6 @@ public class WorkspaceTest {
 				@Override
 				public void workspaceChanged(WorkspaceChangeEvent evt) {
 					assertEquals(mockFooBranch2, evt.getRepoBranch());
-					assertEquals(null, evt.getRepoBranch().getRepo());
 				}
 			};
 
@@ -96,28 +96,6 @@ public class WorkspaceTest {
 		}
 
 		ws.update(mockFooBranch2);
-	}
-
-	@Test
-	public void test_update_branch_in_differnt_repo() {
-		ws.update(mockFooBranch);
-
-		for (int i = 0; i < 3; i++) {
-			WorkspaceChangeEventListener listener = new WorkspaceChangeEventListener() {
-
-				@Override
-				public void workspaceChanged(WorkspaceChangeEvent evt) {
-					fail("The update is invalid. There should be no notification");
-				}
-			};
-
-			ws.addWorkSpaceChangeEventListener(listener);
-		}
-
-		ws.update(mockBazBranch);
-		assertEquals(mockFooBranch, ws.getWorkingBranch());
-		assertEquals(mockFooRepo, ws.getWorkingBranch().getRepo());
-
 	}
 
 	public void test_add_and_remove_listner() {

@@ -7,11 +7,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 
 public class CodeFacesEntryPoint implements IEntryPoint {
+	public static final String ID = "org.codefaces.ui.entrypoint.codefaces";
+
 	@Override
 	public int createUI() {
 		Display display = PlatformUI.createDisplay();
 		WorkbenchAdvisor advisor = new CodeFacesWorkbenchAdvisor();
-		
+
 		return PlatformUI.createAndRunWorkbench(display, advisor);
 	}
 

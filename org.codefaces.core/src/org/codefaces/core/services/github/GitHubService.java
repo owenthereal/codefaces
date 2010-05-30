@@ -61,7 +61,7 @@ public class GitHubService {
 	 * @throws RepoResponseException
 	 *             when unable to parse the server's response
 	 */
-	public GitHubBranchesDto getGitHubBranches(String showGitHubBranchesUrl)
+	protected GitHubBranchesDto getGitHubBranches(String showGitHubBranchesUrl)
 			throws RepoResponseException {
 		try {
 			return gson.fromJson(getResponseBody(showGitHubBranchesUrl),
@@ -71,12 +71,12 @@ public class GitHubService {
 		}
 	}
 
-	public String createGitHubShowBranchesUrl(String owner, String repoName) {
+	protected String createGitHubShowBranchesUrl(String owner, String repoName) {
 		return SHOW_GITHUB_BRANCHES + "/" + owner + "/" + repoName
 				+ "/branches";
 	}
 
-	public String createGitHubListChildrenUrl(Repo repo, RepoResource resource) {
+	protected String createGitHubListChildrenUrl(Repo repo, RepoResource resource) {
 		return SHOW_GITHUB_CHILDREN + "/" + repo.getCredential().getOwner()
 				+ "/" + repo.getName() + "/" + resource.getId();
 	}
@@ -165,7 +165,7 @@ public class GitHubService {
 		}
 	}
 
-	public String createGetGitHubFileUrl(Repo repo, RepoFile repoFileLite) {
+	protected String createGetGitHubFileUrl(Repo repo, RepoFile repoFileLite) {
 		return GET_GITHUB_FILE + "/" + repo.getCredential().getOwner() + "/"
 				+ repo.getName() + "/" + repoFileLite.getParent().getId() + "/"
 				+ repoFileLite.getName();

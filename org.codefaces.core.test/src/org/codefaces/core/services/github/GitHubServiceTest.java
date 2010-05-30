@@ -1,4 +1,4 @@
-package org.codefaces.core.services.test;
+package org.codefaces.core.services.github;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,16 +34,6 @@ public class GitHubServiceTest {
 
 	private static final String TEST_GITHUB_URL = "http://github.com/jingweno/ruby_grep";
 
-	private static final String TEST_GITHUB_PRIVATE_URL = "http://github.com/jingweno/code_faces";
-
-	private static final String TEST_GITHUB_NO_REPO_URL = "http://github.com/jingweno/xyz";
-
-	private static final String TEST_GITHUB_MALFORMED_URL = "http://github.com/hello";
-
-	private static final String TEST_GITHUB_EMPTY_URL = "http://github.com/kklo/empty_testing_project";
-
-	private static final String TEST_GITHUB_EMPTY_MASTER_SHA = "0a5216bf5231380e77d21e3ccad1243153eafe2d";
-
 	private static final String TEST_REPO_NAME = "ruby_grep";
 
 	private static final String TEST_USER_NAME = "jingweno";
@@ -53,8 +43,6 @@ public class GitHubServiceTest {
 	private static final String TEST_GET_GITHUB_FILE_URL = "http://github.com/api/v2/json/blob/show/jingweno/ruby_grep/7b12ed0f174aaf84e426209986665c13d1170706/LICENSE";
 
 	private static final String TEST_GITHUB_BRANCH_SHA = "7b12ed0f174aaf84e426209986665c13d1170706";
-
-	private static final String TEST_GITHUB_FILE_SHA = "7911a0917911f6e775d85c8f514ba5e0c6ebf71a";
 
 	private GitHubService gitHubService;
 
@@ -121,13 +109,6 @@ public class GitHubServiceTest {
 		Collection<RepoResource> children = gitHubService
 				.fetchGitHubChildren(branch);
 		assertEquals(6, children.size());
-
-		// Test if the branch is empty
-		repo = gitHubService.createGithubRepo(TEST_GITHUB_EMPTY_URL);
-		branch = new RepoBranch(repo, TEST_GITHUB_EMPTY_MASTER_SHA,
-				TEST_BRANCH_MASTER);
-		children = gitHubService.fetchGitHubChildren(branch);
-		assertEquals(0, children.size());
 	}
 
 	public void test_getDefaultRoot() throws RepoResponseException,

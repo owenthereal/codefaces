@@ -1,4 +1,4 @@
-package org.codefaces.core.langs.test;
+package org.codefaces.core.langs;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,7 +25,7 @@ public class LangParserTest {
 	
 	@Test
 	public void test_parse_noFileExtension() {
-		String fileName = "RAKE";
+		String fileName = "RakeFile";
 		Lang actualLang = LangParser.parse(fileName);
 
 		assertEquals(Lang.LANG_RUBY, actualLang);

@@ -20,7 +20,7 @@ public class Workspace {
 	/**
 	 * This constructor is only used for testing purpose.
 	 */
-	public Workspace() {
+	protected Workspace() {
 		changeListeners = new CopyOnWriteArrayList<WorkspaceChangeEventListener>();
 	}
 
