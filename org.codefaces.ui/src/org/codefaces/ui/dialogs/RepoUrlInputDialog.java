@@ -71,7 +71,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private static final String SAMPLE_URL = "http://github.com/jingweno/code_faces";
 
-	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g.,"
+	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
 			+ SAMPLE_URL;
 
 	public RepoUrlInputDialog(Shell parentShell) {

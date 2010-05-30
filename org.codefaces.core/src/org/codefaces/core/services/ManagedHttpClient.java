@@ -99,7 +99,7 @@ public class ManagedHttpClient {
 			throw handleHttpExceptionStatus(exception);
 		} catch (IOException exception) {
 			throw new RepoResponseException(exception.getMessage(), exception);
-		}
+		} 
 	}
 
 	private RepoResponseException handleHttpExceptionStatus(
