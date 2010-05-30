@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: org.codefaces.core.test;singleton:=true
+Bundle-SymbolicName: org.codefaces.core.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.codefaces.core
 Require-Bundle: org.eclipse.core.runtime

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: org.codefaces.web.test
+Bundle-SymbolicName: org.codefaces.web.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.codefaces.web
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
