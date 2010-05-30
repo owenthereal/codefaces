@@ -54,7 +54,7 @@ build:
   codefaces_feature: org.codefaces.feature
   
   # Builder eclipse home. We will use this eclipse for building our application
-  eclipse_home: /Applications/eclipse_rap
+  eclipse_home: /Applications/eclipse
   
   # Equinox Launcher Jar file
   equinox_launcher: org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar
@@ -70,7 +70,7 @@ build:
   
   # Target Platform setting directory. This folder contains the pre-compiled 
   # plugins and features that match with the plugins stated in feature.xml
-  base_dir: /Applications/eclipse_rap/configuration/org.eclipse.rap.target-1.3/eclipse
+  base_dir: /Applications/eclipse/configuration/org.eclipse.rap.target-1.3/eclipse
   
   # The path of the build.porperties file template
   build_properties_path: ../templates/buildConfig/build.properties
