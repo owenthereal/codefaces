@@ -1,0 +1,25 @@
+require 'rake/clean'
+Dir.glob('tasks/*.rake').each { |r| import r } #import all the rake files
+
+CONFIGS = YAML.load(File.read('config/config.yml'))
+
+
+# files to clean.
+# rake clean - remove the build directory
+# rake clobber - also remove the source directory
+env = CONFIGS['environment']
+CLEAN.include(env['build_dir'], env['package_dir'])
+CLOBBER.include(env['source_dir'], env['tool_dir'])
+
+
+desc "Fetch, build and package the application"
+task :default => [:fetch, :build, :package] 
+
+desc "Fetch the repository and tools"
+task :fetch => ["fetch:default"]
+
+desc "Build the source code into binaries"
+task :build => ["build:default"]
+
+desc "Package the compiled feature into WAR file"
+task :package => ["package:default"]
