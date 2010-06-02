@@ -45,7 +45,8 @@ module Helper
         sh "git clone #{repo} #{tmp_dir}; rm -Rf #{tmp_dir}/.git"
       when "http"
         sh "mkdir -p #{tmp_dir}"  
-        sh "wget #{repo} -O#{tmp_dir}/#{name}"
+        sh "curl #{repo} -o #{tmp_dir}/#{name}"
+        #sh "wget #{repo} -O#{tmp_dir}/#{name}"
       when "cvs"
         name = configs['name']
         module_path = configs['module_path']
