@@ -1,6 +1,5 @@
 package org.codefaces.ui.widgets.ajaxclient;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -18,18 +17,13 @@ public class AjaxClient extends Control{
 	/**
 	 * Send the given HTTP request
 	 * 
-	 * @exception IllegalArgumentException
-	 *                <ul>
-	 *                <li>ERROR_NULL_ARGUMENT - if the httpRequest is null</li>
-	 *                </ul>
-	 * 
 	 * @param httpRequest
 	 *            the given HTTP request
 	 * @return the response of the HTTP request
 	 */
 	public HttpResponse sendHttpRequest(HttpRequest httpRequest){
 		checkWidget();
-		if (httpRequest == null) { SWT.error(SWT.ERROR_NULL_ARGUMENT); }
+		if (httpRequest == null) return null;
 		
 		this.httpRequest = httpRequest;
 		this.httpResponse = null;

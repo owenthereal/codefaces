@@ -146,4 +146,11 @@
             class="org.codefaces.ui.UrlPhaseListener">
       </listener>
    </extension>
+   <extension
+         id="org.codefaces.ui.widgets.ajaxclient"
+         point="org.eclipse.rap.ui.resources">
+      <resource
+            class="org.codefaces.ui.widgets.ajaxclient.AjaxClientResource">
+      </resource>
+   </extension>
 </plugin>
