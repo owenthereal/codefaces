@@ -2,7 +2,6 @@ package org.codefaces.ui;
 
 import java.net.MalformedURLException;
 
-import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
@@ -24,7 +23,7 @@ public class UrlPhaseListener implements PhaseListener {
 
 		if (repoUrl != null) {
 			try {
-				RepoService repoService = CodeFacesCoreActivator.getDefault()
+				RepoService repoService = CodeFacesUIActivator.getDefault()
 						.getRepoService();
 				Repo repo = repoService.createRepo(repoUrl);
 				RepoBranch repoBranch = repo.getBranchByName(branchName);

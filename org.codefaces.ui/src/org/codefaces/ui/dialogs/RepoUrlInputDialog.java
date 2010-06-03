@@ -2,9 +2,10 @@ package org.codefaces.ui.dialogs;
 
 import java.util.Collection;
 
-import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.services.RepoService;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.widgets.IProgressMonitorInputValidator;
 import org.codefaces.ui.widgets.ValidatableComboViewer;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -34,8 +35,10 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 			try {
 				monitor.beginTask("Connecting to repository: " + newText, 100);
-				Repo repo = CodeFacesCoreActivator.getDefault()
-						.getRepoService().createRepo(newText);
+				RepoService repoService = CodeFacesUIActivator.getDefault()
+						.getRepoService();
+
+				Repo repo = repoService.createRepo(newText);
 				monitor.worked(30);
 
 				monitor.setTaskName("Fetching branches...");

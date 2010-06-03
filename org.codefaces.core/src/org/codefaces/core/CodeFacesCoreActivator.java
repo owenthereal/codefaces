@@ -3,6 +3,7 @@ package org.codefaces.core;
 import org.codefaces.core.services.RepoService;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -16,6 +17,8 @@ public class CodeFacesCoreActivator extends Plugin {
 	private static CodeFacesCoreActivator plugin;
 
 	private RepoService repoService;
+
+	private ServiceRegistration registration;
 
 	/**
 	 * The constructor
@@ -33,6 +36,7 @@ public class CodeFacesCoreActivator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		registration = context.registerService(RepoService.class.getName(), repoService, null);
 	}
 
 	/*
@@ -42,6 +46,7 @@ public class CodeFacesCoreActivator extends Plugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		registration.unregister();
 		repoService.getManagedHttpClient().dispose();
 		plugin = null;
 		super.stop(context);
