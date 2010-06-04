@@ -3,9 +3,9 @@ package org.codefaces.ui.widgets.ajaxclient;
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class AjaxClientResource implements IResource {
+public class JQueryResource implements IResource {
 	private static final String RESOURCE_LOCATION =
-		"org/codefaces/ui/widgets/ajaxclient/ajax_client.js";
+		"http://code.jquery.com/jquery-1.4.2.min.js";
 	
 	@Override
 	public String getCharset() {
@@ -24,17 +24,16 @@ public class AjaxClientResource implements IResource {
 
 	@Override
 	public RegisterOptions getOptions() {
-		return RegisterOptions.VERSION_AND_COMPRESS;
+		return RegisterOptions.VERSION;
 	}
 
 	@Override
 	public boolean isExternal() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isJSLibrary() {
 		return true;
 	}
-
 }

@@ -147,10 +147,15 @@
       </listener>
    </extension>
    <extension
-         id="org.codefaces.ui.widgets.ajaxclient"
          point="org.eclipse.rap.ui.resources">
       <resource
             class="org.codefaces.ui.widgets.ajaxclient.AjaxClientResource">
+      </resource>
+      <resource
+            class="org.codefaces.ui.widgets.ajaxclient.JQueryResource">
+      </resource>
+      <resource
+            class="org.codefaces.ui.widgets.ajaxclient.JsonHelperResource">
       </resource>
    </extension>
 </plugin>

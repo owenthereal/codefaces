@@ -68,7 +68,7 @@ public class HttpRequest {
 		return asynchronous;
 	}
 
-	public int getTimeout() {
+	public Integer getTimeout() {
 		return timeout;
 	}
 }
