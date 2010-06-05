@@ -3,8 +3,8 @@ package org.codefaces.ui.widgets.internal.ajaxclient.ajaxclientkit;
 import java.io.IOException;
 
 import org.codefaces.ui.widgets.ajaxclient.AjaxClient;
-import org.codefaces.ui.widgets.ajaxclient.HttpRequest;
-import org.codefaces.ui.widgets.ajaxclient.HttpResponse;
+import org.codefaces.ui.widgets.ajaxclient.JsonpRequest;
+import org.codefaces.ui.widgets.ajaxclient.JsonpResponse;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.ControlLCAUtil;
 import org.eclipse.rwt.lifecycle.IWidgetAdapter;
@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Widget;
 public class AjaxClientLCA extends AbstractWidgetLCA {
 	private static final String WIDGET_ID = 
 		"org.codefaces.ui.widgets.ajaxclient.AjaxClient";
-	private static final String JS_SEND_HTTP_REQUEST = "sendHttpRequest";
-	private static final String JS_PARAM_HTTP_STATUS_CODE = "statusCode";
-	private static final String JS_PARAM_HTTP_CONTENT = "content";
+	private static final String JS_SEND_JSONP_REQUEST = "sendJsonpRequest";
+	private static final String JS_PARAM_STATUS = "status";
+	private static final String JS_PARAM_CONTENT = "content";
 
 	@Override
 	public void preserveValues(Widget widget) {
@@ -27,7 +27,7 @@ public class AjaxClientLCA extends AbstractWidgetLCA {
 
 	@Override
 	public void renderChanges(Widget widget) throws IOException {
-		sendHttpRequest((AjaxClient)widget);
+		sendJsonpRequest((AjaxClient)widget);
 	}
 
 	@Override
@@ -47,32 +47,41 @@ public class AjaxClientLCA extends AbstractWidgetLCA {
 	@Override
 	public void readData(Widget widget) {
 		AjaxClient ajaxClient = (AjaxClient)widget;
-		String statusCode = WidgetLCAUtil.readPropertyValue(ajaxClient,
-				JS_PARAM_HTTP_STATUS_CODE);
+		String status = WidgetLCAUtil.readPropertyValue(ajaxClient,
+				JS_PARAM_STATUS);
 		String content = WidgetLCAUtil.readPropertyValue(ajaxClient,
-				JS_PARAM_HTTP_CONTENT);
-		if(statusCode != null){
-			HttpResponse response = new HttpResponse(
-					Integer.parseInt(statusCode), content);
-			ajaxClient.setHttpResponse(response);
+				JS_PARAM_CONTENT);
+		
+		if(status != null){
+			JsonpResponse.STATUS responseStatus;
+			// I think this is better than using Enum.valueOf.
+			// Any unknown status String is considered as error.
+			if(status.equals("success")){
+				responseStatus = JsonpResponse.STATUS.SUCCESS;
+			}
+			else if(status.equals("timeout")){
+				responseStatus = JsonpResponse.STATUS.TIMEOUT;
+			}else{
+				responseStatus = JsonpResponse.STATUS.ERROR;
+			}
+			JsonpResponse response = new JsonpResponse(
+					responseStatus, content);
+			ajaxClient.setJsonpResponse(response);
 		}
 	}
 
 	/**
-	 * Tell the javascript to send a http request
+	 * Tell the javascript to send a JSONP request
 	 * @param ajaxClient an AjaxClient
 	 * @throws IOException if IO error occurs
 	 */
-	private void sendHttpRequest(final AjaxClient ajaxClient) throws IOException{
-		HttpRequest request = ajaxClient.getHttpRequest();
+	private void sendJsonpRequest(final AjaxClient ajaxClient) throws IOException{
+		JsonpRequest request = ajaxClient.getJsonpRequest();
 		if(request != null){
 			String url = request.getUrl();
-			String method = request.getHttpMethod().toString();
-			boolean async = request.isAsynchronous();
-			Integer timeout = request.getTimeout();
+			int timeout = request.getTimeout();
 			JSWriter writer = JSWriter.getWriterFor(ajaxClient);
-			writer.call(JS_SEND_HTTP_REQUEST, new Object[] { url, method,
-					async, timeout });
+			writer.call(JS_SEND_JSONP_REQUEST, new Object[] { url, timeout });
 		}
 	}
 }

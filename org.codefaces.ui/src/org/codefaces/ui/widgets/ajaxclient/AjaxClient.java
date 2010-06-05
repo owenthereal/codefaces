@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Display;
 
 public class AjaxClient extends Control{
 
-	private HttpRequest httpRequest = null;
-	private HttpResponse httpResponse = null;
+	private JsonpRequest jsonpRequest = null;
+	private JsonpResponse jsonpResponse = null;
 
 
 	public AjaxClient(Composite parent, int style) {
@@ -15,41 +15,41 @@ public class AjaxClient extends Control{
 	}
 
 	/**
-	 * Send the given HTTP request
+	 * Send the given JSONP request
 	 * 
-	 * @param httpRequest
-	 *            the given HTTP request
-	 * @return the response of the HTTP request
+	 * @param jsonpRequest
+	 *            the given JSONP request
+	 * @return the response of the JSONP request
 	 */
-	public HttpResponse sendHttpRequest(HttpRequest httpRequest){
+	public JsonpResponse sendJsonpRequest(JsonpRequest jsonpRequest){
 		checkWidget();
-		if (httpRequest == null) return null;
+		if (jsonpRequest == null) return null;
 		
-		this.httpRequest = httpRequest;
-		this.httpResponse = null;
-		while(this.httpResponse == null){
+		this.jsonpRequest = jsonpRequest;
+		this.jsonpResponse = null;
+		while(this.jsonpResponse == null){
 			Display display = getDisplay();
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
-		this.httpRequest = null;
-		return this.httpResponse; 
+		this.jsonpRequest = null;
+		return this.jsonpResponse; 
 	}
 	
-	public void setHttpRequest(HttpRequest request){
-		httpRequest = request;
+	public void setJsonpRequest(JsonpRequest request){
+		jsonpRequest = request;
 	}
 	
-	public void setHttpResponse(HttpResponse response){
-		httpResponse = response;
+	public void setJsonpResponse(JsonpResponse response){
+		jsonpResponse = response;
 	}
 	
-	public HttpRequest getHttpRequest() {
-		return httpRequest;
+	public JsonpRequest getJsonpRequest() {
+		return jsonpRequest;
 	}
 
-	public HttpResponse getHttpResponse() {
-		return httpResponse;
+	public JsonpResponse getJsonpResponse() {
+		return jsonpResponse;
 	}
 }

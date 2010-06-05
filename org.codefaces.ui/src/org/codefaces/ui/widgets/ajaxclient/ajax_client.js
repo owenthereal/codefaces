@@ -7,32 +7,45 @@ qx.Class.define("org.codefaces.ui.widgets.ajaxclient.AjaxClient", {
   
   members: {
     
-  
     /**
-     * send an HTTP request and send back the HTTP response
+     * send an JSONP request and send back the JSONP response
      *
      * @param[String] url - the HTTP URL.
-     * @param[String] method - request method. Can be "GET", "POST", 
-     *     "PUT", "HEAD", "DELETE", "OPTIONS".
-     * @param[Boolean] asyn - if set to false, it will stop the script 
-     *     execution until the response was received.
      * @param[Number] timeout - timeout in milliseconds of each request. 
-     *     Use default value if set to null.
+     *     Use default value if set to 0.
      */
-    sendHttpRequest: function(url, method, asyn, timeout){
+    sendJsonpRequest: function(url, timeout){
       var wid = org.eclipse.swt.WidgetManager.getInstance().findIdByWidget(this);
       
-	  $.ajax({
+      //function for sending a reply to server
+      var sendResponse = function(wid, status , content){
+      var req = org.eclipse.swt.Request.getInstance();
+        req.addParameter(wid + '.status', status);
+        req.addParameter(wid + '.content', content);
+        req.send();
+      };
+      
+      // is the response received?
+      var responseReceived = false;
+
+      // perform the call      
+	  $.jsonp({
 	    url: url,
 	    dataType: 'jsonp',
-	    type: method,
-	    async: false,
+	    timeout: timeout,
+	    callbackParameter: 'callback',
+	    
+	    //textStatus is always 'success'
 	    success: function (data, textStatus) {
-	      var req = org.eclipse.swt.Request.getInstance();
-	      req.addParameter(wid + ".statusCode", "500");
-          req.addParameter(wid + ".content", JSON.stringify(data));
-          req.send();
-	    } 
+	      responseReceived = true;
+	      sendResponse(wid, textStatus, JSON.stringify(data));
+	    },
+	    
+	    //textStatus can be 'error' or 'timeout'
+	    error: function(xOptions, textStatus){
+         responseReceived = true;
+	      sendResponse(wid, textStatus, '');
+	    }
 	  });
 	}
   }

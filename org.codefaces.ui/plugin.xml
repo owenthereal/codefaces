@@ -155,6 +155,9 @@
             class="org.codefaces.ui.widgets.ajaxclient.JQueryResource">
       </resource>
       <resource
+            class="org.codefaces.ui.widgets.ajaxclient.JQueryJsonpResource">
+      </resource>
+      <resource
             class="org.codefaces.ui.widgets.ajaxclient.JsonHelperResource">
       </resource>
    </extension>
