@@ -25,9 +25,6 @@ qx.Class.define("org.codefaces.ui.widgets.ajaxclient.AjaxClient", {
         req.send();
       };
       
-      // is the response received?
-      var responseReceived = false;
-
       // perform the call      
 	  $.jsonp({
 	    url: url,
@@ -37,13 +34,11 @@ qx.Class.define("org.codefaces.ui.widgets.ajaxclient.AjaxClient", {
 	    
 	    //textStatus is always 'success'
 	    success: function (data, textStatus) {
-	      responseReceived = true;
 	      sendResponse(wid, textStatus, JSON.stringify(data));
 	    },
 	    
 	    //textStatus can be 'error' or 'timeout'
 	    error: function(xOptions, textStatus){
-         responseReceived = true;
 	      sendResponse(wid, textStatus, '');
 	    }
 	  });
