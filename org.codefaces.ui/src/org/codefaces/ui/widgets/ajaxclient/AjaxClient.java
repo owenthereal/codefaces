@@ -13,6 +13,18 @@ public class AjaxClient extends Control{
 	public AjaxClient(Composite parent, int style) {
 		super(parent, style);
 	}
+	
+	/**
+	 * Send the given JSONP request with a given url and default timeout.
+	 * It construct a JsonpRequest object and pass it into the 
+	 * sendJsonpRequest(JsonpRequest) method.
+	 * 
+	 * @param url the url
+	 * @return the response of the JSONP request
+	 */
+	public JsonpResponse sendJsonpRequest(String url){
+		return sendJsonpRequest(new JsonpRequest(url));
+	}
 
 	/**
 	 * Send the given JSONP request
