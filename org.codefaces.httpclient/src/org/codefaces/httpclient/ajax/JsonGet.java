@@ -2,7 +2,6 @@ package org.codefaces.httpclient.ajax;
 
 /**
  * This class represent a single JSONP request called
- * @author kklo
  */
 public class JsonGet {
 	private final static int DEFAULT_TIMEOUT = 0;

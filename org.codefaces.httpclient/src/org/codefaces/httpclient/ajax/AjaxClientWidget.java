@@ -8,12 +8,12 @@ import org.eclipse.ui.PlatformUI;
 public class AjaxClientWidget extends Widget {
 	private AjaxClient client;
 
-	public AjaxClient getClient() {
-		return client;
-	}
-
 	public AjaxClientWidget() {
 		super(PlatformUI.createDisplay().getActiveShell(), SWT.NONE);
 		client = new AjaxClient(JSWriter.getWriterFor(this));
+	}
+	
+	public AjaxClient getClient() {
+		return client;
 	}
 }

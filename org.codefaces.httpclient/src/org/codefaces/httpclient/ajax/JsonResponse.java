@@ -2,7 +2,6 @@ package org.codefaces.httpclient.ajax;
 
 /**
  * This class represent a single JSONP response received
- * @author kklo
  */
 public class JsonResponse {
 	public enum STATUS {SUCCESS, ERROR, TIMEOUT};

@@ -2,7 +2,6 @@ package org.codefaces.httpclient.ajax.internal.ajaxclientwidgetkit;
 
 import java.io.IOException;
 
-import org.codefaces.httpclient.ajax.AjaxClient;
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
 import org.codefaces.httpclient.ajax.JsonResponse;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
@@ -17,13 +16,13 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 
 	@Override
 	public void preserveValues(Widget widget) {
-		// Do Nothing. Nothing need to preserved in the javascript
+		// do nothing
 	}
 
 	@Override
 	public void renderChanges(Widget widget) throws IOException {
-		AjaxClientWidget ajaxClient = (AjaxClientWidget) widget;
-		ajaxClient.getClient().flush();
+		AjaxClientWidget ajaxClientWidget = (AjaxClientWidget) widget;
+		ajaxClientWidget.getClient().flush();
 	}
 
 	@Override
@@ -38,15 +37,15 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 		String id = WidgetUtil.getId(widget);
 
 		// TODO: check whether id is necessary
-		writer.newWidget(AjaxClient.class.getName(), new Object[] { id });
+		writer.newWidget(AjaxClientWidgetLCA.class.getName(), new Object[] { id });
 	}
 
 	@Override
 	public void readData(Widget widget) {
-		AjaxClientWidget ajaxClient = (AjaxClientWidget) widget;
-		String status = WidgetLCAUtil.readPropertyValue(ajaxClient,
+		AjaxClientWidget ajaxClientWidget = (AjaxClientWidget) widget;
+		String status = WidgetLCAUtil.readPropertyValue(ajaxClientWidget,
 				JS_PARAM_STATUS);
-		String content = WidgetLCAUtil.readPropertyValue(ajaxClient,
+		String content = WidgetLCAUtil.readPropertyValue(ajaxClientWidget,
 				JS_PARAM_CONTENT);
 		if (status != null) {
 			JsonResponse.STATUS responseStatus;
@@ -60,7 +59,7 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 				responseStatus = JsonResponse.STATUS.ERROR;
 			}
 			JsonResponse response = new JsonResponse(responseStatus, content);
-			ajaxClient.getClient().setJsonResponse(response);
+			ajaxClientWidget.getClient().setJsonResponse(response);
 		}
 	}
 }
