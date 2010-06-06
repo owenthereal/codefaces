@@ -1,12 +1,11 @@
-package org.codefaces.ui.widgets.ajaxclient;
+package org.codefaces.httpclient.ajax;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class JsonHelperResource implements IResource {
-
+public class JQueryResource implements IResource {
 	private static final String RESOURCE_LOCATION =
-		"http://www.json.org/json2.js";
+		"http://code.jquery.com/jquery-1.4.2.min.js";
 	
 	@Override
 	public String getCharset() {

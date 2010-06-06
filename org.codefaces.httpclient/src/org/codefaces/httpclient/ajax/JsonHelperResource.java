@@ -1,11 +1,12 @@
-package org.codefaces.ui.widgets.ajaxclient;
+package org.codefaces.httpclient.ajax;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class AjaxClientResource implements IResource {
+public class JsonHelperResource implements IResource {
+
 	private static final String RESOURCE_LOCATION =
-		"org/codefaces/ui/widgets/ajaxclient/ajax_client.js";
+		"org/codefaces/httpclient/ajax/json2.js";
 	
 	@Override
 	public String getCharset() {
@@ -24,7 +25,7 @@ public class AjaxClientResource implements IResource {
 
 	@Override
 	public RegisterOptions getOptions() {
-		return RegisterOptions.VERSION_AND_COMPRESS;
+		return RegisterOptions.VERSION;
 	}
 
 	@Override
@@ -36,5 +37,4 @@ public class AjaxClientResource implements IResource {
 	public boolean isJSLibrary() {
 		return true;
 	}
-
 }

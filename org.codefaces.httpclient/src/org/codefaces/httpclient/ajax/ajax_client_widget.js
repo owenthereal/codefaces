@@ -1,4 +1,4 @@
-qx.Class.define("org.codefaces.ui.widgets.ajaxclient.AjaxClient", {
+qx.Class.define("org.codefaces.httpclient.ajax.AjaxClientWidget", {
   extend: qx.ui.core.Widget,
     
   construct: function() {

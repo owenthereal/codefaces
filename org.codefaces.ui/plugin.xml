@@ -140,25 +140,10 @@
             name="About">
       </command>
    </extension>
-   <extension
+    <extension
          point="org.eclipse.rap.ui.phaselistener">
       <listener
             class="org.codefaces.ui.UrlPhaseListener">
       </listener>
-   </extension>
-   <extension
-         point="org.eclipse.rap.ui.resources">
-      <resource
-            class="org.codefaces.ui.widgets.ajaxclient.AjaxClientResource">
-      </resource>
-      <resource
-            class="org.codefaces.ui.widgets.ajaxclient.JQueryResource">
-      </resource>
-      <resource
-            class="org.codefaces.ui.widgets.ajaxclient.JQueryJsonpResource">
-      </resource>
-      <resource
-            class="org.codefaces.ui.widgets.ajaxclient.JsonHelperResource">
-      </resource>
    </extension>
 </plugin>

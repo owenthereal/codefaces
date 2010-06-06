@@ -1,11 +1,11 @@
-package org.codefaces.ui.widgets.ajaxclient;
+package org.codefaces.httpclient.ajax;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class JQueryJsonpResource implements IResource {
+public class AjaxClientWidgetResource implements IResource {
 	private static final String RESOURCE_LOCATION =
-		"http://jquery-jsonp.googlecode.com/files/jquery.jsonp-2.0.2.min.js";
+		"org/codefaces/httpclient/ajax/ajax_client_widget.js";
 	
 	@Override
 	public String getCharset() {
@@ -24,12 +24,12 @@ public class JQueryJsonpResource implements IResource {
 
 	@Override
 	public RegisterOptions getOptions() {
-		return RegisterOptions.VERSION;
+		return RegisterOptions.VERSION_AND_COMPRESS;
 	}
 
 	@Override
 	public boolean isExternal() {
-		return true;
+		return false;
 	}
 
 	@Override

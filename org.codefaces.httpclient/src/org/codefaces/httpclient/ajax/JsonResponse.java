@@ -1,16 +1,16 @@
-package org.codefaces.ui.widgets.ajaxclient;
+package org.codefaces.httpclient.ajax;
 
 /**
  * This class represent a single JSONP response received
  * @author kklo
  */
-public class JsonpResponse {
+public class JsonResponse {
 	public enum STATUS {SUCCESS, ERROR, TIMEOUT};
 	
 	private final STATUS status;
 	private final String content;
 	
-	public JsonpResponse(STATUS status, String content){
+	public JsonResponse(STATUS status, String content){
 		this.status = status;
 		this.content = content;
 	}
