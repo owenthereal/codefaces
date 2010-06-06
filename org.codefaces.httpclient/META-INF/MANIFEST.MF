@@ -5,7 +5,9 @@ Bundle-SymbolicName: org.codefaces.httpclient;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.codefaces.httpclient.CodeFacesRapActivator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.rap.ui;visibility:=reexport
+ org.eclipse.rap.ui;visibility:=reexport,
+ org.codefaces.lib
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.codefaces.httpclient.ajax
+Export-Package: org.codefaces.httpclient.ajax,
+ org.codefaces.httpclient.http

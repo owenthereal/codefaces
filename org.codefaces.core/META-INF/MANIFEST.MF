@@ -13,7 +13,7 @@ Export-Package: org.codefaces.core,
 Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.lib;visibility:=reexport,
  org.eclipse.rap.rwt,
- org.codefaces.httpclient
+ org.codefaces.httpclient;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .

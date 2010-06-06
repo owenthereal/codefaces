@@ -3,8 +3,8 @@ package org.codefaces.core.models;
 import java.util.Collection;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.RepoService;
+import org.codefaces.httpclient.http.RepoResponseException;
 
 public class RepoFolderInfo extends RepoResourceInfo {
 	private Collection<RepoResource> children;

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.core.services.RepoResponseException;
+import org.codefaces.httpclient.http.RepoResponseException;
 
 public class RepoInfo extends RepoResourceInfo {
 	private Collection<RepoBranch> branches;
