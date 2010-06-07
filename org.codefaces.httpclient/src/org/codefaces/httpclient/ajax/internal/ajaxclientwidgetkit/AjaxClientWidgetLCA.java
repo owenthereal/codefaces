@@ -37,7 +37,7 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 		String id = WidgetUtil.getId(widget);
 
 		// TODO: check whether id is necessary
-		writer.newWidget(AjaxClientWidgetLCA.class.getName(), new Object[] { id });
+		writer.newWidget(AjaxClientWidget.class.getName(), new Object[] { id });
 	}
 
 	@Override

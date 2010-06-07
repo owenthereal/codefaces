@@ -4,9 +4,6 @@
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
-            class="org.codefaces.httpclient.ajax.AjaxClientWidgetResource">
-      </resource>
-      <resource
             class="org.codefaces.httpclient.ajax.JQueryResource">
       </resource>
       <resource
@@ -14,6 +11,9 @@
       </resource>
       <resource
             class="org.codefaces.httpclient.ajax.JsonHelperResource">
+      </resource>
+      <resource
+            class="org.codefaces.httpclient.ajax.AjaxClientWidgetResource">
       </resource>
    </extension>
 </plugin>

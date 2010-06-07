@@ -17,6 +17,9 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.httpclient.ajax.AjaxClientWidget;
+import org.codefaces.httpclient.ajax.JsonGet;
+import org.codefaces.httpclient.ajax.JsonResponse;
 import org.codefaces.httpclient.http.ManagedHttpClient;
 import org.codefaces.httpclient.http.RepoResponseException;
 
@@ -52,7 +55,10 @@ public class GitHubService {
 	}
 
 	private String getResponseBody(String url) throws RepoResponseException {
-		return managedClient.getResponseBody(url);
+//		return managedClient.getResponseBody(url);
+		AjaxClientWidget widget = AjaxClientWidget.getCurrent();
+		JsonResponse resp = widget.getClient().execute(new JsonGet(url));
+		return resp.getContent();
 	}
 
 	/**

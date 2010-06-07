@@ -5,7 +5,7 @@ import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
 public class JQueryJsonpResource implements IResource {
 	private static final String RESOURCE_LOCATION =
-		"http://jquery-jsonp.googlecode.com/files/jquery.jsonp-2.0.2.min.js";
+		"org/codefaces/httpclient/ajax/jquery.jsonp-2.0.2.min.js";
 	
 	@Override
 	public String getCharset() {
@@ -29,7 +29,7 @@ public class JQueryJsonpResource implements IResource {
 
 	@Override
 	public boolean isExternal() {
-		return true;
+		return false;
 	}
 
 	@Override

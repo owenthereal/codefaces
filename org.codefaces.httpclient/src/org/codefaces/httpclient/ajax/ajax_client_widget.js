@@ -20,13 +20,17 @@ qx.Class.define("org.codefaces.httpclient.ajax.AjaxClientWidget", {
       //function for sending a reply to server
       var sendResponse = function(wid, status , content){
       	var req = org.eclipse.swt.Request.getInstance();
+        
         req.addParameter(wid + '.status', status);
-        req.addParameter(wid + '.content', content);
+        if (content != null) {
+        	req.addParameter(wid + '.content', content);
+        }
+        
         req.send();
       };
       
       // perform the call      
-	  $.jsonp({
+	  jQuery.jsonp({
 	    url: url,
 	    dataType: 'jsonp',
 	    timeout: timeout,
@@ -39,7 +43,7 @@ qx.Class.define("org.codefaces.httpclient.ajax.AjaxClientWidget", {
 	    
 	    //textStatus can be 'error' or 'timeout'
 	    error: function(xOptions, textStatus){
-	      sendResponse(wid, textStatus, '');
+	      sendResponse(wid, textStatus, null);
 	    }
 	  });
 	}
