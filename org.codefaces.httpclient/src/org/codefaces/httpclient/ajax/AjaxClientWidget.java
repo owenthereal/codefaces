@@ -10,7 +10,7 @@ public class AjaxClientWidget extends Widget {
 
 	public AjaxClientWidget() {
 		super(PlatformUI.createDisplay().getActiveShell(), SWT.NONE);
-		client = new AjaxClient(JSWriter.getWriterFor(this));
+		client = new AjaxClient(getDisplay(), JSWriter.getWriterFor(this));
 	}
 	
 	public AjaxClient getClient() {

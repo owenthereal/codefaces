@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.rwt.lifecycle.JSWriter;
+import org.eclipse.swt.widgets.Display;
 
 public class AjaxClient {
 	protected AtomicReference<JsonGet> atomicJsonGet;
@@ -14,7 +15,10 @@ public class AjaxClient {
 
 	private final JSWriter jsWriter;
 
-	public AjaxClient(JSWriter jsWriter) {
+	private final Display display;
+
+	public AjaxClient(Display display, JSWriter jsWriter) {
+		this.display = display;
 		this.jsWriter = jsWriter;
 		atomicJsonGet = new AtomicReference<JsonGet>();
 		atomicJsonResponse = new AtomicReference<JsonResponse>();
@@ -26,18 +30,20 @@ public class AjaxClient {
 		// waiting for response
 		JsonResponse jsonResponse = atomicJsonResponse.get();
 		while (jsonResponse == null) {
-			try {
-				wait(500);
-				jsonResponse = atomicJsonResponse.get();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			runEventLoop();
+			jsonResponse = atomicJsonResponse.get();
 		}
 
 		// release the response object
 		atomicJsonResponse.set(null);
 
 		return jsonResponse;
+	}
+
+	protected void runEventLoop() {
+		if (!display.readAndDispatch()) {
+			display.sleep();
+		}
 	}
 
 	public void setJsonResponse(JsonResponse response) {

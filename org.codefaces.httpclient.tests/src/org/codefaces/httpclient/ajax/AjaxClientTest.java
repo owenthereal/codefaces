@@ -13,11 +13,16 @@ public class AjaxClientTest {
 
 	@Before
 	public void setUp() throws Exception {
-		client = new AjaxClient(null) {
+		client = new AjaxClient(null, null) {
 			@Override
 			protected void sendJsonRequest(JsonGet cachedJsonGet) {
 				this.atomicJsonResponse.set(new JsonResponse(
 						JsonResponse.STATUS.SUCCESS, "content"));
+			}
+			
+			@Override
+			protected void runEventLoop() {
+				// do nothing
 			}
 		};
 
