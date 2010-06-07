@@ -30,7 +30,6 @@ module Helper
 
 
   def checkout(output_dir, configs)
-    puts configs['name']
     scm = configs['scm']
     repo = configs['repository']
     name = configs['name']
@@ -42,7 +41,13 @@ module Helper
         sh "mkdir -p #{tmp_dir}"  
         sh "cp #{repo} #{tmp_dir}/#{name}"
       when "git"
-        sh "git clone #{repo} #{tmp_dir}; rm -Rf #{tmp_dir}/.git"
+        sh "git clone #{repo} #{tmp_dir}"
+        current_dir = File.expand_path('.')
+        Dir.chdir(File.expand_path(tmp_dir))
+        branch = configs['branch'] || 'master'
+        sh "git checkout #{branch}"
+        rm_r ".git"
+        Dir.chdir(current_dir)
       when "http"
         sh "mkdir -p #{tmp_dir}"  
         sh "curl #{repo} -o #{tmp_dir}/#{name}"
