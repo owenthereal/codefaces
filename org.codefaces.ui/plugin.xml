@@ -140,7 +140,7 @@
             name="About">
       </command>
    </extension>
-   <extension
+    <extension
          point="org.eclipse.rap.ui.phaselistener">
       <listener
             class="org.codefaces.ui.UrlPhaseListener">

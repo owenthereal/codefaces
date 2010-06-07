@@ -1,8 +1,8 @@
 package org.codefaces.core.models;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.RepoService;
+import org.codefaces.httpclient.http.RepoResponseException;
 
 public class RepoFileInfo extends RepoResourceInfo {
 	private String mimeType;

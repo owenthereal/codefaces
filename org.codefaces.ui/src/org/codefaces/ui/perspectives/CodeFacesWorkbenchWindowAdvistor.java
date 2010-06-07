@@ -1,9 +1,11 @@
 package org.codefaces.ui.perspectives;
 
+import org.codefaces.httpclient.ajax.AjaxClientWidget;
 import org.codefaces.ui.views.WelcomePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -37,13 +39,16 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 
 	@Override
 	public void postWindowOpen() {
-		IWorkbenchPage activePage = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchWindow activeWindow = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IWorkbenchPage activePage = activeWindow.getActivePage();
 		try {
 			activePage.showView(WelcomePage.ID);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+		
+		AjaxClientWidget.getCurrent();
 	}
 
 	@Override

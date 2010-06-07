@@ -14,10 +14,10 @@ import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.ManagedHttpClient;
-import org.codefaces.core.services.RepoResponseException;
 import org.codefaces.core.services.github.GitHubBranchesDto;
 import org.codefaces.core.services.github.GitHubService;
+import org.codefaces.httpclient.http.ManagedHttpClient;
+import org.codefaces.httpclient.http.RepoResponseException;
 import org.junit.Before;
 import org.junit.Test;
 

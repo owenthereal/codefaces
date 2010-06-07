@@ -11,7 +11,8 @@ Export-Package: org.codefaces.core.events,
  org.codefaces.core.services.github
 Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.lib;visibility:=reexport,
- org.eclipse.rap.rwt
+ org.eclipse.rap.rwt,
+ org.codefaces.httpclient;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .

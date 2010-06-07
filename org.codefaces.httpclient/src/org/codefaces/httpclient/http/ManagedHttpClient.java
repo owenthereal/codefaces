@@ -1,4 +1,5 @@
-package org.codefaces.core.services;
+package org.codefaces.httpclient.http;
+
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+
 
 public class ManagedHttpClient {
 	private static class IdleConnectionMonitorThread extends Thread {
