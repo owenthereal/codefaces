@@ -1,11 +1,12 @@
-package org.codefaces.httpclient.ajax;
+package org.codefaces.ui.lib.js;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class JQueryResource implements IResource {
+public class Json2Resource implements IResource {
+
 	private static final String RESOURCE_LOCATION =
-		"http://code.jquery.com/jquery-1.4.2.min.js";
+		"org/codefaces/ui/lib/js/json2.js";
 	
 	@Override
 	public String getCharset() {
@@ -24,12 +25,13 @@ public class JQueryResource implements IResource {
 
 	@Override
 	public RegisterOptions getOptions() {
+		//we will do our own compression
 		return RegisterOptions.VERSION;
 	}
 
 	@Override
 	public boolean isExternal() {
-		return true;
+		return false;
 	}
 
 	@Override

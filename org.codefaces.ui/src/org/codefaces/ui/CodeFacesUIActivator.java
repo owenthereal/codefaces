@@ -24,7 +24,7 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 
 	private static final String LANG = "#{lang}";
 
-	private static final String EDITOR_TEMPLATE_PATH = "web/code_editor_template.html";
+	private static final String EDITOR_TEMPLATE_PATH = "public/code_editor_template.html";
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.codefaces.ui";

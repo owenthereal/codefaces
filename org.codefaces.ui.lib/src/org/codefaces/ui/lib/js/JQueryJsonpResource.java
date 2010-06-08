@@ -1,11 +1,11 @@
-package org.codefaces.httpclient.ajax;
+package org.codefaces.ui.lib.js;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
 public class JQueryJsonpResource implements IResource {
 	private static final String RESOURCE_LOCATION =
-		"org/codefaces/httpclient/ajax/jquery.jsonp-2.0.2.min.js";
+		"org/codefaces/ui/lib/js/jquery.jsonp-2.0.2.min.js";
 	
 	@Override
 	public String getCharset() {
@@ -24,6 +24,7 @@ public class JQueryJsonpResource implements IResource {
 
 	@Override
 	public RegisterOptions getOptions() {
+		//we will do our own compression
 		return RegisterOptions.VERSION;
 	}
 
