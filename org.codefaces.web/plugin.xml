@@ -16,4 +16,17 @@
             load-on-startup="true">
       </servlet>
    </extension>
+   
+   <extension
+         point="org.eclipse.rap.ui.resources">
+      <resource
+            class="org.codefaces.ui.lib.js.JQueryResource">
+      </resource>
+      <resource
+            class="org.codefaces.ui.lib.js.JQueryJsonpResource">
+      </resource>
+      <resource
+            class="org.codefaces.ui.lib.js.Json2Resource">
+      </resource>
+   </extension>
 </plugin>
