@@ -1,11 +1,19 @@
 /*
 Syntax highlighting with language autodetection.
 http://softwaremaniacs.org/soft/highlight/
+
+This is an modified version of Highlight.js.
+1. Mr Er.. (http://mrer.org.ua/?is=be_careful_guru&t=codeigniter_table_custom_columns_and_cells_styles)
+   added line number supports to the original javascript.
+
+2. KK Lo. (codefaces.org) based on (1), extends the line number support to
+   'no-hightline'
 */
 
 var hljs = new function() {
   var LANGUAGES = {}
   var selected_languages = {};
+  var NO_HIGHLIGHT = 'no-highlight'
 
   function escape(value) {
     return value.replace(/&/gm, '&amp;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
@@ -280,9 +288,10 @@ var hljs = new function() {
     classes = classes.concat(block.parentNode.className.split(/\s+/));
     for (var i = 0; i < classes.length; i++) {
       var class_ = classes[i].replace(/^language-/, '');
-      if (class_ == 'no-highlight') {
-        throw 'No highlight'
+      if (class_ == NO_HIGHLIGHT) {
+        return NO_HIGHLIGHT;
       }
+
       if (LANGUAGES[class_]) {
         return class_;
       }
@@ -370,17 +379,20 @@ var hljs = new function() {
   }
 
   function highlightBlock(block, tabReplace, showPages) {
-    try {
-      var text = blockText(block);
-      var language = blockLanguage(block);
-    } catch (e) {
-      if (e == 'No highlight')
-        return;
-    }
+    var text = blockText(block);
+    var language = blockLanguage(block);
+
 
     if (language) {
-      var result = highlight(language, text).value;
-    } else {
+      if (language != NO_HIGHLIGHT){
+        /* language is specified */
+        var result = highlight(language, text).value;
+      }
+      else{ /* no highlight */
+        var result = escape(text);
+      }
+    }
+    else { /* do the guessing */
       var max_relevance = 0;
       for (var key in selected_languages) {
         if (!selected_languages.hasOwnProperty(key))
@@ -404,7 +416,7 @@ var hljs = new function() {
       var class_name = block.className;
       if (!class_name.match(language)) {
         class_name += ' ' + language;
-      }
+    }
       var original = nodeStream(block);
       if (original.length) {
         var pre = document.createElement('pre');
