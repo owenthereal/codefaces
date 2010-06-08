@@ -1,9 +1,7 @@
-package org.codefaces.httpclient.ajax.internal.ajaxclientwidgetkit;
+package org.codefaces.httpclient.ajax;
 
 import java.io.IOException;
 
-import org.codefaces.httpclient.ajax.AjaxClientWidget;
-import org.codefaces.httpclient.ajax.JsonResponse;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.JSWriter;
 import org.eclipse.rwt.lifecycle.WidgetLCAUtil;

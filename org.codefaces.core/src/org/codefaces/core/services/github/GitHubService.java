@@ -55,9 +55,15 @@ public class GitHubService {
 	}
 
 	private String getResponseBody(String url) throws RepoResponseException {
-//		return managedClient.getResponseBody(url);
+		// return managedClient.getResponseBody(url);
 		AjaxClientWidget widget = AjaxClientWidget.getCurrent();
 		JsonResponse resp = widget.getClient().execute(new JsonGet(url));
+
+		if (resp.getStatus() != JsonResponse.STATUS.SUCCESS) {
+			throw new RepoResponseException("Errors loading " + url
+					+ ". Json response status: " + resp.getStatus());
+		}
+
 		return resp.getContent();
 	}
 
@@ -82,7 +88,8 @@ public class GitHubService {
 				+ "/branches";
 	}
 
-	protected String createGitHubListChildrenUrl(Repo repo, RepoResource resource) {
+	protected String createGitHubListChildrenUrl(Repo repo,
+			RepoResource resource) {
 		return SHOW_GITHUB_CHILDREN + "/" + repo.getCredential().getOwner()
 				+ "/" + repo.getName() + "/" + resource.getId();
 	}
