@@ -7,7 +7,7 @@ public class RepoResourceManager {
 		return INSTANCE;
 	}
 
-	public synchronized RepoResourceInfo getInfo(RepoResource resource) {
+	public RepoResourceInfo getInfo(RepoResource resource) {
 		switch (resource.getType()) {
 		case FOLDER:
 		case FOLDER_ROOT:

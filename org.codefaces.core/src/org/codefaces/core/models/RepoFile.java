@@ -17,6 +17,11 @@ public class RepoFile extends RepoResource {
 		return info;
 	}
 
+	@Override
+	public boolean hasChildren() {
+		return false;
+	}
+
 	public String getContent() {
 		return getInfo().getContent();
 	}

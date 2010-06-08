@@ -20,6 +20,10 @@ public class RepoResourceInfo {
 		return EMPTY_CHILDREN;
 	}
 
+	public boolean hasChildren() {
+		return !getChildren().isEmpty();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

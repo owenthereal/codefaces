@@ -27,6 +27,11 @@ public class RepoInfo extends RepoResourceInfo {
 
 		return branches;
 	}
+	
+	@Override
+	public boolean hasChildren() {
+		return true;
+	}
 
 	private Collection<RepoBranch> fetchBranches() {
 		try {

@@ -63,7 +63,7 @@ public class RepoResource extends RepoElement {
 	}
 
 	public boolean hasChildren() {
-		return getChildren().isEmpty();
+		return getInfo().hasChildren();
 	}
 
 	protected RepoResourceInfo getInfo() {

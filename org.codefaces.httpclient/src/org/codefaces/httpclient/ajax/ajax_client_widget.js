@@ -26,7 +26,7 @@ qx.Class.define("org.codefaces.httpclient.ajax.AjaxClientWidget", {
         	req.addParameter(wid + '.content', content);
         }
         
-        req.sendSyncronous();
+        req.send();
       };
       
       // perform the call      

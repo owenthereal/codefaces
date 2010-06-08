@@ -31,6 +31,11 @@ public class RepoFileInfo extends RepoResourceInfo {
 		this.size = size;
 	}
 
+	@Override
+	public boolean hasChildren() {
+		return false;
+	}
+
 	private void fetchInfo(RepoFile file) {
 		RepoService repoService = CodeFacesCoreActivator.getDefault()
 				.getRepoService();

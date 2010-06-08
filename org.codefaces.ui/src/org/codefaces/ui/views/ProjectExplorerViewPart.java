@@ -15,7 +15,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -39,8 +38,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	private Workspace workspace;
 
-	class ProjectExplorerContentProvider implements IStructuredContentProvider,
-			ITreeContentProvider {
+	class ProjectExplorerContentProvider implements ITreeContentProvider {
 
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
@@ -67,7 +65,11 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 
 		public boolean hasChildren(Object parent) {
-			return getChildren(parent).length > 0;
+			if (parent instanceof RepoResource) {
+				return ((RepoResource) parent).hasChildren();
+			}
+			
+			return false;
 		}
 	}
 

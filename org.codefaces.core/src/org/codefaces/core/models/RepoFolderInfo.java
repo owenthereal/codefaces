@@ -21,6 +21,11 @@ public class RepoFolderInfo extends RepoResourceInfo {
 
 		return children;
 	}
+	
+	@Override
+	public boolean hasChildren() {
+		return true;
+	}
 
 	private Collection<RepoResource> fetchChildren() {
 		RepoService repoService = CodeFacesCoreActivator.getDefault()
