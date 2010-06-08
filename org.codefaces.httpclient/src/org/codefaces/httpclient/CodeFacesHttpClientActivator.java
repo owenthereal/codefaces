@@ -6,18 +6,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class CodeFacesRapActivator extends AbstractUIPlugin {
+public class CodeFacesHttpClientActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.codefaces.rap";
 
 	// The shared instance
-	private static CodeFacesRapActivator plugin;
+	private static CodeFacesHttpClientActivator plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public CodeFacesRapActivator() {
+	public CodeFacesHttpClientActivator() {
 	}
 
 	/*
@@ -43,7 +43,7 @@ public class CodeFacesRapActivator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static CodeFacesRapActivator getDefault() {
+	public static CodeFacesHttpClientActivator getDefault() {
 		return plugin;
 	}
 

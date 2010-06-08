@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Rap
 Bundle-SymbolicName: org.codefaces.httpclient;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.codefaces.httpclient.CodeFacesRapActivator
+Bundle-Activator: org.codefaces.httpclient.CodeFacesHttpClientActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui;visibility:=reexport,
  org.codefaces.lib

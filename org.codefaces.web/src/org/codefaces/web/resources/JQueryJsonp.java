@@ -1,12 +1,11 @@
-package org.codefaces.ui.lib.js;
+package org.codefaces.web.resources;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class Json2Resource implements IResource {
-
+public class JQueryJsonp implements IResource {
 	private static final String RESOURCE_LOCATION =
-		"org/codefaces/ui/lib/js/json2.js";
+		"org/codefaces/web/resources/jquery.jsonp-2.0.2.min.js";
 	
 	@Override
 	public String getCharset() {

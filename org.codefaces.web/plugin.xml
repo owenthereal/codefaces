@@ -20,13 +20,13 @@
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
-            class="org.codefaces.ui.lib.js.JQueryResource">
+            class="org.codefaces.web.resources.JQuery">
       </resource>
       <resource
-            class="org.codefaces.ui.lib.js.JQueryJsonpResource">
+            class="org.codefaces.web.resources.JQueryJsonp">
       </resource>
       <resource
-            class="org.codefaces.ui.lib.js.Json2Resource">
+            class="org.codefaces.web.resources.Json2">
       </resource>
    </extension>
 </plugin>

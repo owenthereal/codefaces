@@ -1,9 +1,9 @@
-package org.codefaces.ui.lib.js;
+package org.codefaces.web.resources;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-public class JQueryResource implements IResource {
+public class JQuery implements IResource {
 	private static final String RESOURCE_LOCATION =
 		"http://code.jquery.com/jquery-1.4.2.min.js";
 	

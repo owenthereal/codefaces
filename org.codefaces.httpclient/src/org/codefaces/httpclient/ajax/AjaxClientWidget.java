@@ -1,5 +1,6 @@
 package org.codefaces.httpclient.ajax;
 
+import org.codefaces.httpclient.ajax.internal.AjaxClientWidgetLCA;
 import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.rwt.lifecycle.JSWriter;
