@@ -32,13 +32,13 @@
    <extension
          point="org.codefaces.ui.codeLanguages">
       <codeLangauge
-            filePatterns="*.sh"
+            filePatterns="*.sh,Makefile"
             id="org.codefaces.web.codeLangauge.bash"
             name="bash"
             resource="/html/javascripts/highlight/languages/bash.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.cpp"
+            filePatterns="*.cpp,*.hpp,*.cxx,*.hpp,*.h,*.hpp"
             id="org.codefaces.web.codeLangauge.cpp"
             name="cpp"
             resource="/html/javascripts/highlight/languages/cpp.js">
@@ -62,7 +62,7 @@
             resource="/html/javascripts/highlight/languages/delphi.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.diff"
+            filePatterns="*.diff,*.patch"
             id="org.codefaces.web.codeLangauge.diff"
             name="diff"
             resource="/html/javascripts/highlight/languages/diff.js">
@@ -134,7 +134,7 @@
             resource="/html/javascripts/highlight/languages/html-xml.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.vbs"
+            filePatterns="*.vbs,*vb"
             id="org.codefaces.web.codeLangauge.vbscript"
             name="vbsript"
             resource="/html/javascripts/highlight/languages/vbscript.js">
