@@ -128,7 +128,7 @@
             resource="/html/javascripts/highlight/languages/ruby.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.xml"
+            filePatterns="*.xml,*xsl,*xsd"
             id="org.codefaces.web.codeLangauge.xml"
             name="xml"
             resource="/html/javascripts/highlight/languages/html-xml.js">
