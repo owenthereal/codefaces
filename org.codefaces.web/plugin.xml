@@ -23,10 +23,19 @@
             class="org.codefaces.web.resources.JQuery">
       </resource>
       <resource
-            class="org.codefaces.web.resources.JQueryJsonp">
+            class="org.codefaces.web.resources.Jsonp">
       </resource>
       <resource
             class="org.codefaces.web.resources.Json2">
       </resource>
+   </extension>
+   <extension
+         point="org.codefaces.ui.codeLanguages">
+      <codeLangauge
+            filePatterns="*.rb,RakeFile"
+            id="org.codefaces.web.codeLangauge.ruby"
+            name="ruby"
+            resource="/html/javascripts/highlight/languages/ruby.js">
+      </codeLangauge>
    </extension>
 </plugin>

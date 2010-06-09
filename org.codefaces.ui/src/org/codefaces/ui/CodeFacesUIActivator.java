@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.services.RepoService;
+import org.codefaces.ui.supportedCodeLanguages.CodeLanguages;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -40,6 +41,8 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 
 	private RepoService repoService;
 
+	private CodeLanguages langs;
+
 	/**
 	 * The constructor
 	 */
@@ -57,16 +60,23 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		this.context = context;
-		
-		repoServiceTracker = new ServiceTracker(context,RepoService.class
-				.getName(), createRepoServiceCustomizer()); 
+
+		repoServiceTracker = new ServiceTracker(context, RepoService.class
+				.getName(), createRepoServiceCustomizer());
 		repoServiceTracker.open();
+		
+		langs = new CodeLanguages();
 	}
-	
+
+	public CodeLanguages getCodeLanguages() {
+		return langs;
+	}
+
 	private ServiceTrackerCustomizer createRepoServiceCustomizer() {
 		return new ServiceTrackerCustomizer() {
 			@Override
-			public void removedService(ServiceReference reference, Object service) {
+			public void removedService(ServiceReference reference,
+					Object service) {
 				synchronized (CodeFacesUIActivator.this) {
 					if (service == CodeFacesUIActivator.this.repoService) {
 						CodeFacesUIActivator.this.repoService = null;
@@ -75,10 +85,11 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 			}
 
 			@Override
-			public void modifiedService(ServiceReference reference, Object service) {
+			public void modifiedService(ServiceReference reference,
+					Object service) {
 				// do nothing
 			}
-			
+
 			@Override
 			public Object addingService(ServiceReference reference) {
 				Object service = context.getService(reference);
@@ -87,7 +98,7 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 						CodeFacesUIActivator.this.repoService = (RepoService) service;
 					}
 				}
-				
+
 				return service;
 			}
 		};
@@ -152,7 +163,7 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		while ((inputLine = reader.readLine()) != null) {
 			builder.append(inputLine);
 		}
-		
+
 		return builder.toString();
 	}
 
