@@ -1,4 +1,4 @@
-package org.codefaces.ui.supportedCodeLanguages;
+package org.codefaces.ui.codeLanguages;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
 public class CodeLanguages {
-	private Set<CodeLanguage> langs;
+	private Collection<CodeLanguage> langs;
 	
 	public CodeLanguages() {
 		langs = retrieveLangsFromExtensionPoints();
@@ -28,10 +28,10 @@ public class CodeLanguages {
 	}
 
 	public Collection<CodeLanguage> getCodeLanguages() {
-		return Collections.unmodifiableSet(langs);
+		return Collections.unmodifiableCollection(langs);
 	}
 
-	private Set<CodeLanguage> retrieveLangsFromExtensionPoints() {
+	protected Collection<CodeLanguage> retrieveLangsFromExtensionPoints() {
 		Set<CodeLanguage> langs = new HashSet<CodeLanguage>();
 
 		IConfigurationElement[] extensionPoints = Platform
@@ -44,14 +44,14 @@ public class CodeLanguages {
 			String resource = extensionPoint.getAttribute("resource");
 
 			CodeLanguage lang = new CodeLanguage(id, name, resource,
-					parseFilePatterns(filePatterns));
+					splitFilePatterns(filePatterns));
 			langs.add(lang);
 		}
 
 		return langs;
 	}
 
-	private String[] parseFilePatterns(String filePatterns) {
+	protected String[] splitFilePatterns(String filePatterns) {
 		List<String> patterns = new ArrayList<String>();
 		for (String pattern : filePatterns.split(",")) {
 			patterns.add(pattern.trim());

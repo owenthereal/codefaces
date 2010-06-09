@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.services.RepoService;
-import org.codefaces.ui.supportedCodeLanguages.CodeLanguages;
+import org.codefaces.ui.codeLanguages.CodeLanguages;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageRegistry;

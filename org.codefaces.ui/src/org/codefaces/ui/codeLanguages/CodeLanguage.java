@@ -1,4 +1,4 @@
-package org.codefaces.ui.supportedCodeLanguages;
+package org.codefaces.ui.codeLanguages;
 
 import java.util.ArrayList;
 import java.util.Arrays;
