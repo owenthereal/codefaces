@@ -12,6 +12,8 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class CodeExplorerViewPart extends ViewPart {
@@ -24,6 +26,8 @@ public class CodeExplorerViewPart extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
+		setTitleImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+						ISharedImages.IMG_OBJ_FILE));
 	}
 
 	@Override

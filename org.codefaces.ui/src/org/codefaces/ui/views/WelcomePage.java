@@ -1,6 +1,7 @@
 package org.codefaces.ui.views;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
@@ -19,6 +20,8 @@ public class WelcomePage extends ViewPart {
 	public void createPartControl(Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
 		browser.setUrl(WELCOME_PAGE_URL);
+		setTitleImage(Images.getImageDescriptor(Images.IMG_WELCOME)
+				.createImage());
 	}
 
 	@Override

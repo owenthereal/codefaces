@@ -123,6 +123,10 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 	protected void initializeImageRegistry(ImageRegistry registry) {
 		putImageInRegistry(registry, Images.IMG_BRANCHES, "icons/branches.gif");
 		putImageInRegistry(registry, Images.IMG_ERRORS, "icons/errors.gif");
+		putImageInRegistry(registry, Images.IMG_REPO_FOLDER_ROOT,
+				"icons/repo_folder_root.gif");
+		putImageInRegistry(registry, Images.IMG_NAVIGATOR, "icons/navigator.gif");
+		putImageInRegistry(registry, Images.IMG_WELCOME, "icons/welcome.gif");
 	}
 
 	/**
