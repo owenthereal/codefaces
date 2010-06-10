@@ -6,7 +6,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.core.services.RepoService;
-import org.codefaces.httpclient.http.RepoResponseException;
+import org.codefaces.httpclient.RepoResponseException;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rwt.lifecycle.PhaseId;

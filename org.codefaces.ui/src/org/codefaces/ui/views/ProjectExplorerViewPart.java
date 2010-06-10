@@ -31,12 +31,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
-
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
 
 	private TreeViewer viewer;
 
 	private Workspace workspace;
+
+	private StatusManager statusManager;
 
 	class ProjectExplorerContentProvider implements ITreeContentProvider {
 
@@ -68,7 +69,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 			if (parent instanceof RepoResource) {
 				return ((RepoResource) parent).hasChildren();
 			}
-			
+
 			return false;
 		}
 	}
@@ -77,7 +78,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		public String getText(Object obj) {
 			if (obj instanceof RepoFolderRoot) {
 				RepoFolderRoot root = (RepoFolderRoot) obj;
-				return root.getName() + "@"
+				return root.getBranch().getName() + "@"
 						+ root.getBranch().getRepo().getUrl();
 			}
 
@@ -187,6 +188,13 @@ public class ProjectExplorerViewPart extends ViewPart {
 						update(evt.getRepoBranch());
 					}
 				});
+
+		statusManager = new StatusManager(getViewSite().getActionBars()
+				.getStatusLineManager(), getViewer());
+	}
+
+	public StatusManager getStatusManager() {
+		return statusManager;
 	}
 
 	/**
@@ -234,4 +242,5 @@ public class ProjectExplorerViewPart extends ViewPart {
 				.getImageDescriptor(Images.IMG_BRANCHES));
 		toolbar.add(switchBranchAction);
 	}
+
 }

@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class AjaxClientWidget extends Control {
+public class AjaxClientWidget extends Control  {
 	private AjaxClient client;
 
 	private AjaxClientWidgetLCA widgetLCA;
@@ -46,4 +46,5 @@ public class AjaxClientWidget extends Control {
 		}
 		return result;
 	}
+
 }

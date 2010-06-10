@@ -1,4 +1,4 @@
-package org.codefaces.httpclient.http;
+package org.codefaces.httpclient;
 
 public class RepoResponseException extends RepoIOException {
 	private static final long serialVersionUID = -7186627969477257933L;

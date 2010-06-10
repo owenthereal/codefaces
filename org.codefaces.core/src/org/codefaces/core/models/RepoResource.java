@@ -2,10 +2,14 @@ package org.codefaces.core.models;
 
 import java.util.Collection;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+
 public class RepoResource extends RepoElement {
 	private RepoResourceType type;
 	private RepoResource parent;
 	private RepoFolderRoot root;
+	private IPath path;
 
 	protected RepoResource(RepoFolderRoot root, RepoResource parent, String id,
 			String name, RepoResourceType type) {
@@ -13,6 +17,20 @@ public class RepoResource extends RepoElement {
 		this.root = root;
 		this.type = type;
 		this.parent = parent;
+
+		if (type == RepoResourceType.FOLDER_ROOT) {
+			path = Path.ROOT;
+		} else {
+			path = new Path(name);
+		}
+
+		if (parent != null && type != RepoResourceType.FOLDER_ROOT) {
+			path = parent.getFullPath().append(path);
+		}
+	}
+
+	public IPath getFullPath() {
+		return path;
 	}
 
 	public RepoFolderRoot getRoot() {

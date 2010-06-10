@@ -62,12 +62,13 @@ public class CodeExplorerHTMLTemplate {
 	 * @return a html string to initialize the template
 	 */
 	private static String initTemplate(){
+		String template = null;
 		try{
-			TEMPLATE = readFile(TEMPLATE_PATH);
+			template = readFile(TEMPLATE_PATH);
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		return TEMPLATE;
+		return template;
 	}
 	
 	

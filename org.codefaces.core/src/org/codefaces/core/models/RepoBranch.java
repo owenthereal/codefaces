@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class RepoBranch extends RepoResource {
+	private static final String AT = "@";
+
 	private final RepoFolderRoot root;
-	
+
 	private final Repo repo;
 
 	public RepoBranch(Repo repo, String id, String name) {
 		super(null, repo, id, name, RepoResourceType.BRANCH);
 		this.repo = repo;
-		root = new RepoFolderRoot(this, this, id, name);
+
+		root = new RepoFolderRoot(this, id, repo.getName() + AT + repo.getUrl());
 	}
 
 	@Override

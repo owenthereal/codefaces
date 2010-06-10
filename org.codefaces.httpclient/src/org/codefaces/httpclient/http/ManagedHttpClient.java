@@ -21,9 +21,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.codefaces.httpclient.CodeFacesHttpClient;
+import org.codefaces.httpclient.RepoResponseException;
 
 
-public class ManagedHttpClient {
+public class ManagedHttpClient implements CodeFacesHttpClient {
 	private static class IdleConnectionMonitorThread extends Thread {
 
 		private final ClientConnectionManager connMgr;
@@ -92,6 +94,7 @@ public class ManagedHttpClient {
 		httpClient = createClient();
 	}
 
+	@Override
 	public String getResponseBody(String url) throws RepoResponseException {
 		try {
 			HttpGet httpGet = new HttpGet(url);
@@ -125,6 +128,7 @@ public class ManagedHttpClient {
 		return httpClient;
 	}
 
+	@Override
 	public void dispose() {
 		connectionMonitorThread.shutdown();
 		httpClient.getConnectionManager().shutdown();

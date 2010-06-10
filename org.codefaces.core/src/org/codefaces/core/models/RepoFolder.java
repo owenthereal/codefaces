@@ -10,5 +10,4 @@ public class RepoFolder extends RepoResource {
 	protected RepoFolderInfo getInfo() {
 		return (RepoFolderInfo) super.getInfo();
 	}
-
 }

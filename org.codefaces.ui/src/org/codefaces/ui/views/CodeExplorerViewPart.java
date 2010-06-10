@@ -10,13 +10,11 @@ import org.eclipse.ui.part.ViewPart;
 
 public class CodeExplorerViewPart extends ViewPart {
 	public static final String ID = "org.codefaces.ui.view.codeExplorer";
-
 	private Browser browser;
 
 	@Override
 	public void createPartControl(final Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
-
 	}
 
 	@Override
@@ -31,12 +29,11 @@ public class CodeExplorerViewPart extends ViewPart {
 				.getCodeLanguages().parseFileName(repoFile.getName());
 		String langName = language.getName();
 		String resourceURL = language.getResource();
-		
+
 		CodeExplorerHTMLTemplate template = new CodeExplorerHTMLTemplate(
 				repoFile.getName(), langName, resourceURL, repoFile
 						.getContent());
 
 		browser.setText(template.toHTML());
-		
 	}
 }

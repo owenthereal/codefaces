@@ -1,4 +1,4 @@
-package org.codefaces.httpclient.http;
+package org.codefaces.httpclient;
 
 import java.io.IOException;
 

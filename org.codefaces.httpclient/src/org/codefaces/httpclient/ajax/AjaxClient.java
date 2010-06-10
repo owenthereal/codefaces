@@ -3,10 +3,12 @@ package org.codefaces.httpclient.ajax;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.codefaces.httpclient.CodeFacesHttpClient;
+import org.codefaces.httpclient.RepoResponseException;
 import org.eclipse.rwt.lifecycle.JSWriter;
 import org.eclipse.swt.widgets.Display;
 
-public class AjaxClient {
+public class AjaxClient implements CodeFacesHttpClient {
 	protected AtomicReference<JsonGet> atomicJsonGet;
 
 	protected AtomicReference<JsonResponse> atomicJsonResponse;
@@ -69,5 +71,22 @@ public class AjaxClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getResponseBody(String url) throws RepoResponseException {
+		JsonResponse resp = execute(new JsonGet(url));
+
+		if (resp.getStatus() != JsonResponse.STATUS.SUCCESS) {
+			throw new RepoResponseException("Errors loading " + url
+					+ ". Json response status: " + resp.getStatus());
+		}
+
+		return resp.getContent();
+	}
+
+	@Override
+	public void dispose() {
+		// do nothing
 	}
 }

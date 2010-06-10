@@ -1,4 +1,4 @@
-package org.codefaces.httpclient;
+package org.codefaces.httpclient.internal;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
