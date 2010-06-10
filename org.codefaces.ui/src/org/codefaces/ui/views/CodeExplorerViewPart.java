@@ -1,5 +1,6 @@
 package org.codefaces.ui.views;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.eclipse.swt.SWT;
@@ -28,7 +29,10 @@ public class CodeExplorerViewPart extends ViewPart {
 
 		String langName = CodeFacesUIActivator.getDefault().getCodeLanguages()
 				.parseFileName(repoFile.getName()).getName();
-		browser.setText(CodeFacesUIActivator.getDefault().getCodeEditorHTML(
-				langName, repoFile.getContent()));
+		CodeExplorerHTMLTemplate template = new CodeExplorerHTMLTemplate(repoFile.getName(),
+				langName, langName, StringEscapeUtils.escapeHtml(repoFile.getContent()));
+
+		browser.setText(template.toHTML());
+		
 	}
 }

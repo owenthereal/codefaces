@@ -128,13 +128,13 @@
             resource="/html/javascripts/highlight/languages/ruby.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.xml,*xsl,*xsd"
+            filePatterns="*.xml,*.xsl,*.xsd"
             id="org.codefaces.web.codeLangauge.xml"
             name="xml"
             resource="/html/javascripts/highlight/languages/html-xml.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.vbs,*vb"
+            filePatterns="*.vbs,*.vb"
             id="org.codefaces.web.codeLangauge.vbscript"
             name="vbsript"
             resource="/html/javascripts/highlight/languages/vbscript.js">

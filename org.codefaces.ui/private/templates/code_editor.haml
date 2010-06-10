@@ -1,0 +1,21 @@
+-# This is the HAML template for the Code Editor Template
+-# To compile. Run: 
+-# haml private/templates/code_editor.haml public/templates/code_editor.html --style=ugly
+!!!
+%html
+  %head
+    %title
+      $title$
+    %link{:type=>"text/css", :href=>"/html/stylesheets/highlight/magula.css", :rel=>"stylesheet"}
+    %script{:type=>"text/javascript", :src=>"/html/javascripts/highlight/highlight.js"}
+    %script{:type=>"text/javascript", :src=>"/html/javascripts/highlight/languages/$lang_file$.js"}
+    %script{:type=>"text/javascript"}
+      hljs.tabReplace = "  ";
+      hljs.showPages = true;
+      hljs.initHighlightingOnLoad();
+
+  %body
+    .code
+      %pre
+        %code{:class=>"$lang$"}
+          $code$

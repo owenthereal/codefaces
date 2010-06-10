@@ -130,43 +130,6 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public String getCodeEditorHTML(String lang, String code) {
-		try {
-			if (codeEditorTemplate == null) {
-				codeEditorTemplate = getCodeEditorTemplate();
-			}
-
-			StringBuilder builder = new StringBuilder(codeEditorTemplate);
-
-			int langInsertIndex = builder.indexOf(LANG);
-			builder.replace(langInsertIndex, langInsertIndex + LANG.length(),
-					lang);
-
-			int codeInsertIndex = builder.indexOf(CODE);
-			builder.replace(codeInsertIndex, codeInsertIndex + CODE.length(),
-					StringEscapeUtils.escapeHtml(code));
-
-			return builder.toString();
-		} catch (IOException e) {
-			throw new IllegalStateException();
-		}
-	}
-
-	private String getCodeEditorTemplate() throws IOException {
-		InputStream inputStream = FileLocator.openStream(getBundle(), new Path(
-				EDITOR_TEMPLATE_PATH), false);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				inputStream));
-
-		StringBuilder builder = new StringBuilder();
-		String inputLine;
-		while ((inputLine = reader.readLine()) != null) {
-			builder.append(inputLine);
-		}
-
-		return builder.toString();
-	}
-
 	/**
 	 * Initialize the image registry
 	 */
