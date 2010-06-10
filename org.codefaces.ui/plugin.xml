@@ -106,10 +106,6 @@
                   style="push"
                   tooltip="Import project from a repository">
             </command>
-            <command
-                  commandId="org.codefaces.ui.command2"
-                  style="push">
-            </command>
          </toolbar>
       </menuContribution>
    </extension>
