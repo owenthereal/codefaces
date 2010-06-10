@@ -1,5 +1,6 @@
 package org.codefaces.ui.views;
 
+import org.antlr.stringtemplate.StringTemplate;
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoBranch;
@@ -12,12 +13,15 @@ import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.SwitchBranchAction;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -33,7 +37,11 @@ import org.eclipse.ui.part.ViewPart;
 public class ProjectExplorerViewPart extends ViewPart {
 
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
-
+	private static final String DEFAULT_STATUS_MSG_TEMPLATE = 
+		"[ $branch$@$repo$ ]";
+	private static final String SELECTION_STATUS_MSG_TEMPLATE = 
+		"[ $branch$@$repo$ ] - $resource$";
+	
 	private TreeViewer viewer;
 
 	private Workspace workspace;
@@ -169,7 +177,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 			}
 		}
 	}
-
+	
 	@Override
 	/**
 	 * Initialize the ExplorerView 
@@ -201,6 +209,25 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.addDoubleClickListener(new FileDoubleClickListener());
 		viewer.addDoubleClickListener(new FolderDoubleClickListener());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
+		viewer.addSelectionChangedListener(new ISelectionChangedListener(){
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				if(event.getSelection().isEmpty()){
+					showDefaultStatusMessage();
+				}
+				if(event.getSelection() instanceof IStructuredSelection){
+					IStructuredSelection selection = (IStructuredSelection) event
+							.getSelection();
+					if(selection.size() == 1){
+						RepoResource resource = (RepoResource)selection.getFirstElement();
+						showSelectionStatusMessage(resource);
+					}
+					else{
+						showDefaultStatusMessage();
+					}
+				}
+			}
+		});
 	}
 
 	/**
@@ -211,6 +238,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 */
 	public void update(RepoBranch workingBranch) {
 		viewer.setInput(workingBranch);
+		showDefaultStatusMessage();
 	}
 
 	@Override
@@ -233,5 +261,49 @@ public class ProjectExplorerViewPart extends ViewPart {
 		switchBranchAction.setImageDescriptor(Images
 				.getImageDescriptor(Images.IMG_BRANCHES));
 		toolbar.add(switchBranchAction);
+	}
+	
+	
+	
+	/** 
+	 * Show the given message in the status bar
+	 * @param msg the message
+	 */
+	private void showStatusMessage(String msg){
+		IStatusLineManager statusline = getViewSite().getActionBars()
+				.getStatusLineManager();
+		statusline.setMessage(msg);
+	}
+	
+	/**
+	 * Display a default status msg on the status bar
+	 */
+	private void showDefaultStatusMessage(){
+		Workspace ws = Workspace.getCurrent();
+		if(ws.getWorkingBranch() == null) return;
+		
+		StringTemplate template = new StringTemplate(DEFAULT_STATUS_MSG_TEMPLATE);
+		template.setAttribute("branch", ws
+				.getWorkingBranch().getName());
+		template.setAttribute("repo", ws
+				.getWorkingBranch().getRepo().getName());
+		showStatusMessage(template.toString());
+	}
+	
+	/**
+	 * Display a message when an item is selected
+	 * @param resourceSelected the selected item
+	 */
+	private void showSelectionStatusMessage(RepoResource resourceSelected){
+		Workspace ws = Workspace.getCurrent();
+		if(ws.getWorkingBranch() == null) return;
+		
+		StringTemplate template = new StringTemplate(SELECTION_STATUS_MSG_TEMPLATE);
+		template.setAttribute("branch", ws
+			.getWorkingBranch().getName());
+		template.setAttribute("repo", ws
+				.getWorkingBranch().getRepo().getName());
+		template.setAttribute("resource", resourceSelected.getName());
+		showStatusMessage(template.toString());
 	}
 }
