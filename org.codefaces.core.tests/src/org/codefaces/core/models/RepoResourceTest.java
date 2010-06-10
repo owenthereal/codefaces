@@ -7,18 +7,17 @@ import org.junit.Test;
 public class RepoResourceTest {
 	@Test
 	public void test_getFullPath() {
-		RepoResource parent = new RepoResource(null, null, "parent", "parent",
-				null);
-		RepoResource child1 = new RepoResource(null, parent, "child1",
-				"child1", null);
-		RepoResource child2 = new RepoResource(null, parent, "child2",
-				"child2", null);
-		RepoResource grandChild1 = new RepoResource(null, child1,
-				"grandChild1", "grandChild1", null);
+		Repo repo = new Repo("repo", "repo", null);
+		RepoBranch branch = new RepoBranch(repo, "branch", "branch");
+		RepoFolderRoot root = branch.getRoot();
+		RepoFolder folder = new RepoFolder(root, root,
+				"folder", "folder");
+		RepoFile file = new RepoFile(root, folder, "file", "file");
 
-		assertEquals("parent", parent.getFullPath().toString());
-		assertEquals("parent/child1", child1.getFullPath().toString());
-		assertEquals("parent/child2", child2.getFullPath().toString());
-		assertEquals("parent/child1/grandChild1", grandChild1.getFullPath().toString());
+		assertEquals("repo", repo.getFullPath().toString());
+		assertEquals("repo/branch", branch.getFullPath().toString());
+		assertEquals("/", root.getFullPath().toString());
+		assertEquals("/folder", folder.getFullPath().toString());
+		assertEquals("/folder/file", file.getFullPath().toString());
 	}
 }
