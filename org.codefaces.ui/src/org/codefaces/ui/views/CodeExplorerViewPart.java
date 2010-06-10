@@ -1,6 +1,5 @@
 package org.codefaces.ui.views;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.codeLanguages.CodeLanguage;
