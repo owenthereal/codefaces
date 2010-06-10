@@ -19,27 +19,26 @@ public class CodeExplorerViewPart extends ViewPart {
 	public static final String STATUS_MSG_PATTERN = "[ $branch$@$repo$ ] - $path$";
 
 	private Browser browser;
-	private String statusMsg;
+	private String defaultStatusMsg;
 
 	@Override
 	public void createPartControl(final Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
-
 	}
 
 	@Override
 	public void setFocus() {
 		browser.setFocus();
-		showStatusMessage();
+		showStatusMessage(defaultStatusMsg);
 	}
 	
 	/**
 	 * Display a status message in the status bar
 	 */
-	public void showStatusMessage(){
+	public void showStatusMessage(String msg){
 		IStatusLineManager statusline = getViewSite().getActionBars()
 				.getStatusLineManager();
-		if(statusMsg != null) statusline.setMessage(statusMsg);
+		if(msg != null) statusline.setMessage(msg);
 	}
 
 	public void setInput(RepoFile repoFile) {
@@ -77,8 +76,8 @@ public class CodeExplorerViewPart extends ViewPart {
 			statusTemplate.setAttribute("repo", fileRepo.getName());
 		}
 		statusTemplate.setAttribute("path", path.toString());
-		statusMsg = statusTemplate.toString();
+		defaultStatusMsg = statusTemplate.toString();
 		
-		showStatusMessage();
+		showStatusMessage(defaultStatusMsg);
 	}
 }
