@@ -62,7 +62,7 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
                id="org.codefaces.menu.repository"
                label="Repository">
@@ -88,24 +88,29 @@
                id="org.codefaces.menu.help"
                label="Help">
             <command
-                  commandId="org.codefaces.ui.command1"
-                  style="push">
+                  commandId="org.codefaces.ui.command.about"
+                  label="About"
+                  style="push"
+                  tooltip="About CodeFaces.org">
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
                id="org.codefaces.ui.toolbar.codefaces">
             <command
                   commandId="org.codefaces.ui.commands.importRepositoryCommand"
                   icon="icons/errors.gif"
                   label="Import..."
-                  mode="FORCE_TEXT"
                   style="push"
                   tooltip="Import project from a repository">
             </command>
+            <command
+                  commandId="org.codefaces.ui.command2"
+                  style="push">
+            </command>
          </toolbar>
-      </menuContribution>
-      <menuContribution
-            locationURI="menu:window">
       </menuContribution>
    </extension>
    <extension
@@ -137,7 +142,7 @@
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.commands.AboutCommandHandler"
             description="About CodeFaces"
-            id="org.codefaces.ui.command1"
+            id="org.codefaces.ui.command.about"
             name="About">
       </command>
    </extension>

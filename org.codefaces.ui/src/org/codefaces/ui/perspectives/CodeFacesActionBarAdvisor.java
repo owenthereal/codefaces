@@ -2,10 +2,6 @@ package org.codefaces.ui.perspectives;
 
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.ToolBarContributionItem;
-import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
@@ -19,17 +15,6 @@ public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
 	public CodeFacesActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
-
-	// Actions - important to allocate these only in makeActions, and then use
-	// them
-	// in the fill methods. This ensures that the actions aren't recreated
-	// when fillActionBars is called with FILL_PROXY.
-	/*
-	 * private IWorkbenchAction exitAction; private IAction aboutAction; private
-	 * OpenViewAction openViewAction; private Action messagePopupAction;
-	 * 
-	 * private ShowRepoDialogAction showRepoDialogAction;
-	 */
 
 	protected void makeActions(final IWorkbenchWindow window) {
 		// Creates the actions and registers them.
@@ -81,9 +66,9 @@ public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
 	}
 
 	protected void fillCoolBar(ICoolBarManager coolBar) {
-		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-		coolBar.add(new ToolBarContributionItem(toolbar, "main"));
-		toolbar.add(exitAction);
+//		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+//		coolBar.add(new ToolBarContributionItem(toolbar, "main"));
+//		toolbar.add(exitAction);
 		/*
 		 * toolbar.add(openViewAction); toolbar.add(messagePopupAction);
 		 */

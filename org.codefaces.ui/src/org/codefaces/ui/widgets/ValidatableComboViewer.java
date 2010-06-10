@@ -1,5 +1,8 @@
 package org.codefaces.ui.widgets;
 
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.Images;
@@ -27,6 +30,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 
 public class ValidatableComboViewer {
+	private final class TypingModifyListener implements ModifyListener {
+		@Override
+		public void modifyText(ModifyEvent event) {
+			try {
+				lock.lock();
+
+				text.set(viewer.getCCombo().getText());
+			} finally {
+				lock.unlock();
+			}
+		}
+	}
+
 	private final class CancelListener implements Listener {
 		@Override
 		public void handleEvent(Event event) {
@@ -55,7 +71,7 @@ public class ValidatableComboViewer {
 		}
 	}
 
-	private static final int VALIDATION_INTERVAL = 500;
+	private static final int VALIDATION_INTERVAL = 1000;
 
 	private Control cancelComponent;
 
@@ -76,6 +92,10 @@ public class ValidatableComboViewer {
 	private Job validateJob;
 
 	private ComboViewer viewer;
+
+	private AtomicReference<String> text = new AtomicReference<String>();
+
+	private ReentrantLock lock = new ReentrantLock();
 
 	public ValidatableComboViewer(Composite parent, int style,
 			IProgressMonitorInputValidator validator) {
@@ -106,6 +126,7 @@ public class ValidatableComboViewer {
 				}
 			}
 		});
+		viewer.getCCombo().addModifyListener(new TypingModifyListener());
 
 		errorMessageLabel = new Label(composite, SWT.NONE);
 		errorMessageLabel.setImage(Images.getImage(Images.IMG_ERRORS));
@@ -179,22 +200,27 @@ public class ValidatableComboViewer {
 	}
 
 	private void validateText(final IProgressMonitor monitor) {
-		display.syncExec(new Runnable() {
+		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				final String text = viewer.getCCombo().getText();
+				try {
+					lock.lock();
 
-				if (StringUtils.isEmpty(text)) {
-					setErrorMessages("Required field can't be empty.");
-					return;
-				}
+					String text = ValidatableComboViewer.this.text.get();
+					if (StringUtils.isEmpty(text)) {
+						setErrorMessages("Required field can't be empty.");
+						return;
+					}
 
-				String errorMsg = inputValidator.validate(text, monitor);
-				if (errorMsg == null) {
-					setErrorMessages(null);
-					return;
+					String errorMsg = inputValidator.validate(text, monitor);
+					if (errorMsg == null) {
+						setErrorMessages(null);
+						return;
+					}
+					setErrorMessages(errorMsg);
+				} finally {
+					lock.unlock();
 				}
-				setErrorMessages(errorMsg);
 			}
 		});
 	}
