@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
+	<extension-point id="org.codefaces.ui.codeLanguages" name="CodeLanguages" schema="schema/org.codefaces.ui.codeLanguages.exsd"/>
+    <extension
          point="org.eclipse.rap.ui.entrypoint">
       <entrypoint
             class="org.codefaces.ui.entryPoints.CodeFacesEntryPoint"
@@ -78,7 +79,7 @@
             <menu
                   label="Show View">
                <dynamic
-                     class="org.eclipse.ui.actions.ShowViewMenu"
+                     class="org.codefaces.ui.actions.ShowViewMenu"
                      id="org.codefaces.ui.actions.showViewMenu">
                </dynamic>
             </menu>

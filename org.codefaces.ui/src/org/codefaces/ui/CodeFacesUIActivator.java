@@ -1,14 +1,8 @@
 package org.codefaces.ui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.services.RepoService;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
+import org.codefaces.ui.codeLanguages.CodeLanguages;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -20,11 +14,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * The activator class controls the plug-in life cycle
  */
 public class CodeFacesUIActivator extends AbstractUIPlugin {
-	private static final String CODE = "#{code}";
-
-	private static final String LANG = "#{lang}";
-
-	private static final String EDITOR_TEMPLATE_PATH = "public/code_editor_template.html";
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.codefaces.ui";
@@ -32,13 +21,13 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static CodeFacesUIActivator plugin;
 
-	private String codeEditorTemplate;
-
 	private ServiceTracker repoServiceTracker;
 
 	private BundleContext context;
 
 	private RepoService repoService;
+
+	private CodeLanguages langs;
 
 	/**
 	 * The constructor
@@ -57,16 +46,23 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		this.context = context;
-		
-		repoServiceTracker = new ServiceTracker(context,RepoService.class
-				.getName(), createRepoServiceCustomizer()); 
+
+		repoServiceTracker = new ServiceTracker(context, RepoService.class
+				.getName(), createRepoServiceCustomizer());
 		repoServiceTracker.open();
+		
+		langs = new CodeLanguages();
 	}
-	
+
+	public CodeLanguages getCodeLanguages() {
+		return langs;
+	}
+
 	private ServiceTrackerCustomizer createRepoServiceCustomizer() {
 		return new ServiceTrackerCustomizer() {
 			@Override
-			public void removedService(ServiceReference reference, Object service) {
+			public void removedService(ServiceReference reference,
+					Object service) {
 				synchronized (CodeFacesUIActivator.this) {
 					if (service == CodeFacesUIActivator.this.repoService) {
 						CodeFacesUIActivator.this.repoService = null;
@@ -75,10 +71,11 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 			}
 
 			@Override
-			public void modifiedService(ServiceReference reference, Object service) {
+			public void modifiedService(ServiceReference reference,
+					Object service) {
 				// do nothing
 			}
-			
+
 			@Override
 			public Object addingService(ServiceReference reference) {
 				Object service = context.getService(reference);
@@ -87,7 +84,7 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 						CodeFacesUIActivator.this.repoService = (RepoService) service;
 					}
 				}
-				
+
 				return service;
 			}
 		};
@@ -117,43 +114,6 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 	 */
 	public static CodeFacesUIActivator getDefault() {
 		return plugin;
-	}
-
-	public String getCodeEditorHTML(String lang, String code) {
-		try {
-			if (codeEditorTemplate == null) {
-				codeEditorTemplate = getCodeEditorTemplate();
-			}
-
-			StringBuilder builder = new StringBuilder(codeEditorTemplate);
-
-			int langInsertIndex = builder.indexOf(LANG);
-			builder.replace(langInsertIndex, langInsertIndex + LANG.length(),
-					lang);
-
-			int codeInsertIndex = builder.indexOf(CODE);
-			builder.replace(codeInsertIndex, codeInsertIndex + CODE.length(),
-					StringEscapeUtils.escapeHtml(code));
-
-			return builder.toString();
-		} catch (IOException e) {
-			throw new IllegalStateException();
-		}
-	}
-
-	private String getCodeEditorTemplate() throws IOException {
-		InputStream inputStream = FileLocator.openStream(getBundle(), new Path(
-				EDITOR_TEMPLATE_PATH), false);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				inputStream));
-
-		StringBuilder builder = new StringBuilder();
-		String inputLine;
-		while ((inputLine = reader.readLine()) != null) {
-			builder.append(inputLine);
-		}
-		
-		return builder.toString();
 	}
 
 	/**

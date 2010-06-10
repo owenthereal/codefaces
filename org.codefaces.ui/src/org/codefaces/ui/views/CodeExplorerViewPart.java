@@ -1,8 +1,9 @@
 package org.codefaces.ui.views;
 
-import org.codefaces.core.langs.LangParser;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.ui.CodeFacesUIActivator;
+import org.codefaces.ui.codeLanguages.CodeLanguage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -26,8 +27,17 @@ public class CodeExplorerViewPart extends ViewPart {
 
 	public void setInput(RepoFile repoFile) {
 		setPartName(repoFile.getName());
-		browser.setText(CodeFacesUIActivator.getDefault().getCodeEditorHTML(
-				LangParser.parse(repoFile.getName()).getName(),
-				repoFile.getContent()));
+
+		CodeLanguage language = CodeFacesUIActivator.getDefault()
+				.getCodeLanguages().parseFileName(repoFile.getName());
+		String langName = language.getName();
+		String resourceURL = language.getResource();
+		
+		CodeExplorerHTMLTemplate template = new CodeExplorerHTMLTemplate(
+				repoFile.getName(), langName, resourceURL, repoFile
+						.getContent());
+
+		browser.setText(template.toHTML());
+		
 	}
 }

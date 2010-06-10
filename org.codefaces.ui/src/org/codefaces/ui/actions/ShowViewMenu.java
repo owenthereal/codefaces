@@ -1,9 +1,8 @@
-package org.eclipse.ui.actions;
+package org.codefaces.ui.actions;
 
 import java.util.Arrays;
 
 import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;

@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.codefaces.ui.commands
+Export-Package: org.codefaces.ui.codeLanguages,
+ org.codefaces.ui.commands
 Import-Package: javax.servlet,
  javax.servlet.http
