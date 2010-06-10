@@ -1,6 +1,9 @@
 package org.codefaces.core.models;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RepoResource extends RepoElement {
 	private RepoResourceType type;
@@ -68,6 +71,19 @@ public class RepoResource extends RepoElement {
 
 	protected RepoResourceInfo getInfo() {
 		return RepoResourceManager.getInstance().getInfo(this);
+	}
+	
+	/**
+	 * @return a list of parents from Root to current parent
+	 */
+	public List<RepoResource> getParents(){
+		List<RepoResource> parents = new LinkedList<RepoResource>();
+		RepoResource p = getParent();
+		while(p != null){
+			parents.add(0, p);
+			p = p.getParent();
+		}
+		return Collections.unmodifiableList(parents);
 	}
 
 }
