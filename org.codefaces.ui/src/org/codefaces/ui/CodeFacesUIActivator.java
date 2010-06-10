@@ -1,15 +1,8 @@
 package org.codefaces.ui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.core.services.RepoService;
 import org.codefaces.ui.codeLanguages.CodeLanguages;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -21,19 +14,12 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * The activator class controls the plug-in life cycle
  */
 public class CodeFacesUIActivator extends AbstractUIPlugin {
-	private static final String CODE = "#{code}";
-
-	private static final String LANG = "#{lang}";
-
-	private static final String EDITOR_TEMPLATE_PATH = "public/code_editor_template.html";
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.codefaces.ui";
 
 	// The shared instance
 	private static CodeFacesUIActivator plugin;
-
-	private String codeEditorTemplate;
 
 	private ServiceTracker repoServiceTracker;
 

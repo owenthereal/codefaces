@@ -16,13 +16,12 @@ public class CodeExplorerHTMLTemplate {
 	private static final String TEMPLATE_PATH = "public/templates/code_editor.html";
 	
 	//Performance consideration. we only read the template once
-	//For testing purpose, please override the getTemplate method.
 	//I would be happy if there is better approach
 	private static String TEMPLATE = initTemplate();
 	 
 	private final String title;
 	private final String lang;
-	private final String langFile;
+	private final String resourceUrl;
 	private final String code;
 	
 	/**
@@ -31,14 +30,14 @@ public class CodeExplorerHTMLTemplate {
 	 * 
 	 * @param title the title of the generated HTML document
 	 * @param lang the language class of the code
-	 * @param langFile the name of the language file
+	 * @param resourceURL the path of the language javascript file
 	 * @param code the content of the source code
 	 */
 	public CodeExplorerHTMLTemplate(final String title, final String lang,
-			final String langFile, final String code) {
+			final String resourceURL, final String code) {
 		this.title = StringEscapeUtils.escapeHtml(title);
 		this.lang = StringEscapeUtils.escapeHtml(lang);
-		this.langFile = StringEscapeUtils.escapeHtml(langFile);
+		this.resourceUrl = StringEscapeUtils.escapeHtml(resourceURL);
 		this.code = StringEscapeUtils.escapeHtml(code);
 	}
 
@@ -52,7 +51,7 @@ public class CodeExplorerHTMLTemplate {
 		StringTemplate template = new StringTemplate(TEMPLATE);
 		template.setAttribute("title", title);
 		template.setAttribute("lang", lang);
-		template.setAttribute("lang_file", langFile);
+		template.setAttribute("resource_url", resourceUrl);
 		template.setAttribute("code", code);
 		return template.toString();
 	}
