@@ -3,7 +3,8 @@ package org.codefaces.ui.views;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import org.antlr.stringtemplate.*;
+
+import org.antlr.stringtemplate.StringTemplate;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.ui.CodeFacesUIActivator;

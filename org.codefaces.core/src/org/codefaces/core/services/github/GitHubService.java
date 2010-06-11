@@ -17,11 +17,9 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.httpclient.CodeFacesHttpClient;
+import org.codefaces.httpclient.RepoResponseException;
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
-import org.codefaces.httpclient.ajax.JsonGet;
-import org.codefaces.httpclient.ajax.JsonResponse;
-import org.codefaces.httpclient.http.ManagedHttpClient;
-import org.codefaces.httpclient.http.RepoResponseException;
 
 import com.google.gson.Gson;
 
@@ -41,30 +39,19 @@ public class GitHubService {
 	private static final String GET_GITHUB_FILE = "http://github.com/api/v2/json/blob/show";
 
 	private static final String GITHUB_TYPE_BLOB = "blob";
+
 	private static final String GITHUB_TYPE_TREE = "tree";
 
 	private static final String GITHUB_DEFAULT_BRANCH = "master";
 
-	private final ManagedHttpClient managedClient;
-
 	private Gson gson;
 
-	public GitHubService(ManagedHttpClient managedClient) {
-		this.managedClient = managedClient;
+	public GitHubService() {
 		gson = new Gson();
 	}
 
 	private String getResponseBody(String url) throws RepoResponseException {
-		// return managedClient.getResponseBody(url);
-		AjaxClientWidget widget = AjaxClientWidget.getCurrent();
-		JsonResponse resp = widget.getClient().execute(new JsonGet(url));
-
-		if (resp.getStatus() != JsonResponse.STATUS.SUCCESS) {
-			throw new RepoResponseException("Errors loading " + url
-					+ ". Json response status: " + resp.getStatus());
-		}
-
-		return resp.getContent();
+		return AjaxClientWidget.getCurrent().getClient().getResponseBody(url);
 	}
 
 	/**

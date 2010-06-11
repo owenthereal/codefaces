@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.httpclient.RepoResponseException;
 import org.codefaces.httpclient.http.ManagedHttpClient;
-import org.codefaces.httpclient.http.RepoResponseException;
 import org.junit.Before;
 import org.junit.Test;
 

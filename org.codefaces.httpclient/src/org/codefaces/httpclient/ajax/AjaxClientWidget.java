@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class AjaxClientWidget extends Control {
+public class AjaxClientWidget extends Control  {
 	private AjaxClient client;
 
 	private AjaxClientWidgetLCA widgetLCA;
@@ -20,7 +20,7 @@ public class AjaxClientWidget extends Control {
 
 	public AjaxClientWidget(Shell shell) {
 		super(shell, SWT.NONE);
-		client = new AjaxClient(getDisplay(), JSWriter.getWriterFor(this));
+		client = new AjaxClient(shell.getDisplay(), JSWriter.getWriterFor(this));
 	}
 
 	public AjaxClient getClient() {
@@ -46,4 +46,5 @@ public class AjaxClientWidget extends Control {
 		}
 		return result;
 	}
+
 }
