@@ -24,6 +24,7 @@ public class StatusManager implements ISelectionChangedListener {
 	private void showStatusMessage(RepoResource resource) {
 		if (resource == null) {
 			statusLineManager.setMessage(null);
+			return;
 		}
 
 		StringBuilder builder = new StringBuilder();
