@@ -1,6 +1,7 @@
 package org.codefaces.ui.actions;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
@@ -81,8 +82,34 @@ public class SwitchBranchAction extends Action implements IMenuCreator {
 		return AS_DROP_DOWN_MENU;
 	}
 
+	/**
+	 * Toggle to the next branch in the repository
+	 */
 	public void run() {
 
+		Workspace ws = Workspace.getCurrent();
+
+		if (ws.getWorkingBranch() != null) {
+			RepoBranch currentBranch = ws.getWorkingBranch();
+			Collection<RepoBranch> branches = currentBranch.getRepo()
+					.getBranches();
+			
+			if(branches.size() == 1){ return; }//do nothing
+			
+			RepoBranch[] branchArray = branches.toArray(new RepoBranch[0]);
+			RepoBranch nextBranch = null;
+			for(int i = 0; i<branchArray.length; i++){
+				if(branchArray[i].getId().equals(currentBranch.getId())){
+					nextBranch = (i == branchArray.length-1)? 
+							branchArray[0] : branchArray[i+1];
+					break;
+				}
+			}
+			
+			if(nextBranch != null){
+				executeSwitchRepoBranchCommand(nextBranch.getName());
+			}
+		}
 	}
 
 	@Override
