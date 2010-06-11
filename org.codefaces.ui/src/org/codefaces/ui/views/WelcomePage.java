@@ -20,9 +20,9 @@ public class WelcomePage extends ViewPart {
 	public void createPartControl(Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
 		browser.setUrl(WELCOME_PAGE_URL);
-		setTitleImage(Images.getImageDescriptor(Images.IMG_WELCOME)
-				.createImage());
 	}
+	
+	
 
 	@Override
 	public void setFocus() {

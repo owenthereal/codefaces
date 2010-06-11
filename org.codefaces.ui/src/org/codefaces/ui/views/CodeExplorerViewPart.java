@@ -26,8 +26,6 @@ public class CodeExplorerViewPart extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
-		setTitleImage(PlatformUI.getWorkbench().getSharedImages().getImage(
-						ISharedImages.IMG_OBJ_FILE));
 	}
 
 	@Override
