@@ -136,7 +136,7 @@ public class ValidatableComboViewer {
 		if (inputValidator != null) {
 			viewer.getCCombo()
 					.addModifyListener(new SchedulingModifyListener());
-			this.validateJob = new SchedulingJob("Validating");
+			this.validateJob = new SchedulingJob("");
 			this.cancelListener = new CancelListener();
 		}
 	}

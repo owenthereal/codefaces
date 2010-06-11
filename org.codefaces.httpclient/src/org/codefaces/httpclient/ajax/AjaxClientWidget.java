@@ -20,7 +20,7 @@ public class AjaxClientWidget extends Control  {
 
 	public AjaxClientWidget(Shell shell) {
 		super(shell, SWT.NONE);
-		client = new AjaxClient(getDisplay(), JSWriter.getWriterFor(this));
+		client = new AjaxClient(shell.getDisplay(), JSWriter.getWriterFor(this));
 	}
 
 	public AjaxClient getClient() {

@@ -16,14 +16,8 @@ import org.codefaces.httpclient.ajax.AjaxClientWidget;
 public class RepoService {
 	private GitHubService githubService;
 
-	private CodeFacesHttpClient httpClient;
-
 	public CodeFacesHttpClient getHttpClient() {
-		if (httpClient == null) {
-			httpClient = AjaxClientWidget.getCurrent().getClient();
-		}
-
-		return httpClient;
+		return AjaxClientWidget.getCurrent().getClient();
 	}
 
 	public Repo createRepo(String url) throws RepoResponseException,
@@ -37,7 +31,7 @@ public class RepoService {
 
 	private GitHubService getServiceInternal() {
 		if (githubService == null) {
-			githubService = new GitHubService(getHttpClient());
+			githubService = new GitHubService();
 		}
 
 		return githubService;
