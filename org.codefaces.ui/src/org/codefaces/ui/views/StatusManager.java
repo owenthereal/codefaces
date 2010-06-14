@@ -3,12 +3,15 @@ package org.codefaces.ui.views;
 import org.codefaces.core.models.RepoResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 
-public class StatusManager implements ISelectionChangedListener {
+public class StatusManager implements ISelectionChangedListener,
+		IPropertyChangeListener {
 	private static final String AT = "@";
 
 	private static final String SEPERATOR = " - ";
@@ -19,6 +22,12 @@ public class StatusManager implements ISelectionChangedListener {
 			StructuredViewer viewer) {
 		this.statusLineManager = statusLineManager;
 		viewer.addPostSelectionChangedListener(this);
+	}
+
+	public StatusManager(IStatusLineManager statusLineManager,
+			CodeExplorerViewPart part) {
+		this.statusLineManager = statusLineManager;
+		part.addPropertyChangeListener(this);
 	}
 
 	public void showStatusMessage(IPath fullPath, String repoUrl,
@@ -77,4 +86,10 @@ public class StatusManager implements ISelectionChangedListener {
 		showStatusMessage((RepoResource) selectedObject);
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getProperty() == CodeExplorerViewPart.PROP_REPO_RESOURCE) {
+			showStatusMessage((RepoResource) event.getNewValue());
+		}
+	}
 }
