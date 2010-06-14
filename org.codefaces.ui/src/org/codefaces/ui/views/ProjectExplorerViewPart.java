@@ -12,7 +12,11 @@ import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.SwitchBranchAction;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -24,14 +28,17 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
+	public static final String VIEWER_CONTEXT_MENU_ID = ID + "#viewer";
 
 	private TreeViewer viewer;
 
@@ -200,6 +207,23 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
+		
+		registerContextMenu(viewer);
+		
+		
+	}
+
+	/**
+	 * create and register a context menu associate to the explorer tree viewer
+	 * @param viewer - the project explorer tree-viewer
+	 */
+	private void registerContextMenu(TreeViewer viewer) {
+		MenuManager contextMenuManager = new MenuManager();
+		contextMenuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		Menu menu = contextMenuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(VIEWER_CONTEXT_MENU_ID, contextMenuManager, viewer);
+		getSite().setSelectionProvider(viewer);
 	}
 
 	public StatusManager getStatusManager() {

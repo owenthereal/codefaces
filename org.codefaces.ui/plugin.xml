@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
-<plugin>
+<plugin
+>
 	<extension-point id="org.codefaces.ui.codeLanguages" name="CodeLanguages" schema="schema/org.codefaces.ui.codeLanguages.exsd"/>
     <extension
          point="org.eclipse.rap.ui.entrypoint">
@@ -63,6 +64,51 @@
       </branding>
    </extension>
    <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.codefaces.ui.category.command"
+            name="CodeFaces Command">
+      </category>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.ImportRepositoryCommandHandler"
+            description="Import from a repository"
+            id="org.codefaces.ui.commands.importRepositoryCommand"
+            name="ImportRepositoryCommand">
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.SwitchBranchCommandHandler"
+            description="Switch to another Repository Branch without switching the repository"
+            id="org.codefaces.ui.commands.switchBranchCommand"
+            name="switchRepositoryBranchCommand">
+         <commandParameter
+               id="org.codefaces.ui.commands.parameters.switchBranchCommand.newBranch"
+               name="newBranch"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.AboutCommandHandler"
+            description="About CodeFaces"
+            id="org.codefaces.ui.command.about"
+            name="About">
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.OpenFileCommandHandler"
+            description="Open selected file(s)"
+            id="org.codefaces.ui.commands.openFileCommand"
+            name="Open File">
+         <commandParameter
+               id="org.codefaces.ui.commands.parameters.openFileCommand.filename"
+               name="filename"
+               optional="false">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
@@ -114,39 +160,30 @@
             </command>
          </toolbar>
       </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <category
-            id="org.codefaces.ui.category.command"
-            name="CodeFaces Command">
-      </category>
-      <command
-            categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.ImportRepositoryCommandHandler"
-            description="Import from a repository"
-            id="org.codefaces.ui.commands.importRepositoryCommand"
-            name="ImportRepositoryCommand">
-      </command>
-      <command
-            categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.SwitchBranchCommandHandler"
-            description="Switch to another Repository Branch without switching the repository"
-            id="org.codefaces.ui.commands.switchBranchCommand"
-            name="switchRepositoryBranchCommand">
-         <commandParameter
-               id="org.codefaces.ui.commands.parameters.switchBranchCommand.newBranch"
-               name="newBranch"
-               optional="true">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.AboutCommandHandler"
-            description="About CodeFaces"
-            id="org.codefaces.ui.command.about"
-            name="About">
-      </command>
+      <menuContribution
+            locationURI="popup:org.codefaces.ui.view.projectExplorer#viewer?after=additions">
+         <command
+               commandId="org.codefaces.ui.commands.openFileCommand"
+               label="Open"
+               style="push"
+               tooltip="open the selected file(s)">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate>
+                     <adapt
+                           type="org.codefaces.core.models.RepoFile">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="org.codefaces.ui.commands.parameters.openFileCommand.filename"
+                  value="activeMenuSelection">
+            </parameter>
+         </command>
+      </menuContribution>
    </extension>
     <extension
          point="org.eclipse.rap.ui.phaselistener">
