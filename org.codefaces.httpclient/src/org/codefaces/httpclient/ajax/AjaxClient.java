@@ -3,12 +3,11 @@ package org.codefaces.httpclient.ajax;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.codefaces.httpclient.CodeFacesHttpClient;
 import org.codefaces.httpclient.RepoResponseException;
 import org.eclipse.rwt.lifecycle.JSWriter;
 import org.eclipse.swt.widgets.Display;
 
-public class AjaxClient implements CodeFacesHttpClient {
+public class AjaxClient {
 	protected AtomicReference<JsonGet> atomicJsonGet;
 
 	protected AtomicReference<JsonResponse> atomicJsonResponse;
@@ -73,7 +72,6 @@ public class AjaxClient implements CodeFacesHttpClient {
 		}
 	}
 
-	@Override
 	public String getResponseBody(String url) throws RepoResponseException {
 		JsonResponse resp = execute(new JsonGet(url));
 
@@ -83,10 +81,5 @@ public class AjaxClient implements CodeFacesHttpClient {
 		}
 
 		return resp.getContent();
-	}
-
-	@Override
-	public void dispose() {
-		// do nothing
 	}
 }

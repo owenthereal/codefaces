@@ -26,7 +26,7 @@ public class AjaxClientWidget extends Control  {
 	public AjaxClient getClient() {
 		return client;
 	}
-
+	
 	public static AjaxClientWidget getCurrent() {
 		return (AjaxClientWidget) SessionSingletonBase
 				.getInstance(AjaxClientWidget.class);

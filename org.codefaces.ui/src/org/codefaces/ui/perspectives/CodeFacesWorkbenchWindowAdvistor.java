@@ -48,6 +48,7 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 			e.printStackTrace();
 		}
 		
+		// for building the widget
 		AjaxClientWidget.getCurrent();
 	}
 
