@@ -1,6 +1,7 @@
 package org.codefaces.ui.views;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
@@ -20,6 +21,8 @@ public class WelcomePage extends ViewPart {
 		browser = new Browser(parent, SWT.NONE);
 		browser.setUrl(WELCOME_PAGE_URL);
 	}
+	
+	
 
 	@Override
 	public void setFocus() {

@@ -6,6 +6,8 @@ import org.codefaces.ui.codeLanguages.CodeLanguage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class CodeExplorerViewPart extends ViewPart {

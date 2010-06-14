@@ -28,6 +28,7 @@
             allowMultiple="false"
             category="org.codefaces.ui.category.codefaces"
             class="org.codefaces.ui.views.ProjectExplorerViewPart"
+            icon="icons/navigator.gif"
             id="org.codefaces.ui.view.projectExplorer"
             name="Project Explorer"
             restorable="true">
@@ -36,6 +37,7 @@
             allowMultiple="true"
             category="org.codefaces.ui.category.codefaces"
             class="org.codefaces.ui.views.CodeExplorerViewPart"
+            icon="icons/file.gif"
             id="org.codefaces.ui.view.codeExplorer"
             name="Code Explorer"
             restorable="true">
@@ -44,6 +46,7 @@
             allowMultiple="false"
             category="org.codefaces.ui.category.codefaces"
             class="org.codefaces.ui.views.WelcomePage"
+            icon="icons/welcome.gif"
             id="org.codefaces.ui.view.welcomePage"
             name="Welcome"
             restorable="true">
@@ -68,6 +71,7 @@
                label="Repository">
             <command
                   commandId="org.codefaces.ui.commands.importRepositoryCommand"
+                  icon="icons/import.gif"
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
@@ -77,6 +81,7 @@
                id="org.codefaces.ui.menu.window"
                label="Window">
             <menu
+                  icon="icons/window.gif"
                   label="Show View">
                <dynamic
                      class="org.codefaces.ui.actions.ShowViewMenu"
@@ -89,6 +94,7 @@
                label="Help">
             <command
                   commandId="org.codefaces.ui.command.about"
+                  icon="icons/help.gif"
                   label="About"
                   style="push"
                   tooltip="About CodeFaces.org">
@@ -101,7 +107,7 @@
                id="org.codefaces.ui.toolbar.codefaces">
             <command
                   commandId="org.codefaces.ui.commands.importRepositoryCommand"
-                  icon="icons/errors.gif"
+                  icon="icons/import.gif"
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">

@@ -90,17 +90,23 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 
 		public Image getImage(Object obj) {
-			String imageKey = ISharedImages.IMG_OBJ_FILE;
-			if (obj instanceof RepoFolder) {
-				imageKey = ISharedImages.IMG_OBJ_FOLDER;
+			if (obj instanceof RepoFolderRoot){
+				return Images.getImageDescriptor(Images.IMG_REPO_FOLDER_ROOT)
+						.createImage();
 			}
+			else{
+				String imageKey = ISharedImages.IMG_OBJ_FILE;
+				if (obj instanceof RepoFolder) {
+					imageKey = ISharedImages.IMG_OBJ_FOLDER;
+				}
 
-			if (obj instanceof RepoFolderRoot) {
-				imageKey = ISharedImages.IMG_OBJ_ELEMENT;
-			}
+				if (obj instanceof RepoFolderRoot) {
+					imageKey = ISharedImages.IMG_OBJ_ELEMENT;
+				}
 
-			return PlatformUI.getWorkbench().getSharedImages().getImage(
+				return PlatformUI.getWorkbench().getSharedImages().getImage(
 					imageKey);
+			}
 		}
 	}
 
@@ -180,6 +186,9 @@ public class ProjectExplorerViewPart extends ViewPart {
 		createToolBar(parent);
 		// create the project viewer
 		createViewer(parent);
+		// set an image
+		setTitleImage(Images.getImageDescriptor(Images.IMG_NAVIGATOR)
+				.createImage());
 		workspace = Workspace.getCurrent();
 		workspace
 				.addWorkSpaceChangeEventListener(new WorkspaceChangeEventListener() {
