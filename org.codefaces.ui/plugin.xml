@@ -112,6 +112,17 @@
                optional="true">
          </commandParameter>
       </command>
+      <command
+            defaultHandler="org.codefaces.ui.commands.ShowViewCommandHandler"
+            description="Open a view"
+            id="org.codefaces.ui.commands.showViewCommand"
+            name="Show view">
+         <commandParameter
+               id="org.codefaces.ui.commands.parameters.showViewCommand.viewId"
+               name="viewId"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -162,6 +173,17 @@
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
+            </command>
+            <command
+                  commandId="org.codefaces.ui.commands.showViewCommand"
+                  icon="icons/welcome.gif"
+                  label="Welcome Page"
+                  style="push"
+                  tooltip="Open the welcome page">
+               <parameter
+                     name="org.codefaces.ui.commands.parameters.showViewCommand.viewId"
+                     value="org.codefaces.ui.view.welcomePage">
+               </parameter>
             </command>
          </toolbar>
       </menuContribution>
