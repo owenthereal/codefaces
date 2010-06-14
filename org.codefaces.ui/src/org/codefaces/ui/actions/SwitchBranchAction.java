@@ -1,7 +1,6 @@
 package org.codefaces.ui.actions;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
@@ -9,13 +8,10 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.commands.SwitchBranchCommandHandler;
 import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IParameter;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.Parameterization;
 import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.SWT;
@@ -29,6 +25,8 @@ import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
 public class SwitchBranchAction extends Action implements IMenuCreator {
+
+	private static final String TOOLTIP_TEXT = "Switch to another branch";
 
 	public static final String ID = "org.codefaces.ui.actions.switchBranchAction";
 
@@ -60,6 +58,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator {
 		setId(ID);
 		setMenuCreator(this);
 		setEnabled(false);
+		setToolTipText(TOOLTIP_TEXT);
 
 		Workspace.getCurrent().addWorkSpaceChangeEventListener(
 				new WorkspaceChangeEventListener() {
@@ -192,17 +191,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator {
 			ParameterizedCommand parmCommand = new ParameterizedCommand(
 					switchBranchCmd, new Parameterization[] { paramNewBranch });
 			handlerService.executeCommand(parmCommand, null);
-		} catch (NotDefinedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotEnabledException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotHandledException e) {
-			// TODO Auto-generated catch block
+		} catch (CommandException e) {
 			e.printStackTrace();
 		}
 	}
