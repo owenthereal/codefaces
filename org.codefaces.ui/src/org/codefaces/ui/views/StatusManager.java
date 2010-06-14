@@ -21,14 +21,15 @@ public class StatusManager implements ISelectionChangedListener {
 		viewer.addPostSelectionChangedListener(this);
 	}
 
-	private void showStatusMessage(RepoResource resource) {
-		if (resource == null) {
+	public void showStatusMessage(IPath fullPath, String repoUrl,
+			String branchName) {
+		if (fullPath == null) {
 			statusLineManager.setMessage(null);
+			return;
 		}
 
 		StringBuilder builder = new StringBuilder();
 
-		IPath fullPath = resource.getFullPath();
 		String fileName = fullPath.lastSegment();
 		if (fileName != null) {
 			builder.append(fileName);
@@ -46,11 +47,21 @@ public class StatusManager implements ISelectionChangedListener {
 			builder.append(SEPERATOR);
 		}
 
-		builder.append(resource.getRoot().getBranch().getName());
+		builder.append(branchName);
 		builder.append(AT);
-		builder.append(resource.getRoot().getBranch().getRepo().getUrl());
+		builder.append(repoUrl);
 
 		statusLineManager.setMessage(builder.toString());
+	}
+
+	public void showStatusMessage(RepoResource resource) {
+		if (resource == null) {
+			showStatusMessage(null, null, null);
+		} else {
+			showStatusMessage(resource.getFullPath(), resource.getRoot()
+					.getBranch().getRepo().getUrl(), resource.getRoot()
+					.getBranch().getName());
+		}
 	}
 
 	@Override
