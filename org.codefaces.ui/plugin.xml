@@ -102,9 +102,14 @@
             id="org.codefaces.ui.commands.openFileCommand"
             name="Open File">
          <commandParameter
+               id="org.codefaces.ui.commands.parameters.openFileCommand.mode"
+               name="mode"
+               optional="false">
+         </commandParameter>
+         <commandParameter
                id="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
                name="viewId"
-               optional="false">
+               optional="true">
          </commandParameter>
       </command>
    </extension>
@@ -178,6 +183,10 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="org.codefaces.ui.commands.parameters.openFileCommand.mode"
+                  value="selectionFromView">
+            </parameter>
             <parameter
                   name="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
                   value="org.codefaces.ui.view.projectExplorer">

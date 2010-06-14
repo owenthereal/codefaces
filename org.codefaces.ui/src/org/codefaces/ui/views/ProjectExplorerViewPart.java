@@ -11,9 +11,15 @@ import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.SwitchBranchAction;
+import org.codefaces.ui.commands.OpenFileCommandHandler;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.IParameter;
+import org.eclipse.core.commands.Parameterization;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.commands.common.CommandException;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -30,10 +36,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
@@ -164,20 +170,33 @@ public class ProjectExplorerViewPart extends ViewPart {
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
 
+			//Call the open file command 
 			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
-				IWorkbenchPage activePage = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage();
+				IHandlerService handlerService = (IHandlerService) PlatformUI
+						.getWorkbench().getService(IHandlerService.class);
+				ICommandService cmdService = (ICommandService) PlatformUI
+						.getWorkbench().getService(ICommandService.class);
+
+				Command openFileCmd = cmdService
+						.getCommand(OpenFileCommandHandler.ID);
 				try {
-					IViewPart viewPart = activePage.showView(
-							CodeExplorerViewPart.ID, clickedRepoResource
-									.getId(), IWorkbenchPage.VIEW_ACTIVATE);
-					if (viewPart instanceof CodeExplorerViewPart) {
-						RepoFile repoFileLite = (RepoFile) clickedRepoResource;
-						RepoFile repoFile = (RepoFile) repoFileLite
-								.getAdapter(RepoFile.class);
-						((CodeExplorerViewPart) viewPart).setInput(repoFile);
-					}
-				} catch (Exception e) {
+					IParameter openFileCmdMode = openFileCmd
+							.getParameter(OpenFileCommandHandler.PARAM_MODE);
+					Parameterization paramModel = new Parameterization(
+							openFileCmdMode,
+							OpenFileCommandHandler.MODE_DIRECT_FILES);
+					ParameterizedCommand parmCommand = new ParameterizedCommand(
+							openFileCmd, new Parameterization[] { paramModel });
+
+					ExecutionEvent openFileEvent = handlerService
+							.createExecutionEvent(parmCommand, null);
+					((IEvaluationContext) openFileEvent.getApplicationContext())
+							.addVariable(
+									OpenFileCommandHandler.VARIABLE_FILES,
+									new RepoFile[] { (RepoFile) clickedRepoResource });
+
+					openFileCmd.executeWithChecks(openFileEvent);
+				} catch (CommandException e) {
 					e.printStackTrace();
 				}
 			}
