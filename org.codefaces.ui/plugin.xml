@@ -102,8 +102,8 @@
             id="org.codefaces.ui.commands.openFileCommand"
             name="Open File">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.openFileCommand.filename"
-               name="filename"
+               id="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
+               name="viewId"
                optional="false">
          </commandParameter>
       </command>
@@ -161,7 +161,7 @@
          </toolbar>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.codefaces.ui.view.projectExplorer#viewer?after=additions">
+            locationURI="popup:org.codefaces.ui.view.projectExplorer#viewer">
          <command
                commandId="org.codefaces.ui.commands.openFileCommand"
                label="Open"
@@ -179,8 +179,8 @@
                </with>
             </visibleWhen>
             <parameter
-                  name="org.codefaces.ui.commands.parameters.openFileCommand.filename"
-                  value="activeMenuSelection">
+                  name="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
+                  value="org.codefaces.ui.view.projectExplorer">
             </parameter>
          </command>
       </menuContribution>
