@@ -3,12 +3,15 @@ package org.codefaces.ui.views;
 import org.codefaces.core.models.RepoResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 
-public class StatusManager implements ISelectionChangedListener {
+public class StatusManager implements ISelectionChangedListener,
+		IPropertyChangeListener {
 	private static final String AT = "@";
 
 	private static final String SEPERATOR = " - ";
@@ -21,15 +24,21 @@ public class StatusManager implements ISelectionChangedListener {
 		viewer.addPostSelectionChangedListener(this);
 	}
 
-	private void showStatusMessage(RepoResource resource) {
-		if (resource == null) {
+	public StatusManager(IStatusLineManager statusLineManager,
+			CodeExplorerViewPart part) {
+		this.statusLineManager = statusLineManager;
+		part.addPropertyChangeListener(this);
+	}
+
+	public void showStatusMessage(IPath fullPath, String repoUrl,
+			String branchName) {
+		if (fullPath == null) {
 			statusLineManager.setMessage(null);
 			return;
 		}
 
 		StringBuilder builder = new StringBuilder();
 
-		IPath fullPath = resource.getFullPath();
 		String fileName = fullPath.lastSegment();
 		if (fileName != null) {
 			builder.append(fileName);
@@ -47,11 +56,21 @@ public class StatusManager implements ISelectionChangedListener {
 			builder.append(SEPERATOR);
 		}
 
-		builder.append(resource.getRoot().getBranch().getName());
+		builder.append(branchName);
 		builder.append(AT);
-		builder.append(resource.getRoot().getBranch().getRepo().getUrl());
+		builder.append(repoUrl);
 
 		statusLineManager.setMessage(builder.toString());
+	}
+
+	public void showStatusMessage(RepoResource resource) {
+		if (resource == null) {
+			showStatusMessage(null, null, null);
+		} else {
+			showStatusMessage(resource.getFullPath(), resource.getRoot()
+					.getBranch().getRepo().getUrl(), resource.getRoot()
+					.getBranch().getName());
+		}
 	}
 
 	@Override
@@ -67,4 +86,10 @@ public class StatusManager implements ISelectionChangedListener {
 		showStatusMessage((RepoResource) selectedObject);
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getProperty() == CodeExplorerViewPart.PROP_REPO_RESOURCE) {
+			showStatusMessage((RepoResource) event.getNewValue());
+		}
+	}
 }

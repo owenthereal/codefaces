@@ -19,7 +19,6 @@ import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.httpclient.CodeFacesHttpClient;
 import org.codefaces.httpclient.RepoResponseException;
-import org.codefaces.httpclient.ajax.AjaxClientWidget;
 
 import com.google.gson.Gson;
 
@@ -46,12 +45,15 @@ public class GitHubService {
 
 	private Gson gson;
 
-	public GitHubService() {
+	private final CodeFacesHttpClient httpClient;
+
+	public GitHubService(CodeFacesHttpClient httpClient) {
+		this.httpClient = httpClient;
 		gson = new Gson();
 	}
 
 	private String getResponseBody(String url) throws RepoResponseException {
-		return AjaxClientWidget.getCurrent().getClient().getResponseBody(url);
+		return httpClient.getResponseBody(url);
 	}
 
 	/**

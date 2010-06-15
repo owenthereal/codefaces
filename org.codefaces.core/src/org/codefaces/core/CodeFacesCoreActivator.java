@@ -47,7 +47,7 @@ public class CodeFacesCoreActivator extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		registration.unregister();
-		repoService.getHttpClient().dispose();
+		repoService.dispose();
 		plugin = null;
 		super.stop(context);
 	}

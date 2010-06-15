@@ -11,13 +11,15 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.services.github.GitHubService;
 import org.codefaces.httpclient.CodeFacesHttpClient;
 import org.codefaces.httpclient.RepoResponseException;
-import org.codefaces.httpclient.ajax.AjaxClientWidget;
+import org.codefaces.httpclient.ajax.AjaxClientDelegate;
 
 public class RepoService {
 	private GitHubService githubService;
+	private CodeFacesHttpClient httpClient;
 
-	public CodeFacesHttpClient getHttpClient() {
-		return AjaxClientWidget.getCurrent().getClient();
+	public RepoService() {
+		httpClient = new AjaxClientDelegate();
+		githubService = new GitHubService(httpClient);
 	}
 
 	public Repo createRepo(String url) throws RepoResponseException,
@@ -28,12 +30,12 @@ public class RepoService {
 		}
 		return getServiceInternal().createGithubRepo(trimed_url);
 	}
+	
+	public void dispose() {
+		httpClient.dispose();
+	}
 
 	private GitHubService getServiceInternal() {
-		if (githubService == null) {
-			githubService = new GitHubService();
-		}
-
 		return githubService;
 	}
 

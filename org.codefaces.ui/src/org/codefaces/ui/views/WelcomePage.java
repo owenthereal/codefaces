@@ -1,7 +1,6 @@
 package org.codefaces.ui.views;
 
 import org.apache.commons.lang.StringUtils;
-import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
