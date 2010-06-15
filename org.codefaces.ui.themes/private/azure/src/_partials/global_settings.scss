@@ -13,8 +13,8 @@ $global_text_color: #222222;
 $global_text_color_on_dark_bg: #FFFFFF;
 $global_text_color_disabled: #CFCFCF;
 
-$global_foreground_color: #0A648C;//86D9FF
-$global_background_color: #FFFFFF;//#F4F9FA;
+$global_foreground_color: #0A648C; //86D9FF
+$global_background_color: #FFFFFF; //F4F9FA
 $global_selection_color: #BBD8E0;
 $global_selection_off_focus_color: #CCCCCC;
 
@@ -28,7 +28,7 @@ $global_border_color_outer: #447099;
   background-color: $global_background_color;
 }
 
-*:disable{
+*:disabled{
   color: $global_text_color_disabled;
 }
 
