@@ -57,6 +57,7 @@
          point="org.eclipse.rap.ui.branding">
       <branding
             defaultEntrypointId="org.codefaces.ui.entrypoint.codefaces"
+            favicon="icons/favicon.gif"
             id="org.codefaces.ui.branding.codefaces"
             servletName="explore"
             themeId="org.codefaces.ui.azure.theme"
