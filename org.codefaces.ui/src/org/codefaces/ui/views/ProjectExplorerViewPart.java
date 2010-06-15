@@ -11,8 +11,18 @@ import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.SwitchBranchAction;
+import org.codefaces.ui.commands.OpenFileCommandHandler;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.IParameter;
+import org.eclipse.core.commands.Parameterization;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.commands.common.CommandException;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -24,14 +34,17 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
+	public static final String VIEWER_CONTEXT_MENU_ID = ID + "#viewer";
 
 	private TreeViewer viewer;
 
@@ -156,18 +169,33 @@ public class ProjectExplorerViewPart extends ViewPart {
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
 
+			//Call the open file command 
 			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
-				IWorkbenchPage activePage = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage();
+				IHandlerService handlerService = (IHandlerService) PlatformUI
+						.getWorkbench().getService(IHandlerService.class);
+				ICommandService cmdService = (ICommandService) PlatformUI
+						.getWorkbench().getService(ICommandService.class);
+
+				Command openFileCmd = cmdService
+						.getCommand(OpenFileCommandHandler.ID);
 				try {
-					IViewPart viewPart = activePage.showView(
-							CodeExplorerViewPart.ID, clickedRepoResource
-									.getId(), IWorkbenchPage.VIEW_ACTIVATE);
-					if (viewPart instanceof CodeExplorerViewPart) {
-						RepoFile repoFile = (RepoFile) clickedRepoResource;
-						((CodeExplorerViewPart) viewPart).setInput(repoFile);
-					}
-				} catch (Exception e) {
+					IParameter openFileCmdMode = openFileCmd
+							.getParameter(OpenFileCommandHandler.PARAM_MODE);
+					Parameterization paramModel = new Parameterization(
+							openFileCmdMode,
+							OpenFileCommandHandler.MODE_DIRECT_FILES);
+					ParameterizedCommand parmCommand = new ParameterizedCommand(
+							openFileCmd, new Parameterization[] { paramModel });
+
+					ExecutionEvent openFileEvent = handlerService
+							.createExecutionEvent(parmCommand, null);
+					((IEvaluationContext) openFileEvent.getApplicationContext())
+							.addVariable(
+									OpenFileCommandHandler.VARIABLE_FILES,
+									new RepoFile[] { (RepoFile) clickedRepoResource });
+
+					openFileCmd.executeWithChecks(openFileEvent);
+				} catch (CommandException e) {
 					e.printStackTrace();
 				}
 			}
@@ -178,8 +206,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 	public void createPartControl(Composite parent) {
 		createToolBar(parent);
 		createViewer(parent);
-		setTitleImage(Images.getImageDescriptor(Images.IMG_NAVIGATOR)
-				.createImage());
 		workspace = Workspace.getCurrent();
 		workspace
 				.addWorkSpaceChangeEventListener(new WorkspaceChangeEventListener() {
@@ -191,6 +217,23 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
+		
+		registerContextMenu(viewer);
+		
+		
+	}
+
+	/**
+	 * create and register a context menu associate to the explorer tree viewer
+	 * @param viewer - the project explorer tree-viewer
+	 */
+	private void registerContextMenu(TreeViewer viewer) {
+		MenuManager contextMenuManager = new MenuManager();
+		contextMenuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		Menu menu = contextMenuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(VIEWER_CONTEXT_MENU_ID, contextMenuManager, viewer);
+		getSite().setSelectionProvider(viewer);
 	}
 
 	public StatusManager getStatusManager() {

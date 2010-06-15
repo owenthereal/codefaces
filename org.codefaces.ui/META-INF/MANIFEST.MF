@@ -7,7 +7,8 @@ Bundle-Activator: org.codefaces.ui.CodeFacesUIActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui,
  org.eclipse.rap.ui.views,
- org.codefaces.core
+ org.codefaces.core,
+ org.eclipse.core.expressions
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.codefaces.ui.codeLanguages,
