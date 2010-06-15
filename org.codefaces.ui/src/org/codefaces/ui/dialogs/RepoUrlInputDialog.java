@@ -6,69 +6,66 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.services.RepoService;
 import org.codefaces.ui.CodeFacesUIActivator;
-import org.codefaces.ui.widgets.IProgressMonitorInputValidator;
-import org.codefaces.ui.widgets.ValidatableComboViewer;
+import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.progress.UIJob;
 
 public class RepoUrlInputDialog extends TitleAreaDialog {
+	private final class BranchLabelProvider extends LabelProvider {
+		@Override
+		public String getText(Object element) {
+			RepoBranch branch = (RepoBranch) element;
+			return branch.getName();
+		}
+	}
+
+	private final class BranchSelectionChangedListener implements
+			ISelectionChangedListener {
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			if (event.getSelection().isEmpty()) {
+				selectedBranch = null;
+				setErrorMessage(NO_BRANCH_IS_SELECTED);
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
+			} else {
+				IStructuredSelection selection = (IStructuredSelection) event
+						.getSelection();
+				selectedBranch = (RepoBranch) selection.getFirstElement();
+				setErrorMessage(null);
+				getButton(IDialogConstants.OK_ID).setEnabled(true);
+			}
+		}
+	}
+
 	private static final String WINDOW_TITLE = "Import from a repository";
 
 	private static final String NO_BRANCH_IS_SELECTED = "No branch is selected.";
 
-	private class UrlInputValidator implements IProgressMonitorInputValidator {
-		@Override
-		public String validate(String newText, IProgressMonitor monitor) {
-			setErrorMessage(null);
+	private ComboViewer urlInputViewer;
 
-			try {
-				monitor.beginTask("Connecting to repository: " + newText, 100);
-				RepoService repoService = CodeFacesUIActivator.getDefault()
-						.getRepoService();
-
-				Repo repo = repoService.createRepo(newText);
-				monitor.worked(30);
-
-				monitor.setTaskName("Fetching branches...");
-				Collection<RepoBranch> branches = repo.getBranches();
-				final Object[] input = branches.toArray();
-
-				if (!branchInputViewer.getViewer().getCCombo().isDisposed()) {
-					branchInputViewer.setInput(input);
-					if (input.length > 0) {
-						branchInputViewer.setSelectedObject(input[0]);
-					} else {
-						branchInputViewer.setSelectedObject(null);
-					}
-				}
-
-				monitor.worked(70);
-			} catch (Exception e) {
-				branchInputViewer.setInput(null);
-				branchInputViewer.setSelectedObject(null);
-				setErrorMessage(e.getMessage());
-				return e.getMessage();
-			}
-
-			return null;
-		}
-	}
-
-	private ValidatableComboViewer urlInputViewer;
-
-	private ValidatableComboViewer branchInputViewer;
+	private ComboViewer branchInputViewer;
 
 	public static final String TITLE = "Checkout projects from a repository";
 
@@ -76,6 +73,10 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
 			+ SAMPLE_URL;
+
+	private Button connectButton;
+
+	private RepoBranch selectedBranch;
 
 	public RepoUrlInputDialog(Shell parentShell) {
 		super(parentShell);
@@ -98,45 +99,11 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 		Label urlInputLabel = new Label(dialogAreaComposite, SWT.NONE);
 		urlInputLabel.setText("Repository:");
-		urlInputViewer = new ValidatableComboViewer(dialogAreaComposite,
-				SWT.BORDER, new UrlInputValidator());
-		urlInputViewer.getControl().setLayoutData(
-				new GridData(GridData.GRAB_HORIZONTAL
-						| GridData.HORIZONTAL_ALIGN_FILL));
-		urlInputViewer.getViewer().getControl().setFocus();
+		createUrlInputSection(dialogAreaComposite);
 
 		Label branchInputLabel = new Label(dialogAreaComposite, SWT.NONE);
 		branchInputLabel.setText("Branch:");
-		branchInputViewer = new ValidatableComboViewer(dialogAreaComposite,
-				SWT.BORDER | SWT.READ_ONLY, null);
-		branchInputViewer.getControl().setLayoutData(
-				new GridData(GridData.GRAB_HORIZONTAL
-						| GridData.HORIZONTAL_ALIGN_FILL));
-		branchInputViewer.getViewer().setContentProvider(
-				new ArrayContentProvider());
-		branchInputViewer.getViewer().setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				RepoBranch branch = (RepoBranch) element;
-				return branch.getName();
-			}
-		});
-		branchInputViewer.getViewer().addSelectionChangedListener(
-				new ISelectionChangedListener() {
-					@Override
-					public void selectionChanged(SelectionChangedEvent event) {
-						if (event.getSelection().isEmpty()) {
-							branchInputViewer
-									.setErrorMessages(NO_BRANCH_IS_SELECTED);
-							getButton(IDialogConstants.OK_ID).setEnabled(false);
-							setErrorMessage(NO_BRANCH_IS_SELECTED);
-						} else {
-							branchInputViewer.setErrorMessages(null);
-							getButton(IDialogConstants.OK_ID).setEnabled(true);
-							setErrorMessage(null);
-						}
-					}
-				});
+		createBranchInputSection(dialogAreaComposite);
 
 		setTitle(TITLE);
 		setMessage(DESCRIPTION);
@@ -146,9 +113,97 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		return composite;
 	}
 
+	private void createBranchInputSection(Composite dialogAreaComposite) {
+		branchInputViewer = new ComboViewer(new CCombo(dialogAreaComposite,
+				SWT.BORDER | SWT.READ_ONLY));
+		branchInputViewer.getControl().setLayoutData(
+				new GridData(GridData.GRAB_HORIZONTAL
+						| GridData.HORIZONTAL_ALIGN_FILL));
+		branchInputViewer.setContentProvider(new ArrayContentProvider());
+		branchInputViewer.setLabelProvider(new BranchLabelProvider());
+		branchInputViewer
+				.addSelectionChangedListener(new BranchSelectionChangedListener());
+	}
+
+	private void createUrlInputSection(Composite dialogAreaComposite) {
+		Composite inputTextomposite = new Composite(dialogAreaComposite,
+				SWT.NONE);
+		GridLayout inputTextLayout = new GridLayout(2, false);
+		inputTextLayout.marginWidth = 0;
+		inputTextLayout.marginHeight = 8;
+		inputTextLayout.verticalSpacing = 0;
+		inputTextLayout.horizontalSpacing = 5;
+		inputTextomposite.setLayout(inputTextLayout);
+		inputTextomposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		inputTextomposite.setFont(dialogAreaComposite.getFont());
+
+		urlInputViewer = new ComboViewer(new CCombo(inputTextomposite,
+				SWT.BORDER));
+		urlInputViewer.getControl().setLayoutData(
+				new GridData(GridData.GRAB_HORIZONTAL
+						| GridData.HORIZONTAL_ALIGN_FILL));
+		urlInputViewer.getControl().setFocus();
+
+		connectButton = new Button(inputTextomposite, SWT.BORDER | SWT.PUSH);
+		connectButton.setImage(Images.getImage(Images.IMG_BRANCHES));
+		connectButton.setToolTipText("Connect to repository");
+		connectButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				new ConnectToRepoJob(urlInputViewer.getCCombo().getText())
+						.schedule();
+			}
+		});
+	}
+
+	private class ConnectToRepoJob extends UIJob {
+
+		private final String url;
+
+		public ConnectToRepoJob(String url) {
+			super("");
+			this.url = url;
+		}
+
+		private void updateBranchViewer(final Object[] input) {
+			branchInputViewer.setInput(input);
+			if (input == null || input.length == 0) {
+				branchInputViewer.setSelection(null);
+			} else {
+				branchInputViewer
+						.setSelection(new StructuredSelection(input[0]));
+			}
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			setErrorMessage(null);
+
+			try {
+				monitor.beginTask("Connecting to repository: " + url, 100);
+				RepoService repoService = CodeFacesUIActivator.getDefault()
+						.getRepoService();
+
+				final Repo repo = repoService.createRepo(url);
+				monitor.worked(30);
+
+				monitor.setTaskName("Fetching branches...");
+				Collection<RepoBranch> branches = repo.getBranches();
+				final Object[] input = branches.toArray();
+				monitor.worked(70);
+
+				updateBranchViewer(input);
+			} catch (Exception e) {
+				updateBranchViewer(null);
+				setErrorMessage(e.getMessage());
+			}
+
+			return Status.OK_STATUS;
+		}
+	}
+
 	private void setWindowTitle(String windowTitle) {
 		if (getShell() == null) {
-			// Not created yet
 			return;
 		}
 
@@ -159,19 +214,17 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		super.createButtonsForButtonBar(parent);
-		urlInputViewer
-				.attachToCancelComponent(getButton(IDialogConstants.CANCEL_ID));
 		getButton(IDialogConstants.OK_ID).setEnabled(false);
 	}
 
 	@Override
 	protected void okPressed() {
-		if (branchInputViewer.getSelectedObject() != null) {
+		if (!branchInputViewer.getSelection().isEmpty()) {
 			super.okPressed();
 		}
 	}
 
 	public RepoBranch getSelectedBranch() {
-		return (RepoBranch) branchInputViewer.getSelectedObject();
+		return selectedBranch;
 	}
 }
