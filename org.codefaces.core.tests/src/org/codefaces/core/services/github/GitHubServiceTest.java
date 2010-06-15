@@ -33,6 +33,8 @@ public class GitHubServiceTest {
 	private static final String TEST_GITHUB_SHOW_BRANCHES_URL_2 = "http://github.com/api/v2/json/repos/show/schacon/ruby-git/branches";
 
 	private static final String TEST_GITHUB_URL = "http://github.com/jingweno/ruby_grep";
+	
+	private static final String TEST_GITHUB_URL_WITH_ENDING_SLASH = "http://github.com/jingweno/ruby_grep/";
 
 	private static final String TEST_REPO_NAME = "ruby_grep";
 
@@ -82,8 +84,11 @@ public class GitHubServiceTest {
 	public void test_createGithubRepo() throws RepoResponseException,
 			MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
-
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
+		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
+		
+		gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL_WITH_ENDING_SLASH);
+		assertEquals(TEST_GITHUB_URL_WITH_ENDING_SLASH, gitHubRepo.getUrl());
 		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
 	}
 

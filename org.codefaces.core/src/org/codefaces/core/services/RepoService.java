@@ -25,9 +25,6 @@ public class RepoService {
 	public Repo createRepo(String url) throws RepoResponseException,
 			RepoResponseException, MalformedURLException {
 		String trimed_url = url.trim();
-		if (trimed_url.endsWith("/")) {
-			trimed_url = trimed_url.substring(0, trimed_url.length() - 1);
-		}
 		return getServiceInternal().createGithubRepo(trimed_url);
 	}
 	

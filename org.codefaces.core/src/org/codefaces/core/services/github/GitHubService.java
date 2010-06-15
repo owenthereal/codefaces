@@ -24,12 +24,14 @@ import com.google.gson.Gson;
 
 public class GitHubService {
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
-
 	private static final String HTTP_GITHUB_COM = "http://github.com";
+	
+	private static final String OPTIONAL_ENDING_SLASH_PATTERN = "(?:/)?";
 
 	private static final Pattern URL_PATTERN = Pattern.compile("(?:"
 			+ Pattern.quote(HTTP_WWW_GITHUB_ORG) + "|"
-			+ Pattern.quote(HTTP_GITHUB_COM) + ")/([^/]+)/([^/]+)");
+			+ Pattern.quote(HTTP_GITHUB_COM) + ")/([^/]+)/([^/]+)"
+			+ OPTIONAL_ENDING_SLASH_PATTERN);
 
 	private static final String SHOW_GITHUB_BRANCHES = "http://github.com/api/v2/json/repos/show";
 
