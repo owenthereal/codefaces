@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Loading CodeFaces</title>
+	<style type="text/css">
+		#outer {height: 400px; overflow: hidden; position: relative; width: 100%;}
+		#outer[id] {display: table; position: static;}
+
+		#middle {position: absolute; top: 50%; width: 100%; text-align: center;} /* for explorer only*/
+		#middle[id] {display: table-cell; vertical-align: middle; position: static;}
+
+		#inner {position: relative; top: -50%; text-align: left;} /* for explorer only */
+		#inner {width: 200px; margin-left: auto; margin-right: auto;} /* for all browsers*/
+		body, html {height: 100%;}
+		#outer {height: 100%; overflow: visible;} /* or without overflow */
+	</style>
+</head>	
+<body>
+	<div id="outer">
+		<div id="middle">
+			<div id="inner">
+				<img src="html/images/loading.gif" alt="Loading..."/>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
