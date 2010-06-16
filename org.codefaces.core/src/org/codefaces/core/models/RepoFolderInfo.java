@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.services.RepoService;
-import org.codefaces.httpclient.RepoResponseException;
 
 public class RepoFolderInfo extends RepoResourceInfo {
 	private Collection<RepoResource> children;
@@ -21,7 +20,7 @@ public class RepoFolderInfo extends RepoResourceInfo {
 
 		return children;
 	}
-	
+
 	@Override
 	public boolean hasChildren() {
 		return true;
@@ -30,12 +29,6 @@ public class RepoFolderInfo extends RepoResourceInfo {
 	private Collection<RepoResource> fetchChildren() {
 		RepoService repoService = CodeFacesCoreActivator.getDefault()
 				.getRepoService();
-		try {
-			return repoService.fetchChildren(getContext());
-		} catch (RepoResponseException e) {
-			e.printStackTrace();
-		} 
-
-		return EMPTY_CHILDREN;
+		return repoService.fetchChildren(getContext());
 	}
 }

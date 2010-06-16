@@ -2,7 +2,6 @@ package org.codefaces.core.models;
 
 import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.services.RepoService;
-import org.codefaces.httpclient.RepoResponseException;
 
 public class RepoFileInfo extends RepoResourceInfo {
 	private String mimeType;
@@ -39,12 +38,8 @@ public class RepoFileInfo extends RepoResourceInfo {
 	private void fetchInfo(RepoFile file) {
 		RepoService repoService = CodeFacesCoreActivator.getDefault()
 				.getRepoService();
-		try {
-			RepoFileInfo info = repoService.fetchFileInfo(file);
-			fill(info.content, info.mimeType, info.mode, info.size);
-		} catch (RepoResponseException e) {
-			e.printStackTrace();
-		}
+		RepoFileInfo info = repoService.fetchFileInfo(file);
+		fill(info.content, info.mimeType, info.mode, info.size);
 	}
 
 	@Override
