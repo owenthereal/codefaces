@@ -4,9 +4,9 @@
    <extension
          point="org.eclipse.ui.presentationFactories">
       <factory
-            class="org.codefaces.ui.lookandfeel.defaultdesign.DefaultPresentationFactory"
-            id="org.codefaces.ui.lookandfeel.defaultpresentationfactory"
-            name="Default Presentation Factory">
+            class="org.codefaces.ui.lookandfeel.spica.SpicaPresentationFactory"
+            id="org.codefaces.ui.lookandfeel.spica.SpicaPresentationFactory"
+            name="Spica Presentation Factory">
       </factory>
    </extension>
    <extension

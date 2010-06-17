@@ -62,6 +62,12 @@
             servletName="explore"
             themeId="org.codefaces.ui.azure.theme"
             title="CodeFaces">
+         <presentationFactory
+               id="org.codefaces.ui.lookandfeel.spica.SpicaPresentationFactory">
+            <defaultStackPresentation
+                  id="org.codefaces.ui.lookandfeel.spica.stacks.SpicaStackPresentation">
+            </defaultStackPresentation>
+         </presentationFactory>
       </branding>
    </extension>
    <extension

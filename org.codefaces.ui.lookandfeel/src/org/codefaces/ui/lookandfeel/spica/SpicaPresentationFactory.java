@@ -1,7 +1,6 @@
-package org.codefaces.ui.lookandfeel.defaultdesign;
+package org.codefaces.ui.lookandfeel.spica;
 
 
-import org.codefaces.ui.lookandfeel.spica.SpicaWindowComposer;
 import org.codefaces.ui.lookandfeel.spica.managers.MenuBarManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -17,9 +16,9 @@ import org.eclipse.rap.ui.interactiondesign.PresentationFactory;
 import org.eclipse.swt.SWT;
 
 @SuppressWarnings("restriction")
-public class DefaultPresentationFactory extends PresentationFactory {
+public class SpicaPresentationFactory extends PresentationFactory {
 
-	public DefaultPresentationFactory() {
+	public SpicaPresentationFactory() {
 		// TODO Auto-generated constructor stub
 	}
 
