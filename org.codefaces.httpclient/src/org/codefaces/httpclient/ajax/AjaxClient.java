@@ -76,8 +76,7 @@ public class AjaxClient {
 		JsonResponse resp = execute(new JsonGet(url));
 
 		if (resp.getStatus() != JsonResponse.STATUS.SUCCESS) {
-			throw new RepoResponseException("Errors loading " + url
-					+ ". Json response status: " + resp.getStatus());
+			throw new RepoResponseException("Errors loading " + url + ".");
 		}
 
 		return resp.getContent();

@@ -23,11 +23,11 @@ public class RepoService {
 	}
 
 	public Repo createRepo(String url) throws RepoResponseException,
-			RepoResponseException, MalformedURLException {
+			MalformedURLException {
 		String trimed_url = url.trim();
 		return getServiceInternal().createGithubRepo(trimed_url);
 	}
-	
+
 	public void dispose() {
 		httpClient.dispose();
 	}
@@ -37,33 +37,22 @@ public class RepoService {
 	}
 
 	public Collection<RepoBranch> fetchBranches(Repo repo)
-			throws RepoResponseException, RepoResponseException {
+			throws RepoResponseException {
 		return getServiceInternal().fetchGitHubBranches(repo);
 	}
 
 	public Collection<RepoResource> fetchChildren(RepoResource repoContainer)
-			throws RepoResponseException, RepoResponseException {
+			throws RepoResponseException {
 		return getServiceInternal().fetchGitHubChildren(repoContainer);
 	}
 
 	public RepoFileInfo fetchFileInfo(RepoFile repoFile)
-			throws RepoResponseException, RepoResponseException {
+			throws RepoResponseException {
 		return getServiceInternal().fetchGitHubFileInfo(repoFile);
 	}
 
-	/**
-	 * @return the default branch to be opened
-	 * @param repo
-	 *            the repository
-	 */
 	public RepoBranch getDefaultBranch(Repo repo) {
-		try {
-			return getServiceInternal().getGitHubDefaultBranch(repo);
-		} catch (RepoResponseException e) {
-			// there may be some repository provider allows the user to
-			// remove/rename the default branch. In this case, we return null
-			return null;
-		}
+		return getServiceInternal().getGitHubDefaultBranch(repo);
 	}
 
 }

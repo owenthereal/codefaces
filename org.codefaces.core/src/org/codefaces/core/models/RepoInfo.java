@@ -2,7 +2,6 @@ package org.codefaces.core.models;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.codefaces.core.CodeFacesCoreActivator;
@@ -27,28 +26,26 @@ public class RepoInfo extends RepoResourceInfo {
 
 		return branches;
 	}
-	
+
 	@Override
 	public boolean hasChildren() {
 		return true;
 	}
 
 	private Collection<RepoBranch> fetchBranches() {
-		try {
-			return CodeFacesCoreActivator.getDefault().getRepoService()
-					.fetchBranches(getContext());
-		} catch (RepoResponseException e) {
-			e.printStackTrace();
-		}
-
-		return Collections.emptyList();
+		return CodeFacesCoreActivator.getDefault().getRepoService()
+				.fetchBranches(getContext());
 	}
 
 	@Override
 	public Collection<RepoResource> getChildren() {
 		List<RepoResource> children = new ArrayList<RepoResource>();
-		for (RepoBranch branch : getBranches()) {
-			children.add(branch);
+		try {
+			for (RepoBranch branch : getBranches()) {
+				children.add(branch);
+			}
+		} catch (RepoResponseException e) {
+			e.printStackTrace();
 		}
 
 		return children;

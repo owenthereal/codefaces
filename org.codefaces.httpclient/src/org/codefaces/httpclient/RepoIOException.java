@@ -1,8 +1,7 @@
 package org.codefaces.httpclient;
 
-import java.io.IOException;
 
-public class RepoIOException extends IOException {
+public class RepoIOException extends RuntimeException {
 	private static final long serialVersionUID = -4979080649956075092L;
 
 	public RepoIOException() {
