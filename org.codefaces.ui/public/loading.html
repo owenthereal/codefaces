@@ -4,25 +4,20 @@
 <head>
 	<title>Loading CodeFaces</title>
 	<style type="text/css">
-		#outer {height: 400px; overflow: hidden; position: relative; width: 100%;}
-		#outer[id] {display: table; position: static;}
-
-		#middle {position: absolute; top: 50%; width: 100%; text-align: center;} /* for explorer only*/
-		#middle[id] {display: table-cell; vertical-align: middle; position: static;}
-
-		#inner {position: relative; top: -50%; text-align: left;} /* for explorer only */
-		#inner {width: 200px; margin-left: auto; margin-right: auto;} /* for all browsers*/
-		body, html {height: 100%;}
-		#outer {height: 100%; overflow: visible;} /* or without overflow */
+    #loading {
+      width: 32px;
+      height: 32px;
+      left: 50%;
+      top: 50%;
+      display: block;
+      background-image: url('html/images/loading.gif');
+      margin-top: -16px;
+      margin-left: -16px;
+      position: absolute;
+    }
 	</style>
 </head>	
 <body>
-	<div id="outer">
-		<div id="middle">
-			<div id="inner">
-				<img src="html/images/loading.gif" alt="Loading..."/>
-			</div>
-		</div>
-	</div>
+  <div id="loading">
 </body>
 </html>
