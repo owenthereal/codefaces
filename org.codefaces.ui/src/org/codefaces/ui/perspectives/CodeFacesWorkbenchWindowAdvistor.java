@@ -1,6 +1,7 @@
 package org.codefaces.ui.perspectives;
 
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
+import org.codefaces.ui.lookandfeel.WindowComposer;
 import org.codefaces.ui.views.WelcomePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -57,4 +58,13 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 			IActionBarConfigurer configurer) {
 		return new CodeFacesActionBarAdvisor(configurer);
 	}
+	
+	/**
+	 * This method override the default look and feel
+	 */
+	//@Override
+	//public void createWindowContents(Shell shell) {
+	//	WindowComposer composer = new WindowComposer();
+	//	composer.createWindowContent(shell, getWindowConfigurer());
+	//}
 }

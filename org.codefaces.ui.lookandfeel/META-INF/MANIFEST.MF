@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Lookandfeel
+Bundle-SymbolicName: org.codefaces.ui.lookandfeel;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.codefaces.ui.lookandfeel.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.rap.ui;bundle-version="1.3.0",
+ org.codefaces.ui;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
