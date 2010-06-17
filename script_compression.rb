@@ -5,12 +5,7 @@ PATTERN_JS = /\.js$/
 PATTERN_CSS = /\.css$/
 
 FILE_LIST = [
-  "org.codefaces.web/src/org/codefaces/web/resources/json2.js",
-  "org.codefaces.ui.themes/themes/azure/stylesheet/azure.css",
-  "org.codefaces.web/public/javascripts/highlight/languages",
-  "org.codefaces.web/public/javascripts/highlight/highlight.js",
-  "org.codefaces.web/public/stylesheets/highlight",
-  "org.codefaces.web/public/stylesheets",
+  "org.codefaces.web/public/stylesheets"
 ]
 
 def compress(in_file)
