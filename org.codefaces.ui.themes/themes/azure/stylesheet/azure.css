@@ -1,33 +1,33 @@
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -37,19 +37,19 @@ Display {
   rwt-selectionmarker-color: #bbd8e0;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -116,19 +116,19 @@ Shell-MinButton:hover {
   background-image: url("/themes/azure/images/shell-min-hover.png");
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -150,19 +150,19 @@ Composite.inactiveButton {
   border: none;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -186,19 +186,19 @@ MenuItem:hover {
   background-color: #bbd8e0;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -226,19 +226,19 @@ ToolItem:pressed {
   border: 1px #bbd8e0;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -271,19 +271,19 @@ CTabFolder-DropDownButton-Icon:hover {
   background-image: url("/themes/azure/images/ctabfolder-dropdown-hover.png");
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -308,19 +308,19 @@ TreeItem:selected:unfocused {
   background-color: #cccccc;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -411,19 +411,19 @@ Button.clearButton {
   padding: 2px;
 }
 
-/* line 25, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 26, ../../../private/azure/src/_partials/global_settings.scss */
 * {
   color: #222222;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: white;
 }
 
-/* line 31, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 32, ../../../private/azure/src/_partials/global_settings.scss */
 *:disabled {
   color: #cfcfcf;
 }
 
-/* line 35, ../../../private/azure/src/_partials/global_settings.scss */
+/* line 36, ../../../private/azure/src/_partials/global_settings.scss */
 *[BORDER] {
   border: 1px solid #aaaaaa;
 }
@@ -434,21 +434,26 @@ Combo, CCombo {
 }
 
 /* line 7, ../../../private/azure/src/_partials/combo.scss */
+Combo:disabled, CCombo:disabled {
+  background-color: #eeeeee;
+}
+
+/* line 11, ../../../private/azure/src/_partials/combo.scss */
 Combo, CCombo[BORDER] {
   border-radius: 2px;
 }
 
-/* line 11, ../../../private/azure/src/_partials/combo.scss */
+/* line 15, ../../../private/azure/src/_partials/combo.scss */
 Combo-Button-Icon, CCombo-Button-Icon {
   background-image: url("/themes/azure/images/down.png");
 }
 
-/* line 15, ../../../private/azure/src/_partials/combo.scss */
+/* line 19, ../../../private/azure/src/_partials/combo.scss */
 Combo-Button-Icon:hover, CCombo-Button-Icon:hover {
   background-image: url("/themes/azure/images/down-hover.png");
 }
 
-/* line 19, ../../../private/azure/src/_partials/combo.scss */
+/* line 23, ../../../private/azure/src/_partials/combo.scss */
 Combo-Button, CCombo-Button {
   background-color: transparent;
   border: none;
@@ -457,18 +462,18 @@ Combo-Button, CCombo-Button {
   width: 18px;
 }
 
-/* line 33, ../../../private/azure/src/_partials/combo.scss */
+/* line 37, ../../../private/azure/src/_partials/combo.scss */
 Combo-Button:pressed, CCombo-Button:pressed {
   background-image: gradient(linear, left top, left bottom, from(#e0e0e0), color-stop(52%, #e0e0e0), to(#b0b0b0));
 }
 
-/* line 42, ../../../private/azure/src/_partials/combo.scss */
+/* line 46, ../../../private/azure/src/_partials/combo.scss */
 Combo-List, CCombo-List {
   border: 1px solid #c1c1c1;
   border-radius: 0px 0px 2px 2px;
 }
 
-/* line 47, ../../../private/azure/src/_partials/combo.scss */
+/* line 51, ../../../private/azure/src/_partials/combo.scss */
 Combo-FocusIndicator, CCombo-FocusIndicator {
   border: 1px dotted #b8b8b8;
   margin: 1px 19px 1px 1px;
