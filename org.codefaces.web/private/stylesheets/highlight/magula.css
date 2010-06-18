@@ -1,4 +1,4 @@
-﻿/*
+/*
 Description: Magula style for highligh.js
 Author: Ruslan Keba <rukeba@gmail.com>
 Website: http://rukeba.com/
@@ -103,6 +103,16 @@ pre code,
   color: blue;
 }
 
-/* some more style by MrEr <XmrerX@gmail.com> http://mrer.org.ua/ */
-.codePages { color: #777; position: relative; float: left; width: 30px; height: 1px; } 
-.codeContent { position: relative; padding-left: 30px;  padding-bottom: 10px; }
+/* added by KK Lo, Codefaces.org */
+
+.codePages {
+border-right:1px solid #E9E9E9;
+color:#777777;
+float:left;
+width:30px;
+margin-left: 10px;
+}
+
+.codeContent {
+margin-left: 40px;
+}
