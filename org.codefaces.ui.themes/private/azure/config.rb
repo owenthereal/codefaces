@@ -5,5 +5,6 @@ css_dir = "../../themes/azure/stylesheet"
 sass_dir = "src"
 images_dir = "../../themes/azure/images"
 javascripts_dir = "javascripts"
+output_style = :compressed
 # To enable relative paths to assets via compass helper functions. Uncomment:
 # relative_assets = true

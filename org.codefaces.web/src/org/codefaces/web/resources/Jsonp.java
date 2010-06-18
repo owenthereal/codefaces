@@ -25,7 +25,7 @@ public class Jsonp implements IResource {
 	@Override
 	public RegisterOptions getOptions() {
 		//we will do our own compression
-		return RegisterOptions.VERSION;
+		return RegisterOptions.VERSION_AND_COMPRESS;
 	}
 
 	@Override

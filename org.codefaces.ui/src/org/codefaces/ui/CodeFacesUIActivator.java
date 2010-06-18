@@ -127,6 +127,7 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 				"icons/repo_folder_root.gif");
 		putImageInRegistry(registry, Images.IMG_NAVIGATOR, "icons/navigator.gif");
 		putImageInRegistry(registry, Images.IMG_WELCOME, "icons/welcome.gif");
+		putImageInRegistry(registry, Images.IMG_CONNECTION, "icons/connection.gif");
 	}
 
 	/**

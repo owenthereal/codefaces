@@ -6,7 +6,7 @@ import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 public class Json2 implements IResource {
 
 	private static final String RESOURCE_LOCATION =
-		"org/codefaces/web/resources/json2.js";
+		"org/codefaces/web/resources/json2.min.js";
 	
 	@Override
 	public String getCharset() {
@@ -26,7 +26,7 @@ public class Json2 implements IResource {
 	@Override
 	public RegisterOptions getOptions() {
 		//we will do our own compression
-		return RegisterOptions.VERSION;
+		return RegisterOptions.VERSION_AND_COMPRESS;
 	}
 
 	@Override

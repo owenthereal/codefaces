@@ -4,6 +4,10 @@ Combo, CCombo {
   background-color: #FFFFFF;
 }
 
+Combo:disabled, CCombo:disabled{
+  background-color: $global_background_color_disabled;
+}
+
 Combo, CCombo[BORDER] {
   border-radius: 2px;
 }

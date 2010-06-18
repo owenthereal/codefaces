@@ -32,6 +32,7 @@ public class AjaxClientWidget extends Control  {
 				.getInstance(AjaxClientWidget.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(Class adapter) {
 		Object result;

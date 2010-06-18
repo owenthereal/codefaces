@@ -35,109 +35,109 @@
             filePatterns="*.sh,Makefile"
             id="org.codefaces.web.codeLangauge.bash"
             name="bash"
-            resource="/html/javascripts/highlight/languages/bash.js">
+            resource="/html/javascripts/highlight/languages/bash.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.cpp,*.hpp,*.cxx,*.hpp,*.h,*.hpp"
             id="org.codefaces.web.codeLangauge.cpp"
             name="cpp"
-            resource="/html/javascripts/highlight/languages/cpp.js">
+            resource="/html/javascripts/highlight/languages/cpp.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.cs"
             id="org.codefaces.web.codeLangauge.cs"
             name="cs"
-            resource="/html/javascripts/highlight/languages/cs.js">
+            resource="/html/javascripts/highlight/languages/cs.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.css"
             id="org.codefaces.web.codeLangauge.css"
             name="css"
-            resource="/html/javascripts/highlight/languages/css.js">
+            resource="/html/javascripts/highlight/languages/css.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.pas"
             id="org.codefaces.web.codeLangauge.delphi"
             name="delphi"
-            resource="/html/javascripts/highlight/languages/delphi.js">
+            resource="/html/javascripts/highlight/languages/delphi.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.diff,*.patch"
             id="org.codefaces.web.codeLangauge.diff"
             name="diff"
-            resource="/html/javascripts/highlight/languages/diff.js">
+            resource="/html/javascripts/highlight/languages/diff.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.html,*.htm"
             id="org.codefaces.web.codeLangauge.html"
             name="html"
-            resource="/html/javascripts/highlight/languages/html-xml.js">
+            resource="/html/javascripts/highlight/languages/html-xml.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.java"
             id="org.codefaces.web.codeLangauge.java"
             name="java"
-            resource="/html/javascripts/highlight/languages/java.js">
+            resource="/html/javascripts/highlight/languages/java.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.js"
             id="org.codefaces.web.codeLangauge.javascript"
             name="javascript"
-            resource="/html/javascripts/highlight/languages/javascript.js">
+            resource="/html/javascripts/highlight/languages/javascript.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.lisp"
             id="org.codefaces.web.codeLangauge.lisp"
             name="lisp"
-            resource="/html/javascripts/highlight/languages/lisp.js">
+            resource="/html/javascripts/highlight/languages/lisp.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.pl,*.pm"
             id="org.codefaces.web.codeLangauge.perl"
             name="perl"
-            resource="/html/javascripts/highlight/languages/perl.js">
+            resource="/html/javascripts/highlight/languages/perl.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.php"
             id="org.codefaces.web.codeLangauge.php"
             name="php"
-            resource="/html/javascripts/highlight/languages/php.js">
+            resource="/html/javascripts/highlight/languages/php.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.py"
             id="org.codefaces.web.codeLangauge.python"
             name="python"
-            resource="/html/javascripts/highlight/languages/python.js">
+            resource="/html/javascripts/highlight/languages/python.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.scala"
             id="org.codefaces.web.codeLangauge.scala"
             name="scala"
-            resource="/html/javascripts/highlight/languages/scala.js">
+            resource="/html/javascripts/highlight/languages/scala.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.sql"
             id="org.codefaces.web.codeLangauge.sql"
             name="sql"
-            resource="/html/javascripts/highlight/languages/sql.js">
+            resource="/html/javascripts/highlight/languages/sql.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.rb,RakeFile"
             id="org.codefaces.web.codeLangauge.ruby"
             name="ruby"
-            resource="/html/javascripts/highlight/languages/ruby.js">
+            resource="/html/javascripts/highlight/languages/ruby.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.xml,*.xsl,*.xsd"
             id="org.codefaces.web.codeLangauge.xml"
             name="xml"
-            resource="/html/javascripts/highlight/languages/html-xml.js">
+            resource="/html/javascripts/highlight/languages/html-xml.min.js">
       </codeLangauge>
       <codeLangauge
             filePatterns="*.vbs,*.vb"
             id="org.codefaces.web.codeLangauge.vbscript"
             name="vbsript"
-            resource="/html/javascripts/highlight/languages/vbscript.js">
+            resource="/html/javascripts/highlight/languages/vbscript.min.js">
       </codeLangauge>
    </extension>
 </plugin>
