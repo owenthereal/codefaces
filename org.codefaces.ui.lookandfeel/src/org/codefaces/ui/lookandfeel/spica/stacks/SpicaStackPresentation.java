@@ -6,6 +6,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.internal.DefaultStackPresentationSite;
 import org.eclipse.ui.presentations.IPresentablePart;
 import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackDropResult;
@@ -16,7 +17,67 @@ import org.eclipse.ui.presentations.WorkbenchPresentationFactory;
 @SuppressWarnings("restriction")
 public class SpicaStackPresentation extends ConfigurableStack{
 	StackPresentation stack;
+	IPresentablePart currentPart;
+	private SpicaStackPresentationSite site;
+	
+	class SpicaStackPresentationSite extends DefaultStackPresentationSite {
 
+		public SpicaStackPresentationSite(StackPresentation presentation){
+			
+		}
+		
+		@Override
+		public IPresentablePart getSelectedPart() {
+			System.out.println("CALLED");
+			return currentPart;
+		}
+
+		@Override
+		public boolean isPartMoveable(IPresentablePart toMove) {
+			System.out.println("CALLED");
+			return true;
+		}
+
+		@Override
+		public boolean isStackMoveable() {
+			System.out.println("CALLED");
+			return true;
+		}
+
+		@Override
+		public void close(IPresentablePart[] toClose) {
+			// TODO Auto-generated method stub
+			System.out.println("CALLED");	
+		}
+		
+		@Override
+		public void close(IPresentablePart toClose) {
+			System.out.println("CALLED");
+		}
+
+		@Override
+		public void flushLayout() {
+			// TODO Auto-generated method stub
+			System.out.println("CALLED");
+		}
+
+		@Override
+		public IPresentablePart[] getPartList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getProperty(String id) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	}
+	
+	public SpicaStackPresentation(){
+		site = new SpicaStackPresentationSite(stack);
+	}
+	
 	/**
 	 * reuse the default stack presentation
 	 */
@@ -27,6 +88,10 @@ public class SpicaStackPresentation extends ConfigurableStack{
 		WorkbenchPresentationFactory factory = new WorkbenchPresentationFactory();
 		stack = factory.createViewPresentation(parent, site);
 		init();
+	}
+	
+	public IStackPresentationSite getSite() {
+		return site;
 	}
 	
 	//@Override
@@ -67,6 +132,7 @@ public class SpicaStackPresentation extends ConfigurableStack{
 	@Override
 	public void selectPart(IPresentablePart toSelect) {
 		stack.selectPart(toSelect);
+		currentPart = toSelect;
 	}
 
 	@Override
