@@ -1,19 +1,17 @@
 package org.codefaces.ui;
 
-import java.net.MalformedURLException;
-
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.core.services.RepoService;
-import org.codefaces.httpclient.RepoResponseException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rwt.lifecycle.PhaseId;
 import org.eclipse.rwt.lifecycle.PhaseListener;
 
 public class UrlPhaseListener implements PhaseListener {
-
 	private static final long serialVersionUID = 6817994765856272911L;
 
 	@Override
@@ -34,10 +32,12 @@ public class UrlPhaseListener implements PhaseListener {
 
 				Workspace.getCurrent().update(repoBranch);
 
-			} catch (RepoResponseException e) {
-				e.printStackTrace();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				IStatus status = new Status(Status.ERROR,
+						CodeFacesUIActivator.PLUGIN_ID,
+						"Errors occurs when connecting to repository "
+								+ repoUrl + " with branch " + branchName, e);
+				CodeFacesUIActivator.getDefault().getLog().log(status);
 			}
 		}
 	}

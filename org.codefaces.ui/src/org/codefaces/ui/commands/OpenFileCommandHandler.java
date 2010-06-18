@@ -3,11 +3,14 @@ package org.codefaces.ui.commands;
 import java.util.Iterator;
 
 import org.codefaces.core.models.RepoFile;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.views.CodeExplorerViewPart;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.ISelectionService;
@@ -18,12 +21,12 @@ import org.eclipse.ui.PlatformUI;
 
 public class OpenFileCommandHandler extends AbstractHandler {
 	public static final String ID = "org.codefaces.ui.commands.openFileCommand";
-	
+
 	public static final String PARAM_MODE = "org.codefaces.ui.commands.parameters.openFileCommand.mode";
 
 	public static final String MODE_SELECTION_FROM_VIEW = "selectionFromView";
 	public static final String MODE_DIRECT_FILES = "directFiles";
-	
+
 	public static final String PARAM_VIEW_ID = "org.codefaces.ui.commands.parameters.openFileCommand.viewId";
 	public static final String VARIABLE_FILES = "org.codefaces.ui.commands.parameters.openFileCommand.files";
 
@@ -46,31 +49,33 @@ public class OpenFileCommandHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String mode = event.getParameter(PARAM_MODE);
-		if(mode != null){
-			if(mode.equals(MODE_SELECTION_FROM_VIEW)){
+		if (mode != null) {
+			if (mode.equals(MODE_SELECTION_FROM_VIEW)) {
 				openFilesFromViewSelection(event);
 			}
-			if(mode.equals(MODE_DIRECT_FILES)){
+			if (mode.equals(MODE_DIRECT_FILES)) {
 				openFilesDirectly(event);
 			}
 		}
 		return null;
 	}
 
-	
 	/**
 	 * This method obtains a RepoFile array from the event's application context
 	 * and open them in the code explorer
-	 * @param event - an event that contains a VARAIBLE_FILE in type of 
-	 *                RepoFile[] in its application context
+	 * 
+	 * @param event
+	 *            - an event that contains a VARAIBLE_FILE in type of RepoFile[]
+	 *            in its application context
 	 */
 	private void openFilesDirectly(ExecutionEvent event) {
-		IEvaluationContext context = (IEvaluationContext)event.getApplicationContext();
-		if(context != null){
+		IEvaluationContext context = (IEvaluationContext) event
+				.getApplicationContext();
+		if (context != null) {
 			Object obj = context.getVariable(VARIABLE_FILES);
-			if(obj instanceof RepoFile[]){
-				RepoFile[] files = (RepoFile[])obj;
-				for(RepoFile file: files){
+			if (obj instanceof RepoFile[]) {
+				RepoFile[] files = (RepoFile[]) obj;
+				for (RepoFile file : files) {
 					openFile(file);
 				}
 			}
@@ -78,8 +83,9 @@ public class OpenFileCommandHandler extends AbstractHandler {
 	}
 
 	/**
-	 * This method obtains the selection from the provided view ID. If the 
+	 * This method obtains the selection from the provided view ID. If the
 	 * selection is RepoFile(s), it tells the code explorer to open the file(s)
+	 * 
 	 * @param event
 	 */
 	private void openFilesFromViewSelection(ExecutionEvent event) {
@@ -101,10 +107,12 @@ public class OpenFileCommandHandler extends AbstractHandler {
 			}
 		}
 	}
-	
+
 	/**
 	 * Open the given file in the code explorer
-	 * @param repoFile - the file 
+	 * 
+	 * @param repoFile
+	 *            - the file
 	 */
 	private void openFile(RepoFile repoFile) {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench()
@@ -114,7 +122,11 @@ public class OpenFileCommandHandler extends AbstractHandler {
 					repoFile.getId(), IWorkbenchPage.VIEW_ACTIVATE);
 			((CodeExplorerViewPart) viewPart).setInput(repoFile);
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			IStatus status = new Status(Status.ERROR,
+					CodeFacesUIActivator.PLUGIN_ID,
+					"Errors occurs when showing view "
+							+ CodeExplorerViewPart.ID, e);
+			CodeFacesUIActivator.getDefault().getLog().log(status);
 		}
 	}
 

@@ -6,12 +6,15 @@ import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeEventListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.commands.SwitchBranchCommandHandler;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.IParameter;
 import org.eclipse.core.commands.Parameterization;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.CommandException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.SWT;
@@ -92,20 +95,22 @@ public class SwitchBranchAction extends Action implements IMenuCreator {
 			RepoBranch currentBranch = ws.getWorkingBranch();
 			Collection<RepoBranch> branches = currentBranch.getRepo()
 					.getBranches();
-			
-			if(branches.size() == 1){ return; }//do nothing
-			
+
+			if (branches.size() == 1) {
+				return;
+			}// do nothing
+
 			RepoBranch[] branchArray = branches.toArray(new RepoBranch[0]);
 			RepoBranch nextBranch = null;
-			for(int i = 0; i<branchArray.length; i++){
-				if(branchArray[i].getId().equals(currentBranch.getId())){
-					nextBranch = (i == branchArray.length-1)? 
-							branchArray[0] : branchArray[i+1];
+			for (int i = 0; i < branchArray.length; i++) {
+				if (branchArray[i].getId().equals(currentBranch.getId())) {
+					nextBranch = (i == branchArray.length - 1) ? branchArray[0]
+							: branchArray[i + 1];
 					break;
 				}
 			}
-			
-			if(nextBranch != null){
+
+			if (nextBranch != null) {
 				executeSwitchRepoBranchCommand(nextBranch.getName());
 			}
 		}
@@ -192,7 +197,10 @@ public class SwitchBranchAction extends Action implements IMenuCreator {
 					switchBranchCmd, new Parameterization[] { paramNewBranch });
 			handlerService.executeCommand(parmCommand, null);
 		} catch (CommandException e) {
-			e.printStackTrace();
+			IStatus status = new Status(Status.ERROR,
+					CodeFacesUIActivator.PLUGIN_ID,
+					"Errors occurs when switching to branch " + newBranch, e);
+			CodeFacesUIActivator.getDefault().getLog().log(status);
 		}
 	}
 

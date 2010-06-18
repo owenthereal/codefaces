@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.codefaces.httpclient.RepoResponseException;
+import org.codefaces.httpclient.internal.CodeFacesHttpClientActivator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.lifecycle.JSWriter;
 import org.eclipse.swt.widgets.Display;
 
@@ -68,7 +71,11 @@ public class AjaxClient {
 			int timeout = cachedJsonGet.getTimeout();
 			jsWriter.call(JS_SEND_JSONP_REQUEST, new Object[] { url, timeout });
 		} catch (IOException e) {
-			e.printStackTrace();
+			IStatus status = new Status(Status.ERROR,
+					CodeFacesHttpClientActivator.PLUGIN_ID,
+					"Errors occurs when sending ajax request to "
+							+ cachedJsonGet.getUrl(), e);
+			CodeFacesHttpClientActivator.getDefault().getLog().log(status);
 		}
 	}
 

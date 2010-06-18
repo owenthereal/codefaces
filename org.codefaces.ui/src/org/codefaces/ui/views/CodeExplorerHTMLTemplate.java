@@ -9,30 +9,35 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-
+import org.eclipse.core.runtime.Status;
 
 public class CodeExplorerHTMLTemplate {
 
 	private static final String TEMPLATE_PATH = "public/templates/code_editor.html";
-	
-	//Performance consideration. we only read the template once
-	//I would be happy if there is better approach
+
+	// Performance consideration. we only read the template once
+	// I would be happy if there is better approach
 	private static String TEMPLATE = initTemplate();
-	 
+
 	private final String title;
 	private final String lang;
 	private final String resourceUrl;
 	private final String code;
-	
+
 	/**
 	 * Constructor. There is no need to escape the string before passing them
 	 * into this constructor
 	 * 
-	 * @param title the title of the generated HTML document
-	 * @param lang the language class of the code
-	 * @param resourceURL the path of the language javascript file
-	 * @param code the content of the source code
+	 * @param title
+	 *            the title of the generated HTML document
+	 * @param lang
+	 *            the language class of the code
+	 * @param resourceURL
+	 *            the path of the language javascript file
+	 * @param code
+	 *            the content of the source code
 	 */
 	public CodeExplorerHTMLTemplate(final String title, final String lang,
 			final String resourceURL, final String code) {
@@ -48,7 +53,7 @@ public class CodeExplorerHTMLTemplate {
 	 * 
 	 * @return the binded HTML template
 	 */
-	public String toHTML(){
+	public String toHTML() {
 		StringTemplate template = new StringTemplate(TEMPLATE);
 		template.setAttribute("title", title);
 		template.setAttribute("lang", lang);
@@ -56,37 +61,42 @@ public class CodeExplorerHTMLTemplate {
 		template.setAttribute("code", code);
 		return template.toString();
 	}
-	
-	
+
 	/**
 	 * @return a html string to initialize the template
 	 */
-	private static String initTemplate(){
+	private static String initTemplate() {
 		String template = null;
-		try{
+		try {
 			template = readFile(TEMPLATE_PATH);
-		}catch(IOException e){
-			e.printStackTrace();
+		} catch (IOException e) {
+			IStatus status = new Status(Status.ERROR,
+					CodeFacesUIActivator.PLUGIN_ID,
+					"Errors occur when reading code template file from "
+							+ TEMPLATE_PATH, e);
+			CodeFacesUIActivator.getDefault().getLog().log(status);
 		}
+
 		return template;
 	}
-	
-	
+
 	/**
 	 * Read the template file and return it as a string
-	 * @param path the path of the template
+	 * 
+	 * @param path
+	 *            the path of the template
 	 * @return a string representation of that file
-	 * @throws IOException 
-	 * @throws IOException if there is IO problem
+	 * @throws IOException
+	 * @throws IOException
+	 *             if there is IO problem
 	 */
-	private static String readFile(String path) throws IOException{
-		InputStream stream = FileLocator.openStream(CodeFacesUIActivator.getDefault().getBundle(), new Path(
-				TEMPLATE_PATH), false);
+	private static String readFile(String path) throws IOException {
+		InputStream stream = FileLocator.openStream(CodeFacesUIActivator
+				.getDefault().getBundle(), new Path(TEMPLATE_PATH), false);
 		StringWriter writer = new StringWriter();
-		try{
+		try {
 			IOUtils.copy(stream, writer);
-		}
-		finally{
+		} finally {
 			stream.close();
 			writer.close();
 		}

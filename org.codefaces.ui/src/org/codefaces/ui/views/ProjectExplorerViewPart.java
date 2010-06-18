@@ -9,6 +9,7 @@ import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.actions.SwitchBranchAction;
 import org.codefaces.ui.commands.OpenFileCommandHandler;
@@ -19,6 +20,8 @@ import org.eclipse.core.commands.Parameterization;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -169,7 +172,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
 
-			//Call the open file command 
+			// Call the open file command
 			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
 				IHandlerService handlerService = (IHandlerService) PlatformUI
 						.getWorkbench().getService(IHandlerService.class);
@@ -196,7 +199,11 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 					openFileCmd.executeWithChecks(openFileEvent);
 				} catch (CommandException e) {
-					e.printStackTrace();
+					IStatus status = new Status(Status.ERROR,
+							CodeFacesUIActivator.PLUGIN_ID,
+							"Errors occurs when opening file "
+									+ clickedRepoResource.getName(), e);
+					CodeFacesUIActivator.getDefault().getLog().log(status);
 				}
 			}
 		}
@@ -217,22 +224,25 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
-		
+
 		registerContextMenu(viewer);
-		
-		
+
 	}
 
 	/**
 	 * create and register a context menu associate to the explorer tree viewer
-	 * @param viewer - the project explorer tree-viewer
+	 * 
+	 * @param viewer
+	 *            - the project explorer tree-viewer
 	 */
 	private void registerContextMenu(TreeViewer viewer) {
 		MenuManager contextMenuManager = new MenuManager();
-		contextMenuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		contextMenuManager.add(new Separator(
+				IWorkbenchActionConstants.MB_ADDITIONS));
 		Menu menu = contextMenuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(VIEWER_CONTEXT_MENU_ID, contextMenuManager, viewer);
+		getSite().registerContextMenu(VIEWER_CONTEXT_MENU_ID,
+				contextMenuManager, viewer);
 		getSite().setSelectionProvider(viewer);
 	}
 

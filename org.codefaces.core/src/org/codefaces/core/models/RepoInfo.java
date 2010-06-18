@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.codefaces.core.CodeFacesCoreActivator;
-import org.codefaces.httpclient.RepoResponseException;
 
 public class RepoInfo extends RepoResourceInfo {
 	private Collection<RepoBranch> branches;
@@ -40,12 +39,8 @@ public class RepoInfo extends RepoResourceInfo {
 	@Override
 	public Collection<RepoResource> getChildren() {
 		List<RepoResource> children = new ArrayList<RepoResource>();
-		try {
-			for (RepoBranch branch : getBranches()) {
-				children.add(branch);
-			}
-		} catch (RepoResponseException e) {
-			e.printStackTrace();
+		for (RepoBranch branch : getBranches()) {
+			children.add(branch);
 		}
 
 		return children;

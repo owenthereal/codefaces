@@ -27,38 +27,4 @@ public class ImportRepositoryCommandHandler extends AbstractHandler {
 
 		return null;
 	}
-
-	// private void executeOpenRepositoryCommand(String repoUrl, String
-	// branchId) {
-	// IHandlerService handlerService = (IHandlerService) PlatformUI
-	// .getWorkbench().getService(IHandlerService.class);
-	// ICommandService cmdService = (ICommandService) PlatformUI
-	// .getWorkbench().getService(ICommandService.class);
-	//
-	// Command openRepositoryCmd = cmdService
-	// .getCommand(OpenRepositoryCommandHandler.ID);
-	// try {
-	// IParameter repoUrlParam = openRepositoryCmd
-	// .getParameter(OpenRepositoryCommandHandler.PARAM_REPO_URL_ID);
-	// Parameterization paramRepoUrl = new Parameterization(repoUrlParam,
-	// repoUrl);
-	// ParameterizedCommand parmCommand = new ParameterizedCommand(
-	// openRepositoryCmd, new Parameterization[] { paramRepoUrl });
-	// handlerService.executeCommand(parmCommand, null);
-	//
-	// } catch (NotDefinedException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (ExecutionException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (NotEnabledException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (NotHandledException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-
 }

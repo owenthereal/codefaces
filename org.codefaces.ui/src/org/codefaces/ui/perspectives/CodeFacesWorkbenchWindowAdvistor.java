@@ -1,7 +1,10 @@
 package org.codefaces.ui.perspectives;
 
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.views.WelcomePage;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
@@ -45,9 +48,14 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 		try {
 			activePage.showView(WelcomePage.ID);
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			IStatus status = new Status(
+					Status.ERROR,
+					CodeFacesUIActivator.PLUGIN_ID,
+					"Errors occurs when showing view with id " + WelcomePage.ID,
+					e);
+			CodeFacesUIActivator.getDefault().getLog().log(status);
 		}
-		
+
 		// for building the widget
 		AjaxClientWidget.getCurrent();
 	}
