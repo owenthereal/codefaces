@@ -5,6 +5,11 @@
 #name of the app
 app_name: codefaces
 
+development:
+  compass_project_dirs:
+   - ../org.codefaces.web/private/stylesheets
+   - ../org.codefaces.ui.themes/private/azure
+
 # Setting the paths for fetch, build and package 
 environment:
   # source_dir is the directory where the source code is fetched from the 

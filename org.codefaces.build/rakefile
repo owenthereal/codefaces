@@ -23,3 +23,11 @@ task :build => ["build:default"]
 
 desc "Package the compiled feature into WAR file"
 task :package => ["package:default"]
+
+desc "compile the compass projects"
+task :compass do
+  compass_dirs = CONFIGS['development']['compass_project_dirs']
+  compass_dirs.each do |d|
+    sh "compass compile #{d}"
+  end
+end
