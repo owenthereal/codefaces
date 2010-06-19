@@ -1,5 +1,11 @@
 
 module Helper
+  YUI_COMPRESSOR_DIR = "yuicompressor*/yuicompressor*/build"
+  YUI_COMPRESSOR = "yuicompressor*.jar"
+
+  PATTERN_JS = /\.js$/
+  PATTERN_CSS = /\.css$/
+  PATTERN_HTML = /\.html$|\.htm$/
   
   # Generate a pathname to a temporary directory, which is inside the given 
   # directory
@@ -82,4 +88,39 @@ module Helper
     sh "mv #{tmp_dir}/* #{output_dir}/"
     rm_r tmp_dir
   end
+
+  # javascript or css compression
+  def compress(in_file)
+    if(File.directory?(in_file))
+      Dir.foreach(in_file) do |f|
+        file = File.join(in_file, f)
+        compress_file(file) unless File.directory?file
+      end
+    else
+      compress_file(in_file)
+    end
+  end
+
+private
+  def compress_file(in_file)
+    #index = in_file.index(PATTERN_JS) || in_file.index(PATTERN_CSS)
+    #out_file = in_file.clone.insert(index, '.min')
+    tool_dir = File.expand_path(CONFIGS['environment']['tool_dir'])
+    compressor_dir = Dir.glob(File.join(tool_dir, YUI_COMPRESSOR_DIR))
+    compressor = Dir.glob(File.join(compressor_dir, YUI_COMPRESSOR))
+
+    out_file = in_file
+
+    case in_file
+    when PATTERN_JS, PATTERN_CSS
+      %x[java -jar #{compressor} #{in_file} -o #{out_file}]
+    when PATTERN_HTML
+      s = IO.read(in_file)
+      s.gsub!(/^\s+|\s+$/, '')
+      f = File.new(in_file, "w")
+      f.write(s)
+      f.close
+    end
+  end
+
 end

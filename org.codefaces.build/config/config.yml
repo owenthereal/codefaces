@@ -54,8 +54,21 @@ tools:
       scm: http
       repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC3-201005271700/org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar"
 
+  compressor:
+    description: YUI compressor
+    name: yuicompressor-2.4.2.zip
+    scm: http
+    unpack: true
+    repository: "http://yuilibrary.com/downloads/yuicompressor/yuicompressor-2.4.2.zip"
+
 # Setting the build environment
 build:
+  
+  # compress files
+  files_to_compress:
+    - org.codefaces.web/public/stylesheets
+    - org.codefaces.web/public/welcome.html
+
   # template path
   build_template_dir: template/build
   

@@ -7,6 +7,7 @@ LAUNCHER = "org.eclipse.equinox.launcher_*.jar"
 PDE_BUILD_TOOLS_DIR = "org.eclipse.pde.build_*"
 ECLIPSE_PLATFORM_DIR = "eclipse*"
 
+
 BUILD_DIR = File.expand_path(CONFIGS['environment']['build_dir'])
 
 PDE_BASE_DIR = File.join(BUILD_DIR, "base/eclipse")
@@ -18,7 +19,7 @@ PDE_PLUGINS_DIR = File.join(BUILD_DIR, "plugins")
 namespace :build do
   include Helper
   
-  task :prepare do
+  task :prepare => :compress_web_files do
     build_dir = BUILD_DIR
     create_directory(build_dir)
   end
@@ -29,6 +30,17 @@ namespace :build do
   desc "Prepare the environment for PDE build"
   task :prepare_pde_build => [:prepare_pde_base_platform,
       :prepare_pde_build_config, :prepare_pde_plugins_and_features]
+
+  desc "Compress the web files"
+  task :compress_web_files do
+    src_dir = CONFIGS['environment']['source_dir']
+
+    CONFIGS['build']['files_to_compress'].each do |f|
+      puts "compressing file: #{f}"
+      path = File.join(src_dir, f)
+      compress(path)
+    end
+  end
 
   desc "Run the PDE build"
   task :pde_build do

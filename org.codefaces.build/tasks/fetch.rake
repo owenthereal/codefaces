@@ -31,7 +31,8 @@ namespace :fetch do
   # fetch the tools needed
   desc "Fetch the build tools and required bundles"
   task :fetch_build_tools => 
-       [:fetch_eclipse_platform, :fetch_target_platform, :fetch_servlet_bridge]
+       [:fetch_eclipse_platform, :fetch_target_platform, 
+         :fetch_servlet_bridge,  :fetch_compressor]
 
 
   # fetch the eclipse platform
@@ -58,5 +59,13 @@ namespace :fetch do
       puts "Fetching: #{b['description']}"
       checkout(tool_dir, b)
     end
+  end
+
+  # fetch the YUI compressor
+  task :fetch_compressor => :prepare_tool_dir do
+    tool_dir = CONFIGS['environment']['tool_dir']
+    compressor = CONFIGS['tools']['compressor']
+    puts "Fetching: #{compressor['description']}"
+    checkout(tool_dir, compressor)
   end
 end
