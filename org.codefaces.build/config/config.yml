@@ -39,20 +39,20 @@ tools:
   
   target_platform:
     description: repository for RAP target platform
-    name: "rap-runtime-1.3.0-RC2-20100523-2301.zip"
+    name: "rap-runtime-1.3.0-RC4-20100608-1549.zip"
     scm: http
-    repository: "http://mirror.csclub.uwaterloo.ca/eclipse/rt/rap/1.3/rap-runtime-1.3.0-RC2-20100523-2301.zip" 
+    repository: "http://mirror.csclub.uwaterloo.ca/eclipse/rt/rap/1.3/rap-runtime-1.3.0-RC4-20100608-1549.zip" 
 
   servlet_bridge:
     - description: Equinox servletbridge
       name: org.eclipse.equinox.servletbridge_1.2.0.v20100503.jar
       scm: http 
-      repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC3-201005271700/org.eclipse.equinox.servletbridge_1.2.0.v20100503.jar"
+      repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC4-201006031500/org.eclipse.equinox.servletbridge_1.2.0.v20100503.jar"
     
     - description: Equinox http servletbridge
       name: org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar
       scm: http
-      repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC3-201005271700/org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar"
+      repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC4-201006031500/org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar"
 
   compressor:
     description: YUI compressor
