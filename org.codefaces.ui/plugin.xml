@@ -58,7 +58,7 @@
       <branding
             body="public/loading.html"
             defaultEntrypointId="org.codefaces.ui.entrypoint.codefaces"
-            favicon="icons/favicon.gif"
+            favicon="icons/favicon2.gif"
             id="org.codefaces.ui.branding.codefaces"
             servletName="explore"
             themeId="org.codefaces.ui.azure.theme"
