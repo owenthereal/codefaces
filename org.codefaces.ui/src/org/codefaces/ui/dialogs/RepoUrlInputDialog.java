@@ -4,8 +4,6 @@ import java.util.Collection;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.core.services.RepoService;
-import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -105,7 +103,6 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		Label branchInputLabel = new Label(dialogAreaComposite, SWT.NONE);
 		branchInputLabel.setText("Branch:");
 		createBranchInputSection(dialogAreaComposite);
-		
 
 		setTitle(TITLE);
 		setMessage(DESCRIPTION);
@@ -126,7 +123,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		branchInputViewer
 				.addSelectionChangedListener(new BranchSelectionChangedListener());
 		branchInputViewer.getCCombo().setEnabled(false);
-		
+
 	}
 
 	private void createUrlInputSection(Composite dialogAreaComposite) {
@@ -141,18 +138,16 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		inputTextomposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		inputTextomposite.setFont(dialogAreaComposite.getFont());
 
-		//urlInputViewer = new ComboViewer(new CCombo(inputTextomposite,
-		//		SWT.BORDER));
+		// urlInputViewer = new ComboViewer(new CCombo(inputTextomposite,
+		// SWT.BORDER));
 		urlInputViewer = new Text(inputTextomposite, SWT.SEARCH);
-		//urlInputViewer.getControl().setLayoutData(
-		//		new GridData(GridData.GRAB_HORIZONTAL
-		//				| GridData.HORIZONTAL_ALIGN_FILL));
-		//urlInputViewer.getControl().setFocus();
-		urlInputViewer.setLayoutData(
-						new GridData(GridData.GRAB_HORIZONTAL
-								| GridData.HORIZONTAL_ALIGN_FILL));
+		// urlInputViewer.getControl().setLayoutData(
+		// new GridData(GridData.GRAB_HORIZONTAL
+		// | GridData.HORIZONTAL_ALIGN_FILL));
+		// urlInputViewer.getControl().setFocus();
+		urlInputViewer.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.HORIZONTAL_ALIGN_FILL));
 		urlInputViewer.setFocus();
-		
 
 		connectButton = new Button(inputTextomposite, SWT.BORDER | SWT.PUSH);
 		connectButton.setImage(Images.getImage(Images.IMG_CONNECTION));
@@ -160,8 +155,8 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		connectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				//new ConnectToRepoJob(urlInputViewer.getCCombo().getText())
-				//		.schedule();
+				// new ConnectToRepoJob(urlInputViewer.getCCombo().getText())
+				// .schedule();
 				new ConnectToRepoJob(urlInputViewer.getText()).schedule();
 			}
 		});
@@ -194,10 +189,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 			try {
 				monitor.beginTask("Connecting to repository: " + url, 100);
-				RepoService repoService = CodeFacesUIActivator.getDefault()
-						.getRepoService();
-
-				final Repo repo = repoService.createRepo(url);
+				final Repo repo = Repo.create(url);
 				monitor.worked(30);
 
 				monitor.setTaskName("Fetching branches...");

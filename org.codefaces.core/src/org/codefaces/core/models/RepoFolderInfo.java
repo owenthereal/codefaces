@@ -2,7 +2,6 @@ package org.codefaces.core.models;
 
 import java.util.Collection;
 
-import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.services.RepoService;
 
 public class RepoFolderInfo extends RepoResourceInfo {
@@ -27,8 +26,7 @@ public class RepoFolderInfo extends RepoResourceInfo {
 	}
 
 	private Collection<RepoResource> fetchChildren() {
-		RepoService repoService = CodeFacesCoreActivator.getDefault()
-				.getRepoService();
+		RepoService repoService = RepoService.getCurrent();
 		return repoService.fetchChildren(getContext());
 	}
 }

@@ -3,7 +3,6 @@ package org.codefaces.ui;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.core.services.RepoService;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.RWT;
@@ -21,13 +20,11 @@ public class UrlPhaseListener implements PhaseListener {
 
 		if (repoUrl != null) {
 			try {
-				RepoService repoService = CodeFacesUIActivator.getDefault()
-						.getRepoService();
-				Repo repo = repoService.createRepo(repoUrl);
+				Repo repo = Repo.create(repoUrl);
 				RepoBranch repoBranch = repo.getBranchByName(branchName);
 
 				if (repoBranch == null) {
-					repoBranch = repoService.getDefaultBranch(repo);
+					repoBranch = repo.getDefaultBranch();
 				}
 
 				Workspace.getCurrent().update(repoBranch);

@@ -12,6 +12,7 @@ import org.codefaces.core.services.github.GitHubService;
 import org.codefaces.httpclient.CodeFacesHttpClient;
 import org.codefaces.httpclient.RepoResponseException;
 import org.codefaces.httpclient.ajax.AjaxClientDelegate;
+import org.eclipse.rwt.SessionSingletonBase;
 
 public class RepoService {
 	private GitHubService githubService;
@@ -22,8 +23,7 @@ public class RepoService {
 		githubService = new GitHubService(httpClient);
 	}
 
-	public Repo createRepo(String url) throws RepoResponseException,
-			MalformedURLException {
+	public Repo createRepo(String url) throws MalformedURLException {
 		String trimed_url = url.trim();
 		return getServiceInternal().createGithubRepo(trimed_url);
 	}
@@ -53,6 +53,11 @@ public class RepoService {
 
 	public RepoBranch getDefaultBranch(Repo repo) {
 		return getServiceInternal().getGitHubDefaultBranch(repo);
+	}
+
+	public static RepoService getCurrent() {
+		return (RepoService) SessionSingletonBase
+				.getInstance(RepoService.class);
 	}
 
 }

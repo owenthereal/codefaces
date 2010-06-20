@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.codefaces.core.CodeFacesCoreActivator;
+import org.codefaces.core.services.RepoService;
 
 public class RepoInfo extends RepoResourceInfo {
 	private Collection<RepoBranch> branches;
@@ -32,8 +32,7 @@ public class RepoInfo extends RepoResourceInfo {
 	}
 
 	private Collection<RepoBranch> fetchBranches() {
-		return CodeFacesCoreActivator.getDefault().getRepoService()
-				.fetchBranches(getContext());
+		return RepoService.getCurrent().fetchBranches(getContext());
 	}
 
 	@Override
@@ -44,5 +43,9 @@ public class RepoInfo extends RepoResourceInfo {
 		}
 
 		return children;
+	}
+	
+	public RepoBranch getDefaultBranch() {
+		return RepoService.getCurrent().getDefaultBranch(getContext());
 	}
 }

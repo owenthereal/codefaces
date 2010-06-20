@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 public class GitHubService {
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
 	private static final String HTTP_GITHUB_COM = "http://github.com";
-	
+
 	private static final String OPTIONAL_ENDING_SLASH_PATTERN = "(?:/)?";
 
 	private static final Pattern URL_PATTERN = Pattern.compile("(?:"
@@ -129,13 +129,10 @@ public class GitHubService {
 	/**
 	 * @throws RepoConnectionException
 	 *             when there is connection error
-	 * @throws RepoResponseException
-	 *             when unable to parse the server's response
 	 * @throws MalformedURLException
 	 *             when unable to parse the given url
 	 */
-	public Repo createGithubRepo(String url) throws RepoResponseException,
-			MalformedURLException {
+	public Repo createGithubRepo(String url) throws MalformedURLException {
 		Matcher matcher = URL_PATTERN.matcher(url);
 		if (matcher.matches()) {
 			String owner = matcher.group(1);

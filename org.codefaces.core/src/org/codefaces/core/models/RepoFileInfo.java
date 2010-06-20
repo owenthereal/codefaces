@@ -1,6 +1,5 @@
 package org.codefaces.core.models;
 
-import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.services.RepoService;
 
 public class RepoFileInfo extends RepoResourceInfo {
@@ -36,8 +35,7 @@ public class RepoFileInfo extends RepoResourceInfo {
 	}
 
 	private void fetchInfo(RepoFile file) {
-		RepoService repoService = CodeFacesCoreActivator.getDefault()
-				.getRepoService();
+		RepoService repoService = RepoService.getCurrent();
 		RepoFileInfo info = repoService.fetchFileInfo(file);
 		fill(info.content, info.mimeType, info.mode, info.size);
 	}
