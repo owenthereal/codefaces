@@ -73,6 +73,10 @@ build:
   files_to_compress:
     - org.codefaces.web/public/stylesheets
     - org.codefaces.web/public/welcome.html
+    - org.codefaces.web/public/javascripts/highlight
+    - org.codefaces.web/public/javascripts/highlight/languages
+    - org.codefaces.ui/public/templates/code_editor.html
+    - org.codefaces.ui/public/loading.html
 
   # template path
   build_template_dir: template/build

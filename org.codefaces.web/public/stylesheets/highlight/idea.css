@@ -48,8 +48,7 @@ pre .string, pre .value, pre .filter .argument, pre .css .function .params, pre 
 }
 
 pre .symbol, pre .char {
-    color: #000;
-    background: #d0eded;
+    color: #660e7a;
     font-style: italic;
 }
 
