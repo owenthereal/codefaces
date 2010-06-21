@@ -45,7 +45,7 @@
 					<li id="bookmarklet" class="sidebar_item">
 						<h3>Bookmarklet</h3>
 						<p>Open a project in a source control system with CodeFaces. Just drag this link to your browser's bookmark bar and click.</p>
-						<a class="bookmarklet" href="javascript:document.location='http://codefaces.org/'+window.location.href;" onclick="return false;">CodeFaces</a>
+						<a class="bookmarklet" href="javascript:(function(){_codefaces_script=document.createElement('SCRIPT');_codefaces_script.type='text/javascript';_codefaces_script.src='http://codefaces.org/html/javascripts/bookmarklet.js?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_codefaces_script);})();" onclick="return false;">CodeFaces</a>
 					</li>
 					<li id="follow_us" class="sidebar_item">
 						<h3>Follow Us</h3>

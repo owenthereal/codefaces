@@ -1,0 +1,1 @@
+document.location='http://codefaces.org/'+window.location.href;
