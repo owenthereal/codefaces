@@ -95,7 +95,7 @@ public class OpenFileCommandHandler extends AbstractHandler {
 			ISelectionService selectionService = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getSelectionService();
 			ISelection selection = selectionService.getSelection(viewId);
-			if (selection != null && selection instanceof IStructuredSelection) {
+			if (selection instanceof IStructuredSelection) {
 				Iterator<?> elements = ((IStructuredSelection) selection)
 						.iterator();
 				while (elements.hasNext()) {

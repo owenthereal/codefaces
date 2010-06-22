@@ -204,6 +204,11 @@
                   <iterate>
                      <adapt
                            type="org.codefaces.core.models.RepoFile">
+                       <!--
+                        <test
+                              property="org.codefaces.ui.propertyTester.RepoFIle.canOpen">
+                        </test>
+                        -->
                      </adapt>
                   </iterate>
                </with>
@@ -225,4 +230,16 @@
             class="org.codefaces.ui.UrlPhaseListener">
       </listener>
    </extension>
+    <!--
+    <extension
+          point="org.eclipse.core.expressions.propertyTesters">
+       <propertyTester
+             class="org.codefaces.ui.RepoFilePropertyTester"
+             id="org.codefaces.ui.propertyTester.RepoFIle"
+             namespace="org.codefaces.ui.propertyTester.RepoFIle"
+             properties="canOpen"
+             type="org.codefaces.core.models.RepoFile">
+       </propertyTester>
+    </extension>
+    -->
 </plugin>

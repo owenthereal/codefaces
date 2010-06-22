@@ -14,9 +14,6 @@ import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.github.GitHubBranchesDto;
-import org.codefaces.core.services.github.GitHubService;
-import org.codefaces.httpclient.RepoResponseException;
 import org.codefaces.httpclient.http.ManagedHttpClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +30,7 @@ public class GitHubServiceTest {
 	private static final String TEST_GITHUB_SHOW_BRANCHES_URL_2 = "http://github.com/api/v2/json/repos/show/schacon/ruby-git/branches";
 
 	private static final String TEST_GITHUB_URL = "http://github.com/jingweno/ruby_grep";
-	
+
 	private static final String TEST_GITHUB_URL_WITH_ENDING_SLASH = "http://github.com/jingweno/ruby_grep/";
 
 	private static final String TEST_REPO_NAME = "ruby_grep";
@@ -62,7 +59,7 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_getGitHubBranches() throws RepoResponseException {
+	public void test_getGitHubBranches() {
 		GitHubBranchesDto branches = gitHubService
 				.getGitHubBranches(TEST_GITHUB_SHOW_BRANCHES_URL);
 
@@ -81,13 +78,13 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_createGithubRepo() throws RepoResponseException,
-			MalformedURLException {
+	public void test_createGithubRepo() throws MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		assertEquals(TEST_GITHUB_URL, gitHubRepo.getUrl());
 		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
-		
-		gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL_WITH_ENDING_SLASH);
+
+		gitHubRepo = gitHubService
+				.createGithubRepo(TEST_GITHUB_URL_WITH_ENDING_SLASH);
 		assertEquals(TEST_GITHUB_URL_WITH_ENDING_SLASH, gitHubRepo.getUrl());
 		assertEquals(TEST_USER_NAME, gitHubRepo.getCredential().getOwner());
 	}
@@ -105,8 +102,7 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_getGitHubChildren() throws RepoResponseException,
-			MalformedURLException {
+	public void test_getGitHubChildren() throws MalformedURLException {
 		Repo repo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER);
@@ -116,16 +112,14 @@ public class GitHubServiceTest {
 		assertEquals(6, children.size());
 	}
 
-	public void test_getDefaultRoot() throws RepoResponseException,
-			MalformedURLException {
+	public void test_getDefaultRoot() throws MalformedURLException {
 		Repo gitHubRepo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		assertEquals(TEST_BRANCH_MASTER, gitHubService.getGitHubDefaultBranch(
 				gitHubRepo).getName());
 	}
 
 	@Test
-	public void test_createGetGitHubFileUrl() throws RepoResponseException,
-			MalformedURLException {
+	public void test_createGetGitHubFileUrl() throws MalformedURLException {
 		Repo repo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER);
@@ -138,8 +132,7 @@ public class GitHubServiceTest {
 	}
 
 	@Test
-	public void test_getGitHubFile() throws RepoResponseException,
-			MalformedURLException {
+	public void test_getGitHubFile_mimeTypeText() throws MalformedURLException {
 		Repo repo = gitHubService.createGithubRepo(TEST_GITHUB_URL);
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER);
@@ -155,4 +148,24 @@ public class GitHubServiceTest {
 		assertEquals("100644", info.getMode());
 		assertNotNull(info.getContent());
 	}
+
+//	@Test
+//	public void test_getGitHubFile_mimeTypeNonText()
+//			throws MalformedURLException {
+//		Repo repo = gitHubService
+//				.createGithubRepo("http://github.com/defunkt/facebox");
+//		RepoBranch branch = new RepoBranch(repo,
+//				"ae5e66f880318c4788e424a98a8348c8f3443c96", TEST_BRANCH_MASTER);
+//		RepoFolderRoot root = branch.getRoot();
+//		RepoFile file = new RepoFile(root, root,
+//				"87b4f8bd699386e3a6fcc2e50d7c61bfc4aabb8d", "closelabel.gif");
+//
+//		RepoFileInfo info = gitHubService.fetchGitHubFileInfo(file);
+//
+//		assertEquals(file, info.getContext());
+//		assertEquals(979, info.getSize());
+//		assertEquals("image/gif", info.getMimeType());
+//		assertEquals("100755", info.getMode());
+//		assertNull(info.getContent());
+//	}
 }

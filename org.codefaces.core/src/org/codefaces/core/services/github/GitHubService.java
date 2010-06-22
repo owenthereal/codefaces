@@ -23,6 +23,7 @@ import org.codefaces.httpclient.RepoResponseException;
 import com.google.gson.Gson;
 
 public class GitHubService {
+	private static final String FILE_METADATA_TAG = "?meta=1";
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
 	private static final String HTTP_GITHUB_COM = "http://github.com";
 
@@ -147,18 +148,27 @@ public class GitHubService {
 		throw new MalformedURLException("Invalid repository url: " + url);
 	}
 
-	public RepoFileInfo fetchGitHubFileInfo(RepoFile repoFileLite)
+	public RepoFileInfo fetchGitHubFileInfo(RepoFile repoFile)
 			throws RepoResponseException {
-		Repo repo = repoFileLite.getRoot().getBranch().getRepo();
-		String getGitHubFileUrl = createGetGitHubFileUrl(repo, repoFileLite);
-
-		GitHubFileDto gitHubFileDto;
 		try {
-			gitHubFileDto = gson.fromJson(getResponseBody(getGitHubFileUrl),
-					GitHubFileDto.class);
-			GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
+			Repo repo = repoFile.getRoot().getBranch().getRepo();
+			String gitHubFileUrl = createGetGitHubFileUrl(repo, repoFile);
+			GitHubFileDataDto gitHubFileDataDto = getGitHubFileDataDto(gitHubFileUrl);
+			
 
-			return new RepoFileInfo(repoFileLite, gitHubFileDataDto.getData(),
+			// String gitHubFileMetadataUrl =
+			// createGetGitHubFileMetadataUrl(repo,
+			// repoFile);
+			// GitHubFileDataDto gitHubFileDataDto =
+			// getGitHubFileDataDto(gitHubFileMetadataUrl);
+			// // fetch all content if it's text-based
+			// if (gitHubFileDataDto.getMime_type().toLowerCase().contains(
+			// FILE_MIME_TYPE_TEXT)) {
+			// String gitHubFileUrl = createGetGitHubFileUrl(repo, repoFile);
+			// gitHubFileDataDto = getGitHubFileDataDto(gitHubFileUrl);
+			// }
+
+			return new RepoFileInfo(repoFile, gitHubFileDataDto.getData(),
 					gitHubFileDataDto.getMime_type(), gitHubFileDataDto
 							.getMode(), gitHubFileDataDto.getSize());
 		} catch (Exception e) {
@@ -166,10 +176,22 @@ public class GitHubService {
 		}
 	}
 
-	protected String createGetGitHubFileUrl(Repo repo, RepoFile repoFileLite) {
+	private GitHubFileDataDto getGitHubFileDataDto(
+			String getGitHubFileMetadataUrl) {
+		GitHubFileDto gitHubFileDto = gson.fromJson(
+				getResponseBody(getGitHubFileMetadataUrl), GitHubFileDto.class);
+		GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
+		return gitHubFileDataDto;
+	}
+
+	protected String createGetGitHubFileUrl(Repo repo, RepoFile repoFile) {
 		return GET_GITHUB_FILE + "/" + repo.getCredential().getOwner() + "/"
-				+ repo.getName() + "/" + repoFileLite.getParent().getId() + "/"
-				+ repoFileLite.getName();
+				+ repo.getName() + "/" + repoFile.getParent().getId() + "/"
+				+ repoFile.getName();
+	}
+
+	protected String createGetGitHubFileMetadataUrl(Repo repo, RepoFile repoFile) {
+		return createGetGitHubFileUrl(repo, repoFile) + FILE_METADATA_TAG;
 	}
 
 	public Collection<RepoBranch> fetchGitHubBranches(Repo repo)
