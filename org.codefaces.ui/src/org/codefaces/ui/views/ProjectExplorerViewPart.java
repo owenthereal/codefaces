@@ -169,10 +169,12 @@ public class ProjectExplorerViewPart extends ViewPart {
 		public void doubleClick(DoubleClickEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
 					.getSelection();
+			if (selection.isEmpty()) {
+				return;
+			}
+
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
-
-			// Call the open file command
 			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
 				IHandlerService handlerService = (IHandlerService) PlatformUI
 						.getWorkbench().getService(IHandlerService.class);

@@ -3,14 +3,12 @@ package org.codefaces.ui.perspectives;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
 public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
 
-	private IWorkbenchAction exitAction;
+//	private IWorkbenchAction exitAction;
 
 	public CodeFacesActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
@@ -24,8 +22,8 @@ public class CodeFacesActionBarAdvisor extends ActionBarAdvisor {
 		// Registering also provides automatic disposal of the actions when
 		// the window is closed.
 
-		exitAction = ActionFactory.QUIT.create(window);
-		register(exitAction);
+//		exitAction = ActionFactory.QUIT.create(window);
+//		register(exitAction);
 
 		/*
 		 * aboutAction = new AboutAction(window); register(aboutAction);

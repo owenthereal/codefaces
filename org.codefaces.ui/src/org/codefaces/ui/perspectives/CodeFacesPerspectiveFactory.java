@@ -17,8 +17,6 @@ public class CodeFacesPerspectiveFactory implements IPerspectiveFactory {
 		layout.addStandaloneView(ProjectExplorerViewPart.ID, true,
 				IPageLayout.LEFT, 0.25f,
 				editorArea);
-		layout.getViewLayout(ProjectExplorerViewPart.ID).setCloseable(false);
-
 
 		IFolderLayout rightFolderLayout = layout.createFolder("right",
 				IPageLayout.RIGHT, IPageLayout.DEFAULT_VIEW_RATIO, editorArea);
