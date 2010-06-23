@@ -17,8 +17,6 @@ public class WelcomePage extends ViewPart {
 		browser = new Browser(parent, SWT.NONE);
 		browser.setUrl(WELCOME_PAGE_URL);
 	}
-	
-	
 
 	@Override
 	public void setFocus() {
