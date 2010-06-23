@@ -1,10 +1,14 @@
 package org.codefaces.ui.perspectives;
 
+import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.Workspace;
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.views.WelcomePage;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
@@ -42,6 +46,38 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 
 	@Override
 	public void postWindowOpen() {
+		// for building the widget
+		AjaxClientWidget.getCurrent();
+		openWelcomePage();
+		openRepository();
+	}
+
+	private void openRepository() {
+		String repoUrl = (String) RWT.getRequest().getParameter("repo");
+		String branchName = (String) RWT.getRequest().getParameter("branch");
+
+		if (repoUrl != null) {
+			try {
+				Repo repo = Repo.create(repoUrl);
+				RepoBranch repoBranch = repo.getBranchByName(branchName);
+
+				if (repoBranch == null) {
+					repoBranch = repo.getDefaultBranch();
+				}
+
+				Workspace.getCurrent().update(repoBranch);
+
+			} catch (Exception e) {
+				IStatus status = new Status(Status.ERROR,
+						CodeFacesUIActivator.PLUGIN_ID,
+						"Errors occurs when connecting to repository "
+								+ repoUrl + " with branch " + branchName, e);
+				CodeFacesUIActivator.getDefault().getLog().log(status);
+			}
+		}
+	}
+
+	private void openWelcomePage() {
 		IWorkbenchWindow activeWindow = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		IWorkbenchPage activePage = activeWindow.getActivePage();
@@ -55,9 +91,6 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 					e);
 			CodeFacesUIActivator.getDefault().getLog().log(status);
 		}
-
-		// for building the widget
-		AjaxClientWidget.getCurrent();
 	}
 
 	@Override
