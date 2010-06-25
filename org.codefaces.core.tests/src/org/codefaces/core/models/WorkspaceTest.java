@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
-import org.codefaces.core.events.WorkspaceChangeEventListener;
+import org.codefaces.core.events.WorkspaceChangeListener;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoResource;
@@ -64,7 +64,7 @@ public class WorkspaceTest {
 		assertEquals(mockFooBranch, ws.getWorkingBranch());
 
 		for (int i = 0; i < 3; i++) {
-			WorkspaceChangeEventListener listener = new WorkspaceChangeEventListener() {
+			WorkspaceChangeListener listener = new WorkspaceChangeListener() {
 
 				@Override
 				public void workspaceChanged(WorkspaceChangeEvent evt) {
@@ -73,7 +73,7 @@ public class WorkspaceTest {
 				}
 			};
 
-			ws.addWorkSpaceChangeEventListener(listener);
+			ws.addWorkspaceChangeListener(listener);
 		}
 
 		ws.update(mockBazBranch);
@@ -84,7 +84,7 @@ public class WorkspaceTest {
 		ws.update(mockFooBranch);
 
 		for (int i = 0; i < 3; i++) {
-			WorkspaceChangeEventListener listener = new WorkspaceChangeEventListener() {
+			WorkspaceChangeListener listener = new WorkspaceChangeListener() {
 
 				@Override
 				public void workspaceChanged(WorkspaceChangeEvent evt) {
@@ -92,36 +92,36 @@ public class WorkspaceTest {
 				}
 			};
 
-			ws.addWorkSpaceChangeEventListener(listener);
+			ws.addWorkspaceChangeListener(listener);
 		}
 
 		ws.update(mockFooBranch2);
 	}
 
 	public void test_add_and_remove_listner() {
-		WorkspaceChangeEventListener[] listeners = new WorkspaceChangeEventListener[3];
+		WorkspaceChangeListener[] listeners = new WorkspaceChangeListener[3];
 		for (int i = 0; i < 3; i++) {
-			listeners[i] = new WorkspaceChangeEventListener() {
+			listeners[i] = new WorkspaceChangeListener() {
 				@Override
 				public void workspaceChanged(WorkspaceChangeEvent evt) {
 					assertEquals(mockBazBranch, evt.getRepoBranch());
 					assertEquals(mockBazRepo, evt.getRepoBranch().getRepo());
 				}
 			};
-			ws.addWorkSpaceChangeEventListener(listeners[i]);
+			ws.addWorkspaceChangeListener(listeners[i]);
 		}
 
 		ws.update(mockBazBranch);
 
 		// now set the listeners[1] to fail and remove it
-		listeners[1] = new WorkspaceChangeEventListener() {
+		listeners[1] = new WorkspaceChangeListener() {
 			@Override
 			public void workspaceChanged(WorkspaceChangeEvent evt) {
 				fail("I have been removed");
 			}
 		};
 
-		ws.removeWorkSpaceChangeEventListener(listeners[1]);
+		ws.removeWorkspaceChangeListener(listeners[1]);
 		ws.update(mockBazBranch);
 	}
 

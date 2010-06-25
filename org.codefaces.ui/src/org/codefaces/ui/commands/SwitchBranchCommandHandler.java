@@ -1,16 +1,18 @@
 package org.codefaces.ui.commands;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
-import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.expressions.IEvaluationContext;
 
 public class SwitchBranchCommandHandler extends AbstractHandler {
 	public static final String ID = "org.codefaces.ui.commands.switchBranchCommand";
-	public static final String PARAM_NEW_BRANCH_ID = "org.codefaces.ui.commands.parameters.switchBranchCommand.newBranch";
+	public static final String PARAM_BRANCH_ID = "org.codefaces.ui.commands.parameters.switchBranchCommand.branchId";
+	public static final String VARIABLE_BRANCH = "org.codefaces.ui.commands.parameters.switchBranchCommand.branch";
 
 	/**
 	 * This command calls WorkSpace to update. However, if the given branch name
@@ -20,24 +22,23 @@ public class SwitchBranchCommandHandler extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		String newBranchName = event.getParameter(PARAM_NEW_BRANCH_ID);
+		IEvaluationContext context = (IEvaluationContext) event
+				.getApplicationContext();
+		Object branch = context.getVariable(VARIABLE_BRANCH);
+		if (!(branch instanceof RepoBranch)) {
+			return null;
+		}
+
 		Workspace ws = Workspace.getCurrent();
 		Repo repo = ws.getWorkingBranch().getRepo();
 
-		RepoResource newRepoBranch = null;
-		// the repository may already changed. so it is possible that we cannot
-		// find the branch
 		for (RepoBranch b : repo.getBranches()) {
-			if (b.getName().equals(newBranchName)) {
-				newRepoBranch = b;
+			if (ObjectUtils.equals(branch, b)) {
+				ws.update(b);
 				break;
 			}
 		}
 
-		if (newRepoBranch != null)
-			ws.update((RepoBranch) newRepoBranch);
-
 		return null;
 	}
-
 }

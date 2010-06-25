@@ -1,7 +1,7 @@
 package org.codefaces.ui.views;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
-import org.codefaces.core.events.WorkspaceChangeEventListener;
+import org.codefaces.core.events.WorkspaceChangeListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;
@@ -47,13 +47,23 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
-	public static final String VIEWER_CONTEXT_MENU_ID = ID + "#viewer";
+	private static final String VIEWER_CONTEXT_MENU_ID = ID + "#viewer";
 
 	private TreeViewer viewer;
 
 	private Workspace workspace;
 
 	private StatusManager statusManager;
+
+	private UpdateBranchWorkspaceChangeListener updateBranchListener = new UpdateBranchWorkspaceChangeListener();
+
+	private final class UpdateBranchWorkspaceChangeListener implements
+			WorkspaceChangeListener {
+		@Override
+		public void workspaceChanged(WorkspaceChangeEvent evt) {
+			update(evt.getRepoBranch());
+		}
+	}
 
 	class ProjectExplorerContentProvider implements ITreeContentProvider {
 
@@ -213,22 +223,26 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		createToolBar(parent);
 		createViewer(parent);
+
 		workspace = Workspace.getCurrent();
-		workspace
-				.addWorkSpaceChangeEventListener(new WorkspaceChangeEventListener() {
-					@Override
-					public void workspaceChanged(WorkspaceChangeEvent evt) {
-						update(evt.getRepoBranch());
-					}
-				});
+		RepoBranch cachedBranch = workspace.getWorkingBranch();
+		if (cachedBranch != null) {
+			update(cachedBranch);
+		}
+		workspace.addWorkspaceChangeListener(updateBranchListener);
+		createToolBar(parent);
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
 
 		registerContextMenu(viewer);
+	}
 
+	@Override
+	public void dispose() {
+		workspace.removeWorkspaceChangeListener(updateBranchListener);
+		super.dispose();
 	}
 
 	/**

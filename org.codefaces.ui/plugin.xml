@@ -33,6 +33,9 @@
             id="org.codefaces.ui.view.projectExplorer"
             name="Project Explorer"
             restorable="true">
+         <description>
+            Showing files in a tree structure.
+         </description>
       </view>
       <view
             allowMultiple="true"
@@ -42,6 +45,9 @@
             id="org.codefaces.ui.view.codeExplorer"
             name="Code Explorer"
             restorable="true">
+         <description>
+            Showing code in a syntax highlighted way.
+         </description>
       </view>
       <view
             allowMultiple="false"
@@ -51,6 +57,9 @@
             id="org.codefaces.ui.view.welcomePage"
             name="Welcome"
             restorable="true">
+         <description>
+            Welcome page.
+         </description>
       </view>
    </extension>
    <extension
@@ -85,8 +94,8 @@
             id="org.codefaces.ui.commands.switchBranchCommand"
             name="switchRepositoryBranchCommand">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.switchBranchCommand.newBranch"
-               name="newBranch"
+               id="org.codefaces.ui.commands.parameters.switchBranchCommand.branchId"
+               name="branchId"
                optional="false">
          </commandParameter>
       </command>

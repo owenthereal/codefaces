@@ -6,13 +6,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.codefaces.core.events.WorkspaceChangeEvent;
-import org.codefaces.core.events.WorkspaceChangeEventListener;
+import org.codefaces.core.events.WorkspaceChangeListener;
 import org.eclipse.rwt.SessionSingletonBase;
 
 public class Workspace {
 	private RepoBranch workingBranch;
 
-	private final List<WorkspaceChangeEventListener> changeListeners;
+	private final List<WorkspaceChangeListener> changeListeners;
 
 	private final ReentrantLock lock = new ReentrantLock();
 
@@ -21,7 +21,7 @@ public class Workspace {
 	 * This constructor is only used for testing purpose.
 	 */
 	protected Workspace() {
-		changeListeners = new CopyOnWriteArrayList<WorkspaceChangeEventListener>();
+		changeListeners = new CopyOnWriteArrayList<WorkspaceChangeListener>();
 	}
 
 	public RepoBranch getWorkingBranch() {
@@ -57,8 +57,8 @@ public class Workspace {
 	 * @param listener
 	 *            a listener
 	 */
-	public void addWorkSpaceChangeEventListener(
-			WorkspaceChangeEventListener listener) {
+	public void addWorkspaceChangeListener(
+			WorkspaceChangeListener listener) {
 		changeListeners.add(listener);
 	}
 
@@ -68,8 +68,8 @@ public class Workspace {
 	 * @param listener
 	 *            the listener being removed
 	 */
-	public void removeWorkSpaceChangeEventListener(
-			WorkspaceChangeEventListener listener) {
+	public void removeWorkspaceChangeListener(
+			WorkspaceChangeListener listener) {
 		changeListeners.remove(listener);
 	}
 
@@ -78,7 +78,7 @@ public class Workspace {
 	 * is null, it will cause a runtime error.
 	 */
 	private void notifyChange(WorkspaceChangeEvent event) {
-		for (WorkspaceChangeEventListener listener : changeListeners) {
+		for (WorkspaceChangeListener listener : changeListeners) {
 			listener.workspaceChanged(event);
 		}
 	}
