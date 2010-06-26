@@ -1,1 +1,21 @@
-*{color:#222222;font:12px "Helvetica Neue", Arial, Helvetica, sans-serif;background-color:white}*:disabled{color:#cfcfcf}*[BORDER]{border:1px solid #aaaaaa}Display{rwt-selectionmarker-color:#bbd8e0}
+/* line 26, ../../../../private/azure/src/_partials/global_settings.scss */
+* {
+  color: #222222;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* line 32, ../../../../private/azure/src/_partials/global_settings.scss */
+*:disabled {
+  color: #cfcfcf;
+}
+
+/* line 36, ../../../../private/azure/src/_partials/global_settings.scss */
+*[BORDER] {
+  border: 1px solid #aaaaaa;
+}
+
+/* line 3, ../../../../private/azure/src/_partials/display.scss */
+Display {
+  rwt-selectionmarker-color: #bbd8e0;
+}

@@ -1,1 +1,44 @@
-*{color:#222222;font:12px "Helvetica Neue", Arial, Helvetica, sans-serif;background-color:white}*:disabled{color:#cfcfcf}*[BORDER]{border:1px solid #aaaaaa}CTabFolder{background-color:transparent;border-radius:5px}CTabItem{background-color:transparent;padding:2px 15px 2px 10px;spacing:4px}CTabItem:selected{background-color:#bbd8e0}CTabFolder-DropDownButton-Icon{background-image:url("/themes/azure/images/ctabfolder-dropdown.png")}CTabFolder-DropDownButton-Icon:hover{background-image:url("/themes/azure/images/ctabfolder-dropdown-hover.png")}
+/* line 26, ../../../../private/azure/src/_partials/global_settings.scss */
+* {
+  color: #222222;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* line 32, ../../../../private/azure/src/_partials/global_settings.scss */
+*:disabled {
+  color: #cfcfcf;
+}
+
+/* line 36, ../../../../private/azure/src/_partials/global_settings.scss */
+*[BORDER] {
+  border: 1px solid #aaaaaa;
+}
+
+/* line 3, ../../../../private/azure/src/_partials/ctab.scss */
+CTabFolder {
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+/* line 8, ../../../../private/azure/src/_partials/ctab.scss */
+CTabItem {
+  background-color: transparent;
+  padding: 2px 15px 2px 10px;
+  spacing: 4px;
+}
+
+/* line 14, ../../../../private/azure/src/_partials/ctab.scss */
+CTabItem:selected {
+  background-color: #bbd8e0;
+}
+
+/* line 18, ../../../../private/azure/src/_partials/ctab.scss */
+CTabFolder-DropDownButton-Icon {
+  background-image: url("/themes/azure/images/ctabfolder-dropdown.png");
+}
+
+/* line 22, ../../../../private/azure/src/_partials/ctab.scss */
+CTabFolder-DropDownButton-Icon:hover {
+  background-image: url("/themes/azure/images/ctabfolder-dropdown-hover.png");
+}
