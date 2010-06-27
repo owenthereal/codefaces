@@ -16,6 +16,7 @@ public class RepoFileInput implements IEditorInput {
 		return file;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
 		return file.getAdapter(adapter);

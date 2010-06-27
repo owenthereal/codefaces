@@ -259,6 +259,13 @@
             id="org.codefaces.ui.editor.welcomeEditor"
             name="Welcome">
       </editor>
+      <editor
+            class="org.codefaces.ui.editors.SupportEditor"
+            default="false"
+            icon="icons/contact_us.gif"
+            id="org.codefaces.ui.editor.supportEditor"
+            name="Contact Us">
+      </editor>
    </extension>
     <!--
     <extension

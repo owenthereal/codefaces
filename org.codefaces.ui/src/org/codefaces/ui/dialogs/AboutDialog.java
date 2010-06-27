@@ -1,6 +1,12 @@
 package org.codefaces.ui.dialogs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codefaces.ui.Images;
+import org.codefaces.ui.commands.CommandUtils;
+import org.codefaces.ui.commands.OpenEditorHandler;
+import org.codefaces.ui.editors.SupportEditor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IconAndMessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -74,7 +80,10 @@ public class AboutDialog extends IconAndMessageDialog {
 		contactUs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				// Show the contact us view here.
+				//small optimization, create a map with smaller-than-default capacity
+				Map<String, String> parameterMap = new HashMap<String, String>(4);
+				parameterMap.put(OpenEditorHandler.PARAMETER_EDITOR_ID, SupportEditor.ID);
+				CommandUtils.executeCommand(OpenEditorHandler.ID, parameterMap, null);
 				close();
 			}
 		});
