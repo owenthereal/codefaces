@@ -14,6 +14,9 @@ public class Images {
 	private Images() {
 	}
 
+	/**
+	 * Here are the image stored in the image registry. These images will never be disposed.
+	 */
 	public static final String IMG_BRANCHES = "IMG_BRANCHES";
 	public static final String IMG_ERRORS = "IMG_ERRORS";
 	public static final String IMG_REPOSITORY = "IMG_REPOSITORY";
@@ -21,14 +24,17 @@ public class Images {
 	public static final String IMG_NAVIGATOR = "IMG_NAVIGATOR";
 	public static final String IMG_WELCOME = "IMG_WELCOME";
 	public static final String IMG_CONNECTION = "IMG_CONNECTION";
+	public static final String IMG_FAVICON_48 = "IMG_FAVICON_48";
 
-	public static ImageDescriptor getImageDescriptor(String imageId) {
+
+	public static ImageDescriptor getImageDescriptorFromRegistry(String imageId) {
 		return CodeFacesUIActivator.getDefault().getImageRegistry()
 				.getDescriptor(imageId);
 	}
 
-	public static Image getImage(String imageId) {
+	public static Image getImageFromRegistry(String imageId) {
 		return CodeFacesUIActivator.getDefault().getImageRegistry()
 				.get(imageId);
 	}
+	
 }

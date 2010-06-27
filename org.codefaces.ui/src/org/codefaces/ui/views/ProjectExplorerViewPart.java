@@ -117,7 +117,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 		public Image getImage(Object obj) {
 			if (obj instanceof RepoFolderRoot) {
-				return Images.getImageDescriptor(Images.IMG_REPO_FOLDER_ROOT)
+				return Images.getImageDescriptorFromRegistry(Images.IMG_REPO_FOLDER_ROOT)
 						.createImage();
 			} else {
 				String imageKey = ISharedImages.IMG_OBJ_FILE;
@@ -308,7 +308,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		Action switchBranchAction = new SwitchBranchAction();
 
 		switchBranchAction.setImageDescriptor(Images
-				.getImageDescriptor(Images.IMG_BRANCHES));
+				.getImageDescriptorFromRegistry(Images.IMG_BRANCHES));
 		toolbar.add(switchBranchAction);
 	}
 
