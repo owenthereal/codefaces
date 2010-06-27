@@ -1,1 +1,38 @@
-*{color:#222222;font:12px "Helvetica Neue", Arial, Helvetica, sans-serif;background-color:white}*:disabled{color:#cfcfcf}*[BORDER]{border:1px solid #aaaaaa}ProgressBar{background-color:transparent;background-image:none;border-radius:2px}ProgressBar-Indicator{background-color:#bbd8e0}ProgressBar-Indicator:paused{background-color:#cccccc}ProgressBar-Indicator:error{background-color:#CC6C6C}
+/* line 26, ../../../../private/azure/src/_partials/global_settings.scss */
+* {
+  color: #222222;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* line 32, ../../../../private/azure/src/_partials/global_settings.scss */
+*:disabled {
+  color: #cfcfcf;
+}
+
+/* line 36, ../../../../private/azure/src/_partials/global_settings.scss */
+*[BORDER] {
+  border: 1px solid #aaaaaa;
+}
+
+/* line 3, ../../../../private/azure/src/_partials/progress_bar.scss */
+ProgressBar {
+  background-color: transparent;
+  background-image: none;
+  border-radius: 2px;
+}
+
+/* line 9, ../../../../private/azure/src/_partials/progress_bar.scss */
+ProgressBar-Indicator {
+  background-color: #bbd8e0;
+}
+
+/* line 13, ../../../../private/azure/src/_partials/progress_bar.scss */
+ProgressBar-Indicator:paused {
+  background-color: #cccccc;
+}
+
+/* line 17, ../../../../private/azure/src/_partials/progress_bar.scss */
+ProgressBar-Indicator:error {
+  background-color: #CC6C6C;
+}

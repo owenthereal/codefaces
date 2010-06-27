@@ -1,1 +1,35 @@
-*{color:#222222;font:12px "Helvetica Neue", Arial, Helvetica, sans-serif;background-color:white}*:disabled{color:#cfcfcf}*[BORDER]{border:1px solid #aaaaaa}Menu{background-color:white;border:1px #0a648c;border-radius:1px;color:black;opacity:0.9}MenuItem{background-color:transparent}MenuItem:hover{background-color:#bbd8e0}
+/* line 26, ../../../../private/azure/src/_partials/global_settings.scss */
+* {
+  color: #222222;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* line 32, ../../../../private/azure/src/_partials/global_settings.scss */
+*:disabled {
+  color: #cfcfcf;
+}
+
+/* line 36, ../../../../private/azure/src/_partials/global_settings.scss */
+*[BORDER] {
+  border: 1px solid #aaaaaa;
+}
+
+/* line 6, ../../../../private/azure/src/_partials/menu.scss */
+Menu {
+  background-color: white;
+  border: 1px #0a648c;
+  border-radius: 1px;
+  color: black;
+  opacity: 0.9;
+}
+
+/* line 14, ../../../../private/azure/src/_partials/menu.scss */
+MenuItem {
+  background-color: transparent;
+}
+
+/* line 18, ../../../../private/azure/src/_partials/menu.scss */
+MenuItem:hover {
+  background-color: #bbd8e0;
+}

@@ -48,6 +48,16 @@
             servletName="explore"
             themeId="org.codefaces.ui.azure.theme"
             title="CodeFaces">
+         <additionalHeaders>
+            <meta
+                  content="CodeFaces is a source control client for browsers based on Ajax RIA technology."
+                  name="description">
+            </meta>
+            <meta
+                  content="CodeFaces, source control, Eclipse RAP, github, code navigator"
+                  name="keywords">
+            </meta>
+         </additionalHeaders>
       </branding>
    </extension>
    <extension

@@ -150,7 +150,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		urlInputViewer.setFocus();
 
 		connectButton = new Button(inputTextomposite, SWT.BORDER | SWT.PUSH);
-		connectButton.setImage(Images.getImage(Images.IMG_CONNECTION));
+		connectButton.setImage(Images.getImageFromRegistry(Images.IMG_CONNECTION));
 		connectButton.setToolTipText("Connect to repository");
 		connectButton.addSelectionListener(new SelectionAdapter() {
 			@Override

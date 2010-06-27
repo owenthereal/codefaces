@@ -129,7 +129,7 @@ public class ValidatableComboViewer {
 		viewer.getCCombo().addModifyListener(new TypingModifyListener());
 
 		errorMessageLabel = new Label(composite, SWT.NONE);
-		errorMessageLabel.setImage(Images.getImage(Images.IMG_ERRORS));
+		errorMessageLabel.setImage(Images.getImageFromRegistry(Images.IMG_ERRORS));
 		setErrorMessages(null);
 
 		this.inputValidator = validator;

@@ -1,22 +1,18 @@
 package org.codefaces.ui.commands;
 
+import org.codefaces.ui.dialogs.AboutDialog;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AboutCommandHandler extends AbstractHandler {
 
-	private static final String TITLE = "About CodeFaces";
-
-	private static final String MESSAGE = "Copyright © 2010 CodeFaces.org.";
-
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		MessageDialog.openInformation(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getShell(), TITLE, MESSAGE);
-
+		Shell shell = HandlerUtil.getActiveShell(event);
+		new AboutDialog(shell).open();
 		return null;
 	}
 
