@@ -1,4 +1,4 @@
-package org.codefaces.ui.views;
+package org.codefaces.ui.editors;
 
 import java.io.IOException;
 import java.io.InputStream;

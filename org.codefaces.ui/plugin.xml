@@ -37,30 +37,6 @@
             Showing files in a tree structure.
          </description>
       </view>
-      <view
-            allowMultiple="true"
-            category="org.codefaces.ui.category.codefaces"
-            class="org.codefaces.ui.views.CodeExplorerViewPart"
-            icon="icons/file.gif"
-            id="org.codefaces.ui.view.codeExplorer"
-            name="Code Explorer"
-            restorable="true">
-         <description>
-            Showing code in a syntax highlighted way.
-         </description>
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.codefaces.ui.category.codefaces"
-            class="org.codefaces.ui.views.WelcomePage"
-            icon="icons/welcome.gif"
-            id="org.codefaces.ui.view.welcomePage"
-            name="Welcome"
-            restorable="true">
-         <description>
-            Welcome page.
-         </description>
-      </view>
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">
@@ -135,6 +111,18 @@
                optional="false">
          </commandParameter>
       </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.commands.OpenEditorHandler"
+            description="Open a editor"
+            id="org.codefaces.ui.command.openEditor"
+            name="Open a editor">
+         <commandParameter
+               id="org.codefaces.ui.command.openEditor.editorId"
+               name="editorId"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -167,6 +155,17 @@
                id="org.codefaces.menu.help"
                label="Help">
             <command
+                  commandId="org.codefaces.ui.command.openEditor"
+                  icon="icons/welcome.gif"
+                  label="Welcome"
+                  style="push"
+                  tooltip="Open the welcome page">
+               <parameter
+                     name="org.codefaces.ui.command.openEditor.editorId"
+                     value="org.codefaces.ui.editor.welcomeEditor">
+               </parameter>
+            </command>
+            <command
                   commandId="org.codefaces.ui.command.about"
                   icon="icons/help.gif"
                   label="About"
@@ -187,14 +186,14 @@
                   tooltip="Import project from a repository">
             </command>
             <command
-                  commandId="org.codefaces.ui.commands.showViewCommand"
+                  commandId="org.codefaces.ui.command.openEditor"
                   icon="icons/welcome.gif"
-                  label="Welcome Page"
+                  label="Welcome"
                   style="push"
                   tooltip="Open the welcome page">
                <parameter
-                     name="org.codefaces.ui.commands.parameters.showViewCommand.viewId"
-                     value="org.codefaces.ui.view.welcomePage">
+                     name="org.codefaces.ui.command.openEditor.editorId"
+                     value="org.codefaces.ui.editor.welcomeEditor">
                </parameter>
             </command>
          </toolbar>
@@ -232,6 +231,24 @@
             </parameter>
          </command>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.codefaces.ui.editors.CodeExplorer"
+            contributorClass="org.codefaces.ui.editors.CodeExplorerActionBarConbributor"
+            default="true"
+            icon="icons/file.gif"
+            id="org.codefaces.ui.editor.codeExplorer"
+            name="Code Explorer">
+      </editor>
+      <editor
+            class="org.codefaces.ui.editors.WelcomeEditor"
+            default="true"
+            icon="icons/welcome.gif"
+            id="org.codefaces.ui.editor.welcomeEditor"
+            name="Welcome">
+      </editor>
    </extension>
     <!--
     <extension

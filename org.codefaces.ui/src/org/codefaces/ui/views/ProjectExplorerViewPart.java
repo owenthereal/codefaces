@@ -11,6 +11,7 @@ import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.Images;
+import org.codefaces.ui.StatusManager;
 import org.codefaces.ui.actions.SwitchBranchAction;
 import org.codefaces.ui.commands.OpenFileCommandHandler;
 import org.eclipse.core.commands.Command;

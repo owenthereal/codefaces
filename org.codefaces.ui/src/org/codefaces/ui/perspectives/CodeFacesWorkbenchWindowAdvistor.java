@@ -1,20 +1,21 @@
 package org.codefaces.ui.perspectives;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
 import org.codefaces.ui.CodeFacesUIActivator;
-import org.codefaces.ui.views.WelcomePage;
+import org.codefaces.ui.commands.CommandUtils;
+import org.codefaces.ui.commands.OpenEditorHandler;
+import org.codefaces.ui.editors.WelcomeEditor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -48,7 +49,7 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 	public void postWindowOpen() {
 		// for building the widget
 		AjaxClientWidget.getCurrent();
-		openWelcomePage();
+		showWelcomeEditor();
 		openRepository();
 	}
 
@@ -77,20 +78,10 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 		}
 	}
 
-	private void openWelcomePage() {
-		IWorkbenchWindow activeWindow = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-		IWorkbenchPage activePage = activeWindow.getActivePage();
-		try {
-			activePage.showView(WelcomePage.ID);
-		} catch (PartInitException e) {
-			IStatus status = new Status(
-					Status.ERROR,
-					CodeFacesUIActivator.PLUGIN_ID,
-					"Errors occurs when showing view with id " + WelcomePage.ID,
-					e);
-			CodeFacesUIActivator.getDefault().getLog().log(status);
-		}
+	private void showWelcomeEditor() {
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put(OpenEditorHandler.PARAMETER_EDITOR_ID, WelcomeEditor.ID);
+		CommandUtils.executeCommand(OpenEditorHandler.ID, paraMap, null);
 	}
 
 	@Override

@@ -1,22 +1,22 @@
-package org.codefaces.ui.views;
+package org.codefaces.ui;
 
 import org.codefaces.core.models.RepoResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 
-public class StatusManager implements ISelectionChangedListener,
-		IPropertyChangeListener {
+public class StatusManager implements ISelectionChangedListener {
 	private static final String AT = "@";
 
 	private static final String SEPERATOR = " - ";
 
-	private final IStatusLineManager statusLineManager;
+	private IStatusLineManager statusLineManager;
+
+	public StatusManager() {
+	}
 
 	public StatusManager(IStatusLineManager statusLineManager,
 			StructuredViewer viewer) {
@@ -24,20 +24,18 @@ public class StatusManager implements ISelectionChangedListener,
 		viewer.addPostSelectionChangedListener(this);
 	}
 
-	public StatusManager(IStatusLineManager statusLineManager,
-			CodeExplorerViewPart part) {
-		this.statusLineManager = statusLineManager;
-		part.addPropertyChangeListener(this);
-	}
-
-	public void showStatusMessage(IPath fullPath, String repoUrl,
-			String branchName) {
-		if (fullPath == null) {
+	public void showStatusMessage(IStatusLineManager statusLineManager,
+			RepoResource resource) {
+		if (resource == null) {
 			statusLineManager.setMessage(null);
 			return;
 		}
 
 		StringBuilder builder = new StringBuilder();
+
+		IPath fullPath = resource.getFullPath();
+		String repoUrl = resource.getRoot().getBranch().getRepo().getUrl();
+		String branchName = resource.getRoot().getBranch().getName();
 
 		String fileName = fullPath.lastSegment();
 		if (fileName != null) {
@@ -63,33 +61,16 @@ public class StatusManager implements ISelectionChangedListener,
 		statusLineManager.setMessage(builder.toString());
 	}
 
-	public void showStatusMessage(RepoResource resource) {
-		if (resource == null) {
-			showStatusMessage(null, null, null);
-		} else {
-			showStatusMessage(resource.getFullPath(), resource.getRoot()
-					.getBranch().getRepo().getUrl(), resource.getRoot()
-					.getBranch().getName());
-		}
-	}
-
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		IStructuredSelection structuredSelection = (IStructuredSelection) event
 				.getSelection();
 		Object selectedObject = structuredSelection.getFirstElement();
 		if (selectedObject == null) {
-			showStatusMessage(null);
+			showStatusMessage(statusLineManager, null);
 			return;
 		}
 
-		showStatusMessage((RepoResource) selectedObject);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getProperty() == CodeExplorerViewPart.PROP_REPO_RESOURCE) {
-			showStatusMessage((RepoResource) event.getNewValue());
-		}
+		showStatusMessage(statusLineManager, (RepoResource) selectedObject);
 	}
 }

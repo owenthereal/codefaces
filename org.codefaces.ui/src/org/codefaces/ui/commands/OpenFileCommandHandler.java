@@ -4,7 +4,8 @@ import java.util.Iterator;
 
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.ui.CodeFacesUIActivator;
-import org.codefaces.ui.views.CodeExplorerViewPart;
+import org.codefaces.ui.editors.CodeExplorer;
+import org.codefaces.ui.editors.RepoFileInput;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,7 +15,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -118,14 +118,11 @@ public class OpenFileCommandHandler extends AbstractHandler {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
 		try {
-			IViewPart viewPart = activePage.showView(CodeExplorerViewPart.ID,
-					repoFile.getId(), IWorkbenchPage.VIEW_ACTIVATE);
-			((CodeExplorerViewPart) viewPart).setInput(repoFile);
+			activePage.openEditor(new RepoFileInput(repoFile), CodeExplorer.ID);
 		} catch (PartInitException e) {
 			IStatus status = new Status(Status.ERROR,
 					CodeFacesUIActivator.PLUGIN_ID,
-					"Errors occurs when showing view "
-							+ CodeExplorerViewPart.ID, e);
+					"Errors occurs when showing view " + CodeExplorer.ID, e);
 			CodeFacesUIActivator.getDefault().getLog().log(status);
 		}
 	}
