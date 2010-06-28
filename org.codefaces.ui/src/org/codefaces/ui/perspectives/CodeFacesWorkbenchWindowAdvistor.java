@@ -6,7 +6,6 @@ import java.util.Map;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.httpclient.ajax.AjaxClientWidget;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.commands.CommandExecutor;
 import org.codefaces.ui.commands.OpenEditorHandler;
@@ -47,8 +46,6 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 
 	@Override
 	public void postWindowOpen() {
-		// for building the widget
-		AjaxClientWidget.getCurrent();
 		showWelcomeEditor();
 		openRepository();
 	}

@@ -11,7 +11,7 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.services.github.GitHubService;
 import org.codefaces.httpclient.CodeFacesHttpClient;
 import org.codefaces.httpclient.RepoResponseException;
-import org.codefaces.httpclient.ajax.AjaxClientDelegate;
+import org.codefaces.httpclient.ajax.AjaxClientAdapter;
 import org.eclipse.rwt.SessionSingletonBase;
 
 public class RepoService {
@@ -19,7 +19,7 @@ public class RepoService {
 	private CodeFacesHttpClient httpClient;
 
 	public RepoService() {
-		httpClient = new AjaxClientDelegate();
+		httpClient = new AjaxClientAdapter();
 		githubService = new GitHubService(httpClient);
 	}
 
