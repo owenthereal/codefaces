@@ -19,8 +19,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
-public class CommandUtils {
-	public static void executeCommand(String commandId,
+public class CommandExecutor {
+	public static void execute(String commandId,
 			Map<String, String> parameterMap, Map<String, Object> variableMap) {
 		IHandlerService handlerService = (IHandlerService) PlatformUI
 				.getWorkbench().getService(IHandlerService.class);

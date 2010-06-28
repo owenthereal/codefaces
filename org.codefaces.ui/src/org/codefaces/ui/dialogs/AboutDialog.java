@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.codefaces.ui.Images;
-import org.codefaces.ui.commands.CommandUtils;
+import org.codefaces.ui.commands.CommandExecutor;
 import org.codefaces.ui.commands.OpenEditorHandler;
 import org.codefaces.ui.editors.SupportEditor;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -83,7 +83,7 @@ public class AboutDialog extends IconAndMessageDialog {
 				//small optimization, create a map with smaller-than-default capacity
 				Map<String, String> parameterMap = new HashMap<String, String>(4);
 				parameterMap.put(OpenEditorHandler.PARAMETER_EDITOR_ID, SupportEditor.ID);
-				CommandUtils.executeCommand(OpenEditorHandler.ID, parameterMap, null);
+				CommandExecutor.execute(OpenEditorHandler.ID, parameterMap, null);
 				close();
 			}
 		});

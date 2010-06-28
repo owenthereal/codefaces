@@ -2,24 +2,17 @@ package org.codefaces.ui.actions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.ui.CodeFacesUIActivator;
+import org.codefaces.ui.commands.CommandExecutor;
 import org.codefaces.ui.commands.SwitchBranchCommandHandler;
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.IParameter;
-import org.eclipse.core.commands.Parameterization;
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.core.commands.common.CommandException;
-import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.SWT;
@@ -28,9 +21,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.commands.ICommandService;
-import org.eclipse.ui.handlers.IHandlerService;
 
 public class SwitchBranchAction extends Action implements IMenuCreator,
 		WorkspaceChangeListener {
@@ -159,35 +149,15 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 	 *            the new selected branch
 	 */
 	private void executeSwitchRepoBranchCommand(RepoBranch branch) {
-		IHandlerService handlerService = (IHandlerService) PlatformUI
-				.getWorkbench().getService(IHandlerService.class);
-		ICommandService cmdService = (ICommandService) PlatformUI
-				.getWorkbench().getService(ICommandService.class);
-		Command switchBranchCmd = cmdService
-				.getCommand(SwitchBranchCommandHandler.ID);
+		Map<String, String> parameterMap = new HashMap<String, String>();
+		parameterMap.put(SwitchBranchCommandHandler.PARAM_BRANCH_ID,
+				branch.getId());
 
-		try {
-			IParameter newBranchParam = switchBranchCmd
-					.getParameter(SwitchBranchCommandHandler.PARAM_BRANCH_ID);
-			Parameterization paramNewBranch = new Parameterization(
-					newBranchParam, branch.getId());
-			ParameterizedCommand parmCommand = new ParameterizedCommand(
-					switchBranchCmd, new Parameterization[] { paramNewBranch });
+		Map<String, Object> variableMap = new HashMap<String, Object>();
+		variableMap.put(SwitchBranchCommandHandler.VARIABLE_BRANCH, branch);
 
-			ExecutionEvent switchBranchEvent = handlerService
-					.createExecutionEvent(parmCommand, null);
-			((IEvaluationContext) switchBranchEvent.getApplicationContext())
-					.addVariable(SwitchBranchCommandHandler.VARIABLE_BRANCH,
-							branch);
-
-			switchBranchCmd.executeWithChecks(switchBranchEvent);
-		} catch (CommandException e) {
-			IStatus status = new Status(Status.ERROR,
-					CodeFacesUIActivator.PLUGIN_ID,
-					"Errors occurs when switching to branch "
-							+ branch.getName(), e);
-			CodeFacesUIActivator.getDefault().getLog().log(status);
-		}
+		CommandExecutor.execute(SwitchBranchCommandHandler.ID, parameterMap,
+				variableMap);
 	}
 
 	@Override

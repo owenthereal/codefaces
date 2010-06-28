@@ -1,5 +1,8 @@
 package org.codefaces.ui.views;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeListener;
 import org.codefaces.core.models.RepoBranch;
@@ -9,20 +12,11 @@ import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.Images;
 import org.codefaces.ui.StatusManager;
 import org.codefaces.ui.actions.SwitchBranchAction;
+import org.codefaces.ui.commands.CommandExecutor;
 import org.codefaces.ui.commands.OpenFileCommandHandler;
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.IParameter;
-import org.eclipse.core.commands.Parameterization;
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.core.commands.common.CommandException;
-import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -42,8 +36,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.commands.ICommandService;
-import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
@@ -118,8 +110,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 		public Image getImage(Object obj) {
 			if (obj instanceof RepoFolderRoot) {
-				return Images.getImageDescriptorFromRegistry(Images.IMG_REPO_FOLDER_ROOT)
-						.createImage();
+				return Images.getImageDescriptorFromRegistry(
+						Images.IMG_REPO_FOLDER_ROOT).createImage();
 			} else {
 				String imageKey = ISharedImages.IMG_OBJ_FILE;
 				if (obj instanceof RepoFolder) {
@@ -130,8 +122,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 					imageKey = ISharedImages.IMG_OBJ_ELEMENT;
 				}
 
-				return PlatformUI.getWorkbench().getSharedImages().getImage(
-						imageKey);
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(imageKey);
 			}
 		}
 	}
@@ -187,37 +179,16 @@ public class ProjectExplorerViewPart extends ViewPart {
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
 			if (clickedRepoResource.getType() == RepoResourceType.FILE) {
-				IHandlerService handlerService = (IHandlerService) PlatformUI
-						.getWorkbench().getService(IHandlerService.class);
-				ICommandService cmdService = (ICommandService) PlatformUI
-						.getWorkbench().getService(ICommandService.class);
+				Map<String, String> parameterMap = new HashMap<String, String>();
+				parameterMap.put(OpenFileCommandHandler.PARAM_MODE,
+						OpenFileCommandHandler.MODE_DIRECT_FILES);
 
-				Command openFileCmd = cmdService
-						.getCommand(OpenFileCommandHandler.ID);
-				try {
-					IParameter openFileCmdMode = openFileCmd
-							.getParameter(OpenFileCommandHandler.PARAM_MODE);
-					Parameterization paramModel = new Parameterization(
-							openFileCmdMode,
-							OpenFileCommandHandler.MODE_DIRECT_FILES);
-					ParameterizedCommand parmCommand = new ParameterizedCommand(
-							openFileCmd, new Parameterization[] { paramModel });
+				Map<String, Object> variableMap = new HashMap<String, Object>();
+				variableMap.put(OpenFileCommandHandler.VARIABLE_FILES,
+						new RepoFile[] { (RepoFile) clickedRepoResource });
 
-					ExecutionEvent openFileEvent = handlerService
-							.createExecutionEvent(parmCommand, null);
-					((IEvaluationContext) openFileEvent.getApplicationContext())
-							.addVariable(
-									OpenFileCommandHandler.VARIABLE_FILES,
-									new RepoFile[] { (RepoFile) clickedRepoResource });
-
-					openFileCmd.executeWithChecks(openFileEvent);
-				} catch (CommandException e) {
-					IStatus status = new Status(Status.ERROR,
-							CodeFacesUIActivator.PLUGIN_ID,
-							"Errors occurs when opening file "
-									+ clickedRepoResource.getName(), e);
-					CodeFacesUIActivator.getDefault().getLog().log(status);
-				}
+				CommandExecutor.execute(OpenFileCommandHandler.ID,
+						parameterMap, variableMap);
 			}
 		}
 	}

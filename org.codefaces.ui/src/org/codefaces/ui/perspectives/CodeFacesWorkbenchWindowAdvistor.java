@@ -8,7 +8,7 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
 import org.codefaces.ui.CodeFacesUIActivator;
-import org.codefaces.ui.commands.CommandUtils;
+import org.codefaces.ui.commands.CommandExecutor;
 import org.codefaces.ui.commands.OpenEditorHandler;
 import org.codefaces.ui.editors.WelcomeEditor;
 import org.eclipse.core.runtime.IStatus;
@@ -81,7 +81,7 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 	private void showWelcomeEditor() {
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put(OpenEditorHandler.PARAMETER_EDITOR_ID, WelcomeEditor.ID);
-		CommandUtils.executeCommand(OpenEditorHandler.ID, paraMap, null);
+		CommandExecutor.execute(OpenEditorHandler.ID, paraMap, null);
 	}
 
 	@Override
