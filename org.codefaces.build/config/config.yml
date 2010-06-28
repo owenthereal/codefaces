@@ -37,27 +37,27 @@ fetch:
 tools:
   eclipse_platform:
     description: Eclipse Platfrom
-    name: eclipse-rcp-galileo-SR2-macosx-cocoa.tar.gz
+    name: eclipse-SDK-3.6-macosx-cocoa-x86_64.tar.gz
     scm: http
     unpack: true
-    repository: "http://mirror.csclub.uwaterloo.ca/eclipse/technology/epp/downloads/release/galileo/SR2/eclipse-rcp-galileo-SR2-macosx-cocoa.tar.gz"
+    repository: "http://www.gtlib.gatech.edu/pub/eclipse/eclipse/downloads/drops/R-3.6-201006080911/eclipse-SDK-3.6-macosx-cocoa-x86_64.tar.gz"
   
   target_platform:
     description: repository for RAP target platform
-    name: "rap-runtime-1.3.0-RC4-20100608-1549.zip"
+    name: "rap-runtime-1.3.0-R-20100615-1704.zip"
     scm: http
-    repository: "http://mirror.csclub.uwaterloo.ca/eclipse/rt/rap/1.3/rap-runtime-1.3.0-RC4-20100608-1549.zip" 
+    repository: "http://mirror.cc.columbia.edu/pub/software/eclipse/rt/rap/1.3/rap-runtime-1.3.0-R-20100615-1704.zip"
 
   servlet_bridge:
     - description: Equinox servletbridge
       name: org.eclipse.equinox.servletbridge_1.2.0.v20100503.jar
       scm: http 
-      repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC4-201006031500/org.eclipse.equinox.servletbridge_1.2.0.v20100503.jar"
+      repository: "http://ftp.osuosl.org/pub/eclipse/equinox/drops/R-3.6-201006080911/org.eclipse.equinox.servletbridge_1.2.0.v20100503.jar"
     
     - description: Equinox http servletbridge
       name: org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar
       scm: http
-      repository: "http://mirror.csclub.uwaterloo.ca/eclipse/equinox/drops/S-3.6RC4-201006031500/org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar"
+      repository: "http://mirrors.xmission.com/eclipse/equinox/drops/R-3.6-201006080911/org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar"
 
   compressor:
     description: YUI compressor
