@@ -3,7 +3,7 @@ package org.codefaces.httpclient.ajax;
 import org.codefaces.httpclient.CodeFacesHttpClient;
 import org.codefaces.httpclient.RepoResponseException;
 
-public class AjaxClientDelegate implements CodeFacesHttpClient {
+public class AjaxClientAdapter implements CodeFacesHttpClient {
 
 	@Override
 	public void dispose() {
