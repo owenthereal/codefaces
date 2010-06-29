@@ -4,6 +4,8 @@ import org.codefaces.core.models.RepoFile;
 import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.codeLanguages.CodeLanguage;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -73,15 +75,25 @@ public class CodeExplorer extends EditorPart {
 	}
 
 	private void updateContent(RepoFile repoFile) {
-		CodeLanguage language = CodeFacesUIActivator.getDefault()
-				.getCodeLanguages().parseFileName(repoFile.getName());
-		String langName = language.getName();
-		String resourceURL = language.getResource();
+		try {
 
-		CodeExplorerHTMLTemplate template = new CodeExplorerHTMLTemplate(
-				repoFile.getName(), langName, resourceURL,
-				repoFile.getContent());
+			CodeLanguage language = CodeFacesUIActivator.getDefault()
+					.getCodeLanguages().parseFileName(repoFile.getName());
+			String langName = language.getName();
+			String resourceURL = language.getResource();
 
-		browser.setText(template.toHTML());
+			CodeExplorerHTMLTemplate template = new CodeExplorerHTMLTemplate(
+					repoFile.getName(), langName, resourceURL,
+					repoFile.getContent());
+
+			browser.setText(template.toHTML());
+		} catch (Exception e) {
+			String errorMsg = "Errors occurs when loading content of the file "
+					+ repoFile.getFullPath().toString();
+			browser.setText(errorMsg);
+			IStatus status = new Status(Status.ERROR,
+					CodeFacesUIActivator.PLUGIN_ID, errorMsg, e);
+			CodeFacesUIActivator.getDefault().getLog().log(status);
+		}
 	}
 }

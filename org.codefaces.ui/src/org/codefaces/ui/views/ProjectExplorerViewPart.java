@@ -8,7 +8,6 @@ import org.codefaces.core.events.WorkspaceChangeListener;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;
-import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
@@ -33,9 +32,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
@@ -49,6 +46,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private StatusManager statusManager;
 
 	private UpdateBranchWorkspaceChangeListener updateBranchListener = new UpdateBranchWorkspaceChangeListener();
+	private ProjectExplorerTreeViewManager manager;
 
 	private final class UpdateBranchWorkspaceChangeListener implements
 			WorkspaceChangeListener {
@@ -78,10 +76,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 
 		public Object[] getChildren(Object parent) {
-			if (parent instanceof RepoResource) {
-				return ((RepoResource) parent).getChildren().toArray();
-			}
-			return new Object[0];
+			return manager.getElement(parent);
 		}
 
 		public boolean hasChildren(Object parent) {
@@ -95,36 +90,11 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	class ProjectExplorerLabelProvider extends LabelProvider {
 		public String getText(Object obj) {
-			if (obj instanceof RepoFolderRoot) {
-				RepoFolderRoot root = (RepoFolderRoot) obj;
-				return root.getBranch().getName() + "@"
-						+ root.getBranch().getRepo().getUrl();
-			}
-
-			if (obj instanceof RepoResource) {
-				return ((RepoResource) obj).getName();
-			}
-
-			return obj.toString();
+			return manager.getText(obj);
 		}
 
 		public Image getImage(Object obj) {
-			if (obj instanceof RepoFolderRoot) {
-				return Images.getImageDescriptorFromRegistry(
-						Images.IMG_REPO_FOLDER_ROOT).createImage();
-			} else {
-				String imageKey = ISharedImages.IMG_OBJ_FILE;
-				if (obj instanceof RepoFolder) {
-					imageKey = ISharedImages.IMG_OBJ_FOLDER;
-				}
-
-				if (obj instanceof RepoFolderRoot) {
-					imageKey = ISharedImages.IMG_OBJ_ELEMENT;
-				}
-
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(imageKey);
-			}
+			return manager.getImage(obj);
 		}
 	}
 
@@ -139,11 +109,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 				return -1;
 			}
 
-			if (obj1 instanceof RepoFile && obj2 instanceof RepoFile) {
-				super.compare(viewer, obj1, obj2);
-			}
-
-			return 0;
+			return super.compare(viewer, obj1, obj2);
 		}
 	}
 
@@ -196,6 +162,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
+		manager = new ProjectExplorerTreeViewManager(viewer);
 
 		workspace = Workspace.getCurrent();
 		RepoBranch cachedBranch = workspace.getWorkingBranch();
@@ -250,6 +217,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.addDoubleClickListener(new FileDoubleClickListener());
 		viewer.addDoubleClickListener(new FolderDoubleClickListener());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
+
 	}
 
 	/**
