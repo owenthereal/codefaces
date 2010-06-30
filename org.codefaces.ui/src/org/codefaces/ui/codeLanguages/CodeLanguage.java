@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class CodeLanguage {
 	public static final CodeLanguage PLAIN_TEXT = new CodeLanguage(
-			"no-highlight", "no-highlight", "no-highlight", new String[0]);
+			"no-highlight", "no-highlight", "/html/javascripts/highlight/languages/no-highlight.js", new String[0]);
 
 	private static final String FILE_EXTENSION_PATTERN = "*.";
 

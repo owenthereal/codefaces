@@ -28,6 +28,9 @@
       <resource
             class="org.codefaces.web.resources.Json2">
       </resource>
+      <resource
+            class="org.codefaces.web.resources.GoogleAnalytics">
+      </resource>
    </extension>
    <extension
          point="org.codefaces.ui.codeLanguages">
