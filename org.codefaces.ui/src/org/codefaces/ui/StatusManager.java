@@ -71,6 +71,8 @@ public class StatusManager implements ISelectionChangedListener {
 			return;
 		}
 
-		showStatusMessage(statusLineManager, (RepoResource) selectedObject);
+		if (selectedObject instanceof RepoResource) {
+			showStatusMessage(statusLineManager, (RepoResource) selectedObject);
+		}
 	}
 }

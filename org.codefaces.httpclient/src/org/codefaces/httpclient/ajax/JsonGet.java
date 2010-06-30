@@ -7,6 +7,7 @@ public class JsonGet {
 	private final static int DEFAULT_TIMEOUT = 0;
 	
 	private final String url;
+	
 	private final int timeout;
 
 	/**

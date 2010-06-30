@@ -1,8 +1,6 @@
 package org.codefaces.core.models;
 
 public class RepoFile extends RepoResource {
-	private RepoFileInfo info;
-
 	public RepoFile(RepoFolderRoot root, RepoResource parent, String id,
 			String name) {
 		super(root, parent, id, name, RepoResourceType.FILE);
@@ -10,11 +8,7 @@ public class RepoFile extends RepoResource {
 
 	@Override
 	protected RepoFileInfo getInfo() {
-		if (info == null) {
-			info = (RepoFileInfo) super.getInfo();
-		}
-
-		return info;
+		return (RepoFileInfo) super.getInfo();
 	}
 
 	@Override

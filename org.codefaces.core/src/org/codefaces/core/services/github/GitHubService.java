@@ -154,19 +154,6 @@ public class GitHubService {
 			Repo repo = repoFile.getRoot().getBranch().getRepo();
 			String gitHubFileUrl = createGetGitHubFileUrl(repo, repoFile);
 			GitHubFileDataDto gitHubFileDataDto = getGitHubFileDataDto(gitHubFileUrl);
-			
-
-			// String gitHubFileMetadataUrl =
-			// createGetGitHubFileMetadataUrl(repo,
-			// repoFile);
-			// GitHubFileDataDto gitHubFileDataDto =
-			// getGitHubFileDataDto(gitHubFileMetadataUrl);
-			// // fetch all content if it's text-based
-			// if (gitHubFileDataDto.getMime_type().toLowerCase().contains(
-			// FILE_MIME_TYPE_TEXT)) {
-			// String gitHubFileUrl = createGetGitHubFileUrl(repo, repoFile);
-			// gitHubFileDataDto = getGitHubFileDataDto(gitHubFileUrl);
-			// }
 
 			return new RepoFileInfo(repoFile, gitHubFileDataDto.getData(),
 					gitHubFileDataDto.getMime_type(), gitHubFileDataDto
@@ -180,8 +167,7 @@ public class GitHubService {
 			String getGitHubFileMetadataUrl) {
 		GitHubFileDto gitHubFileDto = gson.fromJson(
 				getResponseBody(getGitHubFileMetadataUrl), GitHubFileDto.class);
-		GitHubFileDataDto gitHubFileDataDto = gitHubFileDto.getBlob();
-		return gitHubFileDataDto;
+		return gitHubFileDto.getBlob();
 	}
 
 	protected String createGetGitHubFileUrl(Repo repo, RepoFile repoFile) {

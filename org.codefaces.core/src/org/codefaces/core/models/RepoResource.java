@@ -10,6 +10,7 @@ public class RepoResource extends RepoElement {
 	private RepoResource parent;
 	private RepoFolderRoot root;
 	private IPath path;
+	private RepoResourceInfo info;
 
 	protected RepoResource(RepoFolderRoot root, RepoResource parent, String id,
 			String name, RepoResourceType type) {
@@ -85,7 +86,10 @@ public class RepoResource extends RepoElement {
 	}
 
 	protected RepoResourceInfo getInfo() {
-		return RepoResourceManager.getInstance().getInfo(this);
-	}
+		if (info == null) {
+			info = RepoResourceManager.getInstance().getInfo(this);
+		}
 
+		return info;
+	}
 }
