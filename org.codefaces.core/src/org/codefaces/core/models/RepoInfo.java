@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.codefaces.core.services.RepoService;
+import org.codefaces.core.services.SCMService;
 
 public class RepoInfo extends RepoResourceInfo {
 	private Collection<RepoBranch> branches;
@@ -32,7 +32,7 @@ public class RepoInfo extends RepoResourceInfo {
 	}
 
 	private Collection<RepoBranch> fetchBranches() {
-		return RepoService.getCurrent().fetchBranches(getContext());
+		return SCMService.getCurrent().fetchBranches(getContext());
 	}
 
 	@Override
@@ -43,9 +43,5 @@ public class RepoInfo extends RepoResourceInfo {
 		}
 
 		return children;
-	}
-	
-	public RepoBranch getDefaultBranch() {
-		return RepoService.getCurrent().getDefaultBranch(getContext());
 	}
 }

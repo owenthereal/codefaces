@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang.StringUtils;
-import org.codefaces.httpclient.RepoResponseException;
+import org.codefaces.httpclient.SCMResponseException;
 import org.codefaces.httpclient.http.ManagedHttpClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,14 +26,14 @@ public class ManagedHttpClientTest {
 
 	@Test
 	public void test_getResponseBody_SingleThread()
-			throws RepoResponseException {
+			throws SCMResponseException {
 		String body = client.getResponseBody(TEST_URL_GITHUB);
 		assertTrue(!StringUtils.isEmpty(body));
 	}
 
 	@Test
 	public void test_getResponseBody_MultiThreads()
-			throws RepoResponseException, InterruptedException {
+			throws SCMResponseException, InterruptedException {
 		String expectedBody = client.getResponseBody(TEST_URL_GITHUB);
 
 		int N = 20;
@@ -84,7 +84,7 @@ public class ManagedHttpClientTest {
 		private void doWork(ManagedHttpClient client, String url) {
 			try {
 				responseBody = client.getResponseBody(url);
-			} catch (RepoResponseException e) {
+			} catch (SCMResponseException e) {
 				fail(e.getMessage());
 			}
 		}

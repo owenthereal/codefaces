@@ -3,7 +3,7 @@ package org.codefaces.httpclient.ajax;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.codefaces.httpclient.RepoResponseException;
+import org.codefaces.httpclient.SCMResponseException;
 import org.eclipse.swt.widgets.Display;
 
 public class AjaxClient {
@@ -43,11 +43,11 @@ public class AjaxClient {
 		return requestQueue.poll();
 	}
 
-	public String getResponseBody(String url) throws RepoResponseException {
+	public String getResponseBody(String url) throws SCMResponseException {
 		JsonResponse resp = execute(new JsonGet(url));
 
 		if (resp.getStatus() != JsonResponse.Status.SUCCESS) {
-			throw new RepoResponseException("Errors loading " + url + ".");
+			throw new SCMResponseException("Errors loading " + url + ".");
 		}
 
 		return resp.getContent();

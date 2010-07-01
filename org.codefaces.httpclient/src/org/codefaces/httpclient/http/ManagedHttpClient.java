@@ -21,11 +21,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
-import org.codefaces.httpclient.CodeFacesHttpClient;
-import org.codefaces.httpclient.RepoResponseException;
+import org.codefaces.httpclient.SCMResponseException;
 
 
-public class ManagedHttpClient implements CodeFacesHttpClient {
+public class ManagedHttpClient implements org.codefaces.httpclient.SCMHttpClient {
 	private static class IdleConnectionMonitorThread extends Thread {
 
 		private final ClientConnectionManager connMgr;
@@ -95,7 +94,7 @@ public class ManagedHttpClient implements CodeFacesHttpClient {
 	}
 
 	@Override
-	public String getResponseBody(String url) throws RepoResponseException {
+	public String getResponseBody(String url) throws SCMResponseException {
 		try {
 			HttpGet httpGet = new HttpGet(url);
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -103,24 +102,24 @@ public class ManagedHttpClient implements CodeFacesHttpClient {
 		} catch (HttpResponseException exception) {
 			throw handleHttpExceptionStatus(exception);
 		} catch (IOException exception) {
-			throw new RepoResponseException(exception.getMessage(), exception);
+			throw new SCMResponseException(exception.getMessage(), exception);
 		} 
 	}
 
-	private RepoResponseException handleHttpExceptionStatus(
+	private SCMResponseException handleHttpExceptionStatus(
 			HttpResponseException exception) {
 		int status = exception.getStatusCode();
 		switch (status) {
 		case HttpStatus.SC_NOT_FOUND:
-			return new RepoResponseException(status, "HTTP Error: " + status
+			return new SCMResponseException(status, "HTTP Error: " + status
 					+ ". Request Resource Not Found.", exception);
 		case HttpStatus.SC_UNAUTHORIZED:
 		case HttpStatus.SC_FORBIDDEN:
-			return new RepoResponseException(status, "HTTP Error: " + status
+			return new SCMResponseException(status, "HTTP Error: " + status
 					+ "Unauthorized Request.", exception);
 		}
 
-		return new RepoResponseException(status, "HTTP Error: " + status,
+		return new SCMResponseException(status, "HTTP Error: " + status,
 				exception);
 	}
 

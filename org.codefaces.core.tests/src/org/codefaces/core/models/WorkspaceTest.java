@@ -9,10 +9,6 @@ import java.util.Set;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeListener;
-import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
-import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.models.Workspace;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,9 +34,10 @@ public class WorkspaceTest {
 				return branchesForFooRepo;
 			}
 		};
-		mockFooBranch = new RepoBranch(mockFooRepo, "fooBranchID", "fooBranch");
+		mockFooBranch = new RepoBranch(mockFooRepo, "fooBranchID", "fooBranch",
+				false);
 		mockFooBranch2 = new RepoBranch(mockFooRepo, "fooBranch2ID",
-				"fooBranch");
+				"fooBranch", false);
 		branchesForFooRepo.add(mockFooBranch);
 		branchesForFooRepo.add(mockFooBranch2);
 
@@ -51,7 +48,8 @@ public class WorkspaceTest {
 				return branchesForBazRepo;
 			}
 		};
-		mockBazBranch = new RepoBranch(mockBazRepo, "bazBranchID", "bazBranch");
+		mockBazBranch = new RepoBranch(mockBazRepo, "bazBranchID", "bazBranch",
+				false);
 		branchesForBazRepo.add(mockBazBranch);
 	}
 

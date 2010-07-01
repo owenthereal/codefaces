@@ -1,9 +1,9 @@
 package org.codefaces.httpclient.ajax;
 
-import org.codefaces.httpclient.CodeFacesHttpClient;
-import org.codefaces.httpclient.RepoResponseException;
+import org.codefaces.httpclient.SCMHttpClient;
+import org.codefaces.httpclient.SCMResponseException;
 
-public class AjaxClientAdapter implements CodeFacesHttpClient {
+public class AjaxClientAdapter implements SCMHttpClient {
 
 	@Override
 	public void dispose() {
@@ -11,7 +11,7 @@ public class AjaxClientAdapter implements CodeFacesHttpClient {
 	}
 
 	@Override
-	public String getResponseBody(String url) throws RepoResponseException {
+	public String getResponseBody(String url) throws SCMResponseException {
 		return AjaxClientWidget.getCurrent().getClient().getResponseBody(url);
 	}
 }

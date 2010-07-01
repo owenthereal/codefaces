@@ -10,11 +10,18 @@ public class RepoBranch extends RepoResource {
 
 	private final Repo repo;
 
-	public RepoBranch(Repo repo, String id, String name) {
+	private final boolean isMaster;
+
+	public RepoBranch(Repo repo, String id, String name, boolean isMaster) {
 		super(null, repo, id, name, RepoResourceType.BRANCH);
 		this.repo = repo;
+		this.isMaster = isMaster;
 
 		root = new RepoFolderRoot(this, id, repo.getName() + AT + repo.getUrl());
+	}
+
+	public boolean isMaster() {
+		return isMaster;
 	}
 
 	@Override

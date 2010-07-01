@@ -17,7 +17,7 @@ public class WorkspaceChangeEventTest {
 	@Before
 	public void setUp() {
 		mockRepo = new Repo(null, "foo", null);
-		mockBranch = new RepoBranch(mockRepo, null, "bar");
+		mockBranch = new RepoBranch(mockRepo, null, "bar", false);
 	}
 
 	@Test

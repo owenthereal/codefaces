@@ -1,6 +1,6 @@
 package org.codefaces.core.models;
 
-public class RepoFolderRoot extends RepoResource {
+public class RepoFolderRoot extends RepoFolder {
 	private final RepoBranch branch;
 
 	public RepoFolderRoot(RepoBranch branch, String id, String name) {
@@ -15,5 +15,9 @@ public class RepoFolderRoot extends RepoResource {
 
 	public RepoBranch getBranch() {
 		return branch;
+	}
+
+	public Repo getRepo() {
+		return getBranch().getRepo();
 	}
 }

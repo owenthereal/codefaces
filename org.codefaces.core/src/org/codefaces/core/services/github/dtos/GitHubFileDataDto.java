@@ -1,4 +1,4 @@
-package org.codefaces.core.services.github;
+package org.codefaces.core.services.github.dtos;
 
 public class GitHubFileDataDto {
 	private String name;

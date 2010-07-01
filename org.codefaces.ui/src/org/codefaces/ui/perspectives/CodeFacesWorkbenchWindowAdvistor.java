@@ -60,10 +60,12 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 				RepoBranch repoBranch = repo.getBranchByName(branchName);
 
 				if (repoBranch == null) {
-					repoBranch = repo.getDefaultBranch();
+					repoBranch = repo.getMaster();
 				}
 
-				Workspace.getCurrent().update(repoBranch);
+				if (repoBranch != null) {
+					Workspace.getCurrent().update(repoBranch);
+				}
 
 			} catch (Exception e) {
 				IStatus status = new Status(Status.ERROR,

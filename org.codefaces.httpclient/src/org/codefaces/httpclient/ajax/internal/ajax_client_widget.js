@@ -21,9 +21,9 @@ qx.Class.define("org.codefaces.httpclient.ajax.AjaxClientWidget", {
       var sendResponse = function(wid, status, content){
       	var req = org.eclipse.swt.Request.getInstance();
         
+        req.addParameter(wid + '.requestId', reqId);
         req.addParameter(wid + '.status', status);
-        if (content != null) {
-        	req.addParameter(wid + '.requestId', reqId);
+        if (content != null) {        	
         	req.addParameter(wid + '.content', content);
         }
         

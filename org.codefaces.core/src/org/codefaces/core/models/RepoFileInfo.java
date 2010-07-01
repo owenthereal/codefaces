@@ -1,6 +1,6 @@
 package org.codefaces.core.models;
 
-import org.codefaces.core.services.RepoService;
+import org.codefaces.core.services.SCMService;
 
 public class RepoFileInfo extends RepoResourceInfo {
 	private String mimeType;
@@ -22,6 +22,15 @@ public class RepoFileInfo extends RepoResourceInfo {
 		fill(content, mimeType, mode, size);
 	}
 
+	/**
+	 * This constructor is only for data transportation, no context information
+	 * is set.
+	 */
+	public RepoFileInfo(String content, String mimeType, String mode, int size) {
+		super(null);
+		fill(content, mimeType, mode, size);
+	}
+
 	private void fill(String content, String mimeType, String mode, int size) {
 		this.content = content;
 		this.mimeType = mimeType;
@@ -35,8 +44,8 @@ public class RepoFileInfo extends RepoResourceInfo {
 	}
 
 	private void fetchInfo(RepoFile file) {
-		RepoService repoService = RepoService.getCurrent();
-		RepoFileInfo info = repoService.fetchFileInfo(file);
+		SCMService scmService = SCMService.getCurrent();
+		RepoFileInfo info = scmService.fetchFileInfo(file);
 		fill(info.content, info.mimeType, info.mode, info.size);
 	}
 

@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
-import org.codefaces.core.services.RepoService;
+import org.codefaces.core.services.SCMService;
 
 public class Repo extends RepoResource {
 	private RepoCredential credential;
@@ -36,8 +36,14 @@ public class Repo extends RepoResource {
 		return null;
 	}
 
-	public RepoBranch getDefaultBranch() {
-		return getInfo().getDefaultBranch();
+	public RepoBranch getMaster() {
+		for (RepoBranch branch : getBranches()) {
+			if (branch.isMaster()) {
+				return branch;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -46,6 +52,6 @@ public class Repo extends RepoResource {
 	}
 
 	public static Repo create(String url) throws MalformedURLException {
-		return RepoService.getCurrent().createRepo(url);
+		return SCMService.getCurrent().createRepo(url);
 	}
 }

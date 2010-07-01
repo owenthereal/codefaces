@@ -8,7 +8,7 @@ public class RepoResourceTest {
 	@Test
 	public void test_getFullPath() {
 		Repo repo = new Repo("repo", "repo", null);
-		RepoBranch branch = new RepoBranch(repo, "branch", "branch");
+		RepoBranch branch = new RepoBranch(repo, "branch", "branch", false);
 		RepoFolderRoot root = branch.getRoot();
 		RepoFolder folder = new RepoFolder(root, root,
 				"folder", "folder");
