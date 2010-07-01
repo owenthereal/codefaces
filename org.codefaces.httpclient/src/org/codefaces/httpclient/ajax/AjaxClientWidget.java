@@ -3,7 +3,6 @@ package org.codefaces.httpclient.ajax;
 import org.codefaces.httpclient.ajax.internal.AjaxClientWidgetLCA;
 import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
-import org.eclipse.rwt.lifecycle.JSWriter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -20,7 +19,7 @@ public class AjaxClientWidget extends Control  {
 
 	public AjaxClientWidget(Shell shell) {
 		super(shell, SWT.NONE);
-		client = new AjaxClient(shell.getDisplay(), JSWriter.getWriterFor(this));
+		client = new AjaxClient(shell.getDisplay());
 	}
 
 	public AjaxClient getClient() {

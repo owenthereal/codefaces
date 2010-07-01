@@ -4,17 +4,23 @@ package org.codefaces.httpclient.ajax;
  * This class represent a single JSONP response received
  */
 public class JsonResponse {
-	public enum STATUS {SUCCESS, ERROR, TIMEOUT};
+	public enum Status {SUCCESS, ERROR, TIMEOUT};
 	
-	private final STATUS status;
+	private final Status status;
 	private final String content;
+	private final String requestId;
 	
-	public JsonResponse(STATUS status, String content){
+	public JsonResponse(String requestId, Status status, String content){
+		this.requestId = requestId;
 		this.status = status;
 		this.content = content;
 	}
 	
-	public STATUS getStatus(){
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public Status getStatus(){
 		return status;
 	}
 	

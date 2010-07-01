@@ -3,6 +3,7 @@ package org.codefaces.httpclient.ajax.internal;
 import java.io.IOException;
 
 import org.codefaces.httpclient.ajax.AjaxClientWidget;
+import org.codefaces.httpclient.ajax.JsonGet;
 import org.codefaces.httpclient.ajax.JsonResponse;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.JSWriter;
@@ -13,6 +14,8 @@ import org.eclipse.swt.widgets.Widget;
 public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 	private static final String JS_PARAM_STATUS = "status";
 	private static final String JS_PARAM_CONTENT = "content";
+	private static final String JS_PARAM_REQUEST_ID = "requestId";
+	private static final String JS_SEND_JSONP_REQUEST = "sendJsonpRequest";
 
 	@Override
 	public void preserveValues(Widget widget) {
@@ -22,7 +25,17 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 	@Override
 	public void renderChanges(Widget widget) throws IOException {
 		AjaxClientWidget ajaxClientWidget = (AjaxClientWidget) widget;
-		ajaxClientWidget.getClient().flush();
+		JsonGet jsonGet = ajaxClientWidget.getClient().nextRequest();
+		if (jsonGet == null) {
+			return;
+		}
+
+		String requestId = jsonGet.getRequestId();
+		String url = jsonGet.getUrl();
+		int timeout = jsonGet.getTimeout();
+		JSWriter writer = JSWriter.getWriterFor(widget);
+		writer.call(JS_SEND_JSONP_REQUEST, new Object[] { requestId, url,
+				timeout });
 	}
 
 	@Override
@@ -42,24 +55,25 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 
 	@Override
 	public void readData(Widget widget) {
-		AjaxClientWidget ajaxClientWidget = (AjaxClientWidget) widget;
-		String status = WidgetLCAUtil.readPropertyValue(ajaxClientWidget,
-				JS_PARAM_STATUS);
-		String content = WidgetLCAUtil.readPropertyValue(ajaxClientWidget,
-				JS_PARAM_CONTENT);
+		String status = WidgetLCAUtil
+				.readPropertyValue(widget, JS_PARAM_STATUS);
 		if (status != null) {
-			JsonResponse.STATUS responseStatus;
-			// I think this is better than using Enum.valueOf.
-			// Any unknown status String is considered as error.
+			JsonResponse.Status responseStatus;
 			if (status.equals("success")) {
-				responseStatus = JsonResponse.STATUS.SUCCESS;
+				responseStatus = JsonResponse.Status.SUCCESS;
 			} else if (status.equals("timeout")) {
-				responseStatus = JsonResponse.STATUS.TIMEOUT;
+				responseStatus = JsonResponse.Status.TIMEOUT;
 			} else {
-				responseStatus = JsonResponse.STATUS.ERROR;
+				responseStatus = JsonResponse.Status.ERROR;
 			}
-			JsonResponse response = new JsonResponse(responseStatus, content);
-			ajaxClientWidget.getClient().setJsonResponse(response);
+
+			String requestId = WidgetLCAUtil.readPropertyValue(widget,
+					JS_PARAM_REQUEST_ID);
+			String content = WidgetLCAUtil.readPropertyValue(widget,
+					JS_PARAM_CONTENT);
+			JsonResponse response = new JsonResponse(requestId, responseStatus,
+					content);
+			((AjaxClientWidget) widget).getClient().setJsonResponse(response);
 		}
 	}
 }

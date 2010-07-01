@@ -14,15 +14,16 @@ qx.Class.define("org.codefaces.httpclient.ajax.AjaxClientWidget", {
      * @param[Number] timeout - timeout in milliseconds of each request. 
      *     Use default value if set to 0.
      */
-    sendJsonpRequest: function(url, timeout){
+    sendJsonpRequest: function(reqId, url, timeout){
       var wid = org.eclipse.swt.WidgetManager.getInstance().findIdByWidget(this);
       
       //function for sending a reply to server
-      var sendResponse = function(wid, status , content){
+      var sendResponse = function(wid, status, content){
       	var req = org.eclipse.swt.Request.getInstance();
         
         req.addParameter(wid + '.status', status);
         if (content != null) {
+        	req.addParameter(wid + '.requestId', reqId);
         	req.addParameter(wid + '.content', content);
         }
         

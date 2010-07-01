@@ -33,6 +33,7 @@ public class ProjectExplorerTreeViewManager {
 	private class RepoResourceLoadingJob extends Job {
 		public RepoResourceLoadingJob() {
 			super("");
+			setSystem(true);
 		}
 
 		@Override
