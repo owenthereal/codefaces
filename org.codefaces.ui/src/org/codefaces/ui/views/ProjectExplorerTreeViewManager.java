@@ -137,19 +137,19 @@ public class ProjectExplorerTreeViewManager {
 			return ((LoadingItem) obj).getImage();
 		}
 
-		if (obj instanceof RepoFile) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImage(ISharedImages.IMG_OBJ_FILE);
-		}
-
-		if (obj instanceof RepoFolder) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImage(ISharedImages.IMG_OBJ_FOLDER);
-		}
-
 		if (obj instanceof RepoFolderRoot) {
 			return Images.getImageDescriptorFromRegistry(
 					Images.IMG_REPO_FOLDER_ROOT).createImage();
+		}
+		
+		if (obj instanceof RepoFolder) {
+			return PlatformUI.getWorkbench().getSharedImages()
+			.getImage(ISharedImages.IMG_OBJ_FOLDER);
+		}
+		
+		if (obj instanceof RepoFile) {
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImage(ISharedImages.IMG_OBJ_FILE);
 		}
 
 		return null;
