@@ -14,18 +14,18 @@ development:
 environment:
   # source_dir is the directory where the source code is fetched from the 
   # repository
-  source_dir: build/src
+  source_dir: ../target/src
   
   # tool_dir is the directory where the eclipse build tools and 
   # depended pre-built libraries are fetched
-  tool_dir: build/tool
+  tool_dir: ../target/dependencies
 
   # build_dir is the directory where the code is compiled
-  build_dir: build/bin
+  build_dir: ../target/classes
   
   # package_dir is the directory where the compiled code is packaged and ready 
   # to be deployed
-  package_dir: build/package
+  package_dir: ../target/packages
 
 # Setting the fetching repository
 fetch:
