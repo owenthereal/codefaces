@@ -1,5 +1,6 @@
 package org.codefaces.core;
 
+import org.codefaces.core.services.SCMService;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -13,6 +14,8 @@ public class CodeFacesCoreActivator extends Plugin {
 
 	// The shared instance
 	private static CodeFacesCoreActivator plugin;
+	
+	private SCMService service;
 
 	/**
 	 * The constructor
@@ -30,6 +33,11 @@ public class CodeFacesCoreActivator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		service = new SCMService();
+	}
+
+	public SCMService getSCMService() {
+		return service;
 	}
 
 	/*

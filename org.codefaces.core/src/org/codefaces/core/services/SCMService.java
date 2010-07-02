@@ -2,32 +2,32 @@ package org.codefaces.core.services;
 
 import java.util.Collection;
 
+import org.codefaces.core.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.github.GitHubQueryCreator;
+import org.codefaces.core.services.github.GitHubQueryDescriber;
 import org.codefaces.httpclient.SCMHttpClient;
 import org.codefaces.httpclient.SCMResponseException;
 import org.codefaces.httpclient.ajax.AjaxClientAdapter;
-import org.eclipse.rwt.SessionSingletonBase;
 
 public class SCMService {
-	private SCMQueryCreator queryDescriber;
+	private SCMQueryDescriber queryDescriber;
 
 	private SCMHttpClient httpClient;
 
 	public SCMService() {
 		httpClient = new AjaxClientAdapter();
-		queryDescriber = new GitHubQueryCreator();
+		queryDescriber = new GitHubQueryDescriber();
 	}
 
 	public Repo createRepo(String url) {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
 		para.addParameter(SCMQuery.PARA_URL, url.trim());
 
-		return execute(queryDescriber.createFetchRepoQuery(), para);
+		return execute(queryDescriber.getFetchRepoQuery(), para);
 	}
 
 	public void dispose() {
@@ -38,7 +38,7 @@ public class SCMService {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
 		para.addParameter(SCMQuery.PARA_REPO, repo);
 
-		return execute(queryDescriber.createFetchBranchesQuery(), para);
+		return execute(queryDescriber.getFetchBranchesQuery(), para);
 	}
 
 	public Collection<RepoResource> fetchChildren(RepoResource parent)
@@ -46,7 +46,7 @@ public class SCMService {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
 		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, parent);
 
-		return execute(queryDescriber.CreateFetchChildrenQuery(), para);
+		return execute(queryDescriber.getFetchChildrenQuery(), para);
 	}
 
 	public RepoFileInfo fetchFileInfo(RepoFile file)
@@ -55,11 +55,13 @@ public class SCMService {
 		para.addParameter(SCMQuery.PARA_REPO_FOLDER, file.getParent());
 		para.addParameter(SCMQuery.PARA_REPO_FILE_NAME, file.getName());
 
-		return execute(queryDescriber.createFetchFileInfoQuery(), para);
+		return execute(queryDescriber.getFetchFileInfoQuery(), para);
 	}
 
 	public static SCMService getCurrent() {
-		return (SCMService) SessionSingletonBase.getInstance(SCMService.class);
+		// return (SCMService)
+		// SessionSingletonBase.getInstance(SCMService.class);
+		return CodeFacesCoreActivator.getDefault().getSCMService();
 	}
 
 	private <T> T execute(SCMQuery<T> query, SCMQueryParameter parameter) {

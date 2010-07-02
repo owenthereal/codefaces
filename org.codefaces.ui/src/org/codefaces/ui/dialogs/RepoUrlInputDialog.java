@@ -58,110 +58,6 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		}
 	}
 
-	private static final String WINDOW_TITLE = "Import from a repository";
-
-	private static final String NO_BRANCH_IS_SELECTED = "No branch is selected.";
-
-	private Text urlInputViewer;
-
-	private ComboViewer branchInputViewer;
-
-	public static final String TITLE = "Checkout projects from a repository";
-
-	private static final String SAMPLE_URL = "http://github.com/jingweno/ruby_grep";
-
-	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
-			+ SAMPLE_URL;
-
-	private Button connectButton;
-
-	private RepoBranch selectedBranch;
-
-	public RepoUrlInputDialog(Shell parentShell) {
-		super(parentShell);
-		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
-				| SWT.APPLICATION_MODAL | getDefaultOrientation());
-	}
-
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		Composite composite = (Composite) super.createDialogArea(parent);
-		Composite dialogAreaComposite = new Composite(composite, SWT.NONE);
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
-		layout.marginWidth = convertHorizontalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
-		layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
-		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
-		dialogAreaComposite.setLayout(layout);
-		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		dialogAreaComposite.setFont(composite.getFont());
-
-		Label urlInputLabel = new Label(dialogAreaComposite, SWT.NONE);
-		urlInputLabel.setText("Repository:");
-		createUrlInputSection(dialogAreaComposite);
-
-		Label branchInputLabel = new Label(dialogAreaComposite, SWT.NONE);
-		branchInputLabel.setText("Branch:");
-		createBranchInputSection(dialogAreaComposite);
-
-		setTitle(TITLE);
-		setMessage(DESCRIPTION);
-		setWindowTitle(WINDOW_TITLE);
-		applyDialogFont(dialogAreaComposite);
-
-		return composite;
-	}
-
-	private void createBranchInputSection(Composite dialogAreaComposite) {
-		branchInputViewer = new ComboViewer(new CCombo(dialogAreaComposite,
-				SWT.BORDER | SWT.READ_ONLY));
-		branchInputViewer.getControl().setLayoutData(
-				new GridData(GridData.GRAB_HORIZONTAL
-						| GridData.HORIZONTAL_ALIGN_FILL));
-		branchInputViewer.setContentProvider(new ArrayContentProvider());
-		branchInputViewer.setLabelProvider(new BranchLabelProvider());
-		branchInputViewer
-				.addSelectionChangedListener(new BranchSelectionChangedListener());
-		branchInputViewer.getCCombo().setEnabled(false);
-
-	}
-
-	private void createUrlInputSection(Composite dialogAreaComposite) {
-		Composite inputTextomposite = new Composite(dialogAreaComposite,
-				SWT.NONE);
-		GridLayout inputTextLayout = new GridLayout(2, false);
-		inputTextLayout.marginWidth = 0;
-		inputTextLayout.marginHeight = 8;
-		inputTextLayout.verticalSpacing = 0;
-		inputTextLayout.horizontalSpacing = 5;
-		inputTextomposite.setLayout(inputTextLayout);
-		inputTextomposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		inputTextomposite.setFont(dialogAreaComposite.getFont());
-
-		// urlInputViewer = new ComboViewer(new CCombo(inputTextomposite,
-		// SWT.BORDER));
-		urlInputViewer = new Text(inputTextomposite, SWT.SEARCH);
-		// urlInputViewer.getControl().setLayoutData(
-		// new GridData(GridData.GRAB_HORIZONTAL
-		// | GridData.HORIZONTAL_ALIGN_FILL));
-		// urlInputViewer.getControl().setFocus();
-		urlInputViewer.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
-		urlInputViewer.setFocus();
-
-		connectButton = new Button(inputTextomposite, SWT.BORDER | SWT.PUSH);
-		connectButton.setImage(Images.getImageFromRegistry(Images.IMG_CONNECTION));
-		connectButton.setToolTipText("Connect to repository");
-		connectButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				// new ConnectToRepoJob(urlInputViewer.getCCombo().getText())
-				// .schedule();
-				new ConnectToRepoJob(urlInputViewer.getText()).schedule();
-			}
-		});
-	}
-
 	private class ConnectToRepoJob extends UIJob {
 
 		private final String url;
@@ -169,18 +65,6 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		public ConnectToRepoJob(String url) {
 			super("");
 			this.url = url;
-		}
-
-		private void updateBranchViewer(final Object[] input) {
-			branchInputViewer.setInput(input);
-			if (input == null || input.length == 0) {
-				branchInputViewer.setSelection(null);
-				branchInputViewer.getCCombo().setEnabled(false);
-			} else {
-				branchInputViewer.getCCombo().setEnabled(true);
-				branchInputViewer
-						.setSelection(new StructuredSelection(input[0]));
-			}
 		}
 
 		@Override
@@ -205,15 +89,53 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 			return Status.OK_STATUS;
 		}
+
+		private void updateBranchViewer(final Object[] input) {
+			branchInputViewer.setInput(input);
+			if (input == null || input.length == 0) {
+				branchInputViewer.setSelection(null);
+				branchInputViewer.getCCombo().setEnabled(false);
+			} else {
+				branchInputViewer.getCCombo().setEnabled(true);
+				branchInputViewer
+						.setSelection(new StructuredSelection(input[0]));
+			}
+		}
 	}
 
-	private void setWindowTitle(String windowTitle) {
-		if (getShell() == null) {
-			return;
-		}
+	private static final String SAMPLE_URL = "http://github.com/jingweno/ruby_grep";
 
-		getShell().setText(windowTitle);
+	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
+			+ SAMPLE_URL;
 
+	private static final String NO_BRANCH_IS_SELECTED = "No branch is selected.";
+
+	public static final String TITLE = "Checkout projects from a repository";
+
+	private static final String WINDOW_TITLE = "Import from a repository";
+
+	private ComboViewer branchInputViewer;
+
+	private Button connectButton;
+
+	private RepoBranch selectedBranch;
+
+	private Text urlInputViewer;
+
+	public RepoUrlInputDialog(Shell parentShell) {
+		super(parentShell);
+		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
+				| SWT.APPLICATION_MODAL | getDefaultOrientation());
+	}
+
+	private void createBranchInputSection(Composite dialogAreaComposite) {
+		branchInputViewer = new ComboViewer(new CCombo(dialogAreaComposite,
+				SWT.BORDER | SWT.READ_ONLY));
+		branchInputViewer.getControl().setLayoutData(
+				new GridData(GridData.GRAB_HORIZONTAL
+						| GridData.HORIZONTAL_ALIGN_FILL));
+		branchInputViewer.setContentProvider(new ArrayContentProvider());
+		branchInputViewer.setLabelProvider(new BranchLabelProvider());
 	}
 
 	@Override
@@ -223,13 +145,88 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	}
 
 	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite composite = (Composite) super.createDialogArea(parent);
+		Composite dialogAreaComposite = new Composite(composite, SWT.NONE);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
+		layout.marginWidth = convertHorizontalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
+		layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
+		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
+		dialogAreaComposite.setLayout(layout);
+		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		dialogAreaComposite.setFont(composite.getFont());
+
+		Label urlInputLabel = new Label(dialogAreaComposite, SWT.NONE);
+		urlInputLabel.setText("Repository:");
+		createUrlInputSection(dialogAreaComposite);
+
+		Label branchInputLabel = new Label(dialogAreaComposite, SWT.NONE);
+		branchInputLabel.setText("Branch:");
+		createBranchInputSection(dialogAreaComposite);
+
+		bindControls();
+
+		setTitle(TITLE);
+		setMessage(DESCRIPTION);
+		setWindowTitle(WINDOW_TITLE);
+		applyDialogFont(dialogAreaComposite);
+
+		return composite;
+	}
+
+	private void bindControls() {
+		urlInputViewer.setFocus();
+		connectButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				new ConnectToRepoJob(urlInputViewer.getText()).schedule();
+			}
+		});
+		branchInputViewer
+				.addSelectionChangedListener(new BranchSelectionChangedListener());
+		branchInputViewer.getCCombo().setEnabled(false);
+	}
+
+	private void createUrlInputSection(Composite dialogAreaComposite) {
+		Composite inputTextomposite = new Composite(dialogAreaComposite,
+				SWT.NONE);
+		GridLayout inputTextLayout = new GridLayout(2, false);
+		inputTextLayout.marginWidth = 0;
+		inputTextLayout.marginHeight = 8;
+		inputTextLayout.verticalSpacing = 0;
+		inputTextLayout.horizontalSpacing = 5;
+		inputTextomposite.setLayout(inputTextLayout);
+		inputTextomposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		inputTextomposite.setFont(dialogAreaComposite.getFont());
+
+		urlInputViewer = new Text(inputTextomposite, SWT.SEARCH);
+		urlInputViewer.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.HORIZONTAL_ALIGN_FILL));
+
+		connectButton = new Button(inputTextomposite, SWT.BORDER | SWT.PUSH);
+		connectButton.setImage(Images
+				.getImageFromRegistry(Images.IMG_CONNECTION));
+		connectButton.setToolTipText("Connect to repository");
+	}
+
+	public RepoBranch getSelectedBranch() {
+		return selectedBranch;
+	}
+
+	@Override
 	protected void okPressed() {
 		if (!branchInputViewer.getSelection().isEmpty()) {
 			super.okPressed();
 		}
 	}
 
-	public RepoBranch getSelectedBranch() {
-		return selectedBranch;
+	private void setWindowTitle(String windowTitle) {
+		if (getShell() == null) {
+			return;
+		}
+
+		getShell().setText(windowTitle);
+
 	}
 }
