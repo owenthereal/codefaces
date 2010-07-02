@@ -7,27 +7,27 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.github.GitHubHttpQueryDescriber;
+import org.codefaces.core.services.github.GitHubQueryCreator;
 import org.codefaces.httpclient.SCMHttpClient;
 import org.codefaces.httpclient.SCMResponseException;
 import org.codefaces.httpclient.ajax.AjaxClientAdapter;
 import org.eclipse.rwt.SessionSingletonBase;
 
 public class SCMService {
-	private SCMQueryDescriber queryDescriber;
+	private SCMQueryCreator queryDescriber;
 
 	private SCMHttpClient httpClient;
 
 	public SCMService() {
 		httpClient = new AjaxClientAdapter();
-		queryDescriber = new GitHubHttpQueryDescriber();
+		queryDescriber = new GitHubQueryCreator();
 	}
 
 	public Repo createRepo(String url) {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
 		para.addParameter(SCMQuery.PARA_URL, url.trim());
 
-		return execute(queryDescriber.getFetchRepoQuery(), para);
+		return execute(queryDescriber.createFetchRepoQuery(), para);
 	}
 
 	public void dispose() {
@@ -38,7 +38,7 @@ public class SCMService {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
 		para.addParameter(SCMQuery.PARA_REPO, repo);
 
-		return execute(queryDescriber.getFetchBranchesQuery(), para);
+		return execute(queryDescriber.createFetchBranchesQuery(), para);
 	}
 
 	public Collection<RepoResource> fetchChildren(RepoResource parent)
@@ -46,7 +46,7 @@ public class SCMService {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
 		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, parent);
 
-		return execute(queryDescriber.getFetchChildrenQuery(), para);
+		return execute(queryDescriber.CreateFetchChildrenQuery(), para);
 	}
 
 	public RepoFileInfo fetchFileInfo(RepoFile file)
@@ -55,7 +55,7 @@ public class SCMService {
 		para.addParameter(SCMQuery.PARA_REPO_FOLDER, file.getParent());
 		para.addParameter(SCMQuery.PARA_REPO_FILE_NAME, file.getName());
 
-		return execute(queryDescriber.getFetchFileInfoQuery(), para);
+		return execute(queryDescriber.createFetchFileInfoQuery(), para);
 	}
 
 	public static SCMService getCurrent() {
