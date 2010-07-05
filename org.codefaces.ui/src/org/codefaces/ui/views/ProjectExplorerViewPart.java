@@ -20,11 +20,11 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -37,6 +37,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
+	
 	private static final String VIEWER_CONTEXT_MENU_ID = ID + "#viewer";
 
 	private TreeViewer viewer;
@@ -46,6 +47,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private StatusManager statusManager;
 
 	private UpdateBranchWorkspaceChangeListener updateBranchListener = new UpdateBranchWorkspaceChangeListener();
+	
 	private ProjectExplorerTreeViewManager manager;
 
 	private final class UpdateBranchWorkspaceChangeListener implements
@@ -56,7 +58,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-	class ProjectExplorerContentProvider implements ITreeContentProvider {
+	private class ProjectExplorerContentProvider implements
+			ITreeContentProvider {
 
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
@@ -88,7 +91,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-	class ProjectExplorerLabelProvider extends LabelProvider {
+	private class ProjectExplorerLabelProvider extends LabelProvider {
 		public String getText(Object obj) {
 			return manager.getText(obj);
 		}
@@ -98,7 +101,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-	class ProjectExplorerViewerComparator extends ViewerComparator {
+	private class ProjectExplorerViewerComparator extends ViewerComparator {
 		@Override
 		public int compare(Viewer viewer, Object obj1, Object obj2) {
 			if (obj1 instanceof RepoFile && obj2 instanceof RepoFolder) {
@@ -113,16 +116,19 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-	class FolderDoubleClickListener implements IDoubleClickListener {
+	private class FolderOpenListener implements IOpenListener {
 		@Override
-		public void doubleClick(DoubleClickEvent event) {
+		public void open(OpenEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
 					.getSelection();
+			if (selection.isEmpty()) {
+				return;
+			}
+
 			RepoResource clickedRepoResource = (RepoResource) selection
 					.getFirstElement();
-
 			Viewer viewer = event.getViewer();
-			if (clickedRepoResource.getType() == RepoResourceType.FOLDER
+			if (clickedRepoResource instanceof RepoFolder
 					&& viewer instanceof TreeViewer) {
 				TreeViewer treeViewer = (TreeViewer) viewer;
 				if (treeViewer.isExpandable(clickedRepoResource)) {
@@ -133,9 +139,9 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-	class FileDoubleClickListener implements IDoubleClickListener {
+	private class FileOpenListener implements IOpenListener {
 		@Override
-		public void doubleClick(DoubleClickEvent event) {
+		public void open(OpenEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
 					.getSelection();
 			if (selection.isEmpty()) {
@@ -164,18 +170,22 @@ public class ProjectExplorerViewPart extends ViewPart {
 		createViewer(parent);
 		manager = new ProjectExplorerTreeViewManager(viewer);
 
-		workspace = Workspace.getCurrent();
-		RepoBranch cachedBranch = workspace.getWorkingBranch();
-		if (cachedBranch != null) {
-			update(cachedBranch);
-		}
-		workspace.addWorkspaceChangeListener(updateBranchListener);
+		hookWorkspace();
 		createToolBar(parent);
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
 
 		registerContextMenu(viewer);
+	}
+
+	private void hookWorkspace() {
+		workspace = Workspace.getCurrent();
+		RepoBranch cachedBranch = workspace.getWorkingBranch();
+		if (cachedBranch != null) {
+			update(cachedBranch);
+		}
+		workspace.addWorkspaceChangeListener(updateBranchListener);
 	}
 
 	@Override
@@ -214,8 +224,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.setContentProvider(new ProjectExplorerContentProvider());
 		viewer.setLabelProvider(new ProjectExplorerLabelProvider());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
-		viewer.addDoubleClickListener(new FileDoubleClickListener());
-		viewer.addDoubleClickListener(new FolderDoubleClickListener());
+		viewer.addOpenListener(new FileOpenListener());
+		viewer.addOpenListener(new FolderOpenListener());
 		viewer.setComparator(new ProjectExplorerViewerComparator());
 
 	}
