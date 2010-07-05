@@ -46,11 +46,11 @@ namespace :build do
   task :pde_build do
     tool_dir = File.expand_path(CONFIGS['environment']['tool_dir'])
     eclipse_platform_plugin_dir = Dir.glob(
-        File.join(tool_dir, ECLIPSE_PLATFORM_DIR, "eclipse/plugins"))
+        File.join(tool_dir, ECLIPSE_PLATFORM_DIR, "eclipse/plugins"))[0]
     launcher = Dir.glob(
-        File.join(eclipse_platform_plugin_dir, LAUNCHER))
+        File.join(eclipse_platform_plugin_dir, LAUNCHER))[0]
     pde_build_dir = Dir.glob(
-        File.join(eclipse_platform_plugin_dir, PDE_BUILD_TOOLS_DIR))
+        File.join(eclipse_platform_plugin_dir, PDE_BUILD_TOOLS_DIR))[0]
 
     app = "org.eclipse.ant.core.antRunner"
     build_file = File.join(pde_build_dir, "scripts", "build.xml")

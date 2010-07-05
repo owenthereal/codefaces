@@ -1,4 +1,6 @@
 require 'rake/clean'
+require 'yaml'
+
 Dir.glob('tasks/*.rake').each { |r| import r } #import all the rake files
 
 CONFIGS = YAML.load(File.read('config/config.yml'))
@@ -23,6 +25,9 @@ task :build => ["build:default"]
 
 desc "Package the compiled feature into WAR file"
 task :package => ["package:default"]
+
+desc "Deploy the compiled WAR file to servers"
+task :deploy => ["deploy:default"]
 
 desc "compile the compass projects"
 task :compass do
