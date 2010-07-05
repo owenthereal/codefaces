@@ -8,6 +8,7 @@ import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -60,10 +61,13 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private class ConnectToRepoJob extends UIJob {
 
-		private final String url;
+		private String url;
 
-		public ConnectToRepoJob(String url) {
+		public ConnectToRepoJob() {
 			super("");
+		}
+
+		public void setUrl(String url) {
 			this.url = url;
 		}
 
@@ -120,7 +124,9 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private RepoBranch selectedBranch;
 
-	private Text urlInputViewer;
+	private Text urlInputText;
+
+	private ConnectToRepoJob connectToRepoJob = new ConnectToRepoJob();
 
 	public RepoUrlInputDialog(Shell parentShell) {
 		super(parentShell);
@@ -176,13 +182,15 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	}
 
 	private void bindControls() {
-		urlInputViewer.setFocus();
+		urlInputText.setFocus();
+
 		connectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				new ConnectToRepoJob(urlInputViewer.getText()).schedule();
+				connectToRepo();
 			}
 		});
+
 		branchInputViewer
 				.addSelectionChangedListener(new BranchSelectionChangedListener());
 		branchInputViewer.getCCombo().setEnabled(false);
@@ -200,8 +208,8 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		inputTextomposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		inputTextomposite.setFont(dialogAreaComposite.getFont());
 
-		urlInputViewer = new Text(inputTextomposite, SWT.SEARCH);
-		urlInputViewer.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+		urlInputText = new Text(inputTextomposite, SWT.SEARCH);
+		urlInputText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.HORIZONTAL_ALIGN_FILL));
 
 		connectButton = new Button(inputTextomposite, SWT.BORDER | SWT.PUSH);
@@ -228,5 +236,14 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 		getShell().setText(windowTitle);
 
+	}
+
+	private void connectToRepo() {
+		if (connectToRepoJob.getState() != Job.NONE) {
+			connectToRepoJob.cancel();
+		}
+
+		connectToRepoJob.setUrl(urlInputText.getText());
+		connectToRepoJob.schedule();
 	}
 }
