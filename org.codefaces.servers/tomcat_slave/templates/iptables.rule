@@ -74,7 +74,7 @@
 # Ref: http://www.debian-administration.org/articles/187
   -A INPUT -p tcp --dport $SSH_PORT --syn -m state --state NEW -m recent --name sshconnect --set -j SSH_CONNECTION
 # Reject when there is too much connection attempts
-  -A SSH_CONNECTION -m recent --name sshconnect --update --seconds 180 --hitcount 5 --rttl -j REJECT --reject-with icmp-host-prohibited
+  -A SSH_CONNECTION -m recent --name sshconnect --update --seconds 180 --hitcount 10 --rttl -j REJECT --reject-with icmp-host-prohibited
 # Return to INPUT Chain
   -A SSH_CONNECTION -j RETURN
 
