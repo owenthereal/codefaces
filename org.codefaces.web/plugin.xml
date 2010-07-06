@@ -41,7 +41,7 @@
             resource="/html/javascripts/highlight/languages/bash.js">
       </codeLangauge>
       <codeLangauge
-            filePatterns="*.cpp,*.hpp,*.cxx,*.hpp,*.h,*.hpp"
+            filePatterns="*.cpp,*.hpp,*.cxx,*.hpp,*.h,*.hpp,*.c"
             id="org.codefaces.web.codeLangauge.cpp"
             name="cpp"
             resource="/html/javascripts/highlight/languages/cpp.js">
