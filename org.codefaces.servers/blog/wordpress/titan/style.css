@@ -1,0 +1,184 @@
+/*
+Theme Name: Titan
+Theme URI: http://thethemefoundry.com/titan/
+Description: A refined, balanced, and exceptionally handsome WordPress theme. Features a robust theme options menu allowing you to integrate your Flickr photos, Twitter updates, and Feedburner email updates. Use the custom code box to include photos, video, or whatever else your heart desires.
+Version: 1.25
+Author: The Theme Foundry
+Author URI: http://thethemefoundry.com/
+Tags: fixed-width, two-columns, white, brown, right-sidebar, threaded-comments, theme-options, translation-ready
+*/
+
+/*
+	Copyright (C) 2008 - 2010 The Theme Foundry
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.	If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Import Stylesheets
+-----------------------------------------------------------*/
+@import url("stylesheets/master.css");
+
+/* Required WordPress Classes, don't remove these.
+-----------------------------------------------------------*/
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.alignleft { float: left; }
+.alignright { float: right; }
+
+/* Make all custom CSS changes in a child theme. Any custom
+changes you make here will not be overidden when you upgrade the theme.
+-----------------------------------------------------------*/
+
+body{
+  min-width: 625px;
+}
+
+.wrapper {
+  width: 625px;
+}
+
+#content {
+  width: 390px;
+}
+
+#footer-about.footer-column {
+  width: 335px;
+}
+
+#sidebar {
+  width: 205px;
+}
+
+#footer-search.footer-column {
+  width: 260px;
+}
+
+.clear{
+  clear: both;
+}
+
+.post-header h2, .post-header h1, .author, .entry, .post-footer, form#commentform {
+  margin-left: 0px;
+}
+
+div.post-header{
+  overflow: hidden;
+  margin: 0 0 10px 0;
+  border-top: none;
+  border-bottom: 1px solid #EFEAE4;
+}
+
+div.post-header div.date{
+  font-size: 1.3em;
+  text-align: right;
+  float: right;
+  margin: 3px 5px 0 0;
+  width: 70px
+}
+
+.author {
+  float: left;
+}
+
+.entry, input.text-input, form#commentform textarea, #content .entry.page{
+  width: auto;
+}
+
+h1.pagetitle, h2.pagetitle {
+  border-top: none;
+  border-bottom: 1px solid #EFEAE4;
+  padding-bottom:10px;
+}
+
+.tags{
+  float: right;
+  width: 90px;
+  margin-left: 10px;
+}
+
+#header{
+  background:url("images/nav-background.gif") repeat-x scroll left bottom #001A27;
+}
+
+#follow{
+  background: transparent;
+}
+
+#follow dt, #follow dd a  {
+  color: #CCCCCC;
+}
+
+#follow dd a:hover{
+  color: #FFFFFF;
+}
+
+h1#title, div#title {
+  line-height: 0;
+  padding: 0;
+}
+
+h1#title a, div#title a{
+  background: url("http://codefaces.com/wp-content/uploads/2010/06/logo.png") no-repeat;
+  width: 153px;
+  height: 31px;
+  display: block;
+  margin-top: 15px;
+  text-indent: -9999em
+}
+
+#description {
+  clear: left;
+  color: #CCCCCC;
+  font-size: 1.3em;
+  font-weight: normal;
+  line-height: 1.3em;
+  margin: 0 0 10px 3px
+}
+
+#navigation {
+  clear: both;
+}
+
+#bookmarklet {
+  line-height: 48px;
+  padding-left: 58px;
+  padding-top: 0pt;
+  display: block;
+  text-decoration: none;
+  background: url("http://codefaces.org/html/images/bookmark.png?1276820527") no-repeat;
+  font-size: 1.2em;
+  border: 1px solid #DFDAD5;
+  cursor: move;
+  margin: 1em 1.5em;
+}
+
+#comments ul.children{
+  margin-left: 0;
+}
+
+div.c-grav{
+  width: 50px;
+}
+
+div.c-body, ul.children div.c-body {
+  margin-left: 70px;
+  width: auto;
+}
+
+#footer a:link, #footer a:visited {
+color:#4265A7;
+}

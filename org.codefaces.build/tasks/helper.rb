@@ -106,8 +106,8 @@ private
     #index = in_file.index(PATTERN_JS) || in_file.index(PATTERN_CSS)
     #out_file = in_file.clone.insert(index, '.min')
     tool_dir = File.expand_path(CONFIGS['environment']['tool_dir'])
-    compressor_dir = Dir.glob(File.join(tool_dir, YUI_COMPRESSOR_DIR))
-    compressor = Dir.glob(File.join(compressor_dir, YUI_COMPRESSOR))
+    compressor_dir = Dir.glob(File.join(tool_dir, YUI_COMPRESSOR_DIR))[0]
+    compressor = Dir.glob(File.join(compressor_dir, YUI_COMPRESSOR))[0]
 
     out_file = in_file
 

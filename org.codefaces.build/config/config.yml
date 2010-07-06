@@ -102,3 +102,16 @@ build:
 package:
   # The path of the WAR archive template
   war_template_path: templates/war
+
+# Setting for deployment
+deploy:
+  servers:
+    - server: web2.codefaces.org
+      ssh_user: admin
+      ssh_port: 42597
+      tomcat_home: /var/lib/tomcat6
+
+    - server: codefaces.org
+      ssh_user: admin
+      ssh_port: 42597
+      tomcat_home: /var/lib/tomcat6
