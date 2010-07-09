@@ -7,7 +7,6 @@ app_name: codefaces
 
 development:
   compass_project_dirs:
-   - ../org.codefaces.web/private/stylesheets
    - ../org.codefaces.ui.themes/private/azure
 
 # Setting the paths for fetch, build and package 
@@ -72,7 +71,6 @@ build:
   # compress files
   files_to_compress:
     - org.codefaces.web/public/stylesheets
-    - org.codefaces.web/public/welcome.html
     - org.codefaces.web/public/javascripts
     - org.codefaces.web/public/javascripts/highlight
     - org.codefaces.web/public/javascripts/highlight/languages
