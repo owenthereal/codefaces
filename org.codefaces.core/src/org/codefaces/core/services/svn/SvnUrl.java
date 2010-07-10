@@ -2,9 +2,6 @@ package org.codefaces.core.services.svn;
 
 import java.net.MalformedURLException;
 
-import org.codefaces.core.services.SCMUrl;
-
-
 public class SvnUrl extends SCMUrl {
 	private static final String SVN_PROTOCOL = "svn";
 	private static final String SVNSSH_PROTOCOL = "svn+ssh";

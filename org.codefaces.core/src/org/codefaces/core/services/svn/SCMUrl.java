@@ -1,4 +1,4 @@
-package org.codefaces.core.services;
+package org.codefaces.core.services.svn;
 
 import java.net.MalformedURLException;
 import java.util.regex.Matcher;
