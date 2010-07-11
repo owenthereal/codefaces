@@ -6,5 +6,7 @@
 <project reference="0.9.3,http://subclipse.tigris.org/svn/subclipse/trunk/subclipse/org.tigris.subversion.clientadapter.javahl,org.tigris.subversion.clientadapter.javahl"/>
 <project reference="0.9.3,http://subclipse.tigris.org/svn/subclipse/trunk/subclipse/org.tigris.subversion.clientadapter.javahl.feature,org.tigris.subversion.clientadapter.javahl.feature"/>
 <project reference="0.9.3,http://subclipse.tigris.org/svn/subclipse/trunk/subclipse/org.tigris.subversion.clientadapter.javahl.win32,org.tigris.subversion.clientadapter.javahl.win32"/>
+<project reference="0.9.3,http://subclipse.tigris.org/svn/subclipse/trunk/subclipse/org.tigris.subversion.clientadapter.svnkit,org.tigris.subversion.clientadapter.svnkit"/>
+<project reference="0.9.3,http://subclipse.tigris.org/svn/subclipse/trunk/subclipse/org.tigris.subversion.clientadapter.svnkit.feature,org.tigris.subversion.clientadapter.svnkit.feature"/>
 </provider>
 </psf>
