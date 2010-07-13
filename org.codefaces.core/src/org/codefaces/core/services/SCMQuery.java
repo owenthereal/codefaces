@@ -14,4 +14,8 @@ public interface SCMQuery<T> {
 	public static final String PARA_REPO_FILE_NAME = "REPO_FILE_NAME";
 
 	public static final String PARA_REPO_FOLDER = "REPO_FOLDER";
+	
+	public static final String PARA_USERNAME = "REPO_USER_NAME";
+	
+	public static final String PARA_PASSWORD = "REPO_PASSWORD";
 }
