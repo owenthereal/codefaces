@@ -1,6 +1,5 @@
 package org.codefaces.core.services.svn;
 
-import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -10,12 +9,9 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.services.SCMQuery;
 import org.codefaces.core.services.SCMQueryParameter;
 import org.codefaces.httpclient.SCMHttpClient;
-import org.codefaces.httpclient.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
-import org.tigris.subversion.svnclientadapter.ISVNInfo;
-import org.tigris.subversion.svnclientadapter.SVNClientException;
 import org.tigris.subversion.svnclientadapter.SVNNodeKind;
 import org.tigris.subversion.svnclientadapter.SVNRevision;
 import org.tigris.subversion.svnclientadapter.SVNUrl;
