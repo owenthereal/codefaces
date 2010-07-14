@@ -7,26 +7,70 @@ import java.util.Collection;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
-import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.services.SCMQuery;
 import org.codefaces.core.services.SCMQueryParameter;
+import org.junit.Before;
 import org.junit.Test;
+import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 
 public class SvnFetchChildrenQueryTest {
+	
+	private static final String TEST_URL_WITHOUT_BRANCHES =
+		"http://subclipse.tigris.org/svn/subclipse/trunk";
+	private static final String TEST_URL_WITH_BRANCHES =
+		"http://subclipse.tigris.org/svn/subclipse";
+	private static final String TEST_USERNAME =  "guest";
+	private static final String TEST_PASSWORD = null;
 
-	@Test
-	public void test_execute(){
-		RepoCredential credential = new RepoCredential(null, "guest", null);
-		Repo repo = new Repo("http://subclipse.tigris.org/svn/subclipse/",
-				"subclipse.tigris.org/svn/subclipse", credential);
-		RepoBranch branch = new RepoBranch(repo, "root_id", "/", true);
-		RepoFolderRoot folderRoot = new RepoFolderRoot(branch, "repofolder_root_id", "/");
+	class MockSvnFetchChildrenQuery extends SvnFetchChildrenQuery{
+		private ISVNClientAdapter testClient;
+
+		public void setClient(ISVNClientAdapter testClient){
+			this.testClient = testClient;
+		}
 		
-		SvnFetchChildrenQuery query = new SvnFetchChildrenQuery();
+		@Override
+		protected ISVNClientAdapter getSvnClient(){
+			return testClient == null? new MockSVNClientAdaptor() : testClient;
+		}
+	}
+
+
+	private MockSvnFetchChildrenQuery query;
+	
+	@Before
+	public void setup(){
+		query = new MockSvnFetchChildrenQuery();
+	}
+	
+	@Test
+	public void childrenReturnedByFetchingFromTheDefaultBranchShouldBeCorrect(){
+		RepoCredential mockCredential = new RepoCredential(null, TEST_USERNAME, TEST_PASSWORD);
+		Repo mockRepo = new Repo(TEST_URL_WITHOUT_BRANCHES, "id", mockCredential);
+		RepoBranch defaultBranch = new RepoBranch(mockRepo, "id", "default", true);
+		
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, folderRoot);
+		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, defaultBranch.getRoot());
+		
+		query.setClient(TestSvnJavaHlClientAdaptor.getClient());
+		
 		Collection<RepoResource> children = query.execute(null, para);
-		assertEquals(3, children.size());
+		assertTrue(children.size() > 0);
+	}
+	
+	@Test
+	public void childrenReturnedByFetchingFromNonDefaultBranchShouldBeCorrect(){
+		RepoCredential mockCredential = new RepoCredential(null, TEST_USERNAME, TEST_PASSWORD);
+		Repo mockRepo = new Repo(TEST_URL_WITH_BRANCHES, "id", mockCredential);
+		RepoBranch defaultBranch = new RepoBranch(mockRepo, "id", "default", false);
+		
+		SCMQueryParameter para = SCMQueryParameter.newInstance();
+		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, defaultBranch.getRoot());
+		
+		query.setClient(TestSvnJavaHlClientAdaptor.getClient());
+		
+		Collection<RepoResource> children = query.execute(null, para);
+		assertTrue(children.size() > 0);
 	}
 }

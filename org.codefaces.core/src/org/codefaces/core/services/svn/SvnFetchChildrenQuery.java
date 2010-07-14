@@ -3,7 +3,6 @@ package org.codefaces.core.services.svn;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFile;
@@ -22,7 +21,7 @@ import org.tigris.subversion.svnclientadapter.SVNNodeKind;
 import org.tigris.subversion.svnclientadapter.SVNRevision;
 import org.tigris.subversion.svnclientadapter.SVNUrl;
 
-public class SvnFetchChildrenQuery implements
+public class SvnFetchChildrenQuery extends SvnQuery implements
 		SCMQuery<Collection<RepoResource>> {
 
 	@Override
@@ -30,29 +29,42 @@ public class SvnFetchChildrenQuery implements
 			SCMQueryParameter parameter) {
 		Object resPara = parameter.getParameter(PARA_REPO_RESOURCE);
 		Assert.isTrue(resPara instanceof RepoResource);
-		RepoResource container = (RepoResource)resPara;
+
 		
-		//we construct the svn url by getting the url of root and append it 
-		//with the full path of the resource
+		RepoResource container = (RepoResource)resPara;
 		RepoFolderRoot folderRoot = container.getRoot();
 		Repo repo = folderRoot.getRepo();
-		String url = repo.getUrl() + container.getFullPath();
+
+		//we construct the svn url by getting the url of root and append it 
+		//with the full path of the resource
+		String svnUrl = null;
+		if(folderRoot.getBranch().isMaster()){
+			//if it is default branch, easy
+			svnUrl = repo.getUrl() + container.getFullPath();
+		}
+		else{
+			//if not, we have to append it with "/branches"
+			svnUrl = repo.getUrl() + "/"
+					+ SvnFetchBranchesQuery.BRANCH_DIRECTORY
+					+ container.getFullPath();
+		}
 		
 		List<RepoResource> children = new ArrayList<RepoResource>();
 		
 		try {
-			ISVNClientAdapter svnClient = SvnUtil.getClient();
+			ISVNClientAdapter svnClient = getSvnClient();
 			String username = repo.getCredential().getUser();
 			String password = repo.getCredential().getPassword();
 			if(username!=null){ svnClient.setUsername(username); }
 			if(password!=null){ svnClient.setPassword(password); }
 			
-			ISVNDirEntry[] entries = svnClient.getList(new SVNUrl(url),
+			ISVNDirEntry[] entries = svnClient.getList(new SVNUrl(svnUrl),
 					SVNRevision.HEAD, false);
-			for(ISVNDirEntry e: entries){
+			for(ISVNDirEntry entry: entries){
 				RepoResource child = createRepoResourceFromType(
-						e.getNodeKind(), folderRoot, container, UUID.randomUUID().toString(),
-						e.getPath());
+						entry.getNodeKind(), folderRoot, container,
+						generateRepoResourceID(repo, entry),
+						entry.getPath());
 				children.add(child);
 			}
 		} catch (Exception e) {
