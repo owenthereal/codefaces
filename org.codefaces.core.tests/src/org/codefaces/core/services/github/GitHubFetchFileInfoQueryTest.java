@@ -60,9 +60,9 @@ public class GitHubFetchFileInfoQueryTest {
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER, true);
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		RepoFile mockFile = new RepoFile(branch.getRoot(), branch.getRoot(),
+		RepoFile file = new RepoFile(branch.getRoot(), branch.getRoot(),
 				"id", TEST_FILE_NAME);
-		para.addParameter(SCMQuery.PARA_REPO_FILE, mockFile);
+		para.addParameter(SCMQuery.PARA_REPO_FILE, file);
 		RepoFileInfo info = query.execute(client, para);
 
 		assertEquals(1059, info.getSize());
