@@ -30,29 +30,15 @@ public class SvnFetchChildrenQuery extends SvnQuery implements
 		Object resPara = parameter.getParameter(PARA_REPO_RESOURCE);
 		Assert.isTrue(resPara instanceof RepoResource);
 
-		
 		RepoResource container = (RepoResource)resPara;
 		RepoFolderRoot folderRoot = container.getRoot();
-		Repo repo = folderRoot.getRepo();
 
-		//we construct the svn url by getting the url of root and append it 
-		//with the full path of the resource
-		String svnUrl = null;
-		if(folderRoot.getBranch().isMaster()){
-			//if it is default branch, easy
-			svnUrl = repo.getUrl() + container.getFullPath();
-		}
-		else{
-			//if not, we have to append it with "/branches"
-			svnUrl = repo.getUrl() + "/"
-					+ SvnConstants.BRANCH_DIRECTORY
-					+ container.getFullPath();
-		}
-		
+		String svnUrl = createSvnUrl(container, folderRoot);
 		List<RepoResource> children = new ArrayList<RepoResource>();
 		
 		try {
 			ISVNClientAdapter svnClient = getSvnClient();
+			Repo repo = folderRoot.getRepo();
 			String username = repo.getCredential().getUser();
 			String password = repo.getCredential().getPassword();
 			if(username!=null){ svnClient.setUsername(username); }
@@ -72,6 +58,29 @@ public class SvnFetchChildrenQuery extends SvnQuery implements
 		}
 		return children;
 	}
+
+	/**
+	 * we construct the svn url by getting the url of root and append it
+	 * with the full path of the resource 
+	 * @return a svn url for of the container
+	 */
+	private String createSvnUrl(RepoResource container,
+			RepoFolderRoot folderRoot) {
+		Repo repo = folderRoot.getRepo();
+		String svnUrl;
+		//if it is default branch, easy
+		if(folderRoot.getBranch().isMaster()){
+			svnUrl = repo.getUrl() + container.getFullPath();
+		}
+		else{
+			//if not, we have to append it with "/branches"
+			svnUrl = repo.getUrl() + "/"
+					+ SvnConstants.BRANCH_DIRECTORY
+					+ container.getFullPath();
+		}
+		return svnUrl;
+	}
+	
 	
 	
 	private RepoResource createRepoResourceFromType(SVNNodeKind svnNodeKind,
