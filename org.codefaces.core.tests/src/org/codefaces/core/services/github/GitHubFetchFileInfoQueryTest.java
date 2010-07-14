@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
+import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.services.SCMQuery;
 import org.codefaces.core.services.SCMQueryParameter;
@@ -59,8 +60,9 @@ public class GitHubFetchFileInfoQueryTest {
 		RepoBranch branch = new RepoBranch(repo, TEST_BRANCH_MASTER_SHA,
 				TEST_BRANCH_MASTER, true);
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_FOLDER, branch.getRoot());
-		para.addParameter(SCMQuery.PARA_REPO_FILE_NAME, TEST_FILE_NAME);
+		RepoFile mockFile = new RepoFile(branch.getRoot(), branch.getRoot(),
+				"id", TEST_FILE_NAME);
+		para.addParameter(SCMQuery.PARA_REPO_FILE, mockFile);
 		RepoFileInfo info = query.execute(client, para);
 
 		assertEquals(1059, info.getSize());

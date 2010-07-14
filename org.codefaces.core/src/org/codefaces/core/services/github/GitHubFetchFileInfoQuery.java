@@ -1,6 +1,7 @@
 package org.codefaces.core.services.github;
 
 import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.services.SCMQuery;
@@ -17,16 +18,14 @@ public class GitHubFetchFileInfoQuery implements SCMQuery<RepoFileInfo> {
 	@Override
 	public RepoFileInfo execute(SCMHttpClient client,
 			SCMQueryParameter parameter) {
-		Object folderPara = parameter.getParameter(PARA_REPO_FOLDER);
-		Assert.isTrue(folderPara instanceof RepoFolder);
-
-		Object fileNamePara = parameter.getParameter(PARA_REPO_FILE_NAME);
-		Assert.isTrue(fileNamePara instanceof String);
+		Object file = parameter.getParameter(PARA_REPO_FILE);
+		Assert.isTrue(file instanceof RepoFile);
 
 		try {
-			RepoFolder folder = (RepoFolder) folderPara;
-			String fileName = (String) fileNamePara;
-			Repo repo = folder.getRoot().getRepo();
+			RepoFile repoFile = (RepoFile)file;
+			String fileName = repoFile.getName();
+			RepoFolder folder = (RepoFolder)repoFile.getParent();
+			Repo repo = repoFile.getRoot().getRepo();
 
 			String fileUrl = createFetchFileInfoUrl(repo, folder, fileName);
 

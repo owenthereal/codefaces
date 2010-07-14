@@ -52,8 +52,7 @@ public class SCMService {
 	public RepoFileInfo fetchFileInfo(RepoFile file)
 			throws SCMResponseException {
 		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_FOLDER, file.getParent());
-		para.addParameter(SCMQuery.PARA_REPO_FILE_NAME, file.getName());
+		para.addParameter(SCMQuery.PARA_REPO_FILE, file);
 
 		return execute(queryDescriber.getFetchFileInfoQuery(), para);
 	}
