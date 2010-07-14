@@ -64,8 +64,7 @@ public class SvnFetchBranchesQueryTest {
 		assertEquals(1, branches.size());
 		
 		RepoBranch defaultBranch = ((RepoBranch) branches.toArray()[0]);
-		assertEquals(SvnConstants.DEFAULT_BRANCH,
-				defaultBranch.getName());
+		assertEquals(SvnConstants.DEFAULT_BRANCH, defaultBranch.getName());
 	}
 		
 	@Test
