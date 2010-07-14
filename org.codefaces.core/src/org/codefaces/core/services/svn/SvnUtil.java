@@ -36,10 +36,17 @@ public class SvnUtil {
 		}
 		else{
 			//if not, we have to append it with "/branches"
-			svnUrl = repo.getUrl() + "/"
-					+ SvnConstants.BRANCH_DIRECTORY
-					+ resource.getFullPath();
+			StringBuilder urlBuilder = new StringBuilder();
+			String branchName = resource.getRoot().getBranch().getName();
+			urlBuilder.append(repo.getUrl());
+			urlBuilder.append('/');
+			urlBuilder.append(SvnConstants.BRANCH_DIRECTORY);
+			urlBuilder.append('/');
+			urlBuilder.append(branchName);
+			urlBuilder.append(resource.getFullPath());
+			svnUrl = urlBuilder.toString();
 		}
+		System.out.println(svnUrl);
 		return svnUrl;
 	}
 
