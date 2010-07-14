@@ -19,9 +19,6 @@ import org.tigris.subversion.svnclientadapter.SVNUrl;
 public class SvnFetchBranchesQuery extends SvnQuery implements
 		SCMQuery<Collection<RepoBranch>> {
 
-	public static final String DEFAULT_BRANCH = "root";
-	public static final String BRANCH_DIRECTORY = "branches";
-
 	@Override
 	public Collection<RepoBranch> execute(SCMHttpClient client,
 			SCMQueryParameter parameter) {
@@ -31,7 +28,7 @@ public class SvnFetchBranchesQuery extends SvnQuery implements
 		Repo repo = (Repo)repoPara;
 		
 		String url = repo.getUrl();
-		String branchUrl = url + "/" + BRANCH_DIRECTORY;
+		String branchUrl = url + "/" + SvnConstants.BRANCH_DIRECTORY;
 		String username = repo.getCredential().getUser();
 		String password = repo.getCredential().getPassword();
 		
@@ -58,9 +55,10 @@ public class SvnFetchBranchesQuery extends SvnQuery implements
 		}
 		
 		//Create a default branch
-		String defaultBranchId = repo.getId() + ":" + DEFAULT_BRANCH;
+		String defaultBranchId = repo.getId() + ":"
+				+ SvnConstants.DEFAULT_BRANCH;
 		RepoBranch defaultBranch = new RepoBranch(repo, defaultBranchId,
-				DEFAULT_BRANCH, true);
+				SvnConstants.DEFAULT_BRANCH, true);
 		branches.add(defaultBranch);
 
 		return branches;

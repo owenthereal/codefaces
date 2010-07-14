@@ -45,7 +45,7 @@ public class SvnFetchChildrenQuery extends SvnQuery implements
 		else{
 			//if not, we have to append it with "/branches"
 			svnUrl = repo.getUrl() + "/"
-					+ SvnFetchBranchesQuery.BRANCH_DIRECTORY
+					+ SvnConstants.BRANCH_DIRECTORY
 					+ container.getFullPath();
 		}
 		

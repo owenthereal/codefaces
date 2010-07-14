@@ -64,7 +64,7 @@ public class SvnFetchBranchesQueryTest {
 		assertEquals(1, branches.size());
 		
 		RepoBranch defaultBranch = ((RepoBranch) branches.toArray()[0]);
-		assertEquals(SvnFetchBranchesQuery.DEFAULT_BRANCH,
+		assertEquals(SvnConstants.DEFAULT_BRANCH,
 				defaultBranch.getName());
 	}
 		
@@ -94,7 +94,7 @@ public class SvnFetchBranchesQueryTest {
 			public ISVNDirEntry[] getList(SVNUrl url, SVNRevision revision,
 					SVNRevision pegRevision, boolean recurse)
 					throws SVNClientException {
-				if(url.toString().endsWith(SvnFetchBranchesQuery.BRANCH_DIRECTORY)){
+				if(url.toString().endsWith(SvnConstants.BRANCH_DIRECTORY)){
 					return  new  ISVNDirEntry[]{branchInBranchesDir, fileInBranchesDir};
 				}
 				else{
@@ -113,8 +113,8 @@ public class SvnFetchBranchesQueryTest {
 		RepoBranch[] branchesArray = branches.toArray(new RepoBranch[]{});
 		assertTrue(branchesArray[0].getName() == branchInBranchesDir.getPath()
 				|| branchesArray[1].getName() == branchInBranchesDir.getPath());
-		assertTrue(branchesArray[0].getName() == SvnFetchBranchesQuery.DEFAULT_BRANCH
-				|| branchesArray[1].getName() == SvnFetchBranchesQuery.DEFAULT_BRANCH);
+		assertTrue(branchesArray[0].getName() == SvnConstants.DEFAULT_BRANCH
+				|| branchesArray[1].getName() == SvnConstants.DEFAULT_BRANCH);
 	}
 	
 
