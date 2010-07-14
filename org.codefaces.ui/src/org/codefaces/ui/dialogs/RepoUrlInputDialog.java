@@ -77,7 +77,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 			try {
 				monitor.beginTask("Connecting to repository: " + url, 100);
-				final Repo repo = Repo.create(url);
+				final Repo repo = Repo.create("GitHub", url);
 				monitor.worked(30);
 
 				monitor.setTaskName("Fetching branches...");

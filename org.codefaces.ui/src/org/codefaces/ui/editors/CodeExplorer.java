@@ -76,7 +76,6 @@ public class CodeExplorer extends EditorPart {
 
 	private void updateContent(RepoFile repoFile) {
 		try {
-
 			CodeLanguage language = CodeFacesUIActivator.getDefault()
 					.getCodeLanguages().parseFileName(repoFile.getName());
 			String langName = language.getName();

@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WorkspaceTest {
+	private static final String KIND_KIND = "test_kind";
 
 	private Repo mockFooRepo;
 	private RepoBranch mockFooBranch;
@@ -28,7 +29,7 @@ public class WorkspaceTest {
 		ws = new Workspace();
 
 		final Set<RepoResource> branchesForFooRepo = new HashSet<RepoResource>();
-		mockFooRepo = new Repo("http://abc.com", "foo", null) {
+		mockFooRepo = new Repo(KIND_KIND, "http://abc.com", "foo", null) {
 			@Override
 			public Set<RepoResource> getChildren() {
 				return branchesForFooRepo;
@@ -42,7 +43,7 @@ public class WorkspaceTest {
 		branchesForFooRepo.add(mockFooBranch2);
 
 		final Set<RepoResource> branchesForBazRepo = new HashSet<RepoResource>();
-		mockBazRepo = new Repo("http://abc.com", "baz", null) {
+		mockBazRepo = new Repo(KIND_KIND, "http://abc.com", "baz", null) {
 			@Override
 			public Set<RepoResource> getChildren() {
 				return branchesForBazRepo;

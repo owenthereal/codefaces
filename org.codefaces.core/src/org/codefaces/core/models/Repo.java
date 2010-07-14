@@ -8,9 +8,12 @@ import org.codefaces.core.services.SCMService;
 
 public class Repo extends RepoResource {
 	private RepoCredential credential;
+	
+	private String kind;
 
-	public Repo(String url, String name, RepoCredential credential) {
+	public Repo(String kind, String url, String name, RepoCredential credential) {
 		super(null, null, url, name, RepoResourceType.REPO);
+		this.kind = kind;
 		this.credential = credential;
 	}
 
@@ -51,7 +54,12 @@ public class Repo extends RepoResource {
 		return (RepoInfo) super.getInfo();
 	}
 
-	public static Repo create(String url) throws MalformedURLException {
-		return SCMService.getCurrent().createRepo(url);
+	public static Repo create(String kind, String url)
+			throws MalformedURLException {
+		return SCMService.getCurrent().connect(kind, url);
+	}
+
+	public String getKind() {
+		return kind;
 	}
 }

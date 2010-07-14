@@ -8,63 +8,49 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.github.GitHubQueryDescriber;
-import org.codefaces.httpclient.SCMHttpClient;
+import org.codefaces.core.operations.SCMOperation;
+import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.httpclient.SCMResponseException;
-import org.codefaces.httpclient.ajax.AjaxClientAdapter;
 
 public class SCMService {
-	private SCMQueryDescriber queryDescriber;
+	public Repo connect(String kind, String url) {
+		SCMOperation operation = SCMOperation.newInstance(kind,
+				SCMOperation.CONNECTION_OPERAION);
+		operation.addParameter(SCMOperationHandler.PARA_URL, url.trim());
 
-	private SCMHttpClient httpClient;
-
-	public SCMService() {
-		httpClient = new AjaxClientAdapter();
-		queryDescriber = new GitHubQueryDescriber();
-	}
-
-	public Repo createRepo(String url) {
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_URL, url.trim());
-
-		return execute(queryDescriber.getFetchRepoQuery(), para);
-	}
-
-	public void dispose() {
-		httpClient.dispose();
+		return operation.execute();
 	}
 
 	public Collection<RepoBranch> fetchBranches(Repo repo) {
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO, repo);
+		SCMOperation operation = SCMOperation.newInstance(repo.getKind(),
+				SCMOperation.FETCH_BRANCHES_OPERAION);
+		operation.addParameter(SCMOperationHandler.PARA_REPO, repo);
 
-		return execute(queryDescriber.getFetchBranchesQuery(), para);
+		return operation.execute();
 	}
 
 	public Collection<RepoResource> fetchChildren(RepoResource parent)
 			throws SCMResponseException {
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, parent);
+		SCMOperation operation = SCMOperation.newInstance(parent.getRoot()
+				.getRepo().getKind(), SCMOperation.FETCH_CHILDREN_OPERAION);
+		operation.addParameter(SCMOperationHandler.PARA_REPO_RESOURCE, parent);
 
-		return execute(queryDescriber.getFetchChildrenQuery(), para);
+		return operation.execute();
 	}
 
 	public RepoFileInfo fetchFileInfo(RepoFile file)
 			throws SCMResponseException {
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_FOLDER, file.getParent());
-		para.addParameter(SCMQuery.PARA_REPO_FILE_NAME, file.getName());
+		SCMOperation operation = SCMOperation.newInstance(file.getRoot()
+				.getRepo().getKind(), SCMOperation.FETCH_FILE_INFO_OPERAION);
+		operation.addParameter(SCMOperationHandler.PARA_REPO_FOLDER,
+				file.getParent());
+		operation.addParameter(SCMOperationHandler.PARA_REPO_FILE_NAME,
+				file.getName());
 
-		return execute(queryDescriber.getFetchFileInfoQuery(), para);
+		return operation.execute();
 	}
 
 	public static SCMService getCurrent() {
-		// return (SCMService)
-		// SessionSingletonBase.getInstance(SCMService.class);
 		return CodeFacesCoreActivator.getDefault().getSCMService();
-	}
-
-	private <T> T execute(SCMQuery<T> query, SCMQueryParameter parameter) {
-		return query.execute(httpClient, parameter);
 	}
 }
