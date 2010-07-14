@@ -11,7 +11,6 @@ import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.services.SCMQuery;
 import org.codefaces.core.services.SCMQueryParameter;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
@@ -71,7 +70,7 @@ public class SvnFetchBranchesQueryTest {
 		
 	@Test
 	public void directoriesInsideBranchesFolderShouldBeReturnedWhenThereIsAFolderCalledBranches()
-			throws Exception {
+			throws MalformedURLException{
 		
 		//In this test, we create a mock SVN client. If a branches directory is queried, it
 		//shows up one file and one folder
