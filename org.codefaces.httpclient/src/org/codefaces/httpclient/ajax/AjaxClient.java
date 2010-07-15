@@ -3,7 +3,7 @@ package org.codefaces.httpclient.ajax;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.swt.widgets.Display;
 
 public class AjaxClient {

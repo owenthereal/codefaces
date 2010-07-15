@@ -16,7 +16,7 @@ import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
 
 public class GitHubFetchChildrenOperationHandler implements SCMOperationHandler {

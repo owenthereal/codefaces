@@ -8,7 +8,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.httpclient.SCMURLException;
+import org.codefaces.core.connectors.SCMURLException;
 import org.eclipse.core.runtime.Assert;
 
 public class GitHubConnectionOperationHandler implements SCMOperationHandler {

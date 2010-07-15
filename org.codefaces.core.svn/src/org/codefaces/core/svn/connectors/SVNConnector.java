@@ -1,4 +1,4 @@
-package org.codefaces.core.svn;
+package org.codefaces.core.svn.connectors;
 
 import java.text.SimpleDateFormat;
 

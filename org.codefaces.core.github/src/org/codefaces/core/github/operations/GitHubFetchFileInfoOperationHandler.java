@@ -10,7 +10,7 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
 
 public class GitHubFetchFileInfoOperationHandler implements SCMOperationHandler {

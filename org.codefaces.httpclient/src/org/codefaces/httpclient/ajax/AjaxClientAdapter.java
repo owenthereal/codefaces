@@ -1,7 +1,7 @@
 package org.codefaces.httpclient.ajax;
 
 import org.codefaces.httpclient.SCMHttpClient;
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.connectors.SCMResponseException;
 
 public class AjaxClientAdapter implements SCMHttpClient {
 

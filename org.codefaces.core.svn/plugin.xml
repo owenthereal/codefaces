@@ -4,7 +4,7 @@
    <extension
          point="org.codefaces.core.scmConnectors">
       <connector
-            class="org.codefaces.core.svn.SVNConnector"
+            class="org.codefaces.core.svn.connectors.SVNConnector"
             id="org.codefaces.core.svn.connectors.svn"
             kind="Subversion">
       </connector>

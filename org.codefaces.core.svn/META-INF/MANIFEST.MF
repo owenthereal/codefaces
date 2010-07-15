@@ -4,7 +4,9 @@ Bundle-Name: Svn
 Bundle-SymbolicName: org.codefaces.core.svn;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.codefaces.core.svn.SVNActivator
-Require-Bundle: org.codefaces.core,
- org.tigris.subversion.clientadapter;bundle-version="1.6.12"
+Require-Bundle: org.eclipse.core.runtime,
+ org.codefaces.core,
+ org.tigris.subversion.clientadapter
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.rwt

@@ -1,4 +1,4 @@
-package org.codefaces.httpclient;
+package org.codefaces.core.connectors;
 
 public class SCMResponseException extends SCMIOException {
 	private static final long serialVersionUID = -7186627969477257933L;

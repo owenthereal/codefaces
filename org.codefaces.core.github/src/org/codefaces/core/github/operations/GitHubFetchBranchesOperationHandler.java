@@ -13,7 +13,7 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
 
 public class GitHubFetchBranchesOperationHandler implements SCMOperationHandler {

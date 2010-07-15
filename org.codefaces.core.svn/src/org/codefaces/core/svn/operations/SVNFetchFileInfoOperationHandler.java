@@ -11,7 +11,7 @@ import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.core.svn.SVNConnector;
+import org.codefaces.core.svn.connectors.SVNConnector;
 import org.eclipse.core.runtime.Assert;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 import org.tigris.subversion.svnclientadapter.SVNClientException;

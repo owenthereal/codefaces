@@ -10,7 +10,7 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperation;
 import org.codefaces.core.operations.SCMOperationHandler;
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.connectors.SCMResponseException;
 
 public class SCMService {
 	public Repo connect(String kind, String url) {
