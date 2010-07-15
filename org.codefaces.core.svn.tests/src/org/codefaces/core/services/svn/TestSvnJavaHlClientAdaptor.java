@@ -3,6 +3,7 @@ package org.codefaces.core.services.svn;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 import org.tigris.subversion.svnclientadapter.SVNClientAdapterFactory;
 import org.tigris.subversion.svnclientadapter.SVNClientException;
+import org.tigris.subversion.svnclientadapter.javahl.JhlClientAdapterFactory;
 
 // Since SvnKitAdaptor bundle does not expose its packages, using it will require a
 // Plugin test. For simplicity, we use JavaHL for testing
@@ -17,7 +18,7 @@ public class TestSvnJavaHlClientAdaptor {
 	static {
 		try {
 			// create an JavaHL adaptor factory
-			SvnKitClientAdapterFactory.setup();
+			JhlClientAdapterFactory.setup();
 		} catch (SVNClientException e) {
 			//can't register the adapter factory
 			e.printStackTrace();
