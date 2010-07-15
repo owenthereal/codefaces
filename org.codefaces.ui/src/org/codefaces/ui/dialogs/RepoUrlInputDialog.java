@@ -1,7 +1,11 @@
 package org.codefaces.ui.dialogs;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.codefaces.core.SCMManager;
+import org.codefaces.core.connectors.SCMConnectorDescriber;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.ui.Images;
@@ -18,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -67,17 +72,18 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 			super("");
 		}
 
-		public void setUrl(String url) {
-			this.url = url;
-		}
-
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			setErrorMessage(null);
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
 
 			try {
 				monitor.beginTask("Connecting to repository: " + url, 100);
-				final Repo repo = Repo.create("GitHub", url);
+				IStructuredSelection selection = (IStructuredSelection) connectorInputViewer
+						.getSelection();
+
+				final Repo repo = Repo.create(
+						(String) selection.getFirstElement(), url);
 				monitor.worked(30);
 
 				monitor.setTaskName("Fetching branches...");
@@ -85,31 +91,24 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				final Object[] input = branches.toArray();
 				monitor.worked(70);
 
-				updateBranchViewer(input);
+				updateStructuredViewer(branchInputViewer, input);
 			} catch (Exception e) {
-				updateBranchViewer(null);
+				updateStructuredViewer(branchInputViewer, null);
 				setErrorMessage(e.getMessage());
 			}
 
 			return Status.OK_STATUS;
 		}
 
-		private void updateBranchViewer(final Object[] input) {
-			branchInputViewer.setInput(input);
-			if (input == null || input.length == 0) {
-				branchInputViewer.setSelection(null);
-				branchInputViewer.getCCombo().setEnabled(false);
-			} else {
-				branchInputViewer.getCCombo().setEnabled(true);
-				branchInputViewer
-						.setSelection(new StructuredSelection(input[0]));
-			}
+		public void setUrl(String url) {
+			this.url = url;
 		}
+
 	}
 
 	private static final String SAMPLE_URL = "http://github.com/jingweno/ruby_grep";
 
-	public static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
+	private static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
 			+ SAMPLE_URL;
 
 	private static final String NO_BRANCH_IS_SELECTED = "No branch is selected.";
@@ -122,16 +121,45 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private Button connectButton;
 
+	private ComboViewer connectorInputViewer;
+
+	private ConnectToRepoJob connectToRepoJob = new ConnectToRepoJob();
+
 	private RepoBranch selectedBranch;
 
 	private Text urlInputText;
-
-	private ConnectToRepoJob connectToRepoJob = new ConnectToRepoJob();
 
 	public RepoUrlInputDialog(Shell parentShell) {
 		super(parentShell);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
 				| SWT.APPLICATION_MODAL | getDefaultOrientation());
+	}
+
+	private void bindControls() {
+		urlInputText.setFocus();
+
+		if (connectorInputViewer.getSelection().isEmpty()) {
+			connectButton.setEnabled(false);
+		}
+
+		connectButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				connectToRepo();
+			}
+		});
+
+		branchInputViewer
+				.addSelectionChangedListener(new BranchSelectionChangedListener());
+	}
+
+	private void connectToRepo() {
+		if (connectToRepoJob.getState() != Job.NONE) {
+			connectToRepoJob.cancel();
+		}
+
+		connectToRepoJob.setUrl(urlInputText.getText());
+		connectToRepoJob.schedule();
 	}
 
 	private void createBranchInputSection(Composite dialogAreaComposite) {
@@ -150,6 +178,16 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		getButton(IDialogConstants.OK_ID).setEnabled(false);
 	}
 
+	private void createConnectorSection(Composite dialogAreaComposite) {
+		connectorInputViewer = new ComboViewer(new CCombo(dialogAreaComposite,
+				SWT.BORDER | SWT.READ_ONLY));
+		connectorInputViewer.getControl().setLayoutData(
+				new GridData(GridData.GRAB_HORIZONTAL
+						| GridData.HORIZONTAL_ALIGN_FILL));
+		connectorInputViewer.setContentProvider(new ArrayContentProvider());
+		connectorInputViewer.setLabelProvider(new LabelProvider());
+	}
+
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
@@ -163,6 +201,10 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		dialogAreaComposite.setFont(composite.getFont());
 
+		Label connectorInputLabel = new Label(dialogAreaComposite, SWT.NONE);
+		connectorInputLabel.setText("Connector:");
+		createConnectorSection(dialogAreaComposite);
+
 		Label urlInputLabel = new Label(dialogAreaComposite, SWT.NONE);
 		urlInputLabel.setText("Repository:");
 		createUrlInputSection(dialogAreaComposite);
@@ -171,6 +213,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		branchInputLabel.setText("Branch:");
 		createBranchInputSection(dialogAreaComposite);
 
+		populateControls();
 		bindControls();
 
 		setTitle(TITLE);
@@ -179,21 +222,6 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		applyDialogFont(dialogAreaComposite);
 
 		return composite;
-	}
-
-	private void bindControls() {
-		urlInputText.setFocus();
-
-		connectButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				connectToRepo();
-			}
-		});
-
-		branchInputViewer
-				.addSelectionChangedListener(new BranchSelectionChangedListener());
-		branchInputViewer.getCCombo().setEnabled(false);
 	}
 
 	private void createUrlInputSection(Composite dialogAreaComposite) {
@@ -229,6 +257,17 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		}
 	}
 
+	private void populateControls() {
+		List<String> connectorKinds = new ArrayList<String>();
+		for (SCMConnectorDescriber describer : SCMManager.getInstance()
+				.getConnectorManager().getConnectorDescribers()) {
+			connectorKinds.add(describer.getKind());
+		}
+
+		updateStructuredViewer(connectorInputViewer,
+				connectorKinds.toArray(new String[0]));
+	}
+
 	private void setWindowTitle(String windowTitle) {
 		if (getShell() == null) {
 			return;
@@ -238,12 +277,13 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	}
 
-	private void connectToRepo() {
-		if (connectToRepoJob.getState() != Job.NONE) {
-			connectToRepoJob.cancel();
+	private void updateStructuredViewer(StructuredViewer viewer,
+			final Object[] input) {
+		viewer.setInput(input);
+		if (input == null || input.length == 0) {
+			viewer.setSelection(null);
+		} else {
+			viewer.setSelection(new StructuredSelection(input[0]));
 		}
-
-		connectToRepoJob.setUrl(urlInputText.getText());
-		connectToRepoJob.schedule();
 	}
 }

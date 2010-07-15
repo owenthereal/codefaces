@@ -1,5 +1,6 @@
-package org.codefaces.core;
+package org.codefaces.core.impl;
 
+import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorManager;
 import org.codefaces.core.operations.SCMOperationDispatcher;
 import org.codefaces.core.operations.SCMOperationHandlerManager;
@@ -20,9 +21,7 @@ public class CodeFacesCoreActivator extends Plugin {
 
 	private SCMService service;
 
-	private SCMConnectorManager connectorManager;
-
-	private SCMOperationHandlerManager operationHandlerManager;
+	private SCMManager scmManager;
 
 	/**
 	 * The constructor
@@ -31,41 +30,29 @@ public class CodeFacesCoreActivator extends Plugin {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		service = new SCMService();
-		connectorManager = new SCMConnectorManager();
-		operationHandlerManager = new SCMOperationHandlerManager();
+		SCMConnectorManager connectorManager = new SCMConnectorManager();
+		SCMOperationHandlerManager operationHandlerManager = new SCMOperationHandlerManager();
 		SCMOperationDispatcher.init(connectorManager, operationHandlerManager);
+		scmManager = new SCMManager(connectorManager, operationHandlerManager);
+	}
+
+	public SCMManager getSCMManager() {
+		return scmManager;
 	}
 
 	public SCMService getSCMService() {
 		return service;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
 	public static CodeFacesCoreActivator getDefault() {
 		return plugin;
 	}
