@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
+   <extension-point id="org.codefaces.core.scmConnectors" name="SCMConnectors" schema="schema/org.codefaces.core.scmConnectors.exsd"/>
+   <extension-point id="org.codefaces.core.scmOperationHandlers" name="SCMOperationHandlers" schema="schema/org.codefaces.core.scmOperationHandlers.exsd"/>
 </plugin>

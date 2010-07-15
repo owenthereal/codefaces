@@ -1,5 +1,8 @@
 package org.codefaces.core;
 
+import org.codefaces.core.connectors.SCMConnectorManager;
+import org.codefaces.core.operations.SCMOperationDispatcher;
+import org.codefaces.core.operations.SCMOperationHandlerManager;
 import org.codefaces.core.services.SCMService;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -14,8 +17,12 @@ public class CodeFacesCoreActivator extends Plugin {
 
 	// The shared instance
 	private static CodeFacesCoreActivator plugin;
-	
+
 	private SCMService service;
+
+	private SCMConnectorManager connectorManager;
+
+	private SCMOperationHandlerManager operationHandlerManager;
 
 	/**
 	 * The constructor
@@ -34,6 +41,9 @@ public class CodeFacesCoreActivator extends Plugin {
 		super.start(context);
 		plugin = this;
 		service = new SCMService();
+		connectorManager = new SCMConnectorManager();
+		operationHandlerManager = new SCMOperationHandlerManager();
+		SCMOperationDispatcher.init(connectorManager, operationHandlerManager);
 	}
 
 	public SCMService getSCMService() {

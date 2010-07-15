@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.codefaces.core.scmConnectors">
+      <connector
+            class="org.codefaces.core.svn.SVNConnector"
+            id="org.codefaces.core.svn.connectors.svn"
+            kind="Subversion">
+      </connector>
+   </extension>
+   <extension
+         point="org.codefaces.core.scmOperationHandlers">
+      <operationHandler
+            class="org.codefaces.core.svn.operations.SVNConnectionOperationHandler"
+            id="org.codefaces.core.operations.SCMOperation.connection"
+            kind="Subversion"
+            name="Subversion Connection Operation Handler">
+      </operationHandler>
+      <operationHandler
+            class="org.codefaces.core.svn.operations.SVNFetchBranchesOperationHandler"
+            id="org.codefaces.core.operations.SCMOperation.fetchBranches"
+            kind="Subversion"
+            name="Subversion Fetch Brancher Operation Handler">
+      </operationHandler>
+      <operationHandler
+            class="org.codefaces.core.svn.operations.SVNFetchChildrenOperationHandler"
+            id="org.codefaces.core.operations.SCMOperation.fetchChildren"
+            kind="Subversion"
+            name="Subversion Fetch Children Operation Handler">
+      </operationHandler>
+      <operationHandler
+            class="org.codefaces.core.svn.operations.SVNFetchFileInfoOperationHandler"
+            id="org.codefaces.core.operations.SCMOperation.fetchFileInfo"
+            kind="Subversion"
+            name="Subversion Fetch File Info Operation Handler">
+      </operationHandler>
+   </extension>
+
+</plugin>

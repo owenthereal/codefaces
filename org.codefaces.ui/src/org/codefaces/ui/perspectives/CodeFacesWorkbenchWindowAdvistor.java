@@ -56,7 +56,7 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 
 		if (repoUrl != null) {
 			try {
-				Repo repo = Repo.create(repoUrl);
+				Repo repo = Repo.create("GitHub", repoUrl);
 				RepoBranch repoBranch = repo.getBranchByName(branchName);
 
 				if (repoBranch == null) {

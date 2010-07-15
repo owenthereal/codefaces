@@ -4,3 +4,4 @@
 *.scssc
 org.tigris.subversion.*
 org.tmatesoft.svnkit/*
+/target

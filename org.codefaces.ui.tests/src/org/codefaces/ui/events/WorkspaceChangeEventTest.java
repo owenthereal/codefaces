@@ -16,7 +16,7 @@ public class WorkspaceChangeEventTest {
 
 	@Before
 	public void setUp() {
-		mockRepo = new Repo(null, "foo", null);
+		mockRepo = new Repo("test_kind", null, "foo", null);
 		mockBranch = new RepoBranch(mockRepo, null, "bar", false);
 	}
 
@@ -30,8 +30,7 @@ public class WorkspaceChangeEventTest {
 
 	@Test
 	public void test_constructor_repo_changed() {
-		WorkspaceChangeEvent evt = new WorkspaceChangeEvent(this,
-				mockBranch);
+		WorkspaceChangeEvent evt = new WorkspaceChangeEvent(this, mockBranch);
 		assertEquals(evt.getRepoBranch().getRepo(), mockRepo);
 		assertEquals(evt.getRepoBranch(), mockBranch);
 	}

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: org.codefaces.core.svn.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.codefaces.core.svn;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.tigris.subversion.clientadapter.svnkit;bundle-version="1.6.12"

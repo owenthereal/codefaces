@@ -7,7 +7,7 @@ import org.junit.Test;
 public class RepoResourceTest {
 	@Test
 	public void test_getFullPath() {
-		Repo repo = new Repo("repo", "repo", null);
+		Repo repo = new Repo("test_kind", "repo", "repo", null);
 		RepoBranch branch = new RepoBranch(repo, "branch", "branch", false);
 		RepoFolderRoot root = branch.getRoot();
 		RepoFolder folder = new RepoFolder(root, root,
