@@ -12,14 +12,10 @@ import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
+import org.codefaces.core.svn.clientadaptor.SVNDirectoryEntry;
 import org.codefaces.core.svn.connectors.SVNConnector;
-import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
-import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
-import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
-import org.tigris.subversion.svnclientadapter.SVNNodeKind;
-import org.tigris.subversion.svnclientadapter.SVNRevision;
-import org.tigris.subversion.svnclientadapter.SVNUrl;
+import org.codefaces.core.svn.clientadaptor.SVNResourceKind;
 
 public class SVNFetchChildrenOperationHandler implements SCMOperationHandler {
 
@@ -31,48 +27,35 @@ public class SVNFetchChildrenOperationHandler implements SCMOperationHandler {
 
 		RepoResource container = (RepoResource) resPara;
 
-		String svnUrl = SvnUtil.createSvnUrlFromResource(container);
+		Repo repo = container.getRoot().getRepo();
+		String username = repo.getCredential().getUser();
+		String password = repo.getCredential().getPassword();
+		
+		String svnUrl = SVNConnector.createSvnUrlFromResource(container);
+		SVNConnector svnConnector = (SVNConnector) connector;
+		
+		SVNDirectoryEntry[] entries = svnConnector.getSvnClient()
+				.getDirectoryEntries(svnUrl, username, password);
+		
 		List<RepoResource> children = new ArrayList<RepoResource>();
-
-		try {
-			SVNConnector svnConnector = (SVNConnector) connector;
-			ISVNClientAdapter svnClient = svnConnector.getSvnClient();
-
-			RepoFolderRoot folderRoot = container.getRoot();
-			Repo repo = folderRoot.getRepo();
-
-			String username = repo.getCredential().getUser();
-			String password = repo.getCredential().getPassword();
-			if (username != null) {
-				svnClient.setUsername(username);
-			}
-			if (password != null) {
-				svnClient.setPassword(password);
-			}
-
-			ISVNDirEntry[] entries = svnClient.getList(new SVNUrl(svnUrl),
-					SVNRevision.HEAD, false);
-			for (ISVNDirEntry entry : entries) {
-				RepoResource child = createRepoResourceFromType(
-						entry.getNodeKind(), folderRoot, container,
-						svnConnector.generateRepoResourceID(repo, entry),
-						entry.getPath());
-				children.add(child);
-			}
-		} catch (Exception e) {
-			throw new SCMResponseException(e.getMessage(), e);
+		for(SVNDirectoryEntry entry: entries){
+			RepoResource child = createRepoResourceFromSVNDirectoryEntry(
+					svnConnector, entry, container); 
+			children.add(child);
 		}
+
 		return children;
 	}
 
-	private RepoResource createRepoResourceFromType(SVNNodeKind svnNodeKind,
-			RepoFolderRoot root, RepoResource parent, String id, String name) {
-		if (svnNodeKind == SVNNodeKind.FILE) {
-			return new RepoFile(root, parent, id, name);
-		} else if (svnNodeKind == SVNNodeKind.DIR) {
-			return new RepoFolder(root, parent, id, name);
+	private RepoResource createRepoResourceFromSVNDirectoryEntry(
+			SVNConnector svnConnector, SVNDirectoryEntry entry, RepoResource parent) {
+		RepoFolderRoot root = parent.getRoot();
+		String id = SVNConnector.generateRepoResourceID(entry);
+		if (entry.getResourceKind() == SVNResourceKind.FILE) {
+			return new RepoFile(root, parent, id, entry.getName());
+		} else if (entry.getResourceKind() == SVNResourceKind.DIRECTORY) {
+			return new RepoFolder(root, parent, id, entry.getName());
 		}
-
 		return null;
 	}
 

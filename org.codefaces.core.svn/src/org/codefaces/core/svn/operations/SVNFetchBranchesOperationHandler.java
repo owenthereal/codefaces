@@ -9,13 +9,10 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
+import org.codefaces.core.svn.clientadaptor.SVNDirectoryEntry;
+import org.codefaces.core.svn.clientadaptor.SVNResourceKind;
 import org.codefaces.core.svn.connectors.SVNConnector;
 import org.eclipse.core.runtime.Assert;
-import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
-import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
-import org.tigris.subversion.svnclientadapter.SVNNodeKind;
-import org.tigris.subversion.svnclientadapter.SVNRevision;
-import org.tigris.subversion.svnclientadapter.SVNUrl;
 
 public class SVNFetchBranchesOperationHandler implements SCMOperationHandler {
 
@@ -27,31 +24,24 @@ public class SVNFetchBranchesOperationHandler implements SCMOperationHandler {
 		Repo repo = (Repo) repoPara;
 
 		String url = repo.getUrl();
-		String branchUrl = url + "/" + SVNConstants.BRANCH_DIRECTORY;
 		String username = repo.getCredential().getUser();
 		String password = repo.getCredential().getPassword();
 
 		SVNConnector svnConnector = (SVNConnector) connector;
 
-		ISVNClientAdapter svnClient = svnConnector.getSvnClient();
-		if (username != null) {
-			svnClient.setUsername(username);
-		}
-		if (password != null) {
-			svnClient.setPassword(password);
-		}
-
 		Set<RepoBranch> branches = new LinkedHashSet<RepoBranch>();
 
 		// Test if the branches directory exists
 		try {
-			ISVNDirEntry[] branchEntries = svnClient.getList(new SVNUrl(
-					branchUrl), SVNRevision.HEAD, false);
-			for (ISVNDirEntry branchEntry : branchEntries) {
-				if (branchEntry.getNodeKind() == SVNNodeKind.DIR) {
+			String branchUrl = url + "/" + SVNConstants.BRANCH_DIRECTORY;
+			SVNDirectoryEntry[] branchEntries = svnConnector.getSvnClient()
+					.getDirectoryEntries(branchUrl, username, password);
+
+			for (SVNDirectoryEntry branchEntry : branchEntries) {
+				if (branchEntry.getResourceKind() == SVNResourceKind.DIRECTORY){
 					RepoBranch branch = new RepoBranch(repo,
-							svnConnector.generateRepoResourceID(repo,
-									branchEntry), branchEntry.getPath(), false);
+							SVNConnector.generateRepoResourceID(branchEntry),
+							branchEntry.getName(), false);
 					branches.add(branch);
 				}
 			}

@@ -1,19 +1,13 @@
 package org.codefaces.core.svn.operations;
 
-import java.net.MalformedURLException;
-
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
+import org.codefaces.core.svn.clientadaptor.SVNRepoInfo;
 import org.codefaces.core.svn.connectors.SVNConnector;
-import org.codefaces.core.connectors.SCMResponseException;
-import org.codefaces.core.connectors.SCMURLException;
 import org.eclipse.core.runtime.Assert;
-import org.tigris.subversion.svnclientadapter.ISVNInfo;
-import org.tigris.subversion.svnclientadapter.SVNClientException;
-import org.tigris.subversion.svnclientadapter.SVNUrl;
 
 public class SVNConnectionOperationHandler implements SCMOperationHandler {
 
@@ -31,20 +25,13 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 		String password = (passwordPara != null) ? (String) passwordPara : null;
 		SVNConnector svnConnector = (SVNConnector) connector;
 
-		try {
-			SVNUrl svnUrl = new SVNUrl(url);
-			ISVNInfo info = svnConnector.getSvnClient().getInfo(svnUrl);
-			RepoCredential credential = new RepoCredential(null, username,
-					password);
-
-			return new Repo(connector.getKind(), svnUrl.toString(),
-					info.getUuid(), credential);
-
-		} catch (MalformedURLException e) {
-			throw new SCMURLException("Invalid repository url: " + url);
-		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
-		}
+		
+		SVNRepoInfo repoInfo = svnConnector.getSvnClient().getRepoInfo(url,
+				username, password);
+		RepoCredential credential = new RepoCredential(null, username,
+				password);
+		return new Repo(connector.getKind(), repoInfo.getUrl(),
+				repoInfo.getUuid(), credential);
 	}
 
 }
