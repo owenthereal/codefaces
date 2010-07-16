@@ -1,76 +1,83 @@
-package org.codefaces.core.services.svn;
+package org.codefaces.core.svn.operations;
 
 import static org.junit.Assert.*;
 
 import java.util.Collection;
 
+import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.services.SCMQuery;
-import org.codefaces.core.services.SCMQueryParameter;
+import org.codefaces.core.operations.SCMOperationHandler;
+import org.codefaces.core.operations.SCMOperationParameters;
 import org.junit.Before;
 import org.junit.Test;
-import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 
 public class SvnFetchChildrenQueryTest {
 	
-	private static final String TEST_URL_WITHOUT_BRANCHES =
-		"http://subclipse.tigris.org/svn/subclipse/trunk";
-	private static final String TEST_URL_WITH_BRANCHES =
-		"http://subclipse.tigris.org/svn/subclipse";
-	private static final String TEST_USERNAME =  "guest";
+	private static String TEST_URL_WITHOUT_BRANCHES = "http://code.djangoproject.com/svn/django/trunk";
+	private static String TEST_URL_WITH_BRANCHES = "http://code.djangoproject.com/svn/django";
+	private static final String TEST_USERNAME =  null;
 	private static final String TEST_PASSWORD = null;
+	
+	private static final String RESOURCE_FOUND_IN_TRUNK = "README";
+	private static final String TEST_BRANCH = "releases";
+	private static final String RESOURCE_IN_BRANCH = "1.2.X";
 
-	class MockSvnFetchChildrenQuery extends SvnFetchChildrenQuery{
-		private ISVNClientAdapter testClient;
+	private SVNFetchChildrenOperationHandler handler;
+	private SCMConnector connector;
 
-		public void setClient(ISVNClientAdapter testClient){
-			this.testClient = testClient;
-		}
-		
-		@Override
-		protected ISVNClientAdapter getSvnClient(){
-			return testClient == null? new MockSVNClientAdaptor() : testClient;
-		}
+	private Repo createMockRepo(String url, String username, String password){
+		RepoCredential credential = new RepoCredential(null, username, password);
+		return new Repo(null, url, url, credential);
 	}
-
-
-	private MockSvnFetchChildrenQuery query;
 	
 	@Before
-	public void setup(){
-		query = new MockSvnFetchChildrenQuery();
+	public void setUp(){
+		connector = new MockSCMConnector(TestSvnJavaHlClientAdaptor.getClient());
+		handler = new SVNFetchChildrenOperationHandler();
 	}
 	
 	@Test
 	public void childrenReturnedByFetchingFromTheDefaultBranchShouldBeCorrect(){
-		RepoCredential mockCredential = new RepoCredential(null, TEST_USERNAME, TEST_PASSWORD);
-		Repo mockRepo = new Repo(TEST_URL_WITHOUT_BRANCHES, "id", mockCredential);
-		RepoBranch defaultBranch = new RepoBranch(mockRepo, "id", "default", true);
+		Repo mockRepo = createMockRepo(TEST_URL_WITHOUT_BRANCHES, TEST_USERNAME, TEST_PASSWORD);
+		RepoBranch defaultBranch = new RepoBranch(mockRepo, "id",
+				SVNConstants.DEFAULT_BRANCH, true);
 		
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, defaultBranch.getRoot());
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_REPO_RESOURCE, defaultBranch.getRoot());
 		
-		query.setClient(TestSvnJavaHlClientAdaptor.getClient());
+		Collection<RepoResource> children = handler.execute(connector, para);
 		
-		Collection<RepoResource> children = query.execute(null, para);
-		assertTrue(children.size() > 0);
+		boolean found = false;
+		for(RepoResource child: children){
+			if(child.getName().equals(RESOURCE_FOUND_IN_TRUNK)){
+				found = true;
+				break;
+			}
+		}
+		assertTrue(found);
 	}
+	
 	
 	@Test
 	public void childrenReturnedByFetchingFromNonDefaultBranchShouldBeCorrect(){
-		RepoCredential mockCredential = new RepoCredential(null, TEST_USERNAME, TEST_PASSWORD);
-		Repo mockRepo = new Repo(TEST_URL_WITH_BRANCHES, "id", mockCredential);
-		RepoBranch defaultBranch = new RepoBranch(mockRepo, "id", "default", false);
+		Repo mockRepo = createMockRepo(TEST_URL_WITH_BRANCHES, TEST_USERNAME, TEST_PASSWORD);
+		RepoBranch branch = new RepoBranch(mockRepo, "id", TEST_BRANCH, false);
 		
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_REPO_RESOURCE, defaultBranch.getRoot());
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_REPO_RESOURCE, branch.getRoot());
 		
-		query.setClient(TestSvnJavaHlClientAdaptor.getClient());
+		Collection<RepoResource> children = handler.execute(connector, para);
 		
-		Collection<RepoResource> children = query.execute(null, para);
-		assertTrue(children.size() > 0);
+		boolean found = false;
+		for(RepoResource child: children){
+			if(child.getName().equals(RESOURCE_IN_BRANCH)){
+				found = true;
+				break;
+			}
+		}
+		assertTrue(found);
 	}
 }
