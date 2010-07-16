@@ -28,7 +28,7 @@ public class RepoFile extends RepoResource {
 		return getInfo().getMode();
 	}
 
-	public int getSize() {
+	public long getSize() {
 		return getInfo().getSize();
 	}
 }
