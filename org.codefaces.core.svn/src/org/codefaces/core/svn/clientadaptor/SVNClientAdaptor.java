@@ -65,12 +65,12 @@ public class SVNClientAdaptor {
 		try {
 			SVNUrl svnUrl = new SVNUrl(url);
 			ISVNClientAdapter client = getClient();
-			if (username != null) {
-				client.setUsername(username);
-			}
-			if (password != null) {
-				client.setPassword(password);
-			}
+			
+			String svnUsername = (username == null? "" : username);
+			String svnPassword = (password == null? "" : password);
+			client.setUsername(svnUsername);
+			client.setPassword(svnPassword);
+
 			ISVNInfo info = client.getInfo(svnUrl);
 			svnInfo = new SVNRepoInfo(info.getUrlString(), info.getUuid(), info
 					.getRevision().getNumber());
@@ -97,12 +97,12 @@ public class SVNClientAdaptor {
 		try {
 			SVNUrl svnUrl = new SVNUrl(url);
 			ISVNClientAdapter client = getClient();
-			if (username != null) {
-				client.setUsername(username);
-			}
-			if (password != null) {
-				client.setPassword(password);
-			}
+
+			String svnUsername = (username == null? "" : username);
+			String svnPassword = (password == null? "" : password);
+			client.setUsername(svnUsername);
+			client.setPassword(svnPassword);
+			
 			ISVNDirEntry[] entries = client.getList(svnUrl, SVNRevision.HEAD,
 					false);
 
@@ -133,12 +133,11 @@ public class SVNClientAdaptor {
 		try {
 			SVNUrl svnUrl = new SVNUrl(url);
 			ISVNClientAdapter client = getClient();
-			if (username != null) {
-				client.setUsername(username);
-			}
-			if (password != null) {
-				client.setPassword(password);
-			}
+			
+			String svnUsername = (username == null? "" : username);
+			String svnPassword = (password == null? "" : password);
+			client.setUsername(svnUsername);
+			client.setPassword(svnPassword);
 
 			ISVNDirEntry entry = client.getDirEntry(svnUrl, SVNRevision.HEAD);
 			InputStream stream = client.getContent(svnUrl, SVNRevision.HEAD);
