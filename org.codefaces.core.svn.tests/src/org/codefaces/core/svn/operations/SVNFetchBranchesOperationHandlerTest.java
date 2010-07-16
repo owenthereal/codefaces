@@ -16,7 +16,7 @@ import org.codefaces.core.svn.operations.SVNFetchBranchesOperationHandler;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SvnFetchBranchesQueryTest {
+public class SVNFetchBranchesOperationHandlerTest {
 	
 	private static String TEST_URL_WITHOUT_BRANCHES = "http://code.djangoproject.com/svn/django/trunk";
 	private static String TEST_URL_WITH_BRANCHES = "http://code.djangoproject.com/svn/django";
