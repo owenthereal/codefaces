@@ -1,114 +1,84 @@
-package org.codefaces.core.services.svn;
+package org.codefaces.core.svn.operations;
 import static org.junit.Assert.*;
 
-import java.util.UUID;
-
+import org.codefaces.core.connectors.SCMConnector;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.services.SCMQuery;
-import org.codefaces.core.services.SCMQueryParameter;
-import org.codefaces.httpclient.SCMResponseException;
+import org.codefaces.core.operations.SCMOperationHandler;
+import org.codefaces.core.operations.SCMOperationParameters;
 import org.junit.Before;
 import org.junit.Test;
-import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
-import org.tigris.subversion.svnclientadapter.ISVNInfo;
-import org.tigris.subversion.svnclientadapter.SVNClientException;
-import org.tigris.subversion.svnclientadapter.SVNRevision;
-import org.tigris.subversion.svnclientadapter.SVNUrl;
 
 
 public class SvnRepoQueryTest {
-	private static final String TEST_PASSWORD = "password";
-	private static final String TEST_USERNAME = "username";
-	private static final String TEST_NORMAL_URL = "http://code.djangoproject.com/svn/django/trunk";
+
+	private static final String TEST_NORMAL_URL = "http://subclipse.tigris.org/svn/subclipse/trunk";
+	private static final String TEST_NORMAL_URL_WITH_TRAILING_SLASH = "http://subclipse.tigris.org/svn/subclipse/trunk/";
+	private static final String TEST_NORMAL_USERNAME = "guest";
+	private static final String TEST_NORMAL_PASSWORD = null;
+	
+	private static final String TEST_USERNAME_IN_URL = "http://guest@subclipse.tigris.org/svn/subclipse/trunk";
+	
 	private static final String TEST_NO_SUCH_URL = "http://svn.nosuchurl.org/svn";
 	private static final String TEST_NO_PERMISSION = "https://secure.jms1.net";
-
 	
-	
-	//A mock client
-	class ReoQueryMockSVNClientAdaptor extends MockSVNClientAdaptor{
-		private boolean isUrlValid;
-		
-		public ReoQueryMockSVNClientAdaptor(boolean isUrlValid){
-			this.isUrlValid = isUrlValid;
-		}
-		
-		@Override
-		public ISVNInfo getInfo(SVNUrl url) throws SVNClientException {
-			return getInfo(url, null, null);
-		}
-
-		@Override
-		//if isValid is false, throw an exception
-		public ISVNInfo getInfo(SVNUrl url, SVNRevision revision,
-				SVNRevision peg) throws SVNClientException {
-			if(isUrlValid) {
-				MockSVNInfo info = new MockSVNInfo();
-				info.setUrlString(url.toString());
-				info.setUuid(UUID.randomUUID().toString());
-				return info;
-			}
-			else throw new SVNClientException();
-		}
-	}
-	
-	private MockSvnRepoQuery query;
-
+	private SVNConnectionOperationHandler connectionHandler;
+	private SCMConnector connector;
 
 	@Before
 	public void setUp(){
-		query = new MockSvnRepoQuery();
+		connector = new MockSCMConnector(TestSvnJavaHlClientAdaptor.getClient());
+		connectionHandler = new SVNConnectionOperationHandler();
 	}
 
 	@Test
 	public void credentialShouldBeSetWhenUsernameAndPasswordArePassedAsParameters(){
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_URL, TEST_NORMAL_URL);
-		para.addParameter(SCMQuery.PARA_USERNAME, TEST_USERNAME);
-		para.addParameter(SCMQuery.PARA_PASSWORD, TEST_PASSWORD);
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NORMAL_URL);
+		para.addParameter(SCMOperationHandler.PARA_USERNAME, TEST_NORMAL_USERNAME);
+		para.addParameter(SCMOperationHandler.PARA_PASSWORD, TEST_NORMAL_PASSWORD);
 		
-		query.setClient(new ReoQueryMockSVNClientAdaptor(true));
-		Repo svnRepo = query.execute(null, para);
+		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertEquals(TEST_NORMAL_URL, svnRepo.getUrl());
-		assertEquals(TEST_USERNAME, svnRepo.getCredential().getUser());
-		assertEquals(TEST_PASSWORD, svnRepo.getCredential().getPassword());
+		assertEquals(TEST_NORMAL_USERNAME, svnRepo.getCredential().getUser());
+		assertEquals(TEST_NORMAL_PASSWORD, svnRepo.getCredential().getPassword());
+	}
+	
+	@Test
+	public void trailingSlashIsRemovedWhenTheInputUrlContainsTrailingSlash(){
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NORMAL_URL_WITH_TRAILING_SLASH);
+		para.addParameter(SCMOperationHandler.PARA_USERNAME, TEST_NORMAL_USERNAME);
+		para.addParameter(SCMOperationHandler.PARA_PASSWORD, TEST_NORMAL_PASSWORD);
+		
+		Repo svnRepo = connectionHandler.execute(connector, para);
+		assertEquals(TEST_NORMAL_URL, svnRepo.getUrl());		
 	}
 	
 	@Test
 	public void credentialShouldNotBeSetWhenUsernameAndPasswordAreNotPassedAsParameters(){
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_URL, TEST_NORMAL_URL);
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_URL, TEST_USERNAME_IN_URL);
 		
-		query.setClient(new ReoQueryMockSVNClientAdaptor(true));
-		Repo svnRepo = query.execute(null, para);
+		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertNull(svnRepo.getCredential().getUser());
 		assertNull(svnRepo.getCredential().getPassword());
 	}
-
+	
+	
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoSuchRepository(){
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_URL, TEST_NO_SUCH_URL);
-		//we use a real client here
-		query.setClient(TestSvnJavaHlClientAdaptor.getClient());
-		query.execute(null, para);
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NO_SUCH_URL);
+		connectionHandler.execute(connector, para);
 	}
+	
 	
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoPermission(){
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_URL, TEST_NO_PERMISSION);
-		//we use a real client here
-		query.setClient(TestSvnJavaHlClientAdaptor.getClient());
-		query.execute(null, para);
+		SCMOperationParameters para = SCMOperationParameters.newInstance();
+		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NO_PERMISSION);
+		connectionHandler.execute(connector, para);
 	}
 	
-	@Test(expected = SCMResponseException.class)
-	public void throwExceptionWhenAdaptorThrowsException(){
-		SCMQueryParameter para = SCMQueryParameter.newInstance();
-		para.addParameter(SCMQuery.PARA_URL, TEST_NORMAL_URL);
-		query.setClient(new ReoQueryMockSVNClientAdaptor(false));
-		query.execute(null, para);
-	}
-
 }

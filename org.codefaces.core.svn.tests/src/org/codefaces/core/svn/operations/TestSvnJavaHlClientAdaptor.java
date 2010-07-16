@@ -1,4 +1,4 @@
-package org.codefaces.core.services.svn;
+package org.codefaces.core.svn.operations;
 
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 import org.tigris.subversion.svnclientadapter.SVNClientAdapterFactory;
