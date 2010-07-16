@@ -14,7 +14,7 @@ import org.codefaces.core.operations.SCMOperationParameters;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SvnFetchChildrenQueryTest {
+public class SVNFetchChildrenOperationHandlerTest {
 	
 	private static String TEST_URL_WITHOUT_BRANCHES = "http://code.djangoproject.com/svn/django/trunk";
 	private static String TEST_URL_WITH_BRANCHES = "http://code.djangoproject.com/svn/django";
