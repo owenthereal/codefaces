@@ -1,13 +1,15 @@
 package org.codefaces.ui.dialogs;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorDescriber;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
+import org.codefaces.ui.CodeFacesUIActivator;
 import org.codefaces.ui.Images;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -23,8 +25,11 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -32,10 +37,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.progress.UIJob;
 
 public class RepoUrlInputDialog extends TitleAreaDialog {
 	private final class BranchLabelProvider extends LabelProvider {
@@ -50,60 +55,160 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 			ISelectionChangedListener {
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
-			if (event.getSelection().isEmpty()) {
-				selectedBranch = null;
-				setErrorMessage(NO_BRANCH_IS_SELECTED);
-				getButton(IDialogConstants.OK_ID).setEnabled(false);
+			RepoBranch selectedBranch = (RepoBranch) ((IStructuredSelection) event
+					.getSelection()).getFirstElement();
+			selectBranch(selectedBranch);
+		}
+	}
+
+	private final class ConnectorSelectionChangedListener implements
+			ISelectionChangedListener {
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			selectedConnector = (String) ((IStructuredSelection) event
+					.getSelection()).getFirstElement();
+			if (selectedConnector == null) {
+				connectButton.setEnabled(false);
 			} else {
-				IStructuredSelection selection = (IStructuredSelection) event
-						.getSelection();
-				selectedBranch = (RepoBranch) selection.getFirstElement();
-				setErrorMessage(null);
-				getButton(IDialogConstants.OK_ID).setEnabled(true);
+				connectButton.setEnabled(true);
 			}
 		}
 	}
 
-	private class ConnectToRepoJob extends UIJob {
+	private static class ConnectToRepoResponseDTO {
+		private Repo repo;
+
+		private String errorMessages;
+
+		public Repo getRepo() {
+			return repo;
+		}
+
+		public void setRepo(Repo repo) {
+			this.repo = repo;
+		}
+
+		public String getErrorMessages() {
+			return errorMessages;
+		}
+
+		public void setErrorMessages(String errorMessages) {
+			this.errorMessages = errorMessages;
+		}
+	}
+
+	private static class ConnectToRepoRequestDTO {
+		private String kind;
 
 		private String url;
 
-		public ConnectToRepoJob() {
-			super("");
+		public String getKind() {
+			return kind;
 		}
 
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			setErrorMessage(null);
-			getButton(IDialogConstants.OK_ID).setEnabled(false);
+		public void setKind(String kind) {
+			this.kind = kind;
+		}
 
-			try {
-				monitor.beginTask("Connecting to repository: " + url, 100);
-				IStructuredSelection selection = (IStructuredSelection) connectorInputViewer
-						.getSelection();
-
-				final Repo repo = Repo.create(
-						(String) selection.getFirstElement(), url);
-				monitor.worked(30);
-
-				monitor.setTaskName("Fetching branches...");
-				Collection<RepoBranch> branches = repo.getBranches();
-				final Object[] input = branches.toArray();
-				monitor.worked(70);
-
-				updateStructuredViewer(branchInputViewer, input);
-			} catch (Exception e) {
-				updateStructuredViewer(branchInputViewer, null);
-				setErrorMessage(e.getMessage());
-			}
-
-			return Status.OK_STATUS;
+		public String getUrl() {
+			return url;
 		}
 
 		public void setUrl(String url) {
 			this.url = url;
 		}
+	}
 
+	private class ConnectToRepoJob extends Job {
+		public ConnectToRepoJob() {
+			super("Fetching Branches");
+			setSystem(true);
+		}
+
+		@Override
+		protected IStatus run(final IProgressMonitor monitor) {
+			try {
+				ConnectToRepoRequestDTO requesetDTO = null;
+				while ((requesetDTO = waitingQueue.take()) != null) {
+					runFetchBranchesJob(requesetDTO.getKind(),
+							requesetDTO.getUrl(), monitor);
+				}
+			} catch (InterruptedException e) {
+				IStatus status = new Status(Status.ERROR,
+						CodeFacesUIActivator.PLUGIN_ID,
+						"Errors occurs when making a request", e);
+				CodeFacesUIActivator.getDefault().getLog().log(status);
+			}
+
+			return Status.OK_STATUS;
+		}
+
+		protected void runFetchBranchesJob(final String kind, final String url,
+				final IProgressMonitor monitor) {
+			runOnUIThread(new Runnable() {
+				@Override
+				public void run() {
+					setErrorMessage(null);
+					getButton(IDialogConstants.OK_ID).setEnabled(false);
+					setMessage("Loading...");
+					updateStructuredViewer(branchInputViewer, null);
+				}
+			});
+
+			final ConnectToRepoResponseDTO responseDTO = new ConnectToRepoResponseDTO();
+			UICallBack.runNonUIThreadWithFakeContext(getShell().getDisplay(),
+					new Runnable() {
+						@Override
+						public void run() {
+							fetchBranches(responseDTO, kind, url, monitor);
+						}
+					});
+
+			runOnUIThread(new Runnable() {
+				@Override
+				public void run() {
+					String errorMessages = responseDTO.getErrorMessages();
+					if (errorMessages == null) {
+						setMessage(DESCRIPTION);
+						updateStructuredViewer(branchInputViewer, responseDTO
+								.getRepo().getBranches().toArray());
+					} else {
+						setMessage(DESCRIPTION);
+						setErrorMessage(errorMessages);
+						updateStructuredViewer(branchInputViewer, null);
+					}
+				}
+			});
+		}
+
+		private void fetchBranches(ConnectToRepoResponseDTO transporter,
+				String kind, String url, final IProgressMonitor monitor) {
+			try {
+				monitor.beginTask("Connecting to repository: " + url, 100);
+				final Repo repo = Repo.create(kind, url);
+				monitor.worked(30);
+
+				monitor.setTaskName("Fetching branches...");
+				repo.getBranches();
+				monitor.worked(70);
+
+				transporter.setRepo(repo);
+			} catch (final Exception e) {
+				transporter.setErrorMessages(e.getMessage());
+			}
+		}
+
+		private final void runOnUIThread(final Runnable runnable) {
+			Shell shell = getShell();
+			if (shell == null) {
+				return;
+			}
+
+			Display display = shell.getDisplay();
+			if (display != null && !display.isDisposed()) {
+				display.syncExec(runnable);
+			}
+		}
 	}
 
 	private static final String SAMPLE_URL = "http://github.com/jingweno/ruby_grep";
@@ -127,7 +232,11 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private RepoBranch selectedBranch;
 
+	protected String selectedConnector;
+
 	private Text urlInputText;
+
+	private BlockingQueue<ConnectToRepoRequestDTO> waitingQueue = new LinkedBlockingDeque<ConnectToRepoRequestDTO>();
 
 	public RepoUrlInputDialog(Shell parentShell) {
 		super(parentShell);
@@ -138,9 +247,8 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	private void bindControls() {
 		urlInputText.setFocus();
 
-		if (connectorInputViewer.getSelection().isEmpty()) {
-			connectButton.setEnabled(false);
-		}
+		connectorInputViewer
+				.addSelectionChangedListener(new ConnectorSelectionChangedListener());
 
 		connectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -154,12 +262,25 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	}
 
 	private void connectToRepo() {
+		try {
+			ConnectToRepoRequestDTO requestDTO = new ConnectToRepoRequestDTO();
+			requestDTO.setKind(selectedConnector);
+			requestDTO.setUrl(urlInputText.getText());
+			waitingQueue.put(requestDTO);
+		} catch (InterruptedException e) {
+			IStatus status = new Status(Status.ERROR,
+					CodeFacesUIActivator.PLUGIN_ID,
+					"Errors occurs when connecting to repoistory with connector "
+							+ selectedConnector + " and url "
+							+ urlInputText.getText(), e);
+			CodeFacesUIActivator.getDefault().getLog().log(status);
+		}
+	}
+
+	protected void cancelRunningConnectingJob() {
 		if (connectToRepoJob.getState() != Job.NONE) {
 			connectToRepoJob.cancel();
 		}
-
-		connectToRepoJob.setUrl(urlInputText.getText());
-		connectToRepoJob.schedule();
 	}
 
 	private void createBranchInputSection(Composite dialogAreaComposite) {
@@ -213,13 +334,21 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		branchInputLabel.setText("Branch:");
 		createBranchInputSection(dialogAreaComposite);
 
-		populateControls();
 		bindControls();
+		populateControls();
 
 		setTitle(TITLE);
 		setMessage(DESCRIPTION);
 		setWindowTitle(WINDOW_TITLE);
 		applyDialogFont(dialogAreaComposite);
+
+		connectToRepoJob.schedule();
+		composite.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent event) {
+				cancelRunningConnectingJob();
+			}
+		});
 
 		return composite;
 	}
@@ -268,6 +397,16 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				connectorKinds.toArray(new String[0]));
 	}
 
+	private void selectBranch(RepoBranch branch) {
+		selectedBranch = branch;
+		if (branch == null) {
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
+		} else {
+			setErrorMessage(null);
+			getButton(IDialogConstants.OK_ID).setEnabled(true);
+		}
+	}
+
 	private void setWindowTitle(String windowTitle) {
 		if (getShell() == null) {
 			return;
@@ -280,8 +419,11 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	private void updateStructuredViewer(StructuredViewer viewer,
 			final Object[] input) {
 		viewer.setInput(input);
-		if (input == null || input.length == 0) {
+		if (input == null) {
 			viewer.setSelection(null);
+		} else if (input.length == 0) {
+			viewer.setSelection(null);
+			setErrorMessage(NO_BRANCH_IS_SELECTED);
 		} else {
 			viewer.setSelection(new StructuredSelection(input[0]));
 		}

@@ -1,9 +1,9 @@
 package org.codefaces.ui.views;
 
 import java.util.Map;
-import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;
@@ -29,7 +29,9 @@ public class ProjectExplorerTreeViewManager {
 
 	private Map<Object, Object> loadedResources = new ConcurrentHashMap<Object, Object>();
 
-	private BlockingDeque<RepoResource> waitingQueue = new LinkedBlockingDeque<RepoResource>();
+	private BlockingQueue<RepoResource> waitingQueue = new LinkedBlockingQueue<RepoResource>();
+
+	private RepoResourceLoadingJob loadingJob;
 
 	private class RepoResourceLoadingJob extends Job {
 		public RepoResourceLoadingJob() {
@@ -41,7 +43,7 @@ public class ProjectExplorerTreeViewManager {
 		protected IStatus run(IProgressMonitor monitor) {
 			RepoResource resource = null;
 			try {
-				while ((resource = waitingQueue.takeFirst()) != null) {
+				while ((resource = waitingQueue.take()) != null) {
 					loadResource(resource);
 				}
 			} catch (InterruptedException e) {
@@ -63,7 +65,7 @@ public class ProjectExplorerTreeViewManager {
 					resource.getChildren();
 				}
 			});
-			
+
 			display.syncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -97,7 +99,14 @@ public class ProjectExplorerTreeViewManager {
 	public ProjectExplorerTreeViewManager(TreeViewer treeView) {
 		this.viewer = treeView;
 		display = treeView.getControl().getDisplay();
-		new RepoResourceLoadingJob().schedule();
+		loadingJob = new RepoResourceLoadingJob();
+		loadingJob.schedule();
+	}
+
+	public void dispose() {
+		if (loadingJob.getState() != Job.NONE) {
+			loadingJob.cancel();
+		}
 	}
 
 	public Object[] getElement(Object parent) {
@@ -108,7 +117,7 @@ public class ProjectExplorerTreeViewManager {
 		RepoResource resource = (RepoResource) parent;
 		if (!loadedResources.containsKey(resource)) {
 			try {
-				waitingQueue.putLast(resource);
+				waitingQueue.put(resource);
 			} catch (InterruptedException e) {
 				IStatus status = new Status(Status.ERROR,
 						CodeFacesUIActivator.PLUGIN_ID,

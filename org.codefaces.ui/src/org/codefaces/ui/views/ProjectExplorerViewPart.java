@@ -37,7 +37,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ProjectExplorerViewPart extends ViewPart {
 	public static final String ID = "org.codefaces.ui.view.projectExplorer";
-	
+
 	private static final String VIEWER_CONTEXT_MENU_ID = ID + "#viewer";
 
 	private TreeViewer viewer;
@@ -47,7 +47,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private StatusManager statusManager;
 
 	private UpdateBranchWorkspaceChangeListener updateBranchListener = new UpdateBranchWorkspaceChangeListener();
-	
+
 	private ProjectExplorerTreeViewManager manager;
 
 	private final class UpdateBranchWorkspaceChangeListener implements
@@ -189,6 +189,10 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	@Override
 	public void dispose() {
+		if (manager != null) {
+			manager.dispose();
+		}
+
 		workspace.removeWorkspaceChangeListener(updateBranchListener);
 		super.dispose();
 	}
@@ -236,6 +240,9 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 *            the new working branch
 	 */
 	public void update(RepoBranch workingBranch) {
+		if (manager != null) {
+			manager.dispose();
+		}
 		manager = new ProjectExplorerTreeViewManager(viewer);
 		viewer.setInput(workingBranch);
 	}

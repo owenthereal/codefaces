@@ -46,5 +46,4 @@ public class CodeFacesHttpClientActivator extends AbstractUIPlugin {
 	public static CodeFacesHttpClientActivator getDefault() {
 		return plugin;
 	}
-
 }

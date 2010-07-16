@@ -1,8 +1,9 @@
 package org.codefaces.httpclient.ajax;
 
 import org.codefaces.httpclient.ajax.internal.AjaxClientWidgetLCA;
-import org.eclipse.rwt.SessionSingletonBase;
+import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
+import org.eclipse.rwt.service.ISessionStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -27,8 +28,22 @@ public class AjaxClientWidget extends Control {
 	}
 
 	public static AjaxClientWidget getCurrent() {
-		return (AjaxClientWidget) SessionSingletonBase
-				.getInstance(AjaxClientWidget.class);
+		final ISessionStore sessionStore = RWT.getSessionStore();
+		AjaxClientWidget widget = (AjaxClientWidget) sessionStore
+				.getAttribute(AjaxClientWidget.class.toString());
+		if (widget == null) {
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					sessionStore.setAttribute(
+							AjaxClientWidget.class.toString(),
+							new AjaxClientWidget());
+				}
+			});
+		}
+
+		return (AjaxClientWidget) sessionStore
+				.getAttribute(AjaxClientWidget.class.toString());
 	}
 
 	@SuppressWarnings("rawtypes")

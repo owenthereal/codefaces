@@ -19,25 +19,25 @@ public class AjaxClient {
 
 	public JsonResponse execute(JsonGet jsonGet) {
 		requestQueue.add(jsonGet);
-		String requestId = jsonGet.getRequestId();
+		final String requestId = jsonGet.getRequestId();
 
-		// waiting for response
-		while (!responseMap.containsKey(requestId)) {
-			runEventLoop();
-		}
+		display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				// waiting for response
+				while (!responseMap.containsKey(requestId)) {
+					runEventLoop();
+				}
+			}
+		});
 
 		return responseMap.remove(requestId);
 	}
 
 	protected void runEventLoop() {
-		display.syncExec(new Runnable() {
-			@Override
-			public void run() {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		});
+		if (!display.readAndDispatch()) {
+			display.sleep();
+		}
 	}
 
 	public void setJsonResponse(final JsonResponse response) {
