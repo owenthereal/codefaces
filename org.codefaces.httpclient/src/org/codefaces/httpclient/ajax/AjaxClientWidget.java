@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class AjaxClientWidget extends Control  {
+public class AjaxClientWidget extends Control {
 	private AjaxClient client;
 
 	private AjaxClientWidgetLCA widgetLCA;
@@ -25,7 +25,7 @@ public class AjaxClientWidget extends Control  {
 	public AjaxClient getClient() {
 		return client;
 	}
-	
+
 	public static AjaxClientWidget getCurrent() {
 		return (AjaxClientWidget) SessionSingletonBase
 				.getInstance(AjaxClientWidget.class);

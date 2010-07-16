@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
@@ -56,11 +57,17 @@ public class ProjectExplorerTreeViewManager {
 		}
 
 		private void loadResource(final RepoResource resource) {
+			UICallBack.runNonUIThreadWithFakeContext(display, new Runnable() {
+				@Override
+				public void run() {
+					resource.getChildren();
+				}
+			});
+			
 			display.syncExec(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						resource.getChildren();
 						loadedResources.put(resource, resource);
 						viewer.refresh(resource, true);
 					} catch (Exception e) {
@@ -76,8 +83,10 @@ public class ProjectExplorerTreeViewManager {
 	}
 
 	private static class LoadingItem {
+		private static final String LOADING_TEXT = "...";
+
 		public String getText() {
-			return "...";
+			return LOADING_TEXT;
 		}
 
 		public Image getImage() {
@@ -141,12 +150,12 @@ public class ProjectExplorerTreeViewManager {
 			return Images.getImageDescriptorFromRegistry(
 					Images.IMG_REPO_FOLDER_ROOT).createImage();
 		}
-		
+
 		if (obj instanceof RepoFolder) {
 			return PlatformUI.getWorkbench().getSharedImages()
-			.getImage(ISharedImages.IMG_OBJ_FOLDER);
+					.getImage(ISharedImages.IMG_OBJ_FOLDER);
 		}
-		
+
 		if (obj instanceof RepoFile) {
 			return PlatformUI.getWorkbench().getSharedImages()
 					.getImage(ISharedImages.IMG_OBJ_FILE);

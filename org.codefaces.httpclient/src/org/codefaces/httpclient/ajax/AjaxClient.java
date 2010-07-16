@@ -30,9 +30,14 @@ public class AjaxClient {
 	}
 
 	protected void runEventLoop() {
-		if (!display.readAndDispatch()) {
-			display.sleep();
-		}
+		display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		});
 	}
 
 	public void setJsonResponse(final JsonResponse response) {
