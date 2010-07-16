@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Path;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SvnFetchFileInfoQueryTest {
+public class SVNFetchFileInfoOperationHandlerTest {
 	
 	private static String TEST_URL_WITHOUT_BRANCHES = 
 		"http://code.djangoproject.com/svn/django/trunk";
