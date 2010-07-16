@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class SvnRepoQueryTest {
+public class SVNConnectionOperationHandlerTest {
 
 	private static final String TEST_NORMAL_URL = "http://subclipse.tigris.org/svn/subclipse/trunk";
 	private static final String TEST_NORMAL_URL_WITH_TRAILING_SLASH = "http://subclipse.tigris.org/svn/subclipse/trunk/";
