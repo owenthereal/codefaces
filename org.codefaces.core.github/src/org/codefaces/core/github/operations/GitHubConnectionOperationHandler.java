@@ -35,9 +35,17 @@ public class GitHubConnectionOperationHandler implements SCMOperationHandler {
 		String url = (String) urlPara;
 		Matcher httpMatcher = HTTP_URL_PATTERN.matcher(url);
 		Matcher gitMatcher = GIT_URL_PATTERN.matcher(url);
-		Matcher matcher = httpMatcher.matches() ? httpMatcher : gitMatcher;
+		Matcher matcher = null;
 		
-		if (matcher.matches()) {
+		boolean httpMatched = httpMatcher.matches();
+		if(httpMatched){
+			matcher = httpMatcher;
+		}
+		else if(gitMatcher.matches()){
+			matcher = gitMatcher;
+		}
+		
+		if (matcher != null) {
 			String owner = matcher.group(1);
 			String repoName = matcher.group(2);
 
