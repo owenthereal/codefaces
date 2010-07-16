@@ -3,7 +3,7 @@ package org.codefaces.core.services.svn;
 import java.util.Date;
 
 import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
-import org.tigris.subversion.svnclientadapter.SVNNodeKind;
+import org.tigris.subversion.svnclientadapter.SVNResourceKind;
 import org.tigris.subversion.svnclientadapter.SVNRevision.Number;
 
 //An empty mock for ISVNDirEntry
@@ -16,7 +16,7 @@ public class MockSVNDirEntry implements ISVNDirEntry {
 	private String lastCommitAuthor;
 	private long size;
 
-	private SVNNodeKind nodeKind;
+	private SVNResourceKind nodeKind;
 
 	public void setPath(String path) {
 		this.path = path;
@@ -38,7 +38,7 @@ public class MockSVNDirEntry implements ISVNDirEntry {
 		this.lastCommitAuthor = lastCommitAuthor;
 	}
 	
-	public void setNodeKind(SVNNodeKind nodeKind) {
+	public void setNodeKind(SVNResourceKind nodeKind) {
 		this.nodeKind = nodeKind;
 	}
 
@@ -72,7 +72,7 @@ public class MockSVNDirEntry implements ISVNDirEntry {
 	}
 
 	@Override
-	public SVNNodeKind getNodeKind() {
+	public SVNResourceKind getNodeKind() {
 		return nodeKind;
 	}
 

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Date;
 
 import org.tigris.subversion.svnclientadapter.ISVNInfo;
-import org.tigris.subversion.svnclientadapter.SVNNodeKind;
+import org.tigris.subversion.svnclientadapter.SVNResourceKind;
 import org.tigris.subversion.svnclientadapter.SVNScheduleKind;
 import org.tigris.subversion.svnclientadapter.SVNUrl;
 import org.tigris.subversion.svnclientadapter.SVNRevision.Number;
@@ -18,7 +18,7 @@ public class MockSVNInfo implements ISVNInfo {
 	private String uuid;
 	private SVNUrl repository;
 	private SVNScheduleKind schedule;
-	private SVNNodeKind nodeKind;
+	private SVNResourceKind nodeKind;
 	private String lastCommitAuthor;
 	private Number revision;
 	private Number lastChangedRevision;
@@ -57,7 +57,7 @@ public class MockSVNInfo implements ISVNInfo {
 		this.schedule = schedule;
 	}
 
-	public void setNodeKind(SVNNodeKind nodeKind) {
+	public void setNodeKind(SVNResourceKind nodeKind) {
 		this.nodeKind = nodeKind;
 	}
 
@@ -144,7 +144,7 @@ public class MockSVNInfo implements ISVNInfo {
 	}
 
 	@Override
-	public SVNNodeKind getNodeKind() {
+	public SVNResourceKind getNodeKind() {
 		return nodeKind;
 	}
 

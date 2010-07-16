@@ -12,7 +12,7 @@ import org.codefaces.core.svn.operations.SVNFetchBranchesOperationHandler;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
 import org.tigris.subversion.svnclientadapter.SVNClientException;
-import org.tigris.subversion.svnclientadapter.SVNNodeKind;
+import org.tigris.subversion.svnclientadapter.SVNResourceKind;
 import org.tigris.subversion.svnclientadapter.SVNRevision;
 import org.tigris.subversion.svnclientadapter.SVNUrl;
 
@@ -73,8 +73,8 @@ public class SvnFetchBranchesQueryTest {
 		final MockSVNDirEntry fileInBranchesDir = new MockSVNDirEntry();
 		branchInBranchesDir.setPath("branchInBranchesDir");
 		fileInBranchesDir.setPath("fileInBranchesDir");
-		branchInBranchesDir.setNodeKind(SVNNodeKind.DIR);
-		fileInBranchesDir.setNodeKind(SVNNodeKind.FILE);
+		branchInBranchesDir.setNodeKind(SVNResourceKind.DIR);
+		fileInBranchesDir.setNodeKind(SVNResourceKind.FILE);
 		branchInBranchesDir.setLastChangedDate(new Date());
 		fileInBranchesDir.setLastChangedDate(new Date());
 		

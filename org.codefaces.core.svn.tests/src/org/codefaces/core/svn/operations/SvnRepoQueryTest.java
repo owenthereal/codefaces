@@ -23,19 +23,7 @@ public class SvnRepoQueryTest {
 	private static final String TEST_NO_SUCH_URL = "http://svn.nosuchurl.org/svn";
 	private static final String TEST_NO_PERMISSION = "https://secure.jms1.net";
 
-	// mock query
-	class MockSvnRepoQuery extends SvnRepoQuery{
-		private ISVNClientAdapter testClient;
-		
-		public void setClient(ISVNClientAdapter testClient){
-			this.testClient = testClient;
-		}
-		
-		@Override
-		protected ISVNClientAdapter getSvnClient(){
-			return testClient == null? new MockSVNClientAdaptor() : testClient;
-		}
-	}
+	
 	
 	//A mock client
 	class ReoQueryMockSVNClientAdaptor extends MockSVNClientAdaptor{
