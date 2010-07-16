@@ -17,7 +17,8 @@ public class SVNConnectionOperationHandlerTest {
 	private static final String TEST_NORMAL_USERNAME = "guest";
 	private static final String TEST_NORMAL_PASSWORD = null;
 	
-	private static final String TEST_USERNAME_IN_URL = "http://guest@subclipse.tigris.org/svn/subclipse/trunk";
+	private static final String TEST_URL_WITH_USER_NAME = "http://guest@subclipse.tigris.org/svn/subclipse/trunk";
+	private static final String TEST_USERNAME_IN_URL = "guest";
 	
 	private static final String TEST_NO_SUCH_URL = "http://svn.nosuchurl.org/svn";
 	private static final String TEST_NO_PERMISSION = "https://secure.jms1.net";
@@ -56,12 +57,12 @@ public class SVNConnectionOperationHandlerTest {
 	}
 	
 	@Test
-	public void credentialShouldNotBeSetWhenUsernameAndPasswordAreNotPassedAsParameters(){
+	public void credentialShouldBeSetWhenUsernameIsPassedInUrl(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_USERNAME_IN_URL);
+		para.addParameter(SCMOperationHandler.PARA_URL, TEST_URL_WITH_USER_NAME);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
-		assertNull(svnRepo.getCredential().getUser());
+		assertEquals(TEST_USERNAME_IN_URL, svnRepo.getCredential().getUser());
 		assertNull(svnRepo.getCredential().getPassword());
 	}
 	

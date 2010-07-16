@@ -1,6 +1,10 @@
 package org.codefaces.core.svn.operations;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.codefaces.core.connectors.SCMConnector;
+import org.codefaces.core.connectors.SCMURLException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.operations.SCMOperationHandler;
@@ -21,16 +25,30 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 		Assert.isTrue(passwordPara == null || usernamePara instanceof String);
 
 		String url = (String) urlPara;
-		String username = (usernamePara != null) ? (String) usernamePara : null;
-		String password = (passwordPara != null) ? (String) passwordPara : null;
-		SVNConnector svnConnector = (SVNConnector) connector;
 		
-		SVNRepoInfo repoInfo = svnConnector.getSvnClient().getRepoInfo(url,
-				username, password);
-		RepoCredential credential = new RepoCredential(null, username,
-				password);
-		return new Repo(connector.getKind(), repoInfo.getUrl(),
-				repoInfo.getUuid(), credential);
+		try {
+			URI uri = new URI(url);
+			String username = null;
+			//if username in url, assign it first
+			if (uri.getUserInfo() != null){ username = uri.getUserInfo(); }
+			//now override it if it is passed by parameter
+			if (usernamePara != null) { username = (String) usernamePara; }
+			String password = (passwordPara != null) ? (String) passwordPara : null;
+			
+			SVNConnector svnConnector = (SVNConnector) connector;
+			
+			SVNRepoInfo repoInfo = svnConnector.getSvnClient().getRepoInfo(url,
+					username, password);
+
+			RepoCredential credential = new RepoCredential(null, username,
+					password);
+			return new Repo(connector.getKind(), repoInfo.getUrl(),
+					repoInfo.getUuid(), credential);
+			
+		} catch (URISyntaxException e) {
+			throw new SCMURLException("Invalid repository url: "+ url);
+		}
+
 	}
 
 }
