@@ -168,7 +168,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
-		manager = new ProjectExplorerTreeViewManager(viewer);
 
 		hookWorkspace();
 		createToolBar(parent);
@@ -237,6 +236,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 *            the new working branch
 	 */
 	public void update(RepoBranch workingBranch) {
+		manager = new ProjectExplorerTreeViewManager(viewer);
 		viewer.setInput(workingBranch);
 	}
 

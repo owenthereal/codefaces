@@ -24,7 +24,6 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 		String username = (usernamePara != null) ? (String) usernamePara : null;
 		String password = (passwordPara != null) ? (String) passwordPara : null;
 		SVNConnector svnConnector = (SVNConnector) connector;
-
 		
 		SVNRepoInfo repoInfo = svnConnector.getSvnClient().getRepoInfo(url,
 				username, password);
