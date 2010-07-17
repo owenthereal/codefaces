@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.codefaces.core.github.connectors.GitHubConnector;
-import org.codefaces.core.github.operations.dto.GitHubBranchesDto;
+import org.codefaces.core.github.operations.dtos.GitHubBranchesDTO;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
@@ -51,7 +51,7 @@ public class GitHubFetchBranchesQueryTest {
 
 	@Test
 	public void test_getBranchesDto() {
-		GitHubBranchesDto branchesDto = query.getBranchesDto(connector,
+		GitHubBranchesDTO branchesDto = query.getBranchesDto(connector,
 				TEST_BRANCH_URL);
 		Map<String, String> branches = branchesDto.getBrances();
 

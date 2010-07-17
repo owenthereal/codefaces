@@ -2,8 +2,8 @@ package org.codefaces.core.github.operations;
 
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.github.connectors.GitHubConnector;
-import org.codefaces.core.github.operations.dto.GitHubFileDataDto;
-import org.codefaces.core.github.operations.dto.GitHubFileDto;
+import org.codefaces.core.github.operations.dtos.GitHubFileDataDTO;
+import org.codefaces.core.github.operations.dtos.GitHubFileDTO;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
@@ -30,7 +30,7 @@ public class GitHubFetchFileInfoOperationHandler implements SCMOperationHandler 
 
 			String fileUrl = createFetchFileInfoUrl(repo, folder, fileName);
 
-			GitHubFileDataDto fileDataDto = fetchFileDataDto(
+			GitHubFileDataDTO fileDataDto = fetchFileDataDto(
 					(GitHubConnector) connector, fileUrl);
 
 			return new RepoFileInfo(fileDataDto.getData(),
@@ -48,11 +48,11 @@ public class GitHubFetchFileInfoOperationHandler implements SCMOperationHandler 
 				fileName);
 	}
 
-	private GitHubFileDataDto fetchFileDataDto(GitHubConnector connector,
+	private GitHubFileDataDTO fetchFileDataDto(GitHubConnector connector,
 			String getGitHubFileMetadataUrl) {
-		GitHubFileDto gitHubFileDto = GitHubOperationUtil.fromJson(
+		GitHubFileDTO gitHubFileDto = GitHubOperationUtil.fromJson(
 				connector.getResponseBody(getGitHubFileMetadataUrl),
-				GitHubFileDto.class);
+				GitHubFileDTO.class);
 
 		return gitHubFileDto.getBlob();
 	}

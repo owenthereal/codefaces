@@ -5,11 +5,15 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+
 import org.apache.commons.io.IOUtils;
 import org.codefaces.core.connectors.SCMIOException;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
 import org.codefaces.core.svn.operations.SVNConstants;
+import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.SessionSingletonBase;
 import org.tigris.subversion.clientadapter.Activator;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
@@ -23,18 +27,21 @@ import org.tigris.subversion.svnclientadapter.SVNUrl;
 /**
  * An abstract layer to adapt the underlining client provider
  */
-public class SVNClientAdaptor {
-
+public class SVNClientAdaptor implements HttpSessionBindingListener {
 	private ISVNClientAdapter client;
+
+	private static final String ID = SVNClientAdaptor.class.toString();
 
 	/**
 	 * no parameter constructor for session singleton use
 	 */
 	protected SVNClientAdaptor() {
 		Activator activator = Activator.getDefault();
-		ISVNClientAdapter client = activator
+		final ISVNClientAdapter client = activator
 				.getClientAdapter(SVNConstants.CLIENT_ADAPTOR_ID);
 		this.client = client;
+
+		RWT.getSessionStore().getHttpSession().setAttribute(ID, this);
 	}
 
 	/**
@@ -65,9 +72,9 @@ public class SVNClientAdaptor {
 		try {
 			SVNUrl svnUrl = new SVNUrl(url);
 			ISVNClientAdapter client = getClient();
-			
-			String svnUsername = (username == null? "" : username);
-			String svnPassword = (password == null? "" : password);
+
+			String svnUsername = (username == null ? "" : username);
+			String svnPassword = (password == null ? "" : password);
 			client.setUsername(svnUsername);
 			client.setPassword(svnPassword);
 
@@ -98,11 +105,11 @@ public class SVNClientAdaptor {
 			SVNUrl svnUrl = new SVNUrl(url);
 			ISVNClientAdapter client = getClient();
 
-			String svnUsername = (username == null? "" : username);
-			String svnPassword = (password == null? "" : password);
+			String svnUsername = (username == null ? "" : username);
+			String svnPassword = (password == null ? "" : password);
 			client.setUsername(svnUsername);
 			client.setPassword(svnPassword);
-			
+
 			ISVNDirEntry[] entries = client.getList(svnUrl, SVNRevision.HEAD,
 					false);
 
@@ -132,13 +139,13 @@ public class SVNClientAdaptor {
 		SVNResource resource = null;
 		InputStream stream = null;
 		StringWriter writer = null;
-		
+
 		try {
 			SVNUrl svnUrl = new SVNUrl(url);
 			ISVNClientAdapter client = getClient();
-			
-			String svnUsername = (username == null? "" : username);
-			String svnPassword = (password == null? "" : password);
+
+			String svnUsername = (username == null ? "" : username);
+			String svnPassword = (password == null ? "" : password);
 			client.setUsername(svnUsername);
 			client.setPassword(svnPassword);
 
@@ -158,11 +165,16 @@ public class SVNClientAdaptor {
 			throw new SCMResponseException(e.getMessage(), e);
 		} catch (IOException e) {
 			throw new SCMIOException(e.getMessage(), e);
-		} finally{
+		} finally {
 			try {
-				if (stream != null){ stream.close(); }
-				if (writer != null){ writer.close(); }
-			} catch (IOException e) {}
+				if (stream != null) {
+					stream.close();
+				}
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (IOException e) {
+			}
 		}
 		return resource;
 	}
@@ -183,9 +195,18 @@ public class SVNClientAdaptor {
 	/**
 	 * @return a session-based instance of SVNClinetAdaptor
 	 */
-
 	public static SVNClientAdaptor getCurrent() {
 		return (SVNClientAdaptor) SessionSingletonBase
 				.getInstance(SVNClientAdaptor.class);
+	}
+
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		client.dispose();
 	}
 }

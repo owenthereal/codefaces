@@ -8,7 +8,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.github.connectors.GitHubConnector;
-import org.codefaces.core.github.operations.dto.GitHubBranchesDto;
+import org.codefaces.core.github.operations.dtos.GitHubBranchesDTO;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.operations.SCMOperationHandler;
@@ -31,7 +31,7 @@ public class GitHubFetchBranchesOperationHandler implements SCMOperationHandler 
 		Repo repo = (Repo) repoPara;
 		String url = createFetchBranchesUrl(repo);
 
-		GitHubBranchesDto dtos = getBranchesDto((GitHubConnector) connector,
+		GitHubBranchesDTO dtos = getBranchesDto((GitHubConnector) connector,
 				url);
 
 		Set<RepoBranch> branches = new LinkedHashSet<RepoBranch>();
@@ -49,7 +49,7 @@ public class GitHubFetchBranchesOperationHandler implements SCMOperationHandler 
 		return branches;
 	}
 
-	protected GitHubBranchesDto getBranchesDto(GitHubConnector connector,
+	protected GitHubBranchesDTO getBranchesDto(GitHubConnector connector,
 			String url) {
 		String respBody = connector.getResponseBody(url);
 		return parseContent(respBody);
@@ -60,10 +60,10 @@ public class GitHubFetchBranchesOperationHandler implements SCMOperationHandler 
 				.getOwner(), repo.getName(), URI_BRANCHES_SQGMENT);
 	}
 
-	private GitHubBranchesDto parseContent(String respBody)
+	private GitHubBranchesDTO parseContent(String respBody)
 			throws SCMResponseException {
 		try {
-			return GitHubOperationUtil.fromJson(respBody, GitHubBranchesDto.class);
+			return GitHubOperationUtil.fromJson(respBody, GitHubBranchesDTO.class);
 		} catch (Exception e) {
 			throw new SCMResponseException(e.getMessage(), e);
 		}

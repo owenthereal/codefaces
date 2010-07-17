@@ -1,6 +1,6 @@
-package org.codefaces.core.github.operations.dto;
+package org.codefaces.core.github.operations.dtos;
 
-public class GitHubFileDataDto {
+public class GitHubFileDataDTO {
 	private String name;
 	private int size;
 	private String data;

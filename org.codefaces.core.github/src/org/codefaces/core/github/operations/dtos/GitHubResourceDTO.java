@@ -1,6 +1,6 @@
-package org.codefaces.core.github.operations.dto;
+package org.codefaces.core.github.operations.dtos;
 
-public class GitHubResourceDto {
+public class GitHubResourceDTO {
 	private String name;
 	private String sha;
 	private String mode;

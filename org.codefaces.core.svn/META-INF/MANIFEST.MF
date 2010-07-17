@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.codefaces.core.svn.SVNActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.core,
+ org.eclipse.rap.rwt,
+ javax.servlet,
  org.tigris.subversion.clientadapter
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.rwt

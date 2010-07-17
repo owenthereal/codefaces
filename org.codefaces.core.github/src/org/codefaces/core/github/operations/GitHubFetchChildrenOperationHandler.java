@@ -7,8 +7,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.github.connectors.GitHubConnector;
-import org.codefaces.core.github.operations.dto.GitHubResourceDto;
-import org.codefaces.core.github.operations.dto.GitHubResourcesDto;
+import org.codefaces.core.github.operations.dtos.GitHubResourceDTO;
+import org.codefaces.core.github.operations.dtos.GitHubResourcesDTO;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;
@@ -38,11 +38,11 @@ public class GitHubFetchChildrenOperationHandler implements SCMOperationHandler 
 			Repo repo = root.getRepo();
 
 			String url = createFetchChildrenUrl(repo, container);
-			GitHubResourcesDto resourceDto = fetchChildrenDto(
+			GitHubResourcesDTO resourceDto = fetchChildrenDto(
 					(GitHubConnector) connector, url);
 
 			Set<RepoResource> children = new HashSet<RepoResource>();
-			for (GitHubResourceDto rscDto : resourceDto.getResources()) {
+			for (GitHubResourceDTO rscDto : resourceDto.getResources()) {
 				String type = rscDto.getType();
 				RepoResource child = createRepoResourceFromType(type, root,
 						container, rscDto.getSha(), rscDto.getName());
@@ -73,10 +73,10 @@ public class GitHubFetchChildrenOperationHandler implements SCMOperationHandler 
 		return null;
 	}
 
-	protected GitHubResourcesDto fetchChildrenDto(GitHubConnector connector,
+	protected GitHubResourcesDTO fetchChildrenDto(GitHubConnector connector,
 			String url) {
 		String respBody = connector.getResponseBody(url);
-		return GitHubOperationUtil.fromJson(respBody, GitHubResourcesDto.class);
+		return GitHubOperationUtil.fromJson(respBody, GitHubResourcesDTO.class);
 	}
 
 	protected String createFetchChildrenUrl(Repo repo, RepoResource resource) {

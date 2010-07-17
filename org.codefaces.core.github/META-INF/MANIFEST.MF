@@ -10,4 +10,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.codefaces.core.github.connectors,
  org.codefaces.core.github.operations,
- org.codefaces.core.github.operations.dto
+ org.codefaces.core.github.operations.dtos
