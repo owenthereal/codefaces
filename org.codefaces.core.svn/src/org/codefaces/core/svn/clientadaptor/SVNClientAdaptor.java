@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMIOException;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
@@ -84,7 +85,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
 		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
+			throw constructSCMResponseException(e);
 		}
 		return svnInfo;
 	}
@@ -128,7 +129,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
 		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
+			throw constructSCMResponseException(e);
 		}
 	}
 
@@ -162,7 +163,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
 		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
+			throw constructSCMResponseException(e);
 		} catch (IOException e) {
 			throw new SCMIOException(e.getMessage(), e);
 		} finally {
@@ -177,6 +178,21 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 			}
 		}
 		return resource;
+	}
+
+	/**
+	 * The orginal SVNClientException error message is too detailed. We pick out the last
+	 * past of the original error message and construct a new SCMResponseException
+	 * @return SCMResponseException based on the original error message
+	 * @param e the original exception
+	 */
+	private SCMResponseException constructSCMResponseException(SVNClientException e) {
+		//String svnClientMajorErrMsg = StringUtils.substringAfterLast(
+		//		e.getMessage(), ": ");
+		//String errMsg = svnClientMajorErrMsg.isEmpty() ? e.getMessage()
+		//		: svnClientMajorErrMsg;
+		String errMsg = e.getMessage();
+		return new SCMResponseException(errMsg, e);
 	}
 
 	/**
