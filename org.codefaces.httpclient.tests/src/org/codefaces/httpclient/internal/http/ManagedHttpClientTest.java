@@ -1,4 +1,4 @@
-package org.codefaces.httpclient.http;
+package org.codefaces.httpclient.internal.http;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
