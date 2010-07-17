@@ -84,7 +84,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
 		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
+			throw constructSCMResponseException(e);
 		}
 		return svnInfo;
 	}
@@ -128,7 +128,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
 		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
+			throw constructSCMResponseException(e);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
 		} catch (SVNClientException e) {
-			throw new SCMResponseException(e.getMessage(), e);
+			throw constructSCMResponseException(e);
 		} catch (IOException e) {
 			throw new SCMIOException(e.getMessage(), e);
 		} finally {
@@ -177,6 +177,25 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 			}
 		}
 		return resource;
+	}
+
+	/**
+	 * The orginal SVNClientException error message is not so meaningful. 
+	 * We construct a new SCMResponseException
+	 * 
+	 * @return SCMResponseException based on the original error message
+	 * @param e the original exception
+	 */
+	private SCMResponseException constructSCMResponseException(SVNClientException e) {
+		String rawErrMsg = e.getMessage().toLowerCase();
+		String errMsg;
+		if(rawErrMsg.contains("authentication")){
+			errMsg = "Authorization failed. Wrong username or password.";
+		}
+		else{
+			errMsg = "Unable to connect to the repository.";
+		}
+		return new SCMResponseException(errMsg, e);
 	}
 
 	/**
