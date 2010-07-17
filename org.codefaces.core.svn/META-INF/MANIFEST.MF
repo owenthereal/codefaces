@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Svn
 Bundle-SymbolicName: org.codefaces.core.svn;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.codefaces.core.svn.SVNActivator
+Bundle-Activator: org.codefaces.core.svn.internal.SVNActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.core,
  org.eclipse.rap.rwt,

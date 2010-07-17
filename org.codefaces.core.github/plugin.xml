@@ -4,7 +4,7 @@
   <extension
          point="org.codefaces.core.scmConnectors">
       <connector
-            class="org.codefaces.core.github.connectors.GitHubConnector"
+            class="org.codefaces.core.github.internal.connectors.GitHubConnector"
             id="org.codefaces.core.github.connectors.github"
             kind="GitHub">
       </connector>
@@ -12,25 +12,25 @@
   <extension
         point="org.codefaces.core.scmOperationHandlers">
      <operationHandler
-           class="org.codefaces.core.github.operations.GitHubConnectionOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubConnectionOperationHandler"
            id="org.codefaces.core.operations.SCMOperation.connection"
            kind="GitHub"
            name="GitHub Connection Operation Handler">
      </operationHandler>
      <operationHandler
-           class="org.codefaces.core.github.operations.GitHubFetchBranchesOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubFetchBranchesOperationHandler"
            id="org.codefaces.core.operations.SCMOperation.fetchBranches"
            kind="GitHub"
            name="GitHub Fetch Brancher Operation Handler">
      </operationHandler>
      <operationHandler
-           class="org.codefaces.core.github.operations.GitHubFetchChildrenOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubFetchChildrenOperationHandler"
            id="org.codefaces.core.operations.SCMOperation.fetchChildren"
            kind="GitHub"
            name="GitHub Fetch Children Operation Handler">
      </operationHandler>
      <operationHandler
-           class="org.codefaces.core.github.operations.GitHubFetchFileInfoOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubFetchFileInfoOperationHandler"
            id="org.codefaces.core.operations.SCMOperation.fetchFileInfo"
            kind="GitHub"
            name="GitHub Fetch File Info Operation Handler">

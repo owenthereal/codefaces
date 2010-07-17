@@ -6,7 +6,7 @@
     <extension
          point="org.eclipse.rap.ui.entrypoint">
       <entrypoint
-            class="org.codefaces.ui.entryPoints.CodeFacesEntryPoint"
+            class="org.codefaces.ui.internal.entryPoints.CodeFacesEntryPoint"
             id="org.codefaces.ui.entrypoint.codefaces"
             parameter="codefaces">
       </entrypoint>
@@ -14,7 +14,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.codefaces.ui.perspectives.CodeFacesPerspectiveFactory"
+            class="org.codefaces.ui.internal.perspectives.CodeFacesPerspectiveFactory"
             id="org.codefaces.ui.perspective.codefaces"
             name="CodeFaces">
       </perspective>
@@ -28,7 +28,7 @@
       <view
             allowMultiple="false"
             category="org.codefaces.ui.category.codefaces"
-            class="org.codefaces.ui.views.ProjectExplorerViewPart"
+            class="org.codefaces.ui.internal.views.ProjectExplorerViewPart"
             icon="icons/navigator.gif"
             id="org.codefaces.ui.view.projectExplorer"
             name="Project Explorer"
@@ -72,14 +72,14 @@
       </category>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.ImportRepositoryCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.ImportRepositoryCommandHandler"
             description="Import from a repository"
             id="org.codefaces.ui.commands.importRepositoryCommand"
             name="ImportRepositoryCommand">
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.SwitchBranchCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.SwitchBranchCommandHandler"
             description="Switch to another Repository Branch without switching the repository"
             id="org.codefaces.ui.commands.switchBranchCommand"
             name="switchRepositoryBranchCommand">
@@ -91,14 +91,14 @@
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.AboutCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.AboutCommandHandler"
             description="About CodeFaces"
             id="org.codefaces.ui.command.about"
             name="About">
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.OpenFileCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.OpenFileCommandHandler"
             description="Open selected file(s)"
             id="org.codefaces.ui.commands.openFileCommand"
             name="Open File">
@@ -115,7 +115,7 @@
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.ShowViewCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.ShowViewCommandHandler"
             description="Open a view"
             id="org.codefaces.ui.commands.showViewCommand"
             name="Show view">
@@ -127,7 +127,7 @@
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.OpenEditorHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.OpenEditorHandler"
             description="Open a editor"
             id="org.codefaces.ui.command.openEditor"
             name="Open a editor">
@@ -160,7 +160,7 @@
                   icon="icons/window.gif"
                   label="Show View">
                <dynamic
-                     class="org.codefaces.ui.actions.ShowViewMenu"
+                     class="org.codefaces.ui.internal.actions.ShowViewMenu"
                      id="org.codefaces.ui.actions.showViewMenu">
                </dynamic>
             </menu>
@@ -249,22 +249,22 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.codefaces.ui.editors.CodeExplorer"
-            contributorClass="org.codefaces.ui.editors.CodeExplorerActionBarConbributor"
+            class="org.codefaces.ui.internal.editors.CodeExplorer"
+            contributorClass="org.codefaces.ui.internal.editors.CodeExplorerActionBarConbributor"
             default="true"
             icon="icons/file.gif"
             id="org.codefaces.ui.editor.codeExplorer"
             name="Code Explorer">
       </editor>
       <editor
-            class="org.codefaces.ui.editors.WelcomeEditor"
+            class="org.codefaces.ui.internal.editors.WelcomeEditor"
             default="true"
             icon="icons/welcome.gif"
             id="org.codefaces.ui.editor.welcomeEditor"
             name="Welcome">
       </editor>
       <editor
-            class="org.codefaces.ui.editors.SupportEditor"
+            class="org.codefaces.ui.internal.editors.SupportEditor"
             default="false"
             icon="icons/contact_us.gif"
             id="org.codefaces.ui.editor.supportEditor"

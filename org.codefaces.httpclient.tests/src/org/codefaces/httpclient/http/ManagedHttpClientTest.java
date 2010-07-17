@@ -10,7 +10,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMResponseException;
-import org.codefaces.httpclient.http.ManagedHttpClient;
+import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -3,8 +3,8 @@ package org.codefaces.web.github.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.codefaces.web.RepoParameters;
-import org.codefaces.web.github.GitHubUrlParseStrategy;
+import org.codefaces.web.internal.urls.URLQueryStrings;
+import org.codefaces.web.internal.urls.github.GitHubUrlParseStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,31 +24,31 @@ public class GithubUrlParseStrategyTest {
 
 	@Test
 	public void test_extractParameters_masterRoot() {
-		RepoParameters parameters = strategy
-				.extractParameters(TEST_URL_MASTER_ROOT);
+		URLQueryStrings parameters = strategy
+				.buildQueryStrings(TEST_URL_MASTER_ROOT);
 
 		assertEquals("http://github.com/jingweno/ruby_grep", parameters
-				.getParameter(RepoParameters.REPO));
-		assertNull(parameters.getParameter(RepoParameters.BRANCH));
+				.getParameter(URLQueryStrings.REPO));
+		assertNull(parameters.getParameter(URLQueryStrings.BRANCH));
 	}
 
 	@Test
 	public void test_extractParameters_masterFile() {
-		RepoParameters parameters = strategy
-				.extractParameters(TEST_URL_MASTER_FILE);
+		URLQueryStrings parameters = strategy
+				.buildQueryStrings(TEST_URL_MASTER_FILE);
 
 		assertEquals("http://github.com/jingweno/ruby_grep", parameters
-				.getParameter(RepoParameters.REPO));
-		assertEquals("master", parameters.getParameter(RepoParameters.BRANCH));
+				.getParameter(URLQueryStrings.REPO));
+		assertEquals("master", parameters.getParameter(URLQueryStrings.BRANCH));
 	}
 	
 	@Test
 	public void test_extractParameters_branchRoot() {
-		RepoParameters parameters = strategy
-		.extractParameters(TEST_URL_BRANCH_ROOT);
+		URLQueryStrings parameters = strategy
+		.buildQueryStrings(TEST_URL_BRANCH_ROOT);
 		
 		assertEquals("http://github.com/schacon/ruby-git", parameters
-				.getParameter(RepoParameters.REPO));
-		assertEquals("internals", parameters.getParameter(RepoParameters.BRANCH));
+				.getParameter(URLQueryStrings.REPO));
+		assertEquals("internals", parameters.getParameter(URLQueryStrings.BRANCH));
 	}
 }

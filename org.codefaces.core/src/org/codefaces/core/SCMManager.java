@@ -1,7 +1,7 @@
 package org.codefaces.core;
 
 import org.codefaces.core.connectors.SCMConnectorManager;
-import org.codefaces.core.impl.CodeFacesCoreActivator;
+import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.codefaces.core.operations.SCMOperationHandlerManager;
 
 public class SCMManager {

@@ -2,7 +2,7 @@ package org.codefaces.core.services;
 
 import java.util.Collection;
 
-import org.codefaces.core.impl.CodeFacesCoreActivator;
+import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;

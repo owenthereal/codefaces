@@ -2,6 +2,9 @@ package org.codefaces.httpclient.ajax;
 
 import static org.junit.Assert.assertEquals;
 
+import org.codefaces.httpclient.internal.ajax.AjaxClient;
+import org.codefaces.httpclient.internal.ajax.JsonGet;
+import org.codefaces.httpclient.internal.ajax.JsonResponse;
 import org.junit.Test;
 
 public class AjaxClientTest {
