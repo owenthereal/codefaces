@@ -181,17 +181,21 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	}
 
 	/**
-	 * The orginal SVNClientException error message is too detailed. We pick out the last
-	 * past of the original error message and construct a new SCMResponseException
+	 * The orginal SVNClientException error message is not so meaningful. 
+	 * We construct a new SCMResponseException
+	 * 
 	 * @return SCMResponseException based on the original error message
 	 * @param e the original exception
 	 */
 	private SCMResponseException constructSCMResponseException(SVNClientException e) {
-		//String svnClientMajorErrMsg = StringUtils.substringAfterLast(
-		//		e.getMessage(), ": ");
-		//String errMsg = svnClientMajorErrMsg.isEmpty() ? e.getMessage()
-		//		: svnClientMajorErrMsg;
-		String errMsg = e.getMessage();
+		String rawErrMsg = e.getMessage().toLowerCase();
+		String errMsg;
+		if(rawErrMsg.contains("authentication")){
+			errMsg = "Authorization failed. Wrong username or password.";
+		}
+		else{
+			errMsg = "Unable to connect to the repository.";
+		}
 		return new SCMResponseException(errMsg, e);
 	}
 
