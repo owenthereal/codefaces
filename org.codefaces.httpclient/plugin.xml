@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
-            class="org.codefaces.httpclient.ajax.internal.AjaxClientWidgetResource">
+            class="org.codefaces.httpclient.internal.ajax.AjaxClientWidgetResource">
       </resource>
    </extension>
 </plugin>

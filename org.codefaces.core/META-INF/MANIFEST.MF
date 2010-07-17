@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: CodeFaces Core
 Bundle-SymbolicName: org.codefaces.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.codefaces.core.impl.CodeFacesCoreActivator
+Bundle-Activator: org.codefaces.core.internal.CodeFacesCoreActivator
 Export-Package: org.codefaces.core,
  org.codefaces.core.connectors,
  org.codefaces.core.events,

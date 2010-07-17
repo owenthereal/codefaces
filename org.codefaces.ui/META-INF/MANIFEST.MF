@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: org.codefaces.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.codefaces.ui.CodeFacesUIActivator
+Bundle-Activator: org.codefaces.ui.internal.CodeFacesUIActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui,
  org.eclipse.rap.ui.views,
@@ -11,7 +11,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.expressions
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.codefaces.ui.codeLanguages,
- org.codefaces.ui.commands
 Import-Package: javax.servlet,
  javax.servlet.http

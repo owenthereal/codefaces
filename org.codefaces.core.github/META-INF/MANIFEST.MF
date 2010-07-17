@@ -3,11 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Github
 Bundle-SymbolicName: org.codefaces.core.github;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.codefaces.core.github.GitHubActivator
+Bundle-Activator: org.codefaces.core.github.internal.GitHubActivator
 Require-Bundle: org.codefaces.core,
  org.codefaces.httpclient
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.codefaces.core.github.connectors,
- org.codefaces.core.github.operations,
- org.codefaces.core.github.operations.dtos
+Export-Package: org.codefaces.core.github.internal.connectors,
+ org.codefaces.core.github.internal.operations,
+ org.codefaces.core.github.internal.operations.dtos
