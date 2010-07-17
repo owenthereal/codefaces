@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMIOException;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
