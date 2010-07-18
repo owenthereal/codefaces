@@ -1,11 +1,16 @@
 package org.codefaces.core.models;
 
 public class RepoFolderRoot extends RepoFolder {
-	private final RepoBranch branch;
+	private RepoBranch branch;
 
+	@Deprecated
 	public RepoFolderRoot(RepoBranch branch, String id, String name) {
 		super(null, branch, id, name, RepoResourceType.FOLDER_ROOT);
 		this.branch = branch;
+	}
+
+	public RepoFolderRoot(Repo repo, String id, String name) {
+		super(null, repo, id, name, RepoResourceType.FOLDER_ROOT);
 	}
 
 	@Override
@@ -13,11 +18,12 @@ public class RepoFolderRoot extends RepoFolder {
 		return this;
 	}
 
+	@Deprecated
 	public RepoBranch getBranch() {
 		return branch;
 	}
 
 	public Repo getRepo() {
-		return getBranch().getRepo();
+		return (Repo) getParent();
 	}
 }

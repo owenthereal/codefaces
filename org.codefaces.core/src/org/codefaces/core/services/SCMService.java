@@ -2,15 +2,16 @@ package org.codefaces.core.services;
 
 import java.util.Collection;
 
+import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
+import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperation;
 import org.codefaces.core.operations.SCMOperationHandler;
-import org.codefaces.core.connectors.SCMResponseException;
 
 public class SCMService {
 	public Repo connect(String kind, String url) {
@@ -21,6 +22,7 @@ public class SCMService {
 		return operation.execute();
 	}
 
+	@Deprecated
 	public Collection<RepoBranch> fetchBranches(Repo repo) {
 		SCMOperation operation = SCMOperation.newInstance(repo.getKind(),
 				SCMOperation.FETCH_BRANCHES_OPERAION);
@@ -29,11 +31,11 @@ public class SCMService {
 		return operation.execute();
 	}
 
-	public Collection<RepoResource> fetchChildren(RepoResource parent)
+	public Collection<RepoResource> fetchChildren(RepoFolder parent)
 			throws SCMResponseException {
 		SCMOperation operation = SCMOperation.newInstance(parent.getRoot()
 				.getRepo().getKind(), SCMOperation.FETCH_CHILDREN_OPERAION);
-		operation.addParameter(SCMOperationHandler.PARA_REPO_RESOURCE, parent);
+		operation.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, parent);
 
 		return operation.execute();
 	}

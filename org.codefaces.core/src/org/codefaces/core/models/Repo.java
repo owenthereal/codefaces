@@ -8,13 +8,20 @@ import org.codefaces.core.services.SCMService;
 
 public class Repo extends RepoResource {
 	private RepoCredential credential;
-	
+
 	private String kind;
+
+	private RepoFolderRoot root;
 
 	public Repo(String kind, String url, String name, RepoCredential credential) {
 		super(null, null, url, name, RepoResourceType.REPO);
 		this.kind = kind;
 		this.credential = credential;
+		this.root = new RepoFolderRoot(this, "/", "/");
+	}
+
+	public RepoFolderRoot getRoot() {
+		return root;
 	}
 
 	public String getUrl() {
@@ -25,10 +32,12 @@ public class Repo extends RepoResource {
 		return credential;
 	}
 
+	@Deprecated
 	public Collection<RepoBranch> getBranches() {
 		return getInfo().getBranches();
 	}
 
+	@Deprecated
 	public RepoBranch getBranchByName(String branchName) {
 		for (RepoBranch branch : getBranches()) {
 			if (StringUtils.equals(branch.getName(), branchName)) {
@@ -39,6 +48,7 @@ public class Repo extends RepoResource {
 		return null;
 	}
 
+	@Deprecated
 	public RepoBranch getMaster() {
 		for (RepoBranch branch : getBranches()) {
 			if (branch.isMaster()) {

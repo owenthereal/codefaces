@@ -21,6 +21,11 @@ public class RepoFolderInfo extends RepoResourceInfo {
 	}
 
 	@Override
+	public RepoFolder getContext() {
+		return (RepoFolder) super.getContext();
+	}
+
+	@Override
 	public boolean hasChildren() {
 		return true;
 	}

@@ -12,28 +12,40 @@
   <extension
         point="org.codefaces.core.scmOperationHandlers">
      <operationHandler
-           class="org.codefaces.core.github.internal.operations.GitHubConnectionOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubConnectionHandler"
            id="org.codefaces.core.operations.SCMOperation.connection"
            kind="GitHub"
            name="GitHub Connection Operation Handler">
      </operationHandler>
      <operationHandler
-           class="org.codefaces.core.github.internal.operations.GitHubFetchBranchesOperationHandler"
-           id="org.codefaces.core.operations.SCMOperation.fetchBranches"
-           kind="GitHub"
-           name="GitHub Fetch Brancher Operation Handler">
-     </operationHandler>
-     <operationHandler
-           class="org.codefaces.core.github.internal.operations.GitHubFetchChildrenOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubFetchChildrenDispatcher"
            id="org.codefaces.core.operations.SCMOperation.fetchChildren"
            kind="GitHub"
            name="GitHub Fetch Children Operation Handler">
      </operationHandler>
      <operationHandler
-           class="org.codefaces.core.github.internal.operations.GitHubFetchFileInfoOperationHandler"
+           class="org.codefaces.core.github.internal.operations.GitHubFetchFileInfoHandler"
            id="org.codefaces.core.operations.SCMOperation.fetchFileInfo"
            kind="GitHub"
            name="GitHub Fetch File Info Operation Handler">
+     </operationHandler>
+     <operationHandler
+           class="org.codefaces.core.github.internal.operations.GitHubFetchChildrenForRootHandler"
+           id="org.codefaces.core.operations.SCMOperation.github.fetchChildrenFromRoot"
+           kind="GitHub"
+           name="GitHub Fetch Children For Root Operation Handler">
+     </operationHandler>
+     <operationHandler
+           class="org.codefaces.core.github.internal.operations.GitHubFetchBranchesHandler"
+           id="org.codefaces.core.operations.SCMOperation.github.fetchBranches"
+           kind="GitHub"
+           name="GitHub Fetch Branches Operation Handler">
+     </operationHandler>
+     <operationHandler
+           class="org.codefaces.core.github.internal.operations.GitHubFetchChildrenForFolderHandler"
+           id="org.codefaces.core.operations.SCMOperation.github.fetchChildrenForFolder"
+           kind="GitHub"
+           name="GitHub Fetch Children For Folder Operation Handler">
      </operationHandler>
   </extension>
 </plugin>

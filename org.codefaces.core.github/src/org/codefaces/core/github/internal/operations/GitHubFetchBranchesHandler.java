@@ -5,45 +5,44 @@ import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.github.internal.operations.dtos.GitHubBranchesDTO;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoFolderRoot;
+import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
 
-public class GitHubFetchBranchesOperationHandler implements SCMOperationHandler {
-	private static final String URI_BRANCHES_SQGMENT = "branches";
+public class GitHubFetchBranchesHandler implements SCMOperationHandler {
+	private static final String URI_BRANCHES_SEGMENT = "branches";
 
 	private static final String SHOW_GITHUB_BRANCHES = "http://github.com/api/v2/json/repos/show";
-
-	private static final String MASTER_BRANCH_NAME = "master";
+	
+	public static final String ID = "org.codefaces.core.operations.SCMOperation.github.fetchBranches";
 
 	@Override
-	public Collection<RepoBranch> execute(SCMConnector connector, SCMOperationParameters parameter) {
-		Object repoPara = parameter.getParameter(PARA_REPO);
-		Assert.isTrue(repoPara instanceof Repo);
+	public Collection<RepoResource> execute(SCMConnector connector,
+			SCMOperationParameters parameter) {
+		Object folderPara = parameter.getParameter(PARA_REPO_FOLDER);
+		Assert.isTrue(folderPara instanceof RepoFolder);
 
-		Repo repo = (Repo) repoPara;
-		String url = createFetchBranchesUrl(repo);
+		RepoFolder folder = (RepoFolder) folderPara;
+		RepoFolderRoot root = folder.getRoot();
+		Repo repo = root.getRepo();
+
+		String url = createFetchBranchesURL(repo);
 
 		GitHubBranchesDTO dtos = getBranchesDto((GitHubConnector) connector,
 				url);
-
-		Set<RepoBranch> branches = new LinkedHashSet<RepoBranch>();
+		Set<RepoResource> branches = new LinkedHashSet<RepoResource>();
 		for (Entry<String, String> dtoEntry : dtos.getBrances().entrySet()) {
 			String id = dtoEntry.getValue();
 			String name = dtoEntry.getKey();
-			boolean isMaster = false;
-			if (StringUtils.equals(MASTER_BRANCH_NAME, name)) {
-				isMaster = true;
-			}
-
-			branches.add(new RepoBranch(repo, id, name, isMaster));
+			branches.add(new RepoFolder(root, folder, id, name));
 		}
 
 		return branches;
@@ -55,15 +54,17 @@ public class GitHubFetchBranchesOperationHandler implements SCMOperationHandler 
 		return parseContent(respBody);
 	}
 
-	protected String createFetchBranchesUrl(Repo repo) {
-		return GitHubOperationUtil.makeURI(SHOW_GITHUB_BRANCHES, repo.getCredential()
-				.getOwner(), repo.getName(), URI_BRANCHES_SQGMENT);
+	protected String createFetchBranchesURL(Repo repo) {
+		return GitHubOperationUtil.makeURI(SHOW_GITHUB_BRANCHES, repo
+				.getCredential().getOwner(), repo.getName(),
+				URI_BRANCHES_SEGMENT);
 	}
 
 	private GitHubBranchesDTO parseContent(String respBody)
 			throws SCMResponseException {
 		try {
-			return GitHubOperationUtil.fromJson(respBody, GitHubBranchesDTO.class);
+			return GitHubOperationUtil.fromJson(respBody,
+					GitHubBranchesDTO.class);
 		} catch (Exception e) {
 			throw new SCMResponseException(e.getMessage(), e);
 		}

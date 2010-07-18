@@ -7,6 +7,7 @@ import java.util.List;
 import org.codefaces.core.services.SCMService;
 
 public class RepoInfo extends RepoResourceInfo {
+	@Deprecated
 	private Collection<RepoBranch> branches;
 
 	protected RepoInfo(Repo context) {
@@ -18,6 +19,7 @@ public class RepoInfo extends RepoResourceInfo {
 		return (Repo) super.getContext();
 	}
 
+	@Deprecated
 	public Collection<RepoBranch> getBranches() {
 		if (branches == null) {
 			branches = fetchBranches();
@@ -31,6 +33,7 @@ public class RepoInfo extends RepoResourceInfo {
 		return true;
 	}
 
+	@Deprecated
 	private Collection<RepoBranch> fetchBranches() {
 		return SCMService.getCurrent().fetchBranches(getContext());
 	}

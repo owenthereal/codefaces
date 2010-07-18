@@ -21,17 +21,24 @@ public class AjaxClient {
 		requestQueue.add(jsonGet);
 		final String requestId = jsonGet.getRequestId();
 
-		display.syncExec(new Runnable() {
+		runOnUIThread(new Runnable() {
 			@Override
 			public void run() {
-				// waiting for response
-				while (!responseMap.containsKey(requestId)) {
-					runEventLoop();
-				}
+				waitForResponse(requestId);
 			}
 		});
 
 		return responseMap.remove(requestId);
+	}
+
+	protected void runOnUIThread(Runnable runnable) {
+		display.syncExec(runnable);
+	}
+
+	protected void waitForResponse(final String requestId) {
+		while (!responseMap.containsKey(requestId)) {
+			runEventLoop();
+		}
 	}
 
 	protected void runEventLoop() {

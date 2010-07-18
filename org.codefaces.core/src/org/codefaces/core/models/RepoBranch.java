@@ -3,6 +3,7 @@ package org.codefaces.core.models;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Deprecated
 public class RepoBranch extends RepoResource {
 	private static final String AT = "@";
 
