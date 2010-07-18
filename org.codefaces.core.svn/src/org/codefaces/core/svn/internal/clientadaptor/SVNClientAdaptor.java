@@ -12,7 +12,6 @@ import org.apache.commons.io.IOUtils;
 import org.codefaces.core.connectors.SCMIOException;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
-import org.codefaces.core.svn.internal.operations.SVNConstants;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.SessionSingletonBase;
 import org.tigris.subversion.clientadapter.Activator;
@@ -28,6 +27,11 @@ import org.tigris.subversion.svnclientadapter.SVNUrl;
  * An abstract layer to adapt the underlining client provider
  */
 public class SVNClientAdaptor implements HttpSessionBindingListener {
+	private static final String SEPERATOR = "/";
+
+	// id of the default svn client adaptor
+	private static final String CLIENT_ADAPTOR_ID = "svnkit";
+	
 	private ISVNClientAdapter client;
 
 	private static final String ID = SVNClientAdaptor.class.toString();
@@ -38,7 +42,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	protected SVNClientAdaptor() {
 		Activator activator = Activator.getDefault();
 		final ISVNClientAdapter client = activator
-				.getClientAdapter(SVNConstants.CLIENT_ADAPTOR_ID);
+				.getClientAdapter(CLIENT_ADAPTOR_ID);
 		this.client = client;
 
 		RWT.getSessionStore().getHttpSession().setAttribute(ID, this);
@@ -116,11 +120,11 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 			svnEntries = new SVNDirectoryEntry[entries.length];
 			for (int i = 0; i < entries.length; i++) {
 				ISVNDirEntry entry = entries[i];
-				svnEntries[i] = new SVNDirectoryEntry(svnUrl + "/"
+				svnEntries[i] = new SVNDirectoryEntry(svnUrl + SEPERATOR
 						+ entry.getPath(), entry.getPath(),
 						getResourceKind(entry.getNodeKind()), entry.getSize(),
-						entry.getLastChangedDate(), entry
-								.getLastChangedRevision().getNumber());
+						entry.getLastChangedDate(), 
+						entry.getLastChangedRevision().getNumber());
 			}
 
 			return svnEntries;
@@ -154,10 +158,10 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 			writer = new StringWriter();
 			IOUtils.copy(stream, writer);
 
-			resource = new SVNResource(svnUrl + "/" + entry.getPath(),
+			resource = new SVNResource(svnUrl + SEPERATOR + entry.getPath(),
 					entry.getPath(), null, entry.getSize(), writer.toString(),
-					entry.getLastChangedDate(), entry.getLastChangedRevision()
-							.getNumber());
+					entry.getLastChangedDate(),
+					entry.getLastChangedRevision().getNumber());
 
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);

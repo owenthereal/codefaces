@@ -18,12 +18,6 @@
             name="Subversion Connection Operation Handler">
       </operationHandler>
       <operationHandler
-            class="org.codefaces.core.svn.internal.operations.SVNFetchBranchesOperationHandler"
-            id="org.codefaces.core.operations.SCMOperation.fetchBranches"
-            kind="Subversion"
-            name="Subversion Fetch Brancher Operation Handler">
-      </operationHandler>
-      <operationHandler
             class="org.codefaces.core.svn.internal.operations.SVNFetchChildrenOperationHandler"
             id="org.codefaces.core.operations.SCMOperation.fetchChildren"
             kind="Subversion"
