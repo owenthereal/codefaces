@@ -13,7 +13,7 @@ import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.core.runtime.Assert;
 
-public class GitHubFetchFileInfoOperationHandler implements SCMOperationHandler {
+public class GitHubFetchFileInfoHandler implements SCMOperationHandler {
 	private static final String GET_GITHUB_FILE = "http://github.com/api/v2/json/blob/show";
 
 	@Override

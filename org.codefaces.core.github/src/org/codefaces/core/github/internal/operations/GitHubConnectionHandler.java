@@ -11,7 +11,7 @@ import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.connectors.SCMURLException;
 import org.eclipse.core.runtime.Assert;
 
-public class GitHubConnectionOperationHandler implements SCMOperationHandler {
+public class GitHubConnectionHandler implements SCMOperationHandler {
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
 
 	private static final String HTTP_GITHUB_COM = "http://github.com";

@@ -11,6 +11,8 @@ public interface SCMOperationHandler {
 
 	public static final String PARA_REPO_RESOURCE = "REPO_RESOURCE";
 
+	public static final String PARA_REPO_FOLDER_ROOT = "REPO_FOLDER_ROOT";
+	
 	public static final String PARA_REPO_FOLDER = "REPO_FOLDER";
 	
 	public static final String PARA_REPO_FILE = "REPO_FILE";

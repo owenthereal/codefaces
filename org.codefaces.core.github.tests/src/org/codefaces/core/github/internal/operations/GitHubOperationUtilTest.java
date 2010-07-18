@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.codefaces.core.github.internal.operations.GitHubOperationUtil;
 import org.junit.Test;
 
-public class GitHubUtilTest {
+public class GitHubOperationUtilTest {
 	private static final String TEST_URI_CONTEXT = "http://github.com/api/v2/json/tree/show/";
 
 	@Test

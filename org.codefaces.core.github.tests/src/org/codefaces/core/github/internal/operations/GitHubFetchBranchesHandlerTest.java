@@ -7,18 +7,18 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
-import org.codefaces.core.github.internal.operations.GitHubFetchBranchesOperationHandler;
 import org.codefaces.core.github.internal.operations.dtos.GitHubBranchesDTO;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
+import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GitHubFetchBranchesQueryTest {
+public class GitHubFetchBranchesHandlerTest {
 	private static final String KIND_GIT_HUB = "GitHub";
 
 	private static final String TEST_REPO_NAME = "ruby_grep";
@@ -31,62 +31,47 @@ public class GitHubFetchBranchesQueryTest {
 
 	private static final String TEST_BRANCH_MASTER = "master";
 
-	private GitHubFetchBranchesOperationHandler query;
+	private GitHubFetchBranchesHandler handler;
 
 	private GitHubConnector connector;
 
 	@Before
 	public void setUp() {
 		connector = new GitHubConnector(new ManagedHttpClient());
-		query = new GitHubFetchBranchesOperationHandler();
+		handler = new GitHubFetchBranchesHandler();
 	}
 
 	@Test
-	public void test_createFetchBranchesUrl() {
+	public void createFetchBranchesURL() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
 				new RepoCredential(TEST_OWNER_NAME, null, null));
-		String githubShowUrl = query.createFetchBranchesUrl(repo);
+		String githubShowUrl = handler.createFetchBranchesURL(repo);
 
 		assertEquals(TEST_BRANCH_URL, githubShowUrl);
 	}
 
 	@Test
-	public void test_getBranchesDto() {
-		GitHubBranchesDTO branchesDto = query.getBranchesDto(connector,
+	public void getBranchesDto() {
+		GitHubBranchesDTO branchesDto = handler.getBranchesDto(connector,
 				TEST_BRANCH_URL);
 		Map<String, String> branches = branchesDto.getBrances();
 
 		assertEquals(2, branches.size());
 		assertTrue(branches.containsKey(TEST_BRANCH_MASTER));
 	}
-
+	
 	@Test
-	public void test_execute() {
+	public void fetchChildrenFromBranchesFolderReturnsExpectedNumberOfBranches() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
 				new RepoCredential(TEST_OWNER_NAME, null, null));
+		RepoFolder branchesFolder = new RepoFolder(repo.getRoot(),
+				repo.getRoot(), "branches", "branches");
+
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO, repo);
-		Collection<RepoBranch> branches = query.execute(connector, para);
+		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER,
+				branchesFolder);
+		Collection<RepoResource> children = handler.execute(connector, para);
 
-		assertEquals(2, branches.size());
-	}
-
-	@Test
-	public void test_execute_masterBranch() {
-		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
-		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO, repo);
-		Collection<RepoBranch> branches = query.execute(connector, para);
-
-		int masterBranchCounter = 0;
-		for (RepoBranch branch : branches) {
-			if (branch.isMaster()) {
-				assertEquals(TEST_BRANCH_MASTER, branch.getName());
-				masterBranchCounter++;
-			}
-		}
-
-		assertEquals(1, masterBranchCounter);
+		assertEquals(2, children.size());
 	}
 }

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.MalformedURLException;
 
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
-import org.codefaces.core.github.internal.operations.GitHubFetchFileInfoOperationHandler;
+import org.codefaces.core.github.internal.operations.GitHubFetchFileInfoHandler;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
@@ -18,7 +18,7 @@ import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GitHubFetchFileInfoQueryTest {
+public class GitHubFetchFileInfoHandlerTest {
 	private static final String KIND_GIT_HUB = "GitHub";
 
 	private static final String TEST_REPO_URL = "http://github.com/jingweno/ruby_grep";
@@ -35,14 +35,14 @@ public class GitHubFetchFileInfoQueryTest {
 
 	private static final String TEST_FILE_NAME = "LICENSE";
 
-	private GitHubFetchFileInfoOperationHandler query;
+	private GitHubFetchFileInfoHandler query;
 
 	private GitHubConnector connector;
 
 	@Before
 	public void setUp() {
 		connector = new GitHubConnector(new ManagedHttpClient());
-		query = new GitHubFetchFileInfoOperationHandler();
+		query = new GitHubFetchFileInfoHandler();
 	}
 
 	@Test

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.net.MalformedURLException;
 
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
-import org.codefaces.core.github.internal.operations.GitHubConnectionOperationHandler;
+import org.codefaces.core.github.internal.operations.GitHubConnectionHandler;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
@@ -13,7 +13,7 @@ import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GitHubRepoQueryTest {
+public class GitHubConnectionHandlerTest {
 	private static final String TEST_REPO_URL = "http://github.com/jingweno/ruby_grep";
 
 	private static final String TEST_REPO_URL_WITH_ENDING_SLASH = "http://github.com/jingweno/ruby_grep/";
@@ -22,14 +22,14 @@ public class GitHubRepoQueryTest {
 
 	private static final String TEST_USER_NAME = "jingweno";
 
-	private GitHubConnectionOperationHandler query;
+	private GitHubConnectionHandler query;
 
 	private GitHubConnector connector;
 
 	@Before
 	public void setUp() {
 		connector = new GitHubConnector(new ManagedHttpClient());
-		query = new GitHubConnectionOperationHandler();
+		query = new GitHubConnectionHandler();
 	}
 
 	@Test
