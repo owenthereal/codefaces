@@ -74,17 +74,17 @@
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.ImportRepositoryCommandHandler"
             description="Import from a repository"
-            id="org.codefaces.ui.commands.importRepositoryCommand"
+            id="org.codefaces.ui.internal.commands.importRepositoryCommand"
             name="ImportRepositoryCommand">
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.SwitchBranchCommandHandler"
             description="Switch to another Repository Branch without switching the repository"
-            id="org.codefaces.ui.commands.switchBranchCommand"
+            id="org.codefaces.ui.internal.commands.switchBranchCommand"
             name="switchRepositoryBranchCommand">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.switchBranchCommand.branchId"
+               id="org.codefaces.ui.internal.commands.parameters.switchBranchCommand.branchId"
                name="branchId"
                optional="false">
          </commandParameter>
@@ -93,22 +93,22 @@
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.AboutCommandHandler"
             description="About CodeFaces"
-            id="org.codefaces.ui.command.about"
+            id="org.codefaces.ui.internal.commands.about"
             name="About">
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.OpenFileCommandHandler"
             description="Open selected file(s)"
-            id="org.codefaces.ui.commands.openFileCommand"
+            id="org.codefaces.ui.internal.commands.openFileCommand"
             name="Open File">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.openFileCommand.mode"
+               id="org.codefaces.ui.internal.commands.parameters.openFileCommand.mode"
                name="mode"
                optional="false">
          </commandParameter>
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
+               id="org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId"
                name="viewId"
                optional="true">
          </commandParameter>
@@ -117,10 +117,10 @@
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.ShowViewCommandHandler"
             description="Open a view"
-            id="org.codefaces.ui.commands.showViewCommand"
+            id="org.codefaces.ui.internal.commands.showViewCommand"
             name="Show view">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.showViewCommand.viewId"
+               id="org.codefaces.ui.internal.commands.parameters.showViewCommand.viewId"
                name="viewId"
                optional="false">
          </commandParameter>
@@ -129,13 +129,19 @@
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.OpenEditorHandler"
             description="Open a editor"
-            id="org.codefaces.ui.command.openEditor"
+            id="org.codefaces.ui.internal.commands.openEditor"
             name="Open a editor">
          <commandParameter
-               id="org.codefaces.ui.command.openEditor.editorId"
+               id="org.codefaces.ui.internal.commands.openEditor.editorId"
                name="editorId"
                optional="false">
          </commandParameter>
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.internal.commands.ShowChangeRepoBaseDirectoryDialogCommandHandler"
+            id="org.codefaces.ui.internal.commands.showChangeRepoBaseDirectoryDialogCommand"
+            name="Show change repo base directory dialog">
       </command>
    </extension>
    <extension
@@ -146,7 +152,7 @@
                id="org.codefaces.menu.repository"
                label="Repository">
             <command
-                  commandId="org.codefaces.ui.commands.importRepositoryCommand"
+                  commandId="org.codefaces.ui.internal.commands.importRepositoryCommand"
                   icon="icons/import.gif"
                   label="Import..."
                   style="push"
@@ -161,7 +167,7 @@
                   label="Show View">
                <dynamic
                      class="org.codefaces.ui.internal.actions.ShowViewMenu"
-                     id="org.codefaces.ui.actions.showViewMenu">
+                     id="org.codefaces.ui.internal.actions.showViewMenu">
                </dynamic>
             </menu>
          </menu>
@@ -169,18 +175,18 @@
                id="org.codefaces.menu.help"
                label="Help">
             <command
-                  commandId="org.codefaces.ui.command.openEditor"
+                  commandId="org.codefaces.ui.internal.commands.openEditor"
                   icon="icons/welcome.gif"
                   label="Welcome"
                   style="push"
                   tooltip="Open the welcome page">
                <parameter
-                     name="org.codefaces.ui.command.openEditor.editorId"
+                     name="org.codefaces.ui.internal.commands.openEditor.editorId"
                      value="org.codefaces.ui.editor.welcomeEditor">
                </parameter>
             </command>
             <command
-                  commandId="org.codefaces.ui.command.about"
+                  commandId="org.codefaces.ui.internal.commands.about"
                   icon="icons/help.gif"
                   label="About"
                   style="push"
@@ -193,29 +199,37 @@
          <toolbar
                id="org.codefaces.ui.toolbar.codefaces">
             <command
-                  commandId="org.codefaces.ui.commands.importRepositoryCommand"
+                  commandId="org.codefaces.ui.internal.commands.importRepositoryCommand"
                   icon="icons/import.gif"
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
             </command>
             <command
-                  commandId="org.codefaces.ui.command.openEditor"
+                  commandId="org.codefaces.ui.internal.commands.openEditor"
                   icon="icons/welcome.gif"
                   label="Welcome"
                   style="push"
                   tooltip="Open the welcome page">
                <parameter
-                     name="org.codefaces.ui.command.openEditor.editorId"
+                     name="org.codefaces.ui.internal.commands.openEditor.editorId"
                      value="org.codefaces.ui.editor.welcomeEditor">
                </parameter>
             </command>
          </toolbar>
       </menuContribution>
       <menuContribution
+            locationURI="toolbar:org.codefaces.ui.view.projectExplorer">
+         <command
+               commandId="org.codefaces.ui.internal.commands.showChangeRepoBaseDirectoryDialogCommand"
+               icon="icons/help.gif"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:org.codefaces.ui.view.projectExplorer#viewer">
          <command
-               commandId="org.codefaces.ui.commands.openFileCommand"
+               commandId="org.codefaces.ui.internal.commands.openFileCommand"
                label="Open"
                style="push"
                tooltip="open the selected file(s)">
@@ -236,11 +250,11 @@
                </with>
             </visibleWhen>
             <parameter
-                  name="org.codefaces.ui.commands.parameters.openFileCommand.mode"
+                  name="org.codefaces.ui.internal.commands.parameters.openFileCommand.mode"
                   value="selectionFromView">
             </parameter>
             <parameter
-                  name="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
+                  name="org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId"
                   value="org.codefaces.ui.view.projectExplorer">
             </parameter>
          </command>

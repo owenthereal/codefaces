@@ -14,13 +14,13 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenEditorHandler extends AbstractHandler {
-	public static final String ID = "org.codefaces.ui.command.openEditor";
+	public static final String ID = "org.codefaces.ui.internal.commands.openEditor";
 
-	public static final String VARIABLE_EDITOR_INPUT = "org.codefaces.ui.command.openEditor.editorInput";
+	public static final String VARIABLE_EDITOR_INPUT = "org.codefaces.ui.internal.commands.openEditor.editorInput";
 
-	public static final String PARAMETER_EDITOR_ID = "org.codefaces.ui.command.openEditor.editorId";
+	public static final String PARAMETER_EDITOR_ID = "org.codefaces.ui.internal.commands.openEditor.editorId";
 
-	public static final String VARIABLE_MATCH_FLAG = "org.codefaces.ui.command.openEditor.matchFlag";
+	public static final String VARIABLE_MATCH_FLAG = "org.codefaces.ui.internal.commands.openEditor.matchFlag";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
