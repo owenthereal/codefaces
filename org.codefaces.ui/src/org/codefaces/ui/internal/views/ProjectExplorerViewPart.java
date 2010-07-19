@@ -120,7 +120,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 		public void open(OpenEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
 					.getSelection();
-			if (selection.isEmpty()) {
+			if (selection.isEmpty()
+					|| !(selection.getFirstElement() instanceof RepoResource)) {
 				return;
 			}
 
@@ -143,7 +144,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 		public void open(OpenEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
 					.getSelection();
-			if (selection.isEmpty()) {
+			if (selection.isEmpty()
+					|| !(selection.getFirstElement() instanceof RepoResource)) {
 				return;
 			}
 
