@@ -20,7 +20,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenFileCommandHandler extends AbstractHandler {
-	public static final String ID = "org.codefaces.ui.commands.openFileCommand";
+	public static final String ID = "org.codefaces.ui.internal.commands.openFileCommand";
 
 	public static final String PARAM_MODE = "org.codefaces.ui.internal.commands.parameters.openFileCommand.mode";
 
