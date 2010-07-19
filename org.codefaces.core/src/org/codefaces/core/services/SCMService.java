@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
@@ -18,15 +17,6 @@ public class SCMService {
 		SCMOperation operation = SCMOperation.newInstance(kind,
 				SCMOperation.CONNECTION_OPERAION);
 		operation.addParameter(SCMOperationHandler.PARA_URL, url.trim());
-
-		return operation.execute();
-	}
-
-	@Deprecated
-	public Collection<RepoBranch> fetchBranches(Repo repo) {
-		SCMOperation operation = SCMOperation.newInstance(repo.getKind(),
-				SCMOperation.FETCH_BRANCHES_OPERAION);
-		operation.addParameter(SCMOperationHandler.PARA_REPO, repo);
 
 		return operation.execute();
 	}

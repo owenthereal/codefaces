@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorDescriber;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.Images;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -46,7 +46,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 	private final class BranchLabelProvider extends LabelProvider {
 		@Override
 		public String getText(Object element) {
-			RepoBranch branch = (RepoBranch) element;
+			RepoFolder branch = (RepoFolder) element;
 			return branch.getName();
 		}
 	}
@@ -55,7 +55,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 			ISelectionChangedListener {
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
-			RepoBranch selectedBranch = (RepoBranch) ((IStructuredSelection) event
+			RepoFolder selectedBranch = (RepoFolder) ((IStructuredSelection) event
 					.getSelection()).getFirstElement();
 			selectBranch(selectedBranch);
 		}
@@ -171,7 +171,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 					if (errorMessages == null) {
 						setMessage(DESCRIPTION);
 						updateStructuredViewer(branchInputViewer, responseDTO
-								.getRepo().getBranches().toArray());
+								.getRepo().getRoot().getChildren().toArray());
 					} else {
 						setMessage(DESCRIPTION);
 						setErrorMessage(errorMessages);
@@ -189,7 +189,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				monitor.worked(30);
 
 				monitor.setTaskName("Fetching branches...");
-				repo.getBranches();
+				repo.getRoot().getChildren();
 				monitor.worked(70);
 
 				transporter.setRepo(repo);
@@ -230,7 +230,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 
 	private ConnectToRepoJob connectToRepoJob = new ConnectToRepoJob();
 
-	private RepoBranch selectedBranch;
+	private RepoFolder selectedBranch;
 
 	protected String selectedConnector;
 
@@ -375,7 +375,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 		connectButton.setToolTipText("Connect to repository");
 	}
 
-	public RepoBranch getSelectedBranch() {
+	public RepoFolder getSelectedBranch() {
 		return selectedBranch;
 	}
 
@@ -397,7 +397,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				connectorKinds.toArray(new String[0]));
 	}
 
-	private void selectBranch(RepoBranch branch) {
+	private void selectBranch(RepoFolder branch) {
 		selectedBranch = branch;
 		if (branch == null) {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);

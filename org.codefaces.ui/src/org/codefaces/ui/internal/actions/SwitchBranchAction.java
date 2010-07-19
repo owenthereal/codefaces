@@ -9,7 +9,8 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeListener;
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.SwitchBranchCommandHandler;
@@ -44,7 +45,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 				}
 
 				setSelected(newSelectedMenu);
-				executeSwitchRepoBranchCommand((RepoBranch) currentSelectedMenu
+				executeSwitchRepoBranchCommand((RepoResource) currentSelectedMenu
 						.getData());
 			}
 		}
@@ -76,15 +77,15 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 	 */
 	@Override
 	public void run() {
-		RepoBranch currentBranch = workspace.getWorkingBranch();
+		RepoFolder currentBranch = workspace.getWorkingBranch();
 		if (currentBranch == null) {
 			return;
 		}
 
-		List<RepoBranch> branches = new ArrayList<RepoBranch>(currentBranch
-				.getRepo().getBranches());
+		List<RepoResource> branches = new ArrayList<RepoResource>(currentBranch
+				.getRoot().getChildren());
 		int index = branches.indexOf(currentBranch);
-		RepoBranch nextBranch = branches.get((index + 1) % branches.size());
+		RepoResource nextBranch = branches.get((index + 1) % branches.size());
 		executeSwitchRepoBranchCommand(nextBranch);
 	}
 
@@ -121,13 +122,13 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 		Menu menu = new Menu(parent);
 
 		if (workspace.getWorkingBranch() != null) {
-			RepoBranch currentBranch = workspace.getWorkingBranch();
-			Collection<RepoBranch> branches = currentBranch.getRepo()
-					.getBranches();
+			RepoFolder currentBranch = workspace.getWorkingBranch();
+			Collection<RepoResource> branches = currentBranch.getRoot()
+					.getChildren();
 
 			BranchMenuItemSelectionListener menuListener = new BranchMenuItemSelectionListener();
 
-			for (RepoBranch branch : branches) {
+			for (RepoResource branch : branches) {
 				MenuItem item = new MenuItem(menu, SWT.CHECK);
 				item.addSelectionListener(menuListener);
 				item.setText(branch.getName());
@@ -148,7 +149,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 	 * @param branch
 	 *            the new selected branch
 	 */
-	private void executeSwitchRepoBranchCommand(RepoBranch branch) {
+	private void executeSwitchRepoBranchCommand(RepoResource branch) {
 		Map<String, String> parameterMap = new HashMap<String, String>();
 		parameterMap.put(SwitchBranchCommandHandler.PARAM_BRANCH_ID,
 				branch.getId());

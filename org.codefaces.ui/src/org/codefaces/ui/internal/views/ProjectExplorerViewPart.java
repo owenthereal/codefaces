@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.codefaces.core.events.WorkspaceChangeEvent;
 import org.codefaces.core.events.WorkspaceChangeListener;
-import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
@@ -180,7 +179,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	private void hookWorkspace() {
 		workspace = Workspace.getCurrent();
-		RepoBranch cachedBranch = workspace.getWorkingBranch();
+		RepoFolder cachedBranch = workspace.getWorkingBranch();
 		if (cachedBranch != null) {
 			update(cachedBranch);
 		}
@@ -239,7 +238,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 * @param workingBranch
 	 *            the new working branch
 	 */
-	public void update(RepoBranch workingBranch) {
+	public void update(RepoFolder workingBranch) {
 		if (manager != null) {
 			manager.dispose();
 		}

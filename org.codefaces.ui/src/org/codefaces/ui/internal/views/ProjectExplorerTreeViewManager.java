@@ -137,12 +137,6 @@ public class ProjectExplorerTreeViewManager {
 			return ((LoadingItem) obj).getText();
 		}
 
-		if (obj instanceof RepoFolderRoot) {
-			RepoFolderRoot root = (RepoFolderRoot) obj;
-			return root.getBranch().getName() + "@"
-					+ root.getBranch().getRepo().getUrl();
-		}
-
 		if (obj instanceof RepoResource) {
 			return ((RepoResource) obj).getName();
 		}

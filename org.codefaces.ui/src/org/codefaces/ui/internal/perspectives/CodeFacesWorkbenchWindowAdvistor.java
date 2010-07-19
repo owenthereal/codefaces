@@ -3,8 +3,10 @@ package org.codefaces.ui.internal.perspectives;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.commands.CommandExecutor;
@@ -57,10 +59,13 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 		if (repoUrl != null) {
 			try {
 				Repo repo = Repo.create("GitHub", repoUrl);
-				RepoBranch repoBranch = repo.getBranchByName(branchName);
-
-				if (repoBranch == null) {
-					repoBranch = repo.getMaster();
+				RepoFolder repoBranch = null;
+				for (RepoResource resource : repo.getRoot().getChildren()) {
+					if (StringUtils.equals(branchName, resource.getName())
+							&& resource instanceof RepoFolder) {
+						repoBranch = (RepoFolder) resource;
+						break;
+					}
 				}
 
 				if (repoBranch != null) {

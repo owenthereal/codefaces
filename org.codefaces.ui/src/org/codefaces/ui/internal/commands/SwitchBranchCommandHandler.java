@@ -1,8 +1,8 @@
 package org.codefaces.ui.internal.commands;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
+import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -25,16 +25,15 @@ public class SwitchBranchCommandHandler extends AbstractHandler {
 		IEvaluationContext context = (IEvaluationContext) event
 				.getApplicationContext();
 		Object branch = context.getVariable(VARIABLE_BRANCH);
-		if (!(branch instanceof RepoBranch)) {
+		if (!(branch instanceof RepoFolder)) {
 			return null;
 		}
 
 		Workspace ws = Workspace.getCurrent();
-		Repo repo = ws.getWorkingBranch().getRepo();
 
-		for (RepoBranch b : repo.getBranches()) {
-			if (ObjectUtils.equals(branch, b)) {
-				ws.update(b);
+		for (RepoResource b : ws.getWorkingBranch().getRoot().getChildren()) {
+			if (ObjectUtils.equals(branch, b) && b instanceof RepoFolder) {
+				ws.update((RepoFolder) b);
 				break;
 			}
 		}

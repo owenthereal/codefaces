@@ -1,6 +1,6 @@
 package org.codefaces.ui.internal.commands;
 
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.dialogs.RepoUrlInputDialog;
@@ -25,7 +25,7 @@ public class ImportRepositoryCommandHandler extends AbstractHandler {
 		RepoUrlInputDialog dlg = new RepoUrlInputDialog(shell);
 
 		if (dlg.open() == Window.OK) {
-			RepoBranch branch = dlg.getSelectedBranch();
+			RepoFolder branch = dlg.getSelectedBranch();
 			if (branch != null) {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
