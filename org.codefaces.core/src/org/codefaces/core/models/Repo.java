@@ -1,9 +1,7 @@
 package org.codefaces.core.models;
 
 import java.net.MalformedURLException;
-import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.services.SCMService;
 
 public class Repo extends RepoResource {
@@ -30,33 +28,6 @@ public class Repo extends RepoResource {
 
 	public RepoCredential getCredential() {
 		return credential;
-	}
-
-	@Deprecated
-	public Collection<RepoBranch> getBranches() {
-		return getInfo().getBranches();
-	}
-
-	@Deprecated
-	public RepoBranch getBranchByName(String branchName) {
-		for (RepoBranch branch : getBranches()) {
-			if (StringUtils.equals(branch.getName(), branchName)) {
-				return branch;
-			}
-		}
-
-		return null;
-	}
-
-	@Deprecated
-	public RepoBranch getMaster() {
-		for (RepoBranch branch : getBranches()) {
-			if (branch.isMaster()) {
-				return branch;
-			}
-		}
-
-		return null;
 	}
 
 	@Override

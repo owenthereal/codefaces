@@ -9,8 +9,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 
 public class StatusManager implements ISelectionChangedListener {
-	private static final String AT = "@";
-
 	private static final String SEPERATOR = " - ";
 
 	private IStatusLineManager statusLineManager;
@@ -34,8 +32,7 @@ public class StatusManager implements ISelectionChangedListener {
 		StringBuilder builder = new StringBuilder();
 
 		IPath fullPath = resource.getFullPath();
-		String repoUrl = resource.getRoot().getBranch().getRepo().getUrl();
-		String branchName = resource.getRoot().getBranch().getName();
+		String repoUrl = resource.getRoot().getRepo().getUrl();
 
 		String fileName = fullPath.lastSegment();
 		if (fileName != null) {
@@ -54,8 +51,6 @@ public class StatusManager implements ISelectionChangedListener {
 			builder.append(SEPERATOR);
 		}
 
-		builder.append(branchName);
-		builder.append(AT);
 		builder.append(repoUrl);
 
 		statusLineManager.setMessage(builder.toString());

@@ -2,12 +2,12 @@ package org.codefaces.core.events;
 
 import java.util.EventObject;
 
-import org.codefaces.core.models.RepoBranch;
+import org.codefaces.core.models.RepoFolder;
 
 public class WorkspaceChangeEvent extends EventObject {
 	private static final long serialVersionUID = 5870469991944398567L;
 
-	private final RepoBranch newRepoBranch;
+	private final RepoFolder newRepoBranch;
 
 	/**
 	 * Constructor for working branch changed
@@ -17,7 +17,7 @@ public class WorkspaceChangeEvent extends EventObject {
 	 * @param newRepoBranch
 	 *            the new repository branch
 	 */
-	public WorkspaceChangeEvent(Object source, RepoBranch newRepoBranch) {
+	public WorkspaceChangeEvent(Object source, RepoFolder newRepoBranch) {
 		super(source);
 		this.newRepoBranch = newRepoBranch;
 	}
@@ -25,7 +25,7 @@ public class WorkspaceChangeEvent extends EventObject {
 	/**
 	 * @return the new working branch. null if no branch changed
 	 */
-	public RepoBranch getRepoBranch() {
+	public RepoFolder getRepoBranch() {
 		return newRepoBranch;
 	}
 }

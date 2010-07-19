@@ -1,6 +1,7 @@
 package org.codefaces.core.github.internal.operations;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
@@ -71,7 +72,7 @@ public class GitHubFetchChildrenDispatcher implements
 	// TODO
 	protected Collection<RepoResource> fetchChildrenForTagsFolder(
 			RepoFolder folder) {
-		return null;
+		return Collections.emptyList();
 	}
 
 }
