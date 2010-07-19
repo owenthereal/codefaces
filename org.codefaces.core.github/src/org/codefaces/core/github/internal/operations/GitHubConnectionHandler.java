@@ -4,11 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.codefaces.core.connectors.SCMConnector;
+import org.codefaces.core.connectors.SCMURLException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.core.connectors.SCMURLException;
 import org.eclipse.core.runtime.Assert;
 
 public class GitHubConnectionHandler implements SCMOperationHandler {
@@ -17,6 +17,8 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 	private static final String HTTP_GITHUB_COM = "http://github.com";
 
 	private static final String OPTIONAL_ENDING_SLASH_PATTERN = "(?:/)?";
+
+	public static final String ID = "org.codefaces.core.operations.SCMOperation.connection";
 
 	private static final Pattern URL_PATTERN = Pattern.compile("(?:"
 			+ Pattern.quote(HTTP_WWW_GITHUB_ORG) + "|"
