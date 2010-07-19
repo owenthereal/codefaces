@@ -24,7 +24,7 @@ public class SVNFetchFileInfoOperationHandler implements SCMOperationHandler {
 		SVNConnector svnConnector = (SVNConnector) connector;
 		SVNClientAdaptor svnClient = svnConnector.getSvnClient();
 		
-		String url = SVNConnector.createSvnUrlFromResource(repoFile);
+		String url = SVNOperationUtil.createSvnUrlFromResource(repoFile);
 		
 		RepoCredential credential = repoFile.getRoot().getRepo().getCredential();
 		

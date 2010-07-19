@@ -4,29 +4,28 @@ import static org.junit.Assert.*;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoBranch;
 import org.codefaces.core.models.RepoCredential;
+import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
-import org.codefaces.core.svn.internal.operations.SVNConstants;
 import org.codefaces.core.svn.internal.operations.SVNFetchChildrenOperationHandler;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SVNFetchChildrenOperationHandlerTest {
 	
-	private static String TEST_URL_WITHOUT_BRANCHES = "http://code.djangoproject.com/svn/django/trunk";
-	private static String TEST_URL_WITH_BRANCHES = "http://code.djangoproject.com/svn/django";
+	private static String TEST_URL_IN_NORMAL_STRUCTURE = "http://code.djangoproject.com/svn/django";
 	private static final String TEST_USERNAME =  null;
 	private static final String TEST_PASSWORD = null;
 	
-	private static final String RESOURCE_FOUND_IN_TRUNK = "README";
-	private static final String TEST_BRANCH = "releases";
-	private static final String RESOURCE_IN_BRANCH = "1.2.X";
-
+	private static final String TAGS_DIRECTORY = "tags";
+	private static final String BRANCHES_DIRECTORY = "branches";
+	private static final String TRUNK_DIRECTORY = "trunk";
+		
 	private SVNFetchChildrenOperationHandler handler;
 	private SCMConnector connector;
 
@@ -42,44 +41,39 @@ public class SVNFetchChildrenOperationHandlerTest {
 	}
 	
 	@Test
-	public void childrenReturnedByFetchingFromTheDefaultBranchShouldBeCorrect(){
-		Repo mockRepo = createMockRepo(TEST_URL_WITHOUT_BRANCHES, TEST_USERNAME, TEST_PASSWORD);
-		RepoBranch defaultBranch = new RepoBranch(mockRepo, "id",
-				SVNConstants.DEFAULT_BRANCH, true);
-		
+	public void fetchChildrenFromRootShouldReturnExpectedNumberOfChildren(){
+		Repo mockRepo = createMockRepo(TEST_URL_IN_NORMAL_STRUCTURE,
+				TEST_USERNAME, TEST_PASSWORD);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_RESOURCE, defaultBranch.getRoot());
-		
+		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, mockRepo.getRoot());
 		Collection<RepoResource> children = handler.execute(connector, para);
 		
-		boolean found = false;
-		for(RepoResource child: children){
-			if(child.getName().equals(RESOURCE_FOUND_IN_TRUNK)){
-				found = true;
-				break;
-			}
+		boolean hasTrunk = false;
+		boolean hasBranches = false;
+		boolean hasTags = false;
+		
+		for(RepoResource child : children){
+			if(StringUtils.equals(TRUNK_DIRECTORY, child.getName())){ hasTrunk = true; }
+			if(StringUtils.equals(BRANCHES_DIRECTORY, child.getName())){ hasBranches = true; }
+			if(StringUtils.equals(TAGS_DIRECTORY, child.getName())){ hasTags = true; }
 		}
-		assertTrue(found);
+		
+		assertTrue(hasTrunk);
+		assertTrue(hasBranches);
+		assertTrue(hasTags);
 	}
-	
 	
 	@Test
-	public void childrenReturnedByFetchingFromNonDefaultBranchShouldBeCorrect(){
-		Repo mockRepo = createMockRepo(TEST_URL_WITH_BRANCHES, TEST_USERNAME, TEST_PASSWORD);
-		RepoBranch branch = new RepoBranch(mockRepo, "id", TEST_BRANCH, false);
-		
+	public void fetchChildrenFromFolderShouldReturnExpectedNumberOfChildren(){
+		Repo mockRepo = createMockRepo(TEST_URL_IN_NORMAL_STRUCTURE,
+				TEST_USERNAME, TEST_PASSWORD);
+		RepoFolder mockFolder = new RepoFolder(mockRepo.getRoot(),
+				mockRepo.getRoot(), TAGS_DIRECTORY, TAGS_DIRECTORY);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_RESOURCE, branch.getRoot());
-		
+		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, mockFolder);
 		Collection<RepoResource> children = handler.execute(connector, para);
 		
-		boolean found = false;
-		for(RepoResource child: children){
-			if(child.getName().equals(RESOURCE_IN_BRANCH)){
-				found = true;
-				break;
-			}
-		}
-		assertTrue(found);
-	}
+		assertEquals(2, children.size());
+	}	
+	
 }

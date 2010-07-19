@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.codefaces.core.connectors.SCMConnector;
+import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;
@@ -22,16 +23,16 @@ public class SVNFetchChildrenOperationHandler implements SCMOperationHandler {
 	@Override
 	public Collection<RepoResource> execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
-		Object resPara = parameter.getParameter(PARA_REPO_RESOURCE);
-		Assert.isTrue(resPara instanceof RepoResource);
+		Object folderPara = parameter.getParameter(PARA_REPO_FOLDER);
+		Assert.isTrue(folderPara instanceof RepoFolder);
 
-		RepoResource container = (RepoResource) resPara;
+		RepoFolder folder = (RepoFolder) folderPara;
 
-		Repo repo = container.getRoot().getRepo();
+		Repo repo = folder.getRoot().getRepo();
 		String username = repo.getCredential().getUser();
 		String password = repo.getCredential().getPassword();
 		
-		String svnUrl = SVNConnector.createSvnUrlFromResource(container);
+		String svnUrl = SVNOperationUtil.createSvnUrlFromResource(folder);
 		SVNConnector svnConnector = (SVNConnector) connector;
 		
 		SVNDirectoryEntry[] entries = svnConnector.getSvnClient()
@@ -40,7 +41,11 @@ public class SVNFetchChildrenOperationHandler implements SCMOperationHandler {
 		List<RepoResource> children = new ArrayList<RepoResource>();
 		for(SVNDirectoryEntry entry: entries){
 			RepoResource child = createRepoResourceFromSVNDirectoryEntry(
-					svnConnector, entry, container); 
+					svnConnector, entry, folder);
+			if(child == null){
+				throw new SCMResponseException("Unknown SVN resource type for "
+						+ entry.getUrl());
+			}
 			children.add(child);
 		}
 
@@ -50,7 +55,7 @@ public class SVNFetchChildrenOperationHandler implements SCMOperationHandler {
 	private RepoResource createRepoResourceFromSVNDirectoryEntry(
 			SVNConnector svnConnector, SVNDirectoryEntry entry, RepoResource parent) {
 		RepoFolderRoot root = parent.getRoot();
-		String id = SVNConnector.generateRepoResourceID(entry);
+		String id = SVNOperationUtil.generateRepoResourceID(entry);
 		if (entry.getResourceKind() == SVNResourceKind.FILE) {
 			return new RepoFile(root, parent, id, entry.getName());
 		} else if (entry.getResourceKind() == SVNResourceKind.DIRECTORY) {
