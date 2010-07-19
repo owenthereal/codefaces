@@ -11,8 +11,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class ShowViewCommandHandler extends AbstractHandler {
-	public static final String ID = "org.codefaces.ui.commands.showViewCommand";
-	public static final String PARAM_VIEW_ID = "org.codefaces.ui.commands.parameters.showViewCommand.viewId";
+	public static final String ID = "org.codefaces.ui.internal.commands.showViewCommand";
+	public static final String PARAM_VIEW_ID = "org.codefaces.ui.internal.commands.parameters.showViewCommand.viewId";
 
 	/**
 	 * To show a view by providing a view id in the parameter

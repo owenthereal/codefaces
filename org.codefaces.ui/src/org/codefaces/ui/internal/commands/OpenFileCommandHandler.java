@@ -20,15 +20,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenFileCommandHandler extends AbstractHandler {
-	public static final String ID = "org.codefaces.ui.commands.openFileCommand";
+	public static final String ID = "org.codefaces.ui.internal.commands.openFileCommand";
 
-	public static final String PARAM_MODE = "org.codefaces.ui.commands.parameters.openFileCommand.mode";
+	public static final String PARAM_MODE = "org.codefaces.ui.internal.commands.parameters.openFileCommand.mode";
 
 	public static final String MODE_SELECTION_FROM_VIEW = "selectionFromView";
 	public static final String MODE_DIRECT_FILES = "directFiles";
 
-	public static final String PARAM_VIEW_ID = "org.codefaces.ui.commands.parameters.openFileCommand.viewId";
-	public static final String VARIABLE_FILES = "org.codefaces.ui.commands.parameters.openFileCommand.files";
+	public static final String PARAM_VIEW_ID = "org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId";
+	public static final String VARIABLE_FILES = "org.codefaces.ui.internal.commands.parameters.openFileCommand.files";
 
 	/**
 	 * Open files in the code explorer.

@@ -10,9 +10,9 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.IEvaluationContext;
 
 public class SwitchBranchCommandHandler extends AbstractHandler {
-	public static final String ID = "org.codefaces.ui.commands.switchBranchCommand";
-	public static final String PARAM_BRANCH_ID = "org.codefaces.ui.commands.parameters.switchBranchCommand.branchId";
-	public static final String VARIABLE_BRANCH = "org.codefaces.ui.commands.parameters.switchBranchCommand.branch";
+	public static final String ID = "org.codefaces.ui.internal.commands.switchBranchCommand";
+	public static final String PARAM_BRANCH_ID = "org.codefaces.ui.internal.commands.parameters.switchBranchCommand.branchId";
+	public static final String VARIABLE_BRANCH = "org.codefaces.ui.internal.commands.parameters.switchBranchCommand.branch";
 
 	/**
 	 * This command calls WorkSpace to update. However, if the given branch name
