@@ -1,4 +1,4 @@
-package org.codefaces.ui.internal.views;
+package org.codefaces.ui.viewers;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
