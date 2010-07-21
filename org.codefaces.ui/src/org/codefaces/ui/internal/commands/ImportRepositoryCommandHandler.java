@@ -3,14 +3,16 @@ package org.codefaces.ui.internal.commands;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
-import org.codefaces.ui.internal.dialogs.RepoUrlInputDialog;
 import org.codefaces.ui.internal.views.ProjectExplorerViewPart;
+import org.codefaces.ui.internal.wizards.RepoSettings;
+import org.codefaces.ui.internal.wizards.SelectRepoWizard;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -22,16 +24,20 @@ public class ImportRepositoryCommandHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
 
-		RepoUrlInputDialog dlg = new RepoUrlInputDialog(shell);
-
-		if (dlg.open() == Window.OK) {
-			RepoFolder branch = dlg.getSelectedBranch();
-			if (branch != null) {
+		SelectRepoWizard wizard = new SelectRepoWizard();
+		WizardDialog dialog = new WizardDialog(shell, wizard);
+		
+		if (dialog.open() == Window.OK) {
+			RepoSettings settings = wizard.getRepoSettings();
+			RepoFolder baseDirectory = (RepoFolder) settings
+					.get(RepoSettings.REPO_BASE_DIECTORY);
+			
+			if (baseDirectory != null) {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 							.getActivePage().showView(
 									ProjectExplorerViewPart.ID);
-					Workspace.getCurrent().update(branch);
+					Workspace.getCurrent().update(baseDirectory);
 				} catch (PartInitException e) {
 					IStatus status = new Status(Status.ERROR,
 							CodeFacesUIActivator.PLUGIN_ID,
@@ -41,7 +47,7 @@ public class ImportRepositoryCommandHandler extends AbstractHandler {
 				}
 			}
 		}
-
+		
 		return null;
 	}
 }

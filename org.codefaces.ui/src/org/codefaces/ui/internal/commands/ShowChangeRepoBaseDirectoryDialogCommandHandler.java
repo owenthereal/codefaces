@@ -1,9 +1,10 @@
 package org.codefaces.ui.internal.commands;
 
-import org.codefaces.ui.internal.dialogs.ChangeRepoBaseDirectoryDialog;
+import org.codefaces.ui.internal.wizards.SelectRepoWizard;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -14,7 +15,11 @@ public class ShowChangeRepoBaseDirectoryDialogCommandHandler extends AbstractHan
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		new ChangeRepoBaseDirectoryDialog(shell).open();
+
+		SelectRepoWizard wizard = new SelectRepoWizard();
+		WizardDialog dialog = new WizardDialog(shell, wizard);
+		dialog.open();
+		
 		return null;
 	}
 

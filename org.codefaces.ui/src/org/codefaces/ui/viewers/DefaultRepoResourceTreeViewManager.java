@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-public class ProjectExplorerTreeViewManager {
+public class DefaultRepoResourceTreeViewManager {
 	private final TreeViewer viewer;
 
 	private Display display;
@@ -96,7 +96,7 @@ public class ProjectExplorerTreeViewManager {
 		}
 	}
 
-	public ProjectExplorerTreeViewManager(TreeViewer treeView) {
+	public DefaultRepoResourceTreeViewManager(TreeViewer treeView) {
 		this.viewer = treeView;
 		display = treeView.getControl().getDisplay();
 		loadingJob = new RepoResourceLoadingJob();
@@ -166,4 +166,5 @@ public class ProjectExplorerTreeViewManager {
 
 		return null;
 	}
+	
 }

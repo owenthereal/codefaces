@@ -31,7 +31,7 @@ public class SwitchBranchCommandHandler extends AbstractHandler {
 
 		Workspace ws = Workspace.getCurrent();
 
-		for (RepoResource b : ws.getWorkingBranch().getRoot().getChildren()) {
+		for (RepoResource b : ws.getWorkingRepoRoot().getRoot().getChildren()) {
 			if (ObjectUtils.equals(branch, b) && b instanceof RepoFolder) {
 				ws.update((RepoFolder) b);
 				break;

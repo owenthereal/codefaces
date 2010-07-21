@@ -63,7 +63,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 
 		workspace = Workspace.getCurrent();
 		workspace.addWorkspaceChangeListener(this);
-		setEnabled(workspace.getWorkingBranch() == null ? false : true);
+		setEnabled(workspace.getWorkingRepoRoot() == null ? false : true);
 	}
 
 	// set the style to drop down
@@ -77,7 +77,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 	 */
 	@Override
 	public void run() {
-		RepoFolder currentBranch = workspace.getWorkingBranch();
+		RepoFolder currentBranch = workspace.getWorkingRepoRoot();
 		if (currentBranch == null) {
 			return;
 		}
@@ -121,8 +121,8 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 	private Menu createMenu(Control parent) {
 		Menu menu = new Menu(parent);
 
-		if (workspace.getWorkingBranch() != null) {
-			RepoFolder currentBranch = workspace.getWorkingBranch();
+		if (workspace.getWorkingRepoRoot() != null) {
+			RepoFolder currentBranch = workspace.getWorkingRepoRoot();
 			Collection<RepoResource> branches = currentBranch.getRoot()
 					.getChildren();
 
@@ -168,7 +168,7 @@ public class SwitchBranchAction extends Action implements IMenuCreator,
 			menu = null;
 		}
 
-		setEnabled(workspace.getWorkingBranch() == null ? false : true);
+		setEnabled(workspace.getWorkingRepoRoot() == null ? false : true);
 	}
 
 }
