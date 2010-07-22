@@ -137,12 +137,6 @@
                optional="false">
          </commandParameter>
       </command>
-      <command
-            categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.internal.commands.ShowChangeRepoBaseDirectoryDialogCommandHandler"
-            id="org.codefaces.ui.internal.commands.showChangeRepoBaseDirectoryDialogCommand"
-            name="Show change repo base directory dialog">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -220,11 +214,6 @@
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.codefaces.ui.view.projectExplorer">
-         <command
-               commandId="org.codefaces.ui.internal.commands.showChangeRepoBaseDirectoryDialogCommand"
-               icon="icons/help.gif"
-               style="push">
-         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:org.codefaces.ui.view.projectExplorer#viewer">

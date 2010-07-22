@@ -10,9 +10,7 @@ import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
 import org.codefaces.core.models.Workspace;
-import org.codefaces.ui.internal.Images;
 import org.codefaces.ui.internal.StatusManager;
-import org.codefaces.ui.internal.actions.SwitchBranchAction;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenFileCommandHandler;
 import org.codefaces.ui.viewers.DefaultRepoResourceComparator;
@@ -20,8 +18,6 @@ import org.codefaces.ui.viewers.DefaultRepoResourceContentProvider;
 import org.codefaces.ui.viewers.DefaultRepoResourceFolderOpenListener;
 import org.codefaces.ui.viewers.DefaultRepoResourceLabelProvider;
 import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewManager;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IOpenListener;
@@ -89,7 +85,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 		createViewer(parent);
 
 		hookWorkspace();
-		createToolBar(parent);
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
@@ -174,19 +169,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	public TreeViewer getViewer() {
 		return viewer;
-	}
-
-	/**
-	 * Create and fill in the tool bar
-	 */
-	private void createToolBar(Composite parent) {
-		IToolBarManager toolbar = getViewSite().getActionBars()
-				.getToolBarManager();
-		Action switchBranchAction = new SwitchBranchAction();
-
-		switchBranchAction.setImageDescriptor(Images
-				.getImageDescriptorFromRegistry(Images.IMG_BRANCHES));
-		toolbar.add(switchBranchAction);
 	}
 
 }
