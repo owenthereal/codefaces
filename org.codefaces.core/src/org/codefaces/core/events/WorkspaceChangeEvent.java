@@ -7,25 +7,25 @@ import org.codefaces.core.models.RepoFolder;
 public class WorkspaceChangeEvent extends EventObject {
 	private static final long serialVersionUID = 5870469991944398567L;
 
-	private final RepoFolder newRepoBranch;
+	private final RepoFolder newBaseDirectory;
 
 	/**
-	 * Constructor for working branch changed
+	 * Constructor for working base directory changed
 	 * 
 	 * @param source
 	 *            the event source object
 	 * @param newRepoBranch
 	 *            the new repository branch
 	 */
-	public WorkspaceChangeEvent(Object source, RepoFolder newRepoBranch) {
+	public WorkspaceChangeEvent(Object source, RepoFolder newBaseDirectory) {
 		super(source);
-		this.newRepoBranch = newRepoBranch;
+		this.newBaseDirectory = newBaseDirectory;
 	}
 
 	/**
-	 * @return the new working branch. null if no branch changed
+	 * @return the new working base directory. null if no diectory changed
 	 */
-	public RepoFolder getRepoBranch() {
-		return newRepoBranch;
+	public RepoFolder getBaseDirectory() {
+		return newBaseDirectory;
 	}
 }

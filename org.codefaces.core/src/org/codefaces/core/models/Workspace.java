@@ -10,7 +10,7 @@ import org.codefaces.core.events.WorkspaceChangeListener;
 import org.eclipse.rwt.SessionSingletonBase;
 
 public class Workspace {
-	private RepoFolder workingRepoRoot;
+	private RepoFolder workingBaseDirectory;
 
 	private final List<WorkspaceChangeListener> changeListeners;
 
@@ -24,27 +24,27 @@ public class Workspace {
 		changeListeners = new CopyOnWriteArrayList<WorkspaceChangeListener>();
 	}
 
-	public RepoFolder getWorkingRepoRoot() {
-		return workingRepoRoot;
+	public RepoFolder getWorkingBaseDirectory() {
+		return workingBaseDirectory;
 	}
 
 	/**
-	 * Change the current working repository repo root without changing the working
+	 * Change the current working repository base directory without changing the working
 	 * repository.
 	 * 
-	 * @param newRepoRoot
-	 *            a new repository folder root
+	 * @param newBaseDirectory
+	 *            a new repository folder 
 	 */
-	public void update(RepoFolder newRepoRoot) {
+	public void update(RepoFolder newBaseDirectory) {
 		lock.lock();
 		try {
-			if (ObjectUtils.equals(workingRepoRoot, newRepoRoot)) {
+			if (ObjectUtils.equals(workingBaseDirectory, newBaseDirectory)) {
 				return;
 			}
 
-			workingRepoRoot = newRepoRoot;
+			workingBaseDirectory = newBaseDirectory;
 			WorkspaceChangeEvent evt = new WorkspaceChangeEvent(this,
-					workingRepoRoot);
+					workingBaseDirectory);
 			notifyChange(evt);
 		} finally {
 			lock.unlock();

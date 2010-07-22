@@ -9,6 +9,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.IEvaluationContext;
 
+@Deprecated
 public class SwitchBranchCommandHandler extends AbstractHandler {
 	public static final String ID = "org.codefaces.ui.internal.commands.switchBranchCommand";
 	public static final String PARAM_BRANCH_ID = "org.codefaces.ui.internal.commands.parameters.switchBranchCommand.branchId";
@@ -31,7 +32,7 @@ public class SwitchBranchCommandHandler extends AbstractHandler {
 
 		Workspace ws = Workspace.getCurrent();
 
-		for (RepoResource b : ws.getWorkingRepoRoot().getRoot().getChildren()) {
+		for (RepoResource b : ws.getWorkingBaseDirectory().getRoot().getChildren()) {
 			if (ObjectUtils.equals(branch, b) && b instanceof RepoFolder) {
 				ws.update((RepoFolder) b);
 				break;

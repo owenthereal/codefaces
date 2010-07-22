@@ -40,13 +40,13 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	private StatusManager statusManager;
 
-	private UpdateBranchWorkspaceChangeListener updateBranchListener = new UpdateBranchWorkspaceChangeListener();
+	private UpdateBaseDirWorkspaceChangeListener updateBaseDirListener = new UpdateBaseDirWorkspaceChangeListener();
 
-	private final class UpdateBranchWorkspaceChangeListener implements
+	private final class UpdateBaseDirWorkspaceChangeListener implements
 			WorkspaceChangeListener {
 		@Override
 		public void workspaceChanged(WorkspaceChangeEvent evt) {
-			update(evt.getRepoBranch());
+			update(evt.getBaseDirectory());
 		}
 	}
 
@@ -91,16 +91,16 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	private void hookWorkspace() {
 		workspace = Workspace.getCurrent();
-		RepoFolder cachedBranch = workspace.getWorkingRepoRoot();
-		if (cachedBranch != null) {
-			update(cachedBranch);
+		RepoFolder cachedBaseDir = workspace.getWorkingBaseDirectory();
+		if (cachedBaseDir != null) {
+			update(cachedBaseDir);
 		}
-		workspace.addWorkspaceChangeListener(updateBranchListener);
+		workspace.addWorkspaceChangeListener(updateBaseDirListener);
 	}
 
 	@Override
 	public void dispose() {
-		workspace.removeWorkspaceChangeListener(updateBranchListener);
+		workspace.removeWorkspaceChangeListener(updateBaseDirListener);
 		super.dispose();
 	}
 
