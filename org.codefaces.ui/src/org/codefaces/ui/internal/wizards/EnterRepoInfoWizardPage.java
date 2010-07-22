@@ -1,5 +1,7 @@
 package org.codefaces.ui.internal.wizards;
 
+import java.net.MalformedURLException;
+
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
@@ -146,7 +148,17 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 		connectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				urlRepo = connectToRepo(urlInputText.getText());
+				Repo repo = null;
+				try {
+					repo = connectToRepo(urlInputText.getText());
+					repo.getRoot().getChildren();
+					updateRepoStructureViewer(repo.getRoot());
+					setErrorMessage(null);
+				} catch (Exception e) {
+					updateRepoStructureViewer(null);
+					setErrorMessage(e.getMessage());
+				}
+				urlRepo = repo;
 			}
 		});
 
@@ -157,25 +169,30 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 	}
 
 	/**
+	 * update the repo structure viewer
+	 * @param rootFolder the new root folder
+	 */
+	private void updateRepoStructureViewer(RepoFolder rootFolder){
+		if(manager != null){
+			manager.dispose();
+		}
+		manager = new DefaultRepoResourceTreeViewManager(repoStructureViewer);
+		repoStructureViewer.setContentProvider(new GitHubRepoResourceContentProvider(manager));
+		repoStructureViewer.setLabelProvider(new DefaultRepoResourceLabelProvider(manager));
+		repoStructureViewer.setInput(rootFolder);
+	}
+
+	/**
 	 * Try to connect to the repository based on the given url. Set the error
 	 * message if any exception occurs.
 	 * 
 	 * @param url
 	 *            the url
 	 * @return the repo created by the url, null if unsuccessful
+	 * @throws MalformedURLException if url is Malformed
 	 */
-	private Repo connectToRepo(String url){
-		Repo repo = null;
-		try {
-			repo = Repo.create(repoType, url);
-			repo.getRoot().getChildren();
-			repoStructureViewer.setInput(repo.getRoot());
-			setErrorMessage(null);
-		} catch (Exception e) {
-			repoStructureViewer.setInput(null);
-			setErrorMessage(e.getMessage());
-		}
-		return repo;
+	private Repo connectToRepo(String url) throws MalformedURLException{
+		return Repo.create(repoType, url);
 	}
 
 	

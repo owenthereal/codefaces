@@ -42,6 +42,12 @@
            name="GitHub Fetch Branches Operation Handler">
      </operationHandler>
      <operationHandler
+           class="org.codefaces.core.github.internal.operations.GitHubFetchTagsHandler"
+           id="org.codefaces.core.operations.SCMOperation.github.fetchTags"
+           kind="GitHub"
+           name="GitHub Fetch Tags Operation Handler">
+     </operationHandler>
+     <operationHandler
            class="org.codefaces.core.github.internal.operations.GitHubFetchChildrenForFolderHandler"
            id="org.codefaces.core.operations.SCMOperation.github.fetchChildrenForFolder"
            kind="GitHub"

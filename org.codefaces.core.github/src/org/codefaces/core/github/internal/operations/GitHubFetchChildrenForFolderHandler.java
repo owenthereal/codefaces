@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMResponseException;
+import org.codefaces.core.github.internal.GitHubActivator;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.github.internal.operations.dtos.GitHubResourceDTO;
 import org.codefaces.core.github.internal.operations.dtos.GitHubResourcesDTO;
@@ -18,6 +19,8 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 public class GitHubFetchChildrenForFolderHandler implements SCMOperationHandler {
 	public static final String ID = "org.codefaces.core.operations.SCMOperation.github.fetchChildrenForFolder";
@@ -51,11 +54,16 @@ public class GitHubFetchChildrenForFolderHandler implements SCMOperationHandler 
 			RepoResource child = createRepoResourceFromType(type, root, folder,
 					rscDto.getSha(), rscDto.getName());
 			if (child == null) {
-				throw new SCMResponseException("Unknown github resource type: "
-						+ type);
+				// TODO: logging the exception for now
+				SCMResponseException exception = new SCMResponseException(
+						"Unknown github resource type: " + type);
+				IStatus status = new Status(Status.ERROR,
+						GitHubActivator.PLUGIN_ID,
+						"Errors occurs when loading url " + url, exception);
+				GitHubActivator.getDefault().getLog().log(status);
+			} else {
+				children.add(child);
 			}
-
-			children.add(child);
 		}
 
 		return children;

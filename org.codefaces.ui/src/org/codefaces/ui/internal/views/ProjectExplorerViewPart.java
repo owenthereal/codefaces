@@ -57,13 +57,13 @@ public class ProjectExplorerViewPart extends ViewPart {
 		}
 	}
 
-
 	private class FileOpenListener implements IOpenListener {
 		@Override
 		public void open(OpenEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) event
 					.getSelection();
-			if (selection.isEmpty()) {
+			if (selection.isEmpty()
+					|| !(selection.getFirstElement() instanceof RepoResource)) {
 				return;
 			}
 
@@ -162,6 +162,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 			manager.dispose();
 		}
 		manager = new DefaultRepoResourceTreeViewManager(viewer);
+		viewer.setContentProvider(new DefaultRepoResourceContentProvider(manager));
+		viewer.setLabelProvider(new DefaultRepoResourceLabelProvider(manager));
 		viewer.setInput(workingBranch);
 	}
 

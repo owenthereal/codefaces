@@ -1,7 +1,6 @@
 package org.codefaces.core.github.internal.operations;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.connectors.SCMConnector;
@@ -14,8 +13,7 @@ import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.eclipse.core.runtime.Assert;
 
-public class GitHubFetchChildrenDispatcher implements
-		SCMOperationHandler {
+public class GitHubFetchChildrenDispatcher implements SCMOperationHandler {
 
 	@Override
 	public Collection<RepoResource> execute(SCMConnector connector,
@@ -30,13 +28,15 @@ public class GitHubFetchChildrenDispatcher implements
 		}
 
 		if (folder.getParent() instanceof RepoFolderRoot
-				&& StringUtils.equals(GitHubOperationConstants.BRANCHES_FOLDER_NAME,
+				&& StringUtils.equals(
+						GitHubOperationConstants.BRANCHES_FOLDER_NAME,
 						folder.getName())) {
 			return fetchChildrenForBranchesFolder(folder);
 		}
 
 		if (folder.getParent() instanceof RepoFolderRoot
-				&& StringUtils.equals(GitHubOperationConstants.TAGS_FOLDER_NAME,
+				&& StringUtils.equals(
+						GitHubOperationConstants.TAGS_FOLDER_NAME,
 						folder.getName())) {
 			return fetchChildrenForTagsFolder(folder);
 		}
@@ -54,8 +54,8 @@ public class GitHubFetchChildrenDispatcher implements
 
 	protected Collection<RepoResource> fetchChildrenForBranchesFolder(
 			RepoFolder folder) {
-		return executeFetchChildrenOperation(
-				GitHubFetchBranchesHandler.ID, folder);
+		return executeFetchChildrenOperation(GitHubFetchBranchesHandler.ID,
+				folder);
 	}
 
 	private Collection<RepoResource> fetchChildrenForFolder(
@@ -69,10 +69,9 @@ public class GitHubFetchChildrenDispatcher implements
 				GitHubFetchChildrenForRootHandler.ID, root);
 	}
 
-	// TODO
 	protected Collection<RepoResource> fetchChildrenForTagsFolder(
 			RepoFolder folder) {
-		return Collections.emptyList();
+		return executeFetchChildrenOperation(GitHubFetchTagsHandler.ID, folder);
 	}
 
 }

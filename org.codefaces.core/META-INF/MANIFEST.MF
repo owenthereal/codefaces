@@ -8,8 +8,7 @@ Export-Package: org.codefaces.core,
  org.codefaces.core.connectors,
  org.codefaces.core.events,
  org.codefaces.core.models,
- org.codefaces.core.operations,
- org.codefaces.core.services
+ org.codefaces.core.operations
 Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.lib;visibility:=reexport,
  org.eclipse.rap.rwt
