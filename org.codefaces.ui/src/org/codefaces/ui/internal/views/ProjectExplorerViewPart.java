@@ -14,10 +14,9 @@ import org.codefaces.ui.internal.StatusManager;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenFileCommandHandler;
 import org.codefaces.ui.viewers.DefaultRepoResourceComparator;
-import org.codefaces.ui.viewers.DefaultRepoResourceContentProvider;
+import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewContentProvider;
 import org.codefaces.ui.viewers.DefaultRepoResourceFolderOpenListener;
 import org.codefaces.ui.viewers.DefaultRepoResourceLabelProvider;
-import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IOpenListener;
@@ -42,8 +41,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private StatusManager statusManager;
 
 	private UpdateBranchWorkspaceChangeListener updateBranchListener = new UpdateBranchWorkspaceChangeListener();
-
-	private DefaultRepoResourceTreeViewManager manager;
 
 	private final class UpdateBranchWorkspaceChangeListener implements
 			WorkspaceChangeListener {
@@ -103,10 +100,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	@Override
 	public void dispose() {
-		if (manager != null) {
-			manager.dispose();
-		}
-
 		workspace.removeWorkspaceChangeListener(updateBranchListener);
 		super.dispose();
 	}
@@ -138,28 +131,21 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private void createViewer(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.BORDER);
-		manager = new DefaultRepoResourceTreeViewManager(viewer);
-		viewer.setContentProvider(new DefaultRepoResourceContentProvider(manager));
-		viewer.setLabelProvider(new DefaultRepoResourceLabelProvider(manager));
+		viewer.setContentProvider(new DefaultRepoResourceTreeViewContentProvider());
+		viewer.setLabelProvider(new DefaultRepoResourceLabelProvider());
 		viewer.setComparator(new DefaultRepoResourceComparator());
 		viewer.addOpenListener(new FileOpenListener());
 		viewer.addOpenListener(new DefaultRepoResourceFolderOpenListener());
 	}
 
 	/**
-	 * Update the Explorer input to the given RepoResource.
+	 * Update the Explorer input to the given RepoFolder.
 	 * 
-	 * @param workingBranch
-	 *            the new working branch
+	 * @param newBaseDirectory
+	 *            the new base directory
 	 */
-	public void update(RepoFolder workingBranch) {
-		if (manager != null) {
-			manager.dispose();
-		}
-		manager = new DefaultRepoResourceTreeViewManager(viewer);
-		viewer.setContentProvider(new DefaultRepoResourceContentProvider(manager));
-		viewer.setLabelProvider(new DefaultRepoResourceLabelProvider(manager));
-		viewer.setInput(workingBranch);
+	public void update(RepoFolder newBaseDirectory) {
+		viewer.setInput(newBaseDirectory);
 	}
 
 	@Override

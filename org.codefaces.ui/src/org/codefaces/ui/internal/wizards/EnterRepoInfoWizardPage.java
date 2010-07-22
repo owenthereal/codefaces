@@ -8,7 +8,6 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.internal.Images;
 import org.codefaces.ui.viewers.DefaultRepoResourceComparator;
 import org.codefaces.ui.viewers.DefaultRepoResourceLabelProvider;
-import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewManager;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -68,7 +67,6 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 	private Text urlInputText;
 	private Button connectButton;
 	private TreeViewer repoStructureViewer;
-	private DefaultRepoResourceTreeViewManager manager;
 	
 	private Repo urlRepo;
 
@@ -136,9 +134,8 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 		repoStructureComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		repoStructureViewer = new TreeViewer(repoStructureComposite, SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		manager = new DefaultRepoResourceTreeViewManager(repoStructureViewer);
-		repoStructureViewer.setContentProvider(new GitHubRepoResourceContentProvider(manager));
-		repoStructureViewer.setLabelProvider(new DefaultRepoResourceLabelProvider(manager));
+		repoStructureViewer.setContentProvider(new GitHubRepoResourceContentProvider());
+		repoStructureViewer.setLabelProvider(new DefaultRepoResourceLabelProvider());
 		repoStructureViewer.setComparator(new DefaultRepoResourceComparator());
 	}
 
@@ -170,16 +167,10 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 
 	/**
 	 * update the repo structure viewer
-	 * @param rootFolder the new root folder
+	 * @param baseDiectory the new base directory
 	 */
-	private void updateRepoStructureViewer(RepoFolder rootFolder){
-		if(manager != null){
-			manager.dispose();
-		}
-		manager = new DefaultRepoResourceTreeViewManager(repoStructureViewer);
-		repoStructureViewer.setContentProvider(new GitHubRepoResourceContentProvider(manager));
-		repoStructureViewer.setLabelProvider(new DefaultRepoResourceLabelProvider(manager));
-		repoStructureViewer.setInput(rootFolder);
+	private void updateRepoStructureViewer(RepoFolder baseDiectory){
+		repoStructureViewer.setInput(baseDiectory);
 	}
 
 	/**
@@ -234,13 +225,6 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 		else{
 			settings.put(RepoSettings.URL_REPO, null);
 			settings.put(RepoSettings.REPO_BASE_DIECTORY, null);
-		}
-	}
-
-	@Override
-	public void dispose(){
-		if(manager!=null){
-			manager.dispose();
 		}
 	}
 	

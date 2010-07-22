@@ -2,20 +2,25 @@ package org.codefaces.ui.viewers;
 
 import org.codefaces.core.models.RepoResource;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-public class DefaultRepoResourceContentProvider implements ITreeContentProvider {
+public class DefaultRepoResourceTreeViewContentProvider implements ITreeContentProvider {
 
-	private DefaultRepoResourceTreeViewManager manager;
-
-	public DefaultRepoResourceContentProvider(DefaultRepoResourceTreeViewManager manager){
-		this.manager = manager;
-	}
-	
-	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-	}
+	private QueuedAndCachedRepoResourceTreeViewManager manager;
 
 	public void dispose() {
+		if(manager != null){
+			manager.dispose();
+		}
+	}
+	
+	@Override
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput){
+		if(manager != null){
+			manager.dispose();
+		}
+		manager = new QueuedAndCachedRepoResourceTreeViewManager((TreeViewer) viewer);
 	}
 
 	public Object[] getElements(Object parent) {

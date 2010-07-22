@@ -1,15 +1,10 @@
 package org.codefaces.ui.internal.wizards;
 
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.ui.viewers.DefaultRepoResourceContentProvider;
-import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewManager;
+import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewContentProvider;
 
-public class GitHubRepoResourceContentProvider extends DefaultRepoResourceContentProvider{
-	
-	public GitHubRepoResourceContentProvider(
-			DefaultRepoResourceTreeViewManager manager) {
-		super(manager);
-	}
+public class GitHubRepoResourceContentProvider extends DefaultRepoResourceTreeViewContentProvider{
+
 	
 	@Override
 	public boolean hasChildren(Object parent) {

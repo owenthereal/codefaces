@@ -5,24 +5,17 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.codefaces.core.models.RepoFile;
-import org.codefaces.core.models.RepoFolder;
-import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
-import org.codefaces.ui.internal.Images;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.rwt.lifecycle.UICallBack;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
-public class DefaultRepoResourceTreeViewManager {
+class QueuedAndCachedRepoResourceTreeViewManager {
 	private final TreeViewer viewer;
 
 	private Display display;
@@ -84,19 +77,9 @@ public class DefaultRepoResourceTreeViewManager {
 		}
 	}
 
-	private static class LoadingItem {
-		private static final String LOADING_TEXT = "...";
 
-		public String getText() {
-			return LOADING_TEXT;
-		}
 
-		public Image getImage() {
-			return null;
-		}
-	}
-
-	public DefaultRepoResourceTreeViewManager(TreeViewer treeView) {
+	public QueuedAndCachedRepoResourceTreeViewManager(TreeViewer treeView) {
 		this.viewer = treeView;
 		display = treeView.getControl().getDisplay();
 		loadingJob = new RepoResourceLoadingJob();
@@ -132,39 +115,5 @@ public class DefaultRepoResourceTreeViewManager {
 		return resource.getChildren().toArray();
 	}
 
-	public String getText(Object obj) {
-		if (obj instanceof LoadingItem) {
-			return ((LoadingItem) obj).getText();
-		}
-
-		if (obj instanceof RepoResource) {
-			return ((RepoResource) obj).getName();
-		}
-
-		return obj.toString();
-	}
-
-	public Image getImage(Object obj) {
-		if (obj instanceof LoadingItem) {
-			return ((LoadingItem) obj).getImage();
-		}
-
-		if (obj instanceof RepoFolderRoot) {
-			return Images.getImageDescriptorFromRegistry(
-					Images.IMG_REPO_FOLDER_ROOT).createImage();
-		}
-
-		if (obj instanceof RepoFolder) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImage(ISharedImages.IMG_OBJ_FOLDER);
-		}
-
-		if (obj instanceof RepoFile) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImage(ISharedImages.IMG_OBJ_FILE);
-		}
-
-		return null;
-	}
 	
 }
