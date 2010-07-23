@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.ui.ExceptionListener;
 import org.codefaces.ui.internal.Images;
 import org.codefaces.ui.viewers.DefaultRepoResourceComparator;
 import org.codefaces.ui.viewers.DefaultRepoResourceLabelProvider;
@@ -134,7 +135,14 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 		repoStructureComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		repoStructureViewer = new TreeViewer(repoStructureComposite, SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		repoStructureViewer.setContentProvider(new GitHubRepoResourceContentProvider());
+		GitHubRepoResourceContentProvider contentProvider = new GitHubRepoResourceContentProvider();
+		contentProvider.addExceptionListener(new ExceptionListener(){
+			@Override
+			public void exceptionThrown(Exception e) {
+				setErrorMessage(e.getMessage());
+			}
+		});
+		repoStructureViewer.setContentProvider(contentProvider);
 		repoStructureViewer.setLabelProvider(new DefaultRepoResourceLabelProvider());
 		repoStructureViewer.setComparator(new DefaultRepoResourceComparator());
 	}

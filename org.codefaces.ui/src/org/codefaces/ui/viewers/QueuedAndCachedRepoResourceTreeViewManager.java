@@ -1,11 +1,14 @@
 package org.codefaces.ui.viewers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.ui.ExceptionListener;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -16,6 +19,8 @@ import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
 
 class QueuedAndCachedRepoResourceTreeViewManager {
+	private final List<ExceptionListener> exceptionListeners;
+	
 	private final TreeViewer viewer;
 
 	private Display display;
@@ -27,8 +32,10 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 	private RepoResourceLoadingJob loadingJob;
 
 	private class RepoResourceLoadingJob extends Job {
+		private static final String JOB_NAME = "SCMCommunicationJob";
+
 		public RepoResourceLoadingJob() {
-			super("");
+			super(JOB_NAME);
 			setSystem(true);
 		}
 
@@ -37,7 +44,16 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 			RepoResource resource = null;
 			try {
 				while ((resource = waitingQueue.take()) != null) {
-					loadResource(resource);
+					try {
+						loadResource(resource);
+					} catch (final Exception e) {
+						display.syncExec(new Runnable() {
+							@Override
+							public void run() {
+								notifyExceptionListeners(e);								
+							}	
+						});
+					}
 				}
 			} catch (InterruptedException e) {
 				@SuppressWarnings("null")
@@ -77,10 +93,36 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 		}
 	}
 
+	/**
+	 * Notify the exception listeners that an exception is caught
+	 * @param e
+	 *            the exception
+	 */
+	private void notifyExceptionListeners(Exception e){
+		for(ExceptionListener listener : exceptionListeners){
+			listener.exceptionThrown(e);
+		}
+	}
+
+	/**
+	 * This manager runs the operation asynchronously, client should use this
+	 * use this interface to get notified if any exception is caught
+	 */
+	public void addExceptionListener(ExceptionListener exceptionListener){
+		exceptionListeners.add(exceptionListener);
+	}
+	
+	/**
+	 * remove the given exception listener
+	 */
+	public void removeExceptionListener(ExceptionListener exceptionListener){
+		exceptionListeners.remove(exceptionListener);
+	}
 
 
 	public QueuedAndCachedRepoResourceTreeViewManager(TreeViewer treeView) {
 		this.viewer = treeView;
+		exceptionListeners = new CopyOnWriteArrayList<ExceptionListener>();
 		display = treeView.getControl().getDisplay();
 		loadingJob = new RepoResourceLoadingJob();
 		loadingJob.schedule();
