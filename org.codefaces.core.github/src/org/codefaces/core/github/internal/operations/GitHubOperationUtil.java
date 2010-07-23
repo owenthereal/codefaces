@@ -3,11 +3,14 @@ package org.codefaces.core.github.internal.operations;
 import java.net.URI;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GitHubOperationUtil {
 	private static final String SEPARATOR = "/";
 
-	private static final Gson GSON = new Gson();
+	private static final String GITHUB_DATE_FORMAT = "yyyy/MM/dd kk:mm:ss Z";
+	private static final Gson GSON = new GsonBuilder().setDateFormat(
+			GITHUB_DATE_FORMAT).create();
 
 	public static <T> T fromJson(String jsonString, Class<T> dtoClass) {
 		return GSON.fromJson(jsonString, dtoClass);
