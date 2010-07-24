@@ -8,6 +8,7 @@ import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.ExceptionListener;
 import org.codefaces.ui.internal.Images;
 import org.codefaces.ui.viewers.DefaultRepoResourceComparator;
+import org.codefaces.ui.viewers.DefaultRepoResourceFolderOpenListener;
 import org.codefaces.ui.viewers.DefaultRepoResourceLabelProvider;
 
 import org.eclipse.core.runtime.Assert;
@@ -52,6 +53,25 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 			saveSettingsAndUpdatePageCompleteStatus(false, null, null);
 		}
 	}
+	
+	private final class FolderOnlyRepoStructureTreeViewSelectionChangedListener
+	implements ISelectionChangedListener {
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			ITreeSelection selections = (ITreeSelection) event.getSelection();
+			if (selections.size() == 1) {
+				RepoResource selectedResource = (RepoResource) selections
+						.getFirstElement();
+				if (selectedResource instanceof RepoFolder) {
+					saveSettingsAndUpdatePageCompleteStatus(true, urlRepo,
+							(RepoFolder) selectedResource);
+					return;
+				}
+			}
+
+			saveSettingsAndUpdatePageCompleteStatus(false, null, null);
+		}
+	}
 
 	private static final String TITLE = "Import Repository";
 	private static final String DESCRIPTION = "Fill in repository information";
@@ -63,7 +83,6 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 	private static final String REPO_VIEW_SECTION_LABEL_TEXT = "Select a branch or tag to import.";
 	
 	private RepoSettings settings;
-	private String repoType;
 
 	private Text urlInputText;
 	private Button connectButton;
@@ -96,9 +115,7 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 		createRepoStructureViewerSection(dialogAreaComposite);
 		setControl(dialogAreaComposite);
 		bindControls();
-		
-		// we get the settings here because this method is called lazily 
-		retrieveRepoType(settings);
+
 	}
 		
 	private void createUrlInputSection(Composite parent) {
@@ -135,7 +152,8 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 		repoStructureComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		repoStructureViewer = new TreeViewer(repoStructureComposite, SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		GitHubRepoResourceContentProvider contentProvider = new GitHubRepoResourceContentProvider();
+		//GitHubRepoResourceContentProvider contentProvider = new GitHubRepoResourceContentProvider();
+		FolderOnlyRepoResourceContentProvider contentProvider = new FolderOnlyRepoResourceContentProvider();
 		contentProvider.addExceptionListener(new ExceptionListener(){
 			@Override
 			public void exceptionThrown(Exception e) {
@@ -167,10 +185,13 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 			}
 		});
 
+		//repoStructureViewer
+		//		.addOpenListener(new GitHubRepoResourceFolderOpenListener());
+		repoStructureViewer.addOpenListener(new DefaultRepoResourceFolderOpenListener());
+		//repoStructureViewer
+		//		.addSelectionChangedListener(new GitHubRepoStructureTreeViewSelectionChangedListener());
 		repoStructureViewer
-				.addOpenListener(new GitHubRepoResourceFolderOpenListener());
-		repoStructureViewer
-				.addSelectionChangedListener(new GitHubRepoStructureTreeViewSelectionChangedListener());
+				.addSelectionChangedListener(new FolderOnlyRepoStructureTreeViewSelectionChangedListener());
 	}
 
 	/**
@@ -191,6 +212,9 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 	 * @throws MalformedURLException if url is Malformed
 	 */
 	private Repo connectToRepo(String url) throws MalformedURLException{
+		
+		// we get the settings here because this method is called lazily 
+		String repoType = retrieveRepoType(settings);
 		return Repo.create(repoType, url);
 	}
 
@@ -198,11 +222,11 @@ public class EnterRepoInfoWizardPage extends WizardPage {
 	/**
 	 * Obtain the repository type from settings
 	 */
-	private void retrieveRepoType(RepoSettings settings){
+	private String retrieveRepoType(RepoSettings settings){
 		Object type = settings.get(RepoSettings.REPO_TYPE);
 		Assert.isNotNull(type);
 		Assert.isTrue(type instanceof String);
-		repoType = (String)type;
+		return (String)type;
 	}
 
 	/**
