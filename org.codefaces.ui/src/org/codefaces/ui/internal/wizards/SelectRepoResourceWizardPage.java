@@ -4,7 +4,6 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.internal.commons.DefaultRepoResourceComparator;
 import org.codefaces.ui.internal.commons.DefaultRepoResourceLabelProvider;
-import org.codefaces.ui.internal.commons.RepoResourceTreeContentProvider;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -91,7 +90,7 @@ public class SelectRepoResourceWizardPage extends WizardPage {
 				new GridData(GridData.FILL_BOTH));
 
 		repoStructureViewer
-				.setContentProvider(new RepoResourceTreeContentProvider());
+				.setContentProvider(new FolderOnlyRepoResourceContentProvider());
 		repoStructureViewer
 				.setLabelProvider(new DefaultRepoResourceLabelProvider());
 		repoStructureViewer.setComparator(new DefaultRepoResourceComparator());
