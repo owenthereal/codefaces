@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.JSWriter;
+import org.eclipse.rwt.lifecycle.ProcessActionRunner;
 import org.eclipse.rwt.lifecycle.WidgetLCAUtil;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.widgets.Widget;
@@ -51,7 +52,7 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 	}
 
 	@Override
-	public void readData(Widget widget) {
+	public void readData(final Widget widget) {
 		String status = WidgetLCAUtil
 				.readPropertyValue(widget, JS_PARAM_STATUS);
 		if (status != null) {
@@ -68,9 +69,15 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 					JS_PARAM_REQUEST_ID);
 			String content = WidgetLCAUtil.readPropertyValue(widget,
 					JS_PARAM_CONTENT);
-			JsonResponse response = new JsonResponse(requestId, responseStatus,
-					content);
-			((AjaxClientWidget) widget).getClient().setJsonResponse(response);
+			final JsonResponse response = new JsonResponse(requestId,
+					responseStatus, content);
+			
+			ProcessActionRunner.add(new Runnable() {
+				public void run() {
+					((AjaxClientWidget) widget).getClient().setJsonResponse(
+							response);
+				}
+			});
 		}
 	}
 }

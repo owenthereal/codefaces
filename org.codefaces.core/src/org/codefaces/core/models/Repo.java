@@ -1,7 +1,5 @@
 package org.codefaces.core.models;
 
-import java.net.MalformedURLException;
-
 import org.codefaces.core.services.SCMService;
 
 public class Repo extends RepoResource {
@@ -35,8 +33,7 @@ public class Repo extends RepoResource {
 		return (RepoInfo) super.getInfo();
 	}
 
-	public static Repo create(String kind, String url)
-			throws MalformedURLException {
+	public static Repo create(String kind, String url) {
 		return SCMService.getCurrent().connect(kind, url);
 	}
 

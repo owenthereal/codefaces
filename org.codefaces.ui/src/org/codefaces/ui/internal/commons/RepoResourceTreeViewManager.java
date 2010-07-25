@@ -1,14 +1,11 @@
-package org.codefaces.ui.viewers;
+package org.codefaces.ui.internal.commons;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.ui.ExceptionListener;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -17,10 +14,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
-class QueuedAndCachedRepoResourceTreeViewManager {
-	private final List<ExceptionListener> exceptionListeners;
-	
+class RepoResourceTreeViewManager {
 	private final TreeViewer viewer;
 
 	private Display display;
@@ -32,7 +28,7 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 	private RepoResourceLoadingJob loadingJob;
 
 	private class RepoResourceLoadingJob extends Job {
-		private static final String JOB_NAME = "SCMCommunicationJob";
+		private static final String JOB_NAME = "Repository resource fetching";
 
 		public RepoResourceLoadingJob() {
 			super(JOB_NAME);
@@ -44,16 +40,7 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 			RepoResource resource = null;
 			try {
 				while ((resource = waitingQueue.take()) != null) {
-					try {
-						loadResource(resource);
-					} catch (final Exception e) {
-						display.syncExec(new Runnable() {
-							@Override
-							public void run() {
-								notifyExceptionListeners(e);								
-							}	
-						});
-					}
+					loadResource(resource);
 				}
 			} catch (InterruptedException e) {
 				@SuppressWarnings("null")
@@ -72,15 +59,17 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 				@Override
 				public void run() {
 					resource.getChildren();
+					loadedResources.put(resource, resource);
 				}
 			});
 
-			display.syncExec(new Runnable() {
+			display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						loadedResources.put(resource, resource);
-						viewer.refresh(resource, true);
+						if (!viewer.getControl().isDisposed()) {
+							viewer.refresh(resource, true);
+						}
 					} catch (Exception e) {
 						IStatus status = new Status(Status.ERROR,
 								CodeFacesUIActivator.PLUGIN_ID,
@@ -93,37 +82,10 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 		}
 	}
 
-	/**
-	 * Notify the exception listeners that an exception is caught
-	 * @param e
-	 *            the exception
-	 */
-	private void notifyExceptionListeners(Exception e){
-		for(ExceptionListener listener : exceptionListeners){
-			listener.exceptionThrown(e);
-		}
-	}
-
-	/**
-	 * This manager runs the operation asynchronously, client should use this
-	 * use this interface to get notified if any exception is caught
-	 */
-	public void addExceptionListener(ExceptionListener exceptionListener){
-		exceptionListeners.add(exceptionListener);
-	}
-	
-	/**
-	 * remove the given exception listener
-	 */
-	public void removeExceptionListener(ExceptionListener exceptionListener){
-		exceptionListeners.remove(exceptionListener);
-	}
-
-
-	public QueuedAndCachedRepoResourceTreeViewManager(TreeViewer treeView) {
+	public RepoResourceTreeViewManager(TreeViewer treeView) {
 		this.viewer = treeView;
-		exceptionListeners = new CopyOnWriteArrayList<ExceptionListener>();
-		display = treeView.getControl().getDisplay();
+		display = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getShell().getDisplay();
 		loadingJob = new RepoResourceLoadingJob();
 		loadingJob.schedule();
 	}
@@ -157,5 +119,4 @@ class QueuedAndCachedRepoResourceTreeViewManager {
 		return resource.getChildren().toArray();
 	}
 
-	
 }

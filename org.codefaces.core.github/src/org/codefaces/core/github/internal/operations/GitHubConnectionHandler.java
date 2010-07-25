@@ -23,9 +23,9 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 	private static final String OPTIONAL_ENDING_SLASH_PATTERN = "(?:/)?";
 
 	public static final String ID = "org.codefaces.core.operations.SCMOperation.connection";
-	
+
 	private static final String SHOW_GITHUB_REPO = "http://github.com/api/v2/json/repos/show";
-	
+
 	private static final Pattern URL_PATTERN = Pattern.compile("(?:"
 			+ Pattern.quote(HTTP_WWW_GITHUB_ORG) + "|"
 			+ Pattern.quote(HTTP_GITHUB_COM) + ")/([^/]+)/([^/]+)"
@@ -45,26 +45,26 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 			RepoCredential credential = new RepoCredential(owner, null, null);
 
 			Repo repo = new Repo(connector.getKind(), url, repoName, credential);
-			
-			//probe the url
-			try{
+
+			try {
 				String repoInfoUrl = createShowRepoInfoURL(repo);
 				fetchRepoDataDto((GitHubConnector) connector, repoInfoUrl);
-			}catch(Exception e){
-				throw new SCMResponseException("Fail to connect repository: " + url);
+			} catch (Exception e) {
+				throw new SCMResponseException("Fail to connect repository: "
+						+ url);
 			}
-			
+
 			return repo;
 		}
 
 		throw new SCMURLException("Invalid repository url: " + url);
 	}
-	
-	protected String createShowRepoInfoURL(Repo repo){
+
+	protected String createShowRepoInfoURL(Repo repo) {
 		return GitHubOperationUtil.makeURI(SHOW_GITHUB_REPO, repo
 				.getCredential().getOwner(), repo.getName());
 	}
-	
+
 	private GitHubRepoDataDTO fetchRepoDataDto(GitHubConnector connector,
 			String getGitHubRepoInfoUrl) {
 		GitHubRepoDTO gitHubRepoDto = GitHubOperationUtil.fromJson(
