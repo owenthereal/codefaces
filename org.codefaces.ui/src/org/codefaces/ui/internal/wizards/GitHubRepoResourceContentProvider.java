@@ -1,9 +1,9 @@
 package org.codefaces.ui.internal.wizards;
 
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.ui.viewers.DefaultRepoResourceTreeViewContentProvider;
+import org.codefaces.ui.internal.commons.RepoResourceTreeContentProvider;
 
-public class GitHubRepoResourceContentProvider extends DefaultRepoResourceTreeViewContentProvider{
+public class GitHubRepoResourceContentProvider extends RepoResourceTreeContentProvider{
 
 	
 	@Override

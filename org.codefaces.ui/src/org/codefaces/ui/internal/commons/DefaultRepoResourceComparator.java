@@ -1,4 +1,4 @@
-package org.codefaces.ui.viewers;
+package org.codefaces.ui.internal.commons;
 
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFolder;

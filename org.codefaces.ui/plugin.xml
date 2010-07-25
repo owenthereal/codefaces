@@ -72,7 +72,7 @@
       </category>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.internal.commands.ImportRepositoryCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.ImportRepoCommandHandler"
             description="Import from a repository"
             id="org.codefaces.ui.internal.commands.importRepositoryCommand"
             name="ImportRepositoryCommand">

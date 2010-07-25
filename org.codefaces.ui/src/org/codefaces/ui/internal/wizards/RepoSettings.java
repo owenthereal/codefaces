@@ -4,33 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RepoSettings {
-	
-	public static final String REPO_TYPE = "REPO_TYPE";
-	
-	public static final String URL_REPO = "REPO";
-	
-	public static final String REPO_BASE_DIECTORY = "REPO_ROOT";
-	
+	public static final String REPO_KIND = "REPO_KIND";
+
+	public static final String REPO_URL = "REPO";
+
+	public static final String REPO_RESOURCE_INPUT = "REPO_RESOURCE_INPUT";
+
 	public static final String REPO_USER = "REPO_USER";
-	
+
 	public static final String REPO_PASSWORD = "REPO_PASSWORD";
-	
+
 	private Map<String, Object> settings;
-	
-	/**
-	 * Constructor
-	 */
-	public RepoSettings(){
+
+	public RepoSettings() {
 		settings = new HashMap<String, Object>();
 	}
-	
-	public Object get(String key){
+
+	public Object get(String key) {
 		return settings.get(key);
 	}
-	
-	public void put(String key, Object value){
+
+	public void put(String key, Object value) {
 		settings.put(key, value);
 	}
-	
-	
 }

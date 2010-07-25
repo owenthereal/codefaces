@@ -5,7 +5,7 @@ import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.views.ProjectExplorerViewPart;
 import org.codefaces.ui.internal.wizards.RepoSettings;
-import org.codefaces.ui.internal.wizards.SelectRepoWizard;
+import org.codefaces.ui.internal.wizards.ImportRepoWizard;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -18,19 +18,19 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ImportRepositoryCommandHandler extends AbstractHandler {
+public class ImportRepoCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
 
-		SelectRepoWizard wizard = new SelectRepoWizard();
+		ImportRepoWizard wizard = new ImportRepoWizard();
 		WizardDialog dialog = new WizardDialog(shell, wizard);
 		
 		if (dialog.open() == Window.OK) {
 			RepoSettings settings = wizard.getRepoSettings();
 			RepoFolder baseDirectory = (RepoFolder) settings
-					.get(RepoSettings.REPO_BASE_DIECTORY);
+					.get(RepoSettings.REPO_RESOURCE_INPUT);
 			
 			if (baseDirectory != null) {
 				try {
