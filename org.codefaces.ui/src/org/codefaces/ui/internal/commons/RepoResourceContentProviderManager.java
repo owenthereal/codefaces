@@ -14,9 +14,8 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
-class RepoResourceTreeViewManager {
+class RepoResourceContentProviderManager {
 	private final TreeViewer viewer;
 
 	private Display display;
@@ -82,10 +81,9 @@ class RepoResourceTreeViewManager {
 		}
 	}
 
-	public RepoResourceTreeViewManager(TreeViewer treeView) {
+	public RepoResourceContentProviderManager(TreeViewer treeView) {
 		this.viewer = treeView;
-		display = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getShell().getDisplay();
+		display = viewer.getControl().getDisplay();
 		loadingJob = new RepoResourceLoadingJob();
 		loadingJob.schedule();
 	}

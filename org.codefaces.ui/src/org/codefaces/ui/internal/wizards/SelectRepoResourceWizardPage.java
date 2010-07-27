@@ -2,8 +2,11 @@ package org.codefaces.ui.internal.wizards;
 
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.ui.internal.commons.DefaultRepoResourceComparator;
-import org.codefaces.ui.internal.commons.DefaultRepoResourceLabelProvider;
+import org.codefaces.ui.internal.commons.RepoFolderOpenListener;
+import org.codefaces.ui.internal.commons.RepoFolderViewFilter;
+import org.codefaces.ui.internal.commons.RepoResourceComparator;
+import org.codefaces.ui.internal.commons.RepoResourceContentProvider;
+import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -13,6 +16,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -21,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.progress.UIJob;
 
 public class SelectRepoResourceWizardPage extends WizardPage {
-	private final class TreeViewSelectionChangedListener implements
+	private class TreeViewSelectionChangedListener implements
 			ISelectionChangedListener {
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
@@ -56,8 +60,7 @@ public class SelectRepoResourceWizardPage extends WizardPage {
 	}
 
 	private void bindRepoStructureViewer() {
-		repoStructureViewer
-				.addOpenListener(new GitHubRepoResourceFolderOpenListener());
+		repoStructureViewer.addOpenListener(new RepoFolderOpenListener());
 		repoStructureViewer
 				.addSelectionChangedListener(new TreeViewSelectionChangedListener());
 	}
@@ -90,21 +93,19 @@ public class SelectRepoResourceWizardPage extends WizardPage {
 				new GridData(GridData.FILL_BOTH));
 
 		repoStructureViewer
-				.setContentProvider(new FolderOnlyRepoResourceContentProvider());
+				.setContentProvider(new RepoResourceContentProvider());
+		repoStructureViewer.setLabelProvider(new RepoResourceLabelProvider());
 		repoStructureViewer
-				.setLabelProvider(new DefaultRepoResourceLabelProvider());
-		repoStructureViewer.setComparator(new DefaultRepoResourceComparator());
+				.setFilters(new ViewerFilter[] { new RepoFolderViewFilter() });
+		repoStructureViewer.setComparator(new RepoResourceComparator());
 	}
 
 	private void populateRepoStructureViewer() {
-		Object type = settings.get(RepoSettings.REPO_KIND);
-		Object location = settings.get(RepoSettings.REPO_URL);
-		Assert.isTrue(type instanceof String);
-		Assert.isTrue(location instanceof String);
+		Object repo = settings.get(RepoSettings.REPO);
+		Assert.isTrue(repo instanceof Repo);
 
 		try {
-			Repo repo = Repo.create((String) type, (String) location);
-			repoStructureViewer.setInput(repo.getRoot());
+			repoStructureViewer.setInput(((Repo) repo).getRoot());
 			repoStructureViewer.setSelection(null);
 			setErrorMessage(null);
 		} catch (Exception e) {

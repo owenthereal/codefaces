@@ -6,13 +6,15 @@ import java.util.Map;
 public class RepoSettings {
 	public static final String REPO_KIND = "REPO_KIND";
 
-	public static final String REPO_URL = "REPO";
+	public static final String REPO_URL = "REPO_URL";
 
 	public static final String REPO_RESOURCE_INPUT = "REPO_RESOURCE_INPUT";
 
 	public static final String REPO_USER = "REPO_USER";
 
 	public static final String REPO_PASSWORD = "REPO_PASSWORD";
+
+	public static final String REPO = "REPO";
 
 	private Map<String, Object> settings;
 

@@ -17,7 +17,7 @@ public class ImportRepoWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		addPage(new EnterRepoLocationWizardPage(settings));
+		addPage(new EnterRepoInfoWizardPage(settings));
 		addPage(new SelectRepoResourceWizardPage(settings));
 	}
 

@@ -7,14 +7,18 @@ import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.swt.widgets.Display;
 
 public class AjaxClient {
-	private final Display display;
+	private final AjaxClientWidget ajaxClientWidget;
 
 	protected ConcurrentLinkedQueue<JsonGet> requestQueue = new ConcurrentLinkedQueue<JsonGet>();
 
 	protected ConcurrentHashMap<String, JsonResponse> responseMap = new ConcurrentHashMap<String, JsonResponse>();
 
-	public AjaxClient(Display display) {
-		this.display = display;
+	public AjaxClient(AjaxClientWidget ajaxClientWidget) {
+		this.ajaxClientWidget = ajaxClientWidget;
+	}
+
+	private Display getDisplay() {
+		return ajaxClientWidget.getDisplay();
 	}
 
 	public JsonResponse execute(JsonGet jsonGet) {
@@ -32,7 +36,7 @@ public class AjaxClient {
 	}
 
 	protected void runOnUIThread(Runnable runnable) {
-		display.syncExec(runnable);
+		getDisplay().syncExec(runnable);
 	}
 
 	protected void waitForResponse(final String requestId) {
@@ -42,8 +46,8 @@ public class AjaxClient {
 	}
 
 	protected void runEventLoop() {
-		if (!display.readAndDispatch()) {
-			display.sleep();
+		if (!getDisplay().readAndDispatch()) {
+			getDisplay().sleep();
 		}
 	}
 

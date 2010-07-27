@@ -5,8 +5,8 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-public class RepoResourceTreeContentProvider implements ITreeContentProvider {
-	private RepoResourceTreeViewManager manager;
+public class RepoResourceContentProvider implements ITreeContentProvider {
+	private RepoResourceContentProviderManager manager;
 
 	public void dispose() {
 		if (manager != null) {
@@ -19,7 +19,7 @@ public class RepoResourceTreeContentProvider implements ITreeContentProvider {
 		if (manager != null) {
 			manager.dispose();
 		}
-		manager = new RepoResourceTreeViewManager((TreeViewer) viewer);
+		manager = new RepoResourceContentProviderManager((TreeViewer) viewer);
 	}
 
 	public Object[] getElements(Object parent) {

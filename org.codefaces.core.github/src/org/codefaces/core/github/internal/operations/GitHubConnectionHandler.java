@@ -48,6 +48,7 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 
 			try {
 				String repoInfoUrl = createShowRepoInfoURL(repo);
+				// TODO: populate into the repo object
 				fetchRepoDataDto((GitHubConnector) connector, repoInfoUrl);
 			} catch (Exception e) {
 				throw new SCMResponseException("Fail to connect repository: "
