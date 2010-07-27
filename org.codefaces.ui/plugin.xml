@@ -137,6 +137,12 @@
                optional="false">
          </commandParameter>
       </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.internal.commands.ShowRepoInfoDialogCommandHandler"
+            id="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+            name="Show Repo Info Dialog">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -198,6 +204,12 @@
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
+            </command>
+            <command
+                  commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+                  icon="icons/repoinfo.gif"
+                  style="push"
+                  tooltip="Show Repository Info">
             </command>
             <command
                   commandId="org.codefaces.ui.internal.commands.openEditor"

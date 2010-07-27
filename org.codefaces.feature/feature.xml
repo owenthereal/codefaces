@@ -275,4 +275,38 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.codefaces.core.github"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.codefaces.core.svn"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.tigris.subversion.clientadapter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.tigris.subversion.clientadapter.svnkit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.tmatesoft.svnkit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
