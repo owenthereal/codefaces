@@ -56,8 +56,11 @@ module Helper
         Dir.chdir(current_dir)
       when "http"
         sh "mkdir -p #{tmp_dir}"  
-        sh "curl #{repo} -o #{tmp_dir}/#{name}"
+        sh "curl -L #{repo} -o #{tmp_dir}/#{name} -b cookies.txt"
         #sh "wget #{repo} -O#{tmp_dir}/#{name}"
+      when "svn"
+        sh "mkdir -p #{tmp_dir}"
+        sh "svn co #{repo} #{tmp_dir}/#{name}"
       when "cvs"
         name = configs['name']
         module_path = configs['module_path']
