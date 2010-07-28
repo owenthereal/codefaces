@@ -19,7 +19,7 @@ public class AjaxClientWidget extends Control {
 
 	public AjaxClientWidget(Shell shell) {
 		super(shell, SWT.NONE);
-		client = new AjaxClient(shell.getDisplay());
+		client = new AjaxClient(this);
 	}
 
 	public AjaxClient getClient() {
@@ -29,20 +29,20 @@ public class AjaxClientWidget extends Control {
 	public static AjaxClientWidget getCurrent() {
 		final ISessionStore sessionStore = RWT.getSessionStore();
 		AjaxClientWidget widget = (AjaxClientWidget) sessionStore
-				.getAttribute(AjaxClientWidget.class.toString());
+				.getAttribute(AjaxClientWidget.class.getName());
 		if (widget == null) {
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
 					sessionStore.setAttribute(
-							AjaxClientWidget.class.toString(),
+							AjaxClientWidget.class.getName(),
 							new AjaxClientWidget());
 				}
 			});
 		}
 
 		return (AjaxClientWidget) sessionStore
-				.getAttribute(AjaxClientWidget.class.toString());
+				.getAttribute(AjaxClientWidget.class.getName());
 	}
 
 	@SuppressWarnings("rawtypes")

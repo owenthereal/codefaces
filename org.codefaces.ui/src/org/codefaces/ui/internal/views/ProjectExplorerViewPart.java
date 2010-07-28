@@ -13,10 +13,10 @@ import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.StatusManager;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenFileCommandHandler;
-import org.codefaces.ui.internal.commons.DefaultRepoResourceComparator;
-import org.codefaces.ui.internal.commons.DefaultRepoResourceFolderOpenListener;
-import org.codefaces.ui.internal.commons.DefaultRepoResourceLabelProvider;
-import org.codefaces.ui.internal.commons.RepoResourceTreeContentProvider;
+import org.codefaces.ui.internal.commons.RepoResourceComparator;
+import org.codefaces.ui.internal.commons.RepoFolderOpenListener;
+import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
+import org.codefaces.ui.internal.commons.RepoResourceContentProvider;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IOpenListener;
@@ -131,11 +131,11 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private void createViewer(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.BORDER);
-		viewer.setContentProvider(new RepoResourceTreeContentProvider());
-		viewer.setLabelProvider(new DefaultRepoResourceLabelProvider());
-		viewer.setComparator(new DefaultRepoResourceComparator());
+		viewer.setContentProvider(new RepoResourceContentProvider());
+		viewer.setLabelProvider(new RepoResourceLabelProvider());
+		viewer.setComparator(new RepoResourceComparator());
 		viewer.addOpenListener(new FileOpenListener());
-		viewer.addOpenListener(new DefaultRepoResourceFolderOpenListener());
+		viewer.addOpenListener(new RepoFolderOpenListener());
 	}
 
 	/**

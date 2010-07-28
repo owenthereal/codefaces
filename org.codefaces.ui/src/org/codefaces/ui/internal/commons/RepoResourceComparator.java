@@ -5,7 +5,7 @@ import org.codefaces.core.models.RepoFolder;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 
-public class DefaultRepoResourceComparator extends ViewerComparator {
+public class RepoResourceComparator extends ViewerComparator {
 	@Override
 	public int compare(Viewer viewer, Object obj1, Object obj2) {
 		if (obj1 instanceof RepoFile && obj2 instanceof RepoFolder) {

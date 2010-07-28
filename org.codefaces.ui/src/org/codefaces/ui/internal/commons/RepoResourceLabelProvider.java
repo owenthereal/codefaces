@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-public class DefaultRepoResourceLabelProvider  extends LabelProvider {
+public class RepoResourceLabelProvider extends LabelProvider {
 
 	public String getText(Object obj) {
 		if (obj instanceof LoadingItem) {

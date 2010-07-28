@@ -1,12 +1,17 @@
 package org.codefaces.ui.internal.wizards;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorDescriber;
+import org.codefaces.core.models.Repo;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -14,6 +19,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -25,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class EnterRepoLocationWizardPage extends WizardPage {
+public class EnterRepoInfoWizardPage extends WizardPage {
 	private static final String TITLE = "Enter repository location information";
 
 	private static final String SAMPLE_URL = "http://github.com/jingweno/ruby_grep";
@@ -52,7 +58,7 @@ public class EnterRepoLocationWizardPage extends WizardPage {
 		}
 	}
 
-	protected EnterRepoLocationWizardPage(RepoSettings settings) {
+	protected EnterRepoInfoWizardPage(RepoSettings settings) {
 		super(TITLE);
 		setTitle(TITLE);
 		setDescription(DESCRIPTION);
@@ -139,5 +145,44 @@ public class EnterRepoLocationWizardPage extends WizardPage {
 			connectorViewer.setSelection(new StructuredSelection(
 					connectorsAvailable[0]));
 		}
+	}
+
+	@Override
+	public boolean canFlipToNextPage() {
+		return isPageComplete();
+	}
+
+	@Override
+	public IWizardPage getNextPage() {
+		setErrorMessage(null);
+		
+		IRunnableWithProgress op = new IRunnableWithProgress() {
+			@Override
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException, InterruptedException {
+				Object typePara = settings.get(RepoSettings.REPO_KIND);
+				Object locationPara = settings.get(RepoSettings.REPO_URL);
+				Assert.isTrue(typePara instanceof String);
+				Assert.isTrue(locationPara instanceof String);
+
+				String type = (String) typePara;
+				String location = (String) locationPara;
+
+				monitor.beginTask("Connecting to " + type + " repository "
+						+ location, 100);
+				Repo repo = Repo.create(type, location);
+				settings.put(RepoSettings.REPO, repo);
+				monitor.done();
+			}
+		};
+
+		try {
+			getContainer().run(false, true, op);
+		} catch (Exception e) {
+			setErrorMessage(e.getCause().getMessage());
+			return null;
+		}
+
+		return super.getNextPage();
 	}
 }
