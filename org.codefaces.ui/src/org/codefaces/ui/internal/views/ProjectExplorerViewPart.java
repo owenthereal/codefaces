@@ -145,6 +145,9 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 *            the new base directory
 	 */
 	public void update(RepoFolder newBaseDirectory) {
+		//make sure the children of the diectory is loaded
+		newBaseDirectory.getChildren();
+		
 		viewer.setInput(newBaseDirectory);
 	}
 
