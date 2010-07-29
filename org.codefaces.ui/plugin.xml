@@ -72,7 +72,8 @@
          <enabledWhen>
             <with
                   variable="selection">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <instanceof
                         value="org.codefaces.core.models.RepoResource">
                   </instanceof>
@@ -254,7 +255,8 @@
                   checkEnabled="false">
                <with
                      variable="activeMenuSelection">
-                  <iterate>
+                  <iterate
+                        ifEmpty="false">
                      <adapt
                            type="org.codefaces.core.models.RepoFile">
                        <!--
@@ -274,6 +276,28 @@
                   name="org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId"
                   value="org.codefaces.ui.view.projectExplorer">
             </parameter>
+         </command>
+         <separator
+               name="separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+               icon="icons/repoinfo.gif"
+               label="Repository Info"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="org.codefaces.core.models.RepoResource">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
