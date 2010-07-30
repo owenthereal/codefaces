@@ -11,10 +11,14 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 
 	private static final String HTTP_GITHUB_COM = "http://github.com";
 
+	private static final String OPTIONAL_ENDING_SLASH_PATTERN = "(?:/)?";
+	
 	private static final Pattern URL_PATTERN = Pattern.compile("((?:"
 			+ Pattern.quote(HTTP_WWW_GITHUB_ORG) + "|"
 			+ Pattern.quote(HTTP_GITHUB_COM)
-			+ ")/[^/]+/[^/]+)(?:/[^/]+/([^/]+).*)?");
+			+ ")/[^/]+/[^/]+)(?:/[^/]+/([^/]+).*)?"
+			+ OPTIONAL_ENDING_SLASH_PATTERN);
+
 
 	@Override
 	public boolean canParse(String url) {
