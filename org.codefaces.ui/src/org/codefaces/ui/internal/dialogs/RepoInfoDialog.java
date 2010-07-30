@@ -19,7 +19,7 @@ public class RepoInfoDialog extends TitleAreaDialog {
 
 	private static final String TITLE = "Repository";
 	private static final String DESCRIPTION = "Repository Information";
-	private static final String WINDOW_TITLE = "Get Info";
+	private static final String WINDOW_TITLE = "Properties";
 	
 
 	public RepoInfoDialog(Shell parentShell) {

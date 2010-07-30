@@ -6,7 +6,8 @@ SERVLET_BRIDGE_BUNDLES = "org.eclipse.equinox*.servletbridge*.jar"
 LAUNCHER = "org.eclipse.equinox.launcher_*.jar"
 PDE_BUILD_TOOLS_DIR = "org.eclipse.pde.build_*"
 ECLIPSE_PLATFORM_DIR = "eclipse*"
-
+SUBCLIPSE_BUNDLES = "subclipse-*/plugins/*.jar"
+SVNKIT_BUNDLES = "org.tmatesoft.svn*.eclipse/plugins/*.jar"
 
 BUILD_DIR = File.expand_path(CONFIGS['environment']['build_dir'])
 
@@ -75,6 +76,14 @@ namespace :build do
     Dir.glob(File.join(tool_dir, SERVLET_BRIDGE_BUNDLES)) do |bundle|
       sh "cp #{bundle} #{PDE_BASE_DIR}/plugins"
     end
+    
+    Dir.glob(File.join(tool_dir, SUBCLIPSE_BUNDLES)) do |bundle|
+      sh "cp #{bundle} #{PDE_BASE_DIR}/plugins"
+    end
+    
+    Dir.glob(File.join(tool_dir, SVNKIT_BUNDLES)) do |bundle|
+      sh "cp #{bundle} #{PDE_BASE_DIR}/plugins"
+    end
   end
   
   task :prepare_pde_build_config => :prepare do
@@ -124,6 +133,5 @@ namespace :build do
       end
     end
   end
-  
-  
+
 end

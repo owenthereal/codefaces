@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ShowRepoInfoDialogCommandHandler extends AbstractHandler {
+	public static final String ID = "org.codefaces.ui.internal.commands.showRepoInfoDialogCommand";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

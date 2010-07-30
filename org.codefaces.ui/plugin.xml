@@ -65,6 +65,24 @@
       </branding>
    </extension>
    <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.codefaces.ui.internal.commands.ShowRepoInfoDialogCommandHandler"
+            commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="org.codefaces.core.models.RepoResource">
+                  </instanceof>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <category
             id="org.codefaces.ui.category.command"
@@ -139,7 +157,6 @@
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.internal.commands.ShowRepoInfoDialogCommandHandler"
             id="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
             name="Show Repo Info Dialog">
       </command>
@@ -238,7 +255,8 @@
                   checkEnabled="false">
                <with
                      variable="activeMenuSelection">
-                  <iterate>
+                  <iterate
+                        ifEmpty="false">
                      <adapt
                            type="org.codefaces.core.models.RepoFile">
                        <!--
@@ -258,6 +276,28 @@
                   name="org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId"
                   value="org.codefaces.ui.view.projectExplorer">
             </parameter>
+         </command>
+         <separator
+               name="separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+               icon="icons/repoinfo.gif"
+               label="Repository Info"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="org.codefaces.core.models.RepoResource">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
