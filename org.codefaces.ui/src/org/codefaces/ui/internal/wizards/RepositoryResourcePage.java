@@ -24,7 +24,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.progress.UIJob;
 
-public class SelectRepoResourceWizardPage extends WizardPage {
+public class RepositoryResourcePage extends WizardPage {
 	private class TreeViewSelectionChangedListener implements
 			ISelectionChangedListener {
 		@Override
@@ -51,7 +51,7 @@ public class SelectRepoResourceWizardPage extends WizardPage {
 
 	private PopulateRepoStructureViewerJob populateRepoStructureViewerJob;
 
-	protected SelectRepoResourceWizardPage(RepoSettings settings) {
+	protected RepositoryResourcePage(RepoSettings settings) {
 		super(TITLE);
 		setTitle(TITLE);
 		setDescription(DESCRIPTION);

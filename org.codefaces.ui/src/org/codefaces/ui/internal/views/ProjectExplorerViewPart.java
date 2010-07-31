@@ -13,10 +13,10 @@ import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.StatusManager;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenFileCommandHandler;
-import org.codefaces.ui.internal.commons.RepoResourceComparator;
 import org.codefaces.ui.internal.commons.RepoFolderOpenListener;
-import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
+import org.codefaces.ui.internal.commons.RepoResourceComparator;
 import org.codefaces.ui.internal.commons.RepoResourceContentProvider;
+import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IOpenListener;
@@ -145,9 +145,6 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 *            the new base directory
 	 */
 	public void update(RepoFolder newBaseDirectory) {
-		//make sure the children of the diectory is loaded
-		newBaseDirectory.getChildren();
-		
 		viewer.setInput(newBaseDirectory);
 	}
 

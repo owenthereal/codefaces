@@ -17,8 +17,8 @@ public class ImportRepoWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		addPage(new EnterRepoInfoWizardPage(settings));
-		addPage(new SelectRepoResourceWizardPage(settings));
+		addPage(new GitHubSettingsPage(settings));
+		addPage(new RepositoryResourcePage(settings));
 	}
 
 	@Override
