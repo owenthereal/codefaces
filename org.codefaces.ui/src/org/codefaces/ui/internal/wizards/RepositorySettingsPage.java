@@ -4,11 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorDescriber;
-import org.codefaces.core.models.Repo;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -36,15 +33,10 @@ public abstract class RepositorySettingsPage extends WizardPage {
 			String selectedConnector = (String) ((IStructuredSelection) event
 					.getSelection()).getFirstElement();
 
-			settings.put(RepoSettings.REPO_KIND, selectedConnector);
+			getSettings().put(RepoSettings.REPO_KIND, selectedConnector);
 			verifyPageComplete();
 		}
 	}
-
-	private static final String SAMPLE_URL = "http://github.com/jingweno/ruby_grep";
-
-	private static final String DESCRIPTION = "Enter a GitHub Repository URL, e.g., "
-			+ SAMPLE_URL;
 
 	private static final String TITLE = "Enter repository location information";
 
@@ -55,7 +47,6 @@ public abstract class RepositorySettingsPage extends WizardPage {
 	protected RepositorySettingsPage(RepoSettings settings) {
 		super(TITLE);
 		setTitle(TITLE);
-		setDescription(DESCRIPTION);
 
 		this.settings = settings;
 	}
@@ -98,12 +89,12 @@ public abstract class RepositorySettingsPage extends WizardPage {
 		createConnectorViewer(dialogAreaComposite);
 		bindConnectorViewer();
 
-		createInputSection(dialogAreaComposite);
+		createSettingsSection(dialogAreaComposite);
 
 		populateConnectorViewer();
 	}
 
-	protected abstract void createInputSection(Composite dialogAreaComposite);
+	protected abstract void createSettingsSection(Composite dialogAreaComposite);
 
 	protected ComboViewer getConnectorViewer() {
 		return connectorViewer;
@@ -117,19 +108,7 @@ public abstract class RepositorySettingsPage extends WizardPage {
 			@Override
 			public void run(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {
-				Object typePara = settings.get(RepoSettings.REPO_KIND);
-				Object locationPara = settings.get(RepoSettings.REPO_URL);
-				Assert.isTrue(typePara instanceof String);
-				Assert.isTrue(locationPara instanceof String);
-
-				String type = (String) typePara;
-				String location = (String) locationPara;
-
-				monitor.beginTask("Connecting to " + type + " repository "
-						+ location, 100);
-				Repo repo = Repo.create(type, location);
-				settings.put(RepoSettings.REPO, repo);
-				monitor.done();
+				handleConnection(monitor);
 			}
 		};
 
@@ -142,6 +121,8 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 		return super.getNextPage();
 	}
+
+	protected abstract void handleConnection(IProgressMonitor monitor);
 
 	protected RepoSettings getSettings() {
 		return settings;
@@ -165,8 +146,9 @@ public abstract class RepositorySettingsPage extends WizardPage {
 	}
 
 	protected void verifyPageComplete() {
-		setPageComplete(settings.get(RepoSettings.REPO_KIND) != null
-				&& !StringUtils.isEmpty((String) settings
-						.get(RepoSettings.REPO_URL)));
+		setPageComplete(getSettings().get(RepoSettings.REPO_KIND) != null
+				&& isSettingsValid());
 	}
+
+	protected abstract boolean isSettingsValid();
 }

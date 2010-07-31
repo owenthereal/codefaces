@@ -139,6 +139,5 @@ public class RepositoryResourcePage extends WizardPage {
 
 			return Status.OK_STATUS;
 		}
-
 	}
 }
