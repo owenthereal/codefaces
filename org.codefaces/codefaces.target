@@ -12,12 +12,11 @@
 <repository location="http://download.eclipse.org/releases/helios"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" type="InstallableUnit">
-<unit id="org.tmatesoft.svnkit.feature.group" version="1.3.3.6648"/>
-<unit id="com.sun.jna.feature.group" version="3.2.3"/>
-<unit id="org.tigris.subversion.subclipse.feature.group" version="1.6.12"/>
+<unit id="org.tigris.subversion.subclipse.feature.group" version="1.6.13"/>
 <unit id="org.tigris.subversion.clientadapter.feature.feature.group" version="1.6.12"/>
 <unit id="org.tigris.subversion.clientadapter.javahl.feature.feature.group" version="1.6.12"/>
 <unit id="org.tigris.subversion.clientadapter.svnkit.feature.feature.group" version="1.6.12"/>
+<unit id="org.tmatesoft.svnkit.feature.group" version="1.3.3.6648"/>
 <repository location="http://subclipse.tigris.org/update_1.6.x"/>
 </location>
 </locations>
