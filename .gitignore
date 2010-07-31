@@ -3,5 +3,5 @@
 */.settings
 *.scssc
 org.tigris.subversion.*
-org.tmatesoft.svnkit/*
+org.tmatesoft.svnkit*/*
 /target
