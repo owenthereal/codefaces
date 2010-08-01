@@ -1,25 +1,32 @@
 package org.codefaces.web.internal;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.codefaces.web.internal.urls.URLParsingStrategy;
-import org.codefaces.web.internal.urls.github.GitHubUrlParseStrategy;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 public class CodeFacesWebActivator extends Plugin {
+	private static final String URL_PARSING_STRATEGIES_EXTENSION_POINT = "scmUrlParsingStrategies";
+
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.codefaces.core";
+	public static final String PLUGIN_ID = "org.codefaces.web";
 
 	// The shared instance
 	private static CodeFacesWebActivator plugin;
 
-	private List<URLParsingStrategy> urlParseStrategies;
+	private URLParsingStrategy[] urlParseStrategies;
 
 	public CodeFacesWebActivator() {
-		urlParseStrategies = new ArrayList<URLParsingStrategy>();
-		urlParseStrategies.add(new GitHubUrlParseStrategy());
+		urlParseStrategies = retrieveUrlParsingStrategiesFromExtensionPoint()
+				.toArray(new URLParsingStrategy[0]);
 	}
 
 	/*
@@ -53,7 +60,7 @@ public class CodeFacesWebActivator extends Plugin {
 		return plugin;
 	}
 
-	public URLParsingStrategy getUrlParseStrategy(String url) {
+	public URLParsingStrategy getUrlParseStrategies(String url) {
 		for (URLParsingStrategy strategy : urlParseStrategies) {
 			if (strategy.canParse(url)) {
 				return strategy;
@@ -61,5 +68,31 @@ public class CodeFacesWebActivator extends Plugin {
 		}
 
 		return null;
+	}
+	
+	/**
+	 * retrieve parsing strategies from extension point
+	 */
+	protected Collection<URLParsingStrategy> retrieveUrlParsingStrategiesFromExtensionPoint(){
+		Set<URLParsingStrategy> parsingStrategies = new HashSet<URLParsingStrategy>();
+		
+		IConfigurationElement[] extensionPoints = Platform
+		.getExtensionRegistry().getConfigurationElementsFor(
+				PLUGIN_ID, URL_PARSING_STRATEGIES_EXTENSION_POINT);
+		for (IConfigurationElement extensionPoint : extensionPoints) {
+			try {
+				URLParsingStrategy strategy = (URLParsingStrategy) extensionPoint
+						.createExecutableExtension("class");
+				parsingStrategies.add(strategy);
+			} catch (CoreException e) {
+				IStatus status = new Status(
+						Status.ERROR,
+						CodeFacesWebActivator.PLUGIN_ID,
+						"Errors occurs when loading URL Parsing Strategy extensions",
+						e);
+				CodeFacesWebActivator.getDefault().getLog().log(status);
+			}
+		}
+		return parsingStrategies;
 	}
 }

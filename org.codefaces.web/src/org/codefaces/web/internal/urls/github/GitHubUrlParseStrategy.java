@@ -7,6 +7,8 @@ import org.codefaces.web.internal.urls.URLQueryStrings;
 import org.codefaces.web.internal.urls.URLParsingStrategy;
 
 public class GitHubUrlParseStrategy implements URLParsingStrategy {
+	private static final String SCM_KIND = "GitHub";
+	
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
 
 	private static final String HTTP_GITHUB_COM = "http://github.com";
@@ -44,5 +46,10 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 		}
 
 		return parameters;
+	}
+
+	@Override
+	public String getScmKind() {
+		return SCM_KIND;
 	}
 }

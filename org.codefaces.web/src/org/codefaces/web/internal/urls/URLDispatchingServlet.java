@@ -40,7 +40,7 @@ public class URLDispatchingServlet extends HttpServlet {
 
 		URLQueryStrings parameters = new URLQueryStrings();
 		URLParsingStrategy strategy = CodeFacesWebActivator.getDefault()
-				.getUrlParseStrategy(uri);
+				.getUrlParseStrategies(uri);
 		if (strategy != null) {
 			parameters = strategy.buildQueryStrings(uri);
 		}
