@@ -1,5 +1,6 @@
 package org.codefaces.core.github.internal.operations;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.github.internal.operations.dtos.GitHubFileDTO;
@@ -19,7 +20,7 @@ public class GitHubFetchFileInfoHandler implements SCMOperationHandler {
 	@Override
 	public RepoFileInfo execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
-		Object file = parameter.getParameter(PARA_REPO_FILE);
+		Object file = parameter.getParameter(SCMConfigurableElements.REPO_FILE);
 		Assert.isTrue(file instanceof RepoFile);
 
 		try {

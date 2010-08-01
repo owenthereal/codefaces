@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.github.internal.GitHubActivator;
@@ -34,7 +35,7 @@ public class GitHubFetchChildrenForFolderHandler implements SCMOperationHandler 
 	@Override
 	public Collection<RepoResource> execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
-		Object folderPara = parameter.getParameter(PARA_REPO_FOLDER);
+		Object folderPara = parameter.getParameter(SCMConfigurableElements.REPO_FOLDER);
 		Assert.isTrue(folderPara instanceof RepoFolder);
 		RepoFolder folder = (RepoFolder) folderPara;
 		return fetchChildrenForFolder(connector, folder);

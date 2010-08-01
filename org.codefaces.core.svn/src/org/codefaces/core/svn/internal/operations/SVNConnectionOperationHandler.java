@@ -3,6 +3,7 @@ package org.codefaces.core.svn.internal.operations;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMURLException;
 import org.codefaces.core.models.Repo;
@@ -17,11 +18,11 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 
 	@Override
 	public Repo execute(SCMConnector connector, SCMOperationParameters parameter) {
-		Object urlPara = parameter.getParameter(PARA_URL);
+		Object urlPara = parameter.getParameter(SCMConfigurableElements.REPO_URL);
 		Assert.isTrue(urlPara instanceof String);
-		Object usernamePara = parameter.getParameter(PARA_USERNAME);
+		Object usernamePara = parameter.getParameter(SCMConfigurableElements.REPO_USER);
 		Assert.isTrue(usernamePara == null || usernamePara instanceof String);
-		Object passwordPara = parameter.getParameter(PARA_PASSWORD);
+		Object passwordPara = parameter.getParameter(SCMConfigurableElements.REPO_PASSWORD);
 		Assert.isTrue(passwordPara == null || usernamePara instanceof String);
 
 		String url = (String) urlPara;

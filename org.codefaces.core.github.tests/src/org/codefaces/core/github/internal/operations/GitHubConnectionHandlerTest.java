@@ -2,11 +2,11 @@ package org.codefaces.core.github.internal.operations;
 
 import static org.junit.Assert.assertEquals;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.github.internal.operations.GitHubConnectionHandler;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class GitHubConnectionHandlerTest {
 	@Test
 	public void repoInfomationShouldBeCorrectlySetForNormalURL(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_REPO_NORMAL_URL);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_REPO_NORMAL_URL);
 		Repo gitHubRepo = query.execute(connector, para);
 
 		assertEquals(TEST_REPO_NORMAL_URL, gitHubRepo.getUrl());
@@ -49,7 +49,7 @@ public class GitHubConnectionHandlerTest {
 	@Test
 	public void repoInfomationShouldBeCorrectlySetForURLWithTrailingSlash(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_REPO_URL_WITH_ENDING_SLASH);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_REPO_URL_WITH_ENDING_SLASH);
 		Repo gitHubRepo = query.execute(connector, para);
 
 		assertEquals(TEST_REPO_URL_WITH_ENDING_SLASH, gitHubRepo.getUrl());
@@ -60,14 +60,14 @@ public class GitHubConnectionHandlerTest {
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoSuchRepository(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NO_SUCH_URL);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_NO_SUCH_URL);
 		query.execute(connector, para);
 	}
 	
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoPermission(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_PRIVATE_REPO);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_PRIVATE_REPO);
 		query.execute(connector, para);
 	}
 }

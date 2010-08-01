@@ -3,6 +3,7 @@ package org.codefaces.core.github.internal.operations;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
@@ -18,7 +19,7 @@ public class GitHubFetchChildrenDispatcher implements SCMOperationHandler {
 	@Override
 	public Collection<RepoResource> execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
-		Object folderPara = parameter.getParameter(PARA_REPO_FOLDER);
+		Object folderPara = parameter.getParameter(SCMConfigurableElements.REPO_FOLDER);
 		Assert.isTrue(folderPara instanceof RepoFolder);
 
 		RepoFolder folder = (RepoFolder) folderPara;
@@ -48,7 +49,7 @@ public class GitHubFetchChildrenDispatcher implements SCMOperationHandler {
 			RepoFolder folder) {
 		SCMOperation operation = SCMOperation.newInstance(folder.getRoot()
 				.getRepo().getKind(), id);
-		operation.addParameter(PARA_REPO_FOLDER, folder);
+		operation.addParameter(SCMConfigurableElements.REPO_FOLDER, folder);
 		return operation.execute();
 	}
 

@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
@@ -25,7 +26,7 @@ public class GitHubFetchTagsHandler implements SCMOperationHandler {
 	@Override
 	public Collection<RepoResource> execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
-		Object folderPara = parameter.getParameter(PARA_REPO_FOLDER);
+		Object folderPara = parameter.getParameter(SCMConfigurableElements.REPO_FOLDER);
 		Assert.isTrue(folderPara instanceof RepoFolder);
 
 		RepoFolder folder = (RepoFolder) folderPara;

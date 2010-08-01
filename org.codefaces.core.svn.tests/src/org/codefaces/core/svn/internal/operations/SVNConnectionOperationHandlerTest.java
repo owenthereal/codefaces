@@ -1,10 +1,10 @@
 package org.codefaces.core.svn.internal.operations;
 import static org.junit.Assert.*;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.models.Repo;
-import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.svn.internal.operations.SVNConnectionOperationHandler;
 import org.junit.Before;
@@ -36,9 +36,9 @@ public class SVNConnectionOperationHandlerTest {
 	@Test
 	public void credentialShouldBeSetWhenUsernameAndPasswordArePassedAsParameters(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NORMAL_URL);
-		para.addParameter(SCMOperationHandler.PARA_USERNAME, TEST_NORMAL_USERNAME);
-		para.addParameter(SCMOperationHandler.PARA_PASSWORD, TEST_NORMAL_PASSWORD);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_NORMAL_URL);
+		para.addParameter(SCMConfigurableElements.REPO_USER, TEST_NORMAL_USERNAME);
+		para.addParameter(SCMConfigurableElements.REPO_PASSWORD, TEST_NORMAL_PASSWORD);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertEquals(TEST_NORMAL_URL, svnRepo.getUrl());
@@ -49,9 +49,9 @@ public class SVNConnectionOperationHandlerTest {
 	@Test
 	public void trailingSlashIsRemovedWhenTheInputUrlContainsTrailingSlash(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NORMAL_URL_WITH_TRAILING_SLASH);
-		para.addParameter(SCMOperationHandler.PARA_USERNAME, TEST_NORMAL_USERNAME);
-		para.addParameter(SCMOperationHandler.PARA_PASSWORD, TEST_NORMAL_PASSWORD);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_NORMAL_URL_WITH_TRAILING_SLASH);
+		para.addParameter(SCMConfigurableElements.REPO_USER, TEST_NORMAL_USERNAME);
+		para.addParameter(SCMConfigurableElements.REPO_PASSWORD, TEST_NORMAL_PASSWORD);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertEquals(TEST_NORMAL_URL, svnRepo.getUrl());		
@@ -60,7 +60,7 @@ public class SVNConnectionOperationHandlerTest {
 	@Test
 	public void credentialShouldBeSetWhenUsernameIsPassedInUrl(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_URL_WITH_USER_NAME);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_URL_WITH_USER_NAME);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertEquals(TEST_USERNAME_IN_URL, svnRepo.getCredential().getUser());
@@ -71,7 +71,7 @@ public class SVNConnectionOperationHandlerTest {
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoSuchRepository(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NO_SUCH_URL);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_NO_SUCH_URL);
 		connectionHandler.execute(connector, para);
 	}
 	
@@ -79,7 +79,7 @@ public class SVNConnectionOperationHandlerTest {
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoPermission(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_URL, TEST_NO_PERMISSION);
+		para.addParameter(SCMConfigurableElements.REPO_URL, TEST_NO_PERMISSION);
 		connectionHandler.execute(connector, para);
 	}
 	

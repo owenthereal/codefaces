@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.svn.internal.operations.SVNFetchChildrenOperationHandler;
 import org.junit.Before;
@@ -45,7 +45,7 @@ public class SVNFetchChildrenOperationHandlerTest {
 		Repo mockRepo = createMockRepo(TEST_URL_IN_NORMAL_STRUCTURE,
 				TEST_USERNAME, TEST_PASSWORD);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, mockRepo.getRoot());
+		para.addParameter(SCMConfigurableElements.REPO_FOLDER, mockRepo.getRoot());
 		Collection<RepoResource> children = handler.execute(connector, para);
 		
 		boolean hasTrunk = false;
@@ -70,7 +70,7 @@ public class SVNFetchChildrenOperationHandlerTest {
 		RepoFolder mockFolder = new RepoFolder(mockRepo.getRoot(),
 				mockRepo.getRoot(), TAGS_DIRECTORY, TAGS_DIRECTORY);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, mockFolder);
+		para.addParameter(SCMConfigurableElements.REPO_FOLDER, mockFolder);
 		Collection<RepoResource> children = handler.execute(connector, para);
 		
 		assertEquals(2, children.size());

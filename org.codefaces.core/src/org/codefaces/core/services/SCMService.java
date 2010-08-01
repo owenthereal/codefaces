@@ -2,6 +2,7 @@ package org.codefaces.core.services;
 
 import java.util.Collection;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.codefaces.core.models.Repo;
@@ -10,13 +11,12 @@ import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperation;
-import org.codefaces.core.operations.SCMOperationHandler;
 
 public class SCMService {
 	public Repo connect(String kind, String url) {
 		SCMOperation operation = SCMOperation.newInstance(kind,
 				SCMOperation.CONNECTION_OPERAION);
-		operation.addParameter(SCMOperationHandler.PARA_URL, url.trim());
+		operation.addParameter(SCMConfigurableElements.REPO_URL, url.trim());
 
 		return operation.execute();
 	}
@@ -25,7 +25,7 @@ public class SCMService {
 			throws SCMResponseException {
 		SCMOperation operation = SCMOperation.newInstance(parent.getRoot()
 				.getRepo().getKind(), SCMOperation.FETCH_CHILDREN_OPERAION);
-		operation.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, parent);
+		operation.addParameter(SCMConfigurableElements.REPO_FOLDER, parent);
 
 		return operation.execute();
 	}
@@ -34,7 +34,7 @@ public class SCMService {
 			throws SCMResponseException {
 		SCMOperation operation = SCMOperation.newInstance(file.getRoot()
 				.getRepo().getKind(), SCMOperation.FETCH_FILE_INFO_OPERAION);
-		operation.addParameter(SCMOperationHandler.PARA_REPO_FILE, file);
+		operation.addParameter(SCMConfigurableElements.REPO_FILE, file);
 
 		return operation.execute();
 	}

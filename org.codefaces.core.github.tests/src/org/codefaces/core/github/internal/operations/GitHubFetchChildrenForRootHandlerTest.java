@@ -6,11 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class GitHubFetchChildrenForRootHandlerTest {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
 				new RepoCredential(TEST_OWNER_NAME, null, null));
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER,
+		para.addParameter(SCMConfigurableElements.REPO_FOLDER,
 				repo.getRoot());
 		Collection<RepoResource> children = handler.execute(connector, para);
 

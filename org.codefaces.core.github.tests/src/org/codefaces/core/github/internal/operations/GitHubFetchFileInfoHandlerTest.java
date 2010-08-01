@@ -5,13 +5,13 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.MalformedURLException;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
-import org.codefaces.core.operations.SCMOperationHandler;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
@@ -65,7 +65,7 @@ public class GitHubFetchFileInfoHandlerTest {
 				TEST_FILE_NAME);
 
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_FILE, file);
+		para.addParameter(SCMConfigurableElements.REPO_FILE, file);
 		RepoFileInfo info = query.execute(connector, para);
 
 		assertEquals(1059, info.getSize());
