@@ -1,4 +1,4 @@
-package org.codefaces.web.github.tests;
+package org.codefaces.web.internal.urls.github;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
