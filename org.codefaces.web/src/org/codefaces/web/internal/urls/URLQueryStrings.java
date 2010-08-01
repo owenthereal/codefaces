@@ -7,10 +7,6 @@ import java.util.Map;
 public class URLQueryStrings {
 	private Map<String, String> parameters = new HashMap<String, String>();
 
-	public static final String REPO = "repo";
-
-	public static final String BRANCH = "branch";
-
 	public void addParameter(String key, String parameter) {
 		parameters.put(key, parameter);
 	}

@@ -3,6 +3,7 @@ package org.codefaces.web.internal.urls.github;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.web.internal.urls.URLQueryStrings;
 import org.codefaces.web.internal.urls.github.GitHubUrlParseStrategy;
 import org.junit.Before;
@@ -10,6 +11,10 @@ import org.junit.Test;
 
 public class GithubUrlParseStrategyTest {
 	private GitHubUrlParseStrategy strategy;
+	
+	private static final String GITHUB_BRANCHES_DIR = "branches";
+	
+	private static final String TEST_SCM_KIND = "GitHub";	
 
 	private static final String TEST_URL_MASTER_ROOT = "http://github.com/jingweno/ruby_grep";
 
@@ -33,8 +38,8 @@ public class GithubUrlParseStrategyTest {
 				.buildQueryStrings(TEST_URL_MASTER_ROOT);
 
 		assertEquals("http://github.com/jingweno/ruby_grep", parameters
-				.getParameter(URLQueryStrings.REPO));
-		assertNull(parameters.getParameter(URLQueryStrings.BRANCH));
+				.getParameter(SCMConfigurableElements.REPO_URL));
+		assertNull(parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
 	}
 	
 	@Test
@@ -42,8 +47,9 @@ public class GithubUrlParseStrategyTest {
 		URLQueryStrings parameters = strategy
 		.buildQueryStrings(TEST_URL_MASTER_ROOT_WITH_TRAILING_SLASH);
 		assertEquals("http://github.com/jingweno/ruby_grep",
-				parameters.getParameter(URLQueryStrings.REPO));
-		assertNull(parameters.getParameter(URLQueryStrings.BRANCH));
+				parameters.getParameter(SCMConfigurableElements.REPO_URL));
+		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+		assertNull(parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
 	}
 	
 	@Test
@@ -52,8 +58,11 @@ public class GithubUrlParseStrategyTest {
 				.buildQueryStrings(TEST_URL_MASTER_FILE);
 
 		assertEquals("http://github.com/jingweno/ruby_grep", parameters
-				.getParameter(URLQueryStrings.REPO));
-		assertEquals("master", parameters.getParameter(URLQueryStrings.BRANCH));
+				.getParameter(SCMConfigurableElements.REPO_URL));
+		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+		assertEquals(
+				GITHUB_BRANCHES_DIR + "/" + "master",
+				parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
 	}
 	
 	@Test
@@ -62,8 +71,11 @@ public class GithubUrlParseStrategyTest {
 		.buildQueryStrings(TEST_URL_BRANCH_ROOT);
 		
 		assertEquals("http://github.com/schacon/ruby-git", parameters
-				.getParameter(URLQueryStrings.REPO));
-		assertEquals("internals", parameters.getParameter(URLQueryStrings.BRANCH));
+				.getParameter(SCMConfigurableElements.REPO_URL));
+		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+		assertEquals(
+				GITHUB_BRANCHES_DIR + "/" + "internals",
+				parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
 	}
 	
 	@Test
@@ -71,7 +83,10 @@ public class GithubUrlParseStrategyTest {
 		URLQueryStrings parameters = strategy
 				.buildQueryStrings(TEST_URL_BRANCH_ROOT_WITH_TRAILING_SLASH);
 		assertEquals("http://github.com/schacon/ruby-git",
-				parameters.getParameter(URLQueryStrings.REPO));
-		assertEquals("internals", parameters.getParameter(URLQueryStrings.BRANCH));
+				parameters.getParameter(SCMConfigurableElements.REPO_URL));
+		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+		assertEquals(
+				GITHUB_BRANCHES_DIR + "/" + "internals",
+				parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
 	}
 }

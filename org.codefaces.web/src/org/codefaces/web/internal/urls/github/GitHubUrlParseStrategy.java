@@ -3,10 +3,14 @@ package org.codefaces.web.internal.urls.github;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.web.internal.urls.URLQueryStrings;
 import org.codefaces.web.internal.urls.URLParsingStrategy;
 
 public class GitHubUrlParseStrategy implements URLParsingStrategy {
+	//TODO use GitHubConstants
+	private static final String BRANCHES_FOLDER_NAME = "branches";
+	
 	private static final String SCM_KIND = "GitHub";
 	
 	private static final String HTTP_WWW_GITHUB_ORG = "http://www.github.org";
@@ -37,12 +41,16 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 			String branchName = matcher.group(2);
 
 			if (repoUrl != null) {
-				parameters.addParameter(URLQueryStrings.REPO, repoUrl);
+				parameters.addParameter(SCMConfigurableElements.REPO_URL, repoUrl);
 			}
 
 			if (branchName != null) {
-				parameters.addParameter(URLQueryStrings.BRANCH, branchName);
+				parameters.addParameter(
+						SCMConfigurableElements.REPO_BASE_DIRECTORY,
+						BRANCHES_FOLDER_NAME + "/" + branchName);
 			}
+			
+			parameters.addParameter(SCMConfigurableElements.REPO_KIND, SCM_KIND);
 		}
 
 		return parameters;
