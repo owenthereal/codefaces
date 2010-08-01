@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension
+         point="org.codefaces.ui.scmConnectorsUI">
+      <connectorUI
+            description="Connect to a GitHub repository, e.g., http://github.com/jingweno/ruby_grep."
+            id="org.codefaces.ui.scmConnectorsUI.github"
+            kind="GitHub"
+            settingsSection="org.codefaces.ui.internal.wizards.github.GitHubSettingsSection">
+      </connectorUI>
+   </extension>
+</plugin>

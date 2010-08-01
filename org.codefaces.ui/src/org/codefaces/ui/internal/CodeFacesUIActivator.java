@@ -1,6 +1,7 @@
 package org.codefaces.ui.internal;
 
 import org.codefaces.ui.internal.codeLanguages.CodeLanguages;
+import org.codefaces.ui.internal.wizards.SCMConnectorUIManager;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -17,6 +18,8 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 	private static CodeFacesUIActivator plugin;
 
 	private CodeLanguages langs;
+
+	private SCMConnectorUIManager connectorUIManager;
 
 	/**
 	 * The constructor
@@ -35,10 +38,15 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		langs = new CodeLanguages();
+		connectorUIManager = new SCMConnectorUIManager();
 	}
 
 	public CodeLanguages getCodeLanguages() {
 		return langs;
+	}
+
+	public SCMConnectorUIManager getConnectorUIManager() {
+		return connectorUIManager;
 	}
 
 	/*
@@ -76,7 +84,8 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 		putImageInRegistry(registry, Images.IMG_WELCOME, "icons/welcome.gif");
 		putImageInRegistry(registry, Images.IMG_CONNECTION,
 				"icons/connection.gif");
-		putImageInRegistry(registry, Images.IMG_FAVICON_48, "icons/favicon_48.png");
+		putImageInRegistry(registry, Images.IMG_FAVICON_48,
+				"icons/favicon_48.png");
 	}
 
 	/**
@@ -91,8 +100,8 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 	 */
 	private void putImageInRegistry(ImageRegistry registry, final String imgID,
 			final String path) {
-		registry.put(imgID, AbstractUIPlugin.imageDescriptorFromPlugin(
-				PLUGIN_ID, path));
+		registry.put(imgID,
+				AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path));
 	}
 
 }

@@ -1,12 +1,10 @@
-package org.codefaces.ui.internal.wizards;
+package org.codefaces.ui.wizards;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RepoSettings {
 	public static final String REPO_KIND = "REPO_KIND";
-
-	public static final String REPO_URL = "REPO_URL";
 
 	public static final String REPO_RESOURCE_INPUT = "REPO_RESOURCE_INPUT";
 

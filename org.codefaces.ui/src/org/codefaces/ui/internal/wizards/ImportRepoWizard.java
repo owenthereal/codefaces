@@ -4,6 +4,8 @@ import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.views.ProjectExplorerViewPart;
+import org.codefaces.ui.wizards.RepoSettings;
+import org.codefaces.ui.wizards.RepositorySettingsPage;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -25,13 +27,12 @@ public class ImportRepoWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		addPage(new GitHubSettingsPage(settings));
+		addPage(new RepositorySettingsPage(settings));
 		addPage(new RepositoryResourcePage(settings));
 	}
 
 	@Override
 	public boolean performFinish() {
-		Assert.isNotNull(settings.get(RepoSettings.REPO_URL));
 		Assert.isNotNull(settings.get(RepoSettings.REPO_RESOURCE_INPUT));
 
 		RepoFolder baseDirectory = (RepoFolder) getRepoSettings().get(

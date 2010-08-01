@@ -1,4 +1,4 @@
-package org.codefaces.ui.internal.wizards;
+package org.codefaces.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorDescriber;
+import org.codefaces.ui.internal.CodeFacesUIActivator;
+import org.codefaces.ui.internal.wizards.SCMConnectorUIDescriber;
+import org.codefaces.ui.internal.wizards.SCMConnectorUIManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -25,7 +28,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-public abstract class RepositorySettingsPage extends WizardPage {
+public class RepositorySettingsPage extends WizardPage {
 	private final class ConnectorSelectionChangedListener implements
 			ISelectionChangedListener {
 		@Override
@@ -34,6 +37,8 @@ public abstract class RepositorySettingsPage extends WizardPage {
 					.getSelection()).getFirstElement();
 
 			getSettings().put(RepoSettings.REPO_KIND, selectedConnector);
+
+			switchToSettingsSection(selectedConnector);
 			verifyPageComplete();
 		}
 	}
@@ -44,7 +49,13 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 	private RepoSettings settings;
 
-	protected RepositorySettingsPage(RepoSettings settings) {
+	private RepositorySettingsSection settingsSection;
+
+	private Composite dialogAreaComposite;
+
+	private Composite settingsSectionComposite;
+
+	public RepositorySettingsPage(RepoSettings settings) {
 		super(TITLE);
 		setTitle(TITLE);
 
@@ -73,7 +84,7 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite dialogAreaComposite = new Composite(parent, SWT.NONE);
+		dialogAreaComposite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginHeight = IDialogConstants.HORIZONTAL_MARGIN;
 		layout.marginWidth = IDialogConstants.VERTICAL_MARGIN;
@@ -89,12 +100,47 @@ public abstract class RepositorySettingsPage extends WizardPage {
 		createConnectorViewer(dialogAreaComposite);
 		bindConnectorViewer();
 
-		createSettingsSection(dialogAreaComposite);
-
 		populateConnectorViewer();
 	}
 
-	protected abstract void createSettingsSection(Composite dialogAreaComposite);
+	private void switchToSettingsSection(String connectorKind) {
+		if (settingsSectionComposite != null) {
+			settingsSectionComposite.dispose();
+		}
+
+		SCMConnectorUIManager connectorUIManager = CodeFacesUIActivator
+				.getDefault().getConnectorUIManager();
+		SCMConnectorUIDescriber connectorUIDescriber = connectorUIManager
+				.getConnectorUIDescriber(connectorKind);
+		if (connectorUIDescriber == null) {
+			settingsSection = null;
+			return;
+		}
+
+		settingsSectionComposite = new Composite(dialogAreaComposite, SWT.NONE);
+
+		GridData layoutData = new GridData(GridData.FILL_BOTH);
+		layoutData.horizontalSpan = 2;
+		settingsSectionComposite.setLayoutData(layoutData);
+
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginHeight = IDialogConstants.HORIZONTAL_MARGIN;
+		layout.marginWidth = 0;
+		layout.verticalSpacing = IDialogConstants.VERTICAL_SPACING;
+		layout.horizontalSpacing = 15;
+		settingsSectionComposite.setLayout(layout);
+
+		settingsSectionComposite.setFont(dialogAreaComposite.getFont());
+
+		settingsSection = connectorUIDescriber.createSettingsSection();
+		settingsSection.createSettingsSection(this, settingsSectionComposite,
+				settings);
+
+		dialogAreaComposite.layout();
+		settingsSection.setFocus();
+
+		setDescription(connectorUIDescriber.getDescription());
+	}
 
 	protected ComboViewer getConnectorViewer() {
 		return connectorViewer;
@@ -108,7 +154,9 @@ public abstract class RepositorySettingsPage extends WizardPage {
 			@Override
 			public void run(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {
-				handleConnection(monitor);
+				if (settingsSection != null) {
+					settingsSection.handleConnection(monitor);
+				}
 			}
 		};
 
@@ -121,8 +169,6 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 		return super.getNextPage();
 	}
-
-	protected abstract void handleConnection(IProgressMonitor monitor);
 
 	protected RepoSettings getSettings() {
 		return settings;
@@ -145,10 +191,8 @@ public abstract class RepositorySettingsPage extends WizardPage {
 		}
 	}
 
-	protected void verifyPageComplete() {
+	public void verifyPageComplete() {
 		setPageComplete(getSettings().get(RepoSettings.REPO_KIND) != null
-				&& isSettingsValid());
+				&& settingsSection != null && settingsSection.isSettingsValid());
 	}
-
-	protected abstract boolean isSettingsValid();
 }

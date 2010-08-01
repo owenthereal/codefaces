@@ -7,6 +7,7 @@ import org.codefaces.ui.internal.commons.RepoFolderViewFilter;
 import org.codefaces.ui.internal.commons.RepoResourceComparator;
 import org.codefaces.ui.internal.commons.RepoResourceContentProvider;
 import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
+import org.codefaces.ui.wizards.RepoSettings;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
