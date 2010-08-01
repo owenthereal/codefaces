@@ -8,10 +8,6 @@ import org.codefaces.ui.internal.commons.RepoResourceComparator;
 import org.codefaces.ui.internal.commons.RepoResourceContentProvider;
 import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -22,7 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.progress.UIJob;
 
 public class RepositoryResourcePage extends WizardPage {
 	private class TreeViewSelectionChangedListener implements
@@ -48,8 +43,6 @@ public class RepositoryResourcePage extends WizardPage {
 	private TreeViewer repoStructureViewer;
 
 	private RepoSettings settings;
-
-	private PopulateRepoStructureViewerJob populateRepoStructureViewerJob;
 
 	protected RepositoryResourcePage(RepoSettings settings) {
 		super(TITLE);
@@ -80,8 +73,6 @@ public class RepositoryResourcePage extends WizardPage {
 
 		createRepoStructureViewer(dialogAreaComposite);
 		bindRepoStructureViewer();
-
-		populateRepoStructureViewerJob = new PopulateRepoStructureViewerJob();
 
 		setPageComplete(false);
 	}
@@ -119,25 +110,7 @@ public class RepositoryResourcePage extends WizardPage {
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if (visible) {
-			if (populateRepoStructureViewerJob.getState() != Job.NONE) {
-				populateRepoStructureViewerJob.cancel();
-			}
-			populateRepoStructureViewerJob.schedule();
-		}
-	}
-
-	private class PopulateRepoStructureViewerJob extends UIJob {
-
-		public PopulateRepoStructureViewerJob() {
-			super("");
-			setSystem(true);
-		}
-
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
 			populateRepoStructureViewer();
-
-			return Status.OK_STATUS;
 		}
 	}
 }

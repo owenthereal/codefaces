@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.JSWriter;
 import org.eclipse.rwt.lifecycle.WidgetLCAUtil;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.widgets.Widget;
 
 public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
@@ -44,10 +43,7 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 	@Override
 	public void renderInitialization(Widget widget) throws IOException {
 		JSWriter writer = JSWriter.getWriterFor(widget);
-		String id = WidgetUtil.getId(widget);
-
-		// TODO: check whether id is necessary
-		writer.newWidget(AjaxClientWidget.class.getName(), new Object[] { id });
+		writer.newWidget(AjaxClientWidget.class.getName());
 	}
 
 	@Override
@@ -70,7 +66,6 @@ public class AjaxClientWidgetLCA extends AbstractWidgetLCA {
 					JS_PARAM_CONTENT);
 			final JsonResponse response = new JsonResponse(requestId,
 					responseStatus, content);
-
 			((AjaxClientWidget) widget).getClient().setJsonResponse(response);
 		}
 	}

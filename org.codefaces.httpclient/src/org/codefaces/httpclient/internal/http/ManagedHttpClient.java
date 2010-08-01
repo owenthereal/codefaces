@@ -1,6 +1,5 @@
 package org.codefaces.httpclient.internal.http;
 
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -22,9 +21,9 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.codefaces.core.connectors.SCMResponseException;
+import org.codefaces.httpclient.SCMHttpClient;
 
-
-public class ManagedHttpClient implements org.codefaces.httpclient.SCMHttpClient {
+public class ManagedHttpClient implements SCMHttpClient {
 	private static class IdleConnectionMonitorThread extends Thread {
 
 		private final ClientConnectionManager connMgr;
@@ -103,7 +102,7 @@ public class ManagedHttpClient implements org.codefaces.httpclient.SCMHttpClient
 			throw handleHttpExceptionStatus(exception);
 		} catch (IOException exception) {
 			throw new SCMResponseException(exception.getMessage(), exception);
-		} 
+		}
 	}
 
 	private SCMResponseException handleHttpExceptionStatus(

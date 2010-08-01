@@ -54,6 +54,7 @@ class RepoResourceContentProviderManager {
 		}
 
 		private void loadResource(final RepoResource resource) {
+			// running get children in session;
 			UICallBack.runNonUIThreadWithFakeContext(display, new Runnable() {
 				@Override
 				public void run() {
