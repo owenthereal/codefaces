@@ -3,12 +3,12 @@ package org.codefaces.core.svn.internal.operations;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMURLException;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.operations.SCMOperationHandler;
+import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.svn.internal.clientadaptor.SVNRepoInfo;
 import org.codefaces.core.svn.internal.connectors.SVNConnector;
@@ -18,11 +18,11 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 
 	@Override
 	public Repo execute(SCMConnector connector, SCMOperationParameters parameter) {
-		Object urlPara = parameter.getParameter(SCMConfigurableElements.REPO_URL);
+		Object urlPara = parameter.getParameter(SCMOperationParameter.URL);
 		Assert.isTrue(urlPara instanceof String);
-		Object usernamePara = parameter.getParameter(SCMConfigurableElements.REPO_USER);
+		Object usernamePara = parameter.getParameter(SCMOperationParameter.USER);
 		Assert.isTrue(usernamePara == null || usernamePara instanceof String);
-		Object passwordPara = parameter.getParameter(SCMConfigurableElements.REPO_PASSWORD);
+		Object passwordPara = parameter.getParameter(SCMOperationParameter.PASSWORD);
 		Assert.isTrue(passwordPara == null || usernamePara instanceof String);
 
 		String url = (String) urlPara;

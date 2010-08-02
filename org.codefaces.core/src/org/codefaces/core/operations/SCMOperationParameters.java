@@ -4,27 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SCMOperationParameters {
-	private Map<String, Object> parameterMap;
+	private Map<SCMOperationParameter, Object> parameterMap;
 	
 	public static SCMOperationParameters newInstance() {
 		return new SCMOperationParameters();
 	}
 
 	protected SCMOperationParameters() {
-		this(new HashMap<String, Object>());
+		this(new HashMap<SCMOperationParameter, Object>());
 	}
 
 	protected SCMOperationParameters(
-			Map<String, Object> parameterMap) {
+			Map<SCMOperationParameter, Object> parameterMap) {
 		this.parameterMap = parameterMap;
 	}
 
-	public void addParameter(String key, Object value) {
+	public void addParameter(SCMOperationParameter key, Object value) {
 		parameterMap.put(key, value);
 	}
 
 
-	public Object getParameter(String key) {
+	public Object getParameter(SCMOperationParameter key) {
 		return parameterMap.get(key);
 	}
 }

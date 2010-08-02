@@ -1,7 +1,9 @@
 package org.codefaces.web.internal.urls;
 
+import org.codefaces.ui.SCMURLConfigurations;
+
 public interface URLParsingStrategy {
-	URLQueryStrings buildQueryStrings(String url);
+	SCMURLConfigurations buildConfigurations(String url);
 	
 	String getScmKind(); 
 

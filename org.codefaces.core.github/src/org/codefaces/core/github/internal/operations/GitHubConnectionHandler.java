@@ -3,7 +3,6 @@ package org.codefaces.core.github.internal.operations;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
@@ -13,6 +12,7 @@ import org.codefaces.core.github.internal.operations.dtos.GitHubRepoDataDTO;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.operations.SCMOperationHandler;
+import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.eclipse.core.runtime.Assert;
 
@@ -34,7 +34,7 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 
 	@Override
 	public Repo execute(SCMConnector connector, SCMOperationParameters parameter) {
-		Object urlPara = parameter.getParameter(SCMConfigurableElements.REPO_URL);
+		Object urlPara = parameter.getParameter(SCMOperationParameter.URL);
 		Assert.isTrue(urlPara instanceof String);
 
 		String url = (String) urlPara;

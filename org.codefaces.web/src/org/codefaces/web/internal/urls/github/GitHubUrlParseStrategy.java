@@ -3,8 +3,8 @@ package org.codefaces.web.internal.urls.github;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.codefaces.core.SCMConfigurableElements;
-import org.codefaces.web.internal.urls.URLQueryStrings;
+import org.codefaces.ui.SCMConfigurableElements;
+import org.codefaces.ui.SCMURLConfigurations;
 import org.codefaces.web.internal.urls.URLParsingStrategy;
 
 public class GitHubUrlParseStrategy implements URLParsingStrategy {
@@ -32,8 +32,8 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 	}
 
 	@Override
-	public URLQueryStrings buildQueryStrings(String url) {
-		URLQueryStrings parameters = new URLQueryStrings();
+	public SCMURLConfigurations buildConfigurations(String url) {
+		SCMURLConfigurations config = new SCMURLConfigurations();
 
 		Matcher matcher = URL_PATTERN.matcher(url);
 		if (matcher.matches()) {
@@ -41,19 +41,19 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 			String branchName = matcher.group(2);
 
 			if (repoUrl != null) {
-				parameters.addParameter(SCMConfigurableElements.REPO_URL, repoUrl);
+				config.put(SCMConfigurableElements.URL, repoUrl);
 			}
 
 			if (branchName != null) {
-				parameters.addParameter(
-						SCMConfigurableElements.REPO_BASE_DIRECTORY,
+				config.put(
+						SCMConfigurableElements.BASE_DIRECTORY,
 						BRANCHES_FOLDER_NAME + "/" + branchName);
 			}
 			
-			parameters.addParameter(SCMConfigurableElements.REPO_KIND, SCM_KIND);
+			config.put(SCMConfigurableElements.KIND, SCM_KIND);
 		}
 
-		return parameters;
+		return config;
 	}
 
 	@Override

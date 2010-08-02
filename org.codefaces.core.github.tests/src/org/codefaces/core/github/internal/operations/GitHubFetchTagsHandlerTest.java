@@ -6,13 +6,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Map;
 
-import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.github.internal.connectors.GitHubConnector;
 import org.codefaces.core.github.internal.operations.dtos.GitHubTagsDTO;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.httpclient.internal.http.ManagedHttpClient;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class GitHubFetchTagsHandlerTest {
 				repo.getRoot(), "tags", "tags");
 
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMConfigurableElements.REPO_FOLDER,
+		para.addParameter(SCMOperationParameter.REPO_FOLDER,
 				branchesFolder);
 		Collection<RepoResource> children = handler.execute(connector, para);
 

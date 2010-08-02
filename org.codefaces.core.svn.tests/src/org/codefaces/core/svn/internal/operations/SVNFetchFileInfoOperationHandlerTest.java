@@ -2,7 +2,6 @@ package org.codefaces.core.svn.internal.operations;
 
 import static org.junit.Assert.*;
 
-import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoCredential;
@@ -10,6 +9,7 @@ import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
+import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.svn.internal.operations.SVNFetchFileInfoOperationHandler;
 
@@ -69,7 +69,7 @@ public class SVNFetchFileInfoOperationHandlerTest {
 		RepoFile mockFile = createMockFile(TEST_URL_IN_TRUNK, TEST_USERNAME,
 				TEST_PASSWORD, TEST_FILEPATH_IN_TRUNK);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMConfigurableElements.REPO_FILE, mockFile);
+		para.addParameter(SCMOperationParameter.REPO_FILE, mockFile);
 		RepoFileInfo info = handler.execute(connector, para);
 		
 		assertTrue(info.getContent().startsWith(TEST_PREFIX_FOR_TESTFILE_IN_TRUNK));
@@ -80,7 +80,7 @@ public class SVNFetchFileInfoOperationHandlerTest {
 		RepoFile mockFile = createMockFile(TEST_URL_IN_NORMAL_STRUCTION, TEST_USERNAME,
 				TEST_PASSWORD, TEST_FILEPATH_IN_SOME_FOLDER);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMConfigurableElements.REPO_FILE, mockFile);
+		para.addParameter(SCMOperationParameter.REPO_FILE, mockFile);
 		RepoFileInfo info = handler.execute(connector, para);
 		
 		assertTrue(info.getContent().startsWith(TEST_PREFIX_FOR_TESTFILE_IN_SOME_FOLDER));

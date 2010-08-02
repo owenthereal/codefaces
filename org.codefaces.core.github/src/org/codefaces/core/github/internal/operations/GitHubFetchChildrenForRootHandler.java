@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.operations.SCMOperationHandler;
+import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.eclipse.core.runtime.Assert;
 
@@ -21,7 +21,7 @@ public class GitHubFetchChildrenForRootHandler implements SCMOperationHandler{
 	public Collection<RepoResource> execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
 		
-		Object folderRootPara = parameter.getParameter(SCMConfigurableElements.REPO_FOLDER);
+		Object folderRootPara = parameter.getParameter(SCMOperationParameter.REPO_FOLDER);
 		Assert.isTrue(folderRootPara instanceof RepoFolderRoot);
 		
 		RepoFolderRoot root = (RepoFolderRoot)folderRootPara;

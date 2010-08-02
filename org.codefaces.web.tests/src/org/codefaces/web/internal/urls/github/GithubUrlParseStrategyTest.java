@@ -3,8 +3,8 @@ package org.codefaces.web.internal.urls.github;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.codefaces.core.SCMConfigurableElements;
-import org.codefaces.web.internal.urls.URLQueryStrings;
+import org.codefaces.ui.SCMConfigurableElements;
+import org.codefaces.ui.SCMURLConfigurations;
 import org.codefaces.web.internal.urls.github.GitHubUrlParseStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,59 +34,59 @@ public class GithubUrlParseStrategyTest {
 
 	@Test
 	public void test_extractParameters_masterRoot() {
-		URLQueryStrings parameters = strategy
-				.buildQueryStrings(TEST_URL_MASTER_ROOT);
+		SCMURLConfigurations config = strategy
+				.buildConfigurations(TEST_URL_MASTER_ROOT);
 
-		assertEquals("http://github.com/jingweno/ruby_grep", parameters
-				.getParameter(SCMConfigurableElements.REPO_URL));
-		assertNull(parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
+		assertEquals("http://github.com/jingweno/ruby_grep", config
+				.get(SCMConfigurableElements.URL));
+		assertNull(config.get(SCMConfigurableElements.BASE_DIRECTORY));
 	}
 	
 	@Test
 	public void repositoryShouldBeParsedCorrectlyWhenMasterRootUrlContainsTrailingSlash(){
-		URLQueryStrings parameters = strategy
-		.buildQueryStrings(TEST_URL_MASTER_ROOT_WITH_TRAILING_SLASH);
+		SCMURLConfigurations config = strategy
+				.buildConfigurations(TEST_URL_MASTER_ROOT_WITH_TRAILING_SLASH);
 		assertEquals("http://github.com/jingweno/ruby_grep",
-				parameters.getParameter(SCMConfigurableElements.REPO_URL));
-		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
-		assertNull(parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
+				config.get(SCMConfigurableElements.URL));
+		assertEquals(TEST_SCM_KIND, config.get(SCMConfigurableElements.KIND));
+		assertNull(config.get(SCMConfigurableElements.BASE_DIRECTORY));
 	}
 	
 	@Test
 	public void test_extractParameters_masterFile() {
-		URLQueryStrings parameters = strategy
-				.buildQueryStrings(TEST_URL_MASTER_FILE);
+		SCMURLConfigurations config = strategy
+				.buildConfigurations(TEST_URL_MASTER_FILE);
 
-		assertEquals("http://github.com/jingweno/ruby_grep", parameters
-				.getParameter(SCMConfigurableElements.REPO_URL));
-		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+		assertEquals("http://github.com/jingweno/ruby_grep", config
+				.get(SCMConfigurableElements.URL));
+		assertEquals(TEST_SCM_KIND, config.get(SCMConfigurableElements.KIND));
 		assertEquals(
 				GITHUB_BRANCHES_DIR + "/" + "master",
-				parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
+				config.get(SCMConfigurableElements.BASE_DIRECTORY));
 	}
 	
 	@Test
 	public void test_extractParameters_branchRoot() {
-		URLQueryStrings parameters = strategy
-		.buildQueryStrings(TEST_URL_BRANCH_ROOT);
+		SCMURLConfigurations config = strategy
+				.buildConfigurations(TEST_URL_BRANCH_ROOT);
 		
-		assertEquals("http://github.com/schacon/ruby-git", parameters
-				.getParameter(SCMConfigurableElements.REPO_URL));
-		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+		assertEquals("http://github.com/schacon/ruby-git", config
+				.get(SCMConfigurableElements.URL));
+		assertEquals(TEST_SCM_KIND, config.get(SCMConfigurableElements.KIND));
 		assertEquals(
 				GITHUB_BRANCHES_DIR + "/" + "internals",
-				parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
+				config.get(SCMConfigurableElements.BASE_DIRECTORY));
 	}
 	
 	@Test
 	public void repositoryShouldBeParsedCorrectlyWhenBranchRootUrlContainsTrailingSlash(){
-		URLQueryStrings parameters = strategy
-				.buildQueryStrings(TEST_URL_BRANCH_ROOT_WITH_TRAILING_SLASH);
+		SCMURLConfigurations config = strategy
+				.buildConfigurations(TEST_URL_BRANCH_ROOT_WITH_TRAILING_SLASH);
 		assertEquals("http://github.com/schacon/ruby-git",
-				parameters.getParameter(SCMConfigurableElements.REPO_URL));
-		assertEquals(TEST_SCM_KIND, parameters.getParameter(SCMConfigurableElements.REPO_KIND));
+				config.get(SCMConfigurableElements.URL));
+		assertEquals(TEST_SCM_KIND, config.get(SCMConfigurableElements.KIND));
 		assertEquals(
 				GITHUB_BRANCHES_DIR + "/" + "internals",
-				parameters.getParameter(SCMConfigurableElements.REPO_BASE_DIRECTORY));
+				config.get(SCMConfigurableElements.BASE_DIRECTORY));
 	}
 }

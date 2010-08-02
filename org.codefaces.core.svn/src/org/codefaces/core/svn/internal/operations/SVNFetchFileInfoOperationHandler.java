@@ -1,11 +1,11 @@
 package org.codefaces.core.svn.internal.operations;
 
-import org.codefaces.core.SCMConfigurableElements;
 import org.codefaces.core.connectors.SCMConnector;
 import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoFile;
 import org.codefaces.core.models.RepoFileInfo;
 import org.codefaces.core.operations.SCMOperationHandler;
+import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.codefaces.core.svn.internal.clientadaptor.SVNClientAdaptor;
 import org.codefaces.core.svn.internal.clientadaptor.SVNResource;
@@ -17,7 +17,7 @@ public class SVNFetchFileInfoOperationHandler implements SCMOperationHandler {
 	@Override
 	public RepoFileInfo execute(SCMConnector connector,
 			SCMOperationParameters parameter) {
-		Object file = parameter.getParameter(SCMConfigurableElements.REPO_FILE);
+		Object file = parameter.getParameter(SCMOperationParameter.REPO_FILE);
 		Assert.isTrue(file instanceof RepoFile);
 		RepoFile repoFile = (RepoFile) file;
 
