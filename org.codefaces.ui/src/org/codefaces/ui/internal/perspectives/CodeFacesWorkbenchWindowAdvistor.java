@@ -1,5 +1,6 @@
 package org.codefaces.ui.internal.perspectives;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import org.codefaces.core.models.Repo;
 import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.Workspace;
+import org.codefaces.ui.SCMConfigurableElement;
+import org.codefaces.ui.SCMURLConfiguration;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenEditorHandler;
@@ -53,6 +56,19 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 	}
 
 	private void openRepository() {
+		@SuppressWarnings("unchecked")
+		Map<String, String[]> urlParameters = RWT.getRequest().getParameterMap();
+		try {
+			SCMURLConfiguration configurations = SCMURLConfiguration.fromHTTPParametersMap(urlParameters);
+			for(SCMConfigurableElement element: configurations.getConfigurationsMap().keySet()){
+				System.out.println(element);
+				System.out.println(configurations.get(element));
+				
+			}
+		} catch (MalformedURLException e) {
+			//ignore it.
+		}
+		
 		String repoUrl = (String) RWT.getRequest().getParameter("repo");
 		String branchName = (String) RWT.getRequest().getParameter("branch");
 

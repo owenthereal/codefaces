@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.codefaces.ui.SCMURLConfigurations;
+import org.codefaces.ui.SCMURLConfiguration;
 import org.codefaces.web.internal.CodeFacesWebActivator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
@@ -30,7 +30,7 @@ public class URLDispatchingServlet extends HttpServlet {
 			uri = uri.substring(1).trim();
 		}
 
-		SCMURLConfigurations config = new SCMURLConfigurations();
+		SCMURLConfiguration config = new SCMURLConfiguration();
 		URLParsingStrategy strategy = CodeFacesWebActivator.getDefault()
 				.getUrlParseStrategies(uri);
 		if (strategy != null) {
@@ -42,7 +42,7 @@ public class URLDispatchingServlet extends HttpServlet {
 	}
 
 	private String createRepoUrl(HttpServletRequest req,
-			SCMURLConfigurations config) {
+			SCMURLConfiguration config) {
 		StringBuilder url = new StringBuilder();
 		url.append(req.getContextPath());
 		url.append(req.getServletPath());
