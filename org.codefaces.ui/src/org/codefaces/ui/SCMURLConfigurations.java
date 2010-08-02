@@ -39,12 +39,14 @@ public class SCMURLConfigurations {
 			try{
 				SCMConfigurableElements element = SCMConfigurableElements.valueOf(key.toUpperCase());
 				String[] values = parameters.get(key);
-				if(values.length != 1) throw new IllegalArgumentException("Invalid number of value for: " + key);
+				if(values.length != 1) throw new MalformedURLException("Invalid number of value for: " + key);
 				
 				configurations.put(element, values[0]);
 			}
 			catch(IllegalArgumentException e){
-				throw new MalformedURLException(e.getMessage());
+				//DO Nothing.
+				//This exception is thrown from the Enum.valueOf method.
+				//We simply ignore unknown Query parameter and keep on doing.
 			}
 		}
 		return configurations;

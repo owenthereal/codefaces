@@ -29,6 +29,12 @@ public class SCMURLConfigurationsTest {
 		}
 	};
 	
+	private static final String[][] HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS = {
+		{"unknowParameter1", "unknowValue1"},
+		{SCMConfigurableElements.URL.toString().toLowerCase(), "http://testing/url"},
+		{"unknowParameter2", "unknowValue2"}
+	};
+	
 	private static final String TEST_URL = "http://test/url";
 	private static final String TEST_KIND = "GitHub";
 	
@@ -52,11 +58,23 @@ public class SCMURLConfigurationsTest {
 	}
 	
 	@Test(expected=MalformedURLException.class)
-	public void exceptionShouldBeThrownWhenHTMLQueryParametersContains2URLs() throws MalformedURLException{
+	public void exceptionShouldBeThrownWhenKnownParametersContainsMultipleValues() throws MalformedURLException{
 		Map<String, String[]> parameters = new HashMap<String, String[]>();
 		parameters.put((String)HTML_QUERY_PARAMETERS_WITH_2_URLS[0][0],
 				(String[])HTML_QUERY_PARAMETERS_WITH_2_URLS[0][1]);
 		SCMURLConfigurations.fromHTTPParametersMap(parameters);
+	}
+	
+	@Test
+	public void configurationsShouldSimplyIgnoreUnknownHTMLQueryParamerters() throws MalformedURLException{
+		Map<String, String[]> parameters = new HashMap<String, String[]>();
+		for(int i=0; i<HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS.length ; i++){
+			parameters.put(HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS[i][0],
+					new String[] { HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS[i][1] });
+		}
+		SCMURLConfigurations configuration = SCMURLConfigurations.fromHTTPParametersMap(parameters);
+		assertEquals(1, configuration.getConfigurationsMap().size());
+		assertEquals(HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS[1][1], configuration.get(SCMConfigurableElements.URL));
 	}
 	
 	@Test
