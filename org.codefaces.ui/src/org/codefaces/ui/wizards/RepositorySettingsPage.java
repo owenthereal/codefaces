@@ -26,7 +26,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Group;
 
 public class RepositorySettingsPage extends WizardPage {
 	private final class ConnectorSelectionChangedListener implements
@@ -51,9 +51,9 @@ public class RepositorySettingsPage extends WizardPage {
 
 	private RepositorySettingsSection settingsSection;
 
-	private Composite dialogAreaComposite;
+	private Group settingsSectionComposite;
 
-	private Composite settingsSectionComposite;
+	private Composite dialogAreaComposite;
 
 	public RepositorySettingsPage(RepoSettings settings) {
 		super(TITLE);
@@ -85,19 +85,24 @@ public class RepositorySettingsPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		dialogAreaComposite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(2, false);
+		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridLayout layout = new GridLayout();
 		layout.marginHeight = IDialogConstants.HORIZONTAL_MARGIN;
 		layout.marginWidth = IDialogConstants.VERTICAL_MARGIN;
-		layout.verticalSpacing = IDialogConstants.VERTICAL_SPACING;
+		layout.verticalSpacing = 15;
 		layout.horizontalSpacing = IDialogConstants.HORIZONTAL_SPACING;
 		dialogAreaComposite.setLayout(layout);
-		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		dialogAreaComposite.setFont(parent.getFont());
 		setControl(dialogAreaComposite);
 
-		Label connectorLabel = new Label(dialogAreaComposite, SWT.NONE);
-		connectorLabel.setText("Repository: ");
-		createConnectorViewer(dialogAreaComposite);
+		Group connectorKindGroup = new Group(dialogAreaComposite, SWT.NONE);
+		connectorKindGroup.setText("Kind");
+		connectorKindGroup.setLayout(new GridLayout());
+		connectorKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
+				| GridData.GRAB_HORIZONTAL));
+		connectorKindGroup.setFont(dialogAreaComposite.getFont());
+
+		createConnectorViewer(connectorKindGroup);
 		bindConnectorViewer();
 
 		populateConnectorViewer();
@@ -117,17 +122,18 @@ public class RepositorySettingsPage extends WizardPage {
 			return;
 		}
 
-		settingsSectionComposite = new Composite(dialogAreaComposite, SWT.NONE);
+		settingsSectionComposite = new Group(dialogAreaComposite, SWT.NONE);
+		settingsSectionComposite.setText("Connection");
 
-		GridData layoutData = new GridData(GridData.FILL_BOTH);
+		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
 		layoutData.horizontalSpan = 2;
 		settingsSectionComposite.setLayoutData(layoutData);
 
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginHeight = IDialogConstants.HORIZONTAL_MARGIN;
-		layout.marginWidth = 0;
+		layout.marginWidth = IDialogConstants.VERTICAL_MARGIN;
 		layout.verticalSpacing = IDialogConstants.VERTICAL_SPACING;
-		layout.horizontalSpacing = 15;
+		layout.horizontalSpacing = IDialogConstants.HORIZONTAL_SPACING;
 		settingsSectionComposite.setLayout(layout);
 
 		settingsSectionComposite.setFont(dialogAreaComposite.getFont());

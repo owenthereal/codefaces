@@ -53,9 +53,9 @@ public class GitHubFetchBranchesHandler implements SCMOperationHandler {
 	}
 
 	protected String createFetchBranchesURL(Repo repo) {
-		return GitHubOperationUtil.makeURI(SHOW_GITHUB_BRANCHES, repo
-				.getCredential().getOwner(), repo.getName(),
-				GitHubOperationConstants.BRANCHES_FOLDER_NAME);
+		return GitHubOperationUtil.makeURI(SHOW_GITHUB_BRANCHES, (String) repo
+				.getProperty(GitHubOperationConstants.GITHUB_OWNER), repo
+				.getName(), GitHubOperationConstants.BRANCHES_FOLDER_NAME);
 	}
 
 	private GitHubBranchesDTO parseContent(String respBody)

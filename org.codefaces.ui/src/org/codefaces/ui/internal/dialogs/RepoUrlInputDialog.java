@@ -185,7 +185,7 @@ public class RepoUrlInputDialog extends TitleAreaDialog {
 				String kind, String url, final IProgressMonitor monitor) {
 			try {
 				monitor.beginTask("Connecting to repository: " + url, 100);
-				final Repo repo = Repo.create(kind, url);
+				final Repo repo = Repo.create(kind, url, null, null);
 				monitor.worked(30);
 
 				monitor.setTaskName("Fetching branches...");

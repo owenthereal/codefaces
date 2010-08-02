@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class GitHubFetchChildrenForRootHandlerTest {
 	private static final String KIND_GIT_HUB = "GitHub";
-	
+
 	private static final String TEST_REPO_NAME = "ruby_grep";
 
 	private static final String TEST_OWNER_NAME = "jingweno";
@@ -29,20 +29,19 @@ public class GitHubFetchChildrenForRootHandlerTest {
 
 	private GitHubConnector connector;
 
-
 	@Before
-	public void setUp(){
+	public void setUp() {
 		connector = new GitHubConnector(new ManagedHttpClient());
 		handler = new GitHubFetchChildrenForRootHandler();
 	}
-	
+
 	@Test
 	public void fetchRepoFolderRootChildrenReturnsBranchesFolderAndTagsFolder() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER,
-				repo.getRoot());
+		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, repo.getRoot());
 		Collection<RepoResource> children = handler.execute(connector, para);
 
 		assertEquals(2, children.size());

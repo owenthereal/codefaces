@@ -13,10 +13,13 @@ import org.codefaces.core.operations.SCMOperation;
 import org.codefaces.core.operations.SCMOperationHandler;
 
 public class SCMService {
-	public Repo connect(String kind, String url) {
+	public Repo connect(String kind, String url, String username,
+			String password) {
 		SCMOperation operation = SCMOperation.newInstance(kind,
 				SCMOperation.CONNECTION_OPERAION);
 		operation.addParameter(SCMOperationHandler.PARA_URL, url.trim());
+		operation.addParameter(SCMOperationHandler.PARA_USERNAME, username);
+		operation.addParameter(SCMOperationHandler.PARA_PASSWORD, password);
 
 		return operation.execute();
 	}

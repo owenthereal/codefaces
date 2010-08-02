@@ -44,7 +44,8 @@ public class GitHubFetchBranchesHandlerTest {
 	@Test
 	public void createFetchBranchesURL() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		String githubShowUrl = handler.createFetchBranchesURL(repo);
 
 		assertEquals(TEST_BRANCH_URL, githubShowUrl);
@@ -59,17 +60,17 @@ public class GitHubFetchBranchesHandlerTest {
 		assertEquals(2, branches.size());
 		assertTrue(branches.containsKey(TEST_BRANCH_MASTER));
 	}
-	
+
 	@Test
 	public void fetchChildrenFromBranchesFolderReturnsExpectedNumberOfBranches() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		RepoFolder branchesFolder = new RepoFolder(repo.getRoot(),
 				repo.getRoot(), "branches", "branches");
 
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER,
-				branchesFolder);
+		para.addParameter(SCMOperationHandler.PARA_REPO_FOLDER, branchesFolder);
 		Collection<RepoResource> children = handler.execute(connector, para);
 
 		assertEquals(2, children.size());

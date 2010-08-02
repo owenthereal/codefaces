@@ -1,4 +1,4 @@
-package org.codefaces.ui.internal.wizards.github;
+package org.codefaces.ui.internal.wizard.svn;
 
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.core.models.Repo;
@@ -15,21 +15,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class GitHubSettingsSection implements RepositorySettingsSection {
+public class SVNSettingsSection implements RepositorySettingsSection {
 	private Text locationText;
 
 	private RepoSettings settings;
 
 	private RepositorySettingsPage settingsPage;
 
-	private String location;
+	private Text usernameText;
 
 	private void bindLocationText() {
 		locationText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent event) {
-				String location = locationText.getText();
-				GitHubSettingsSection.this.location = location;
 				settingsPage.verifyPageComplete();
 			}
 		});
@@ -46,16 +44,17 @@ public class GitHubSettingsSection implements RepositorySettingsSection {
 		Assert.isTrue(typePara instanceof String);
 
 		String type = (String) typePara;
-
+		String location = locationText.getText();
+		String username = usernameText.getText();
 		monitor.beginTask("Connecting to " + type + " repository " + location,
 				100);
-		Repo repo = Repo.create(type, location, null, null);
+		Repo repo = Repo.create(type, location, username, null);
 		getSettings().put(RepoSettings.REPO, repo);
 		monitor.done();
 	}
 
 	public boolean isSettingsValid() {
-		return !StringUtils.isEmpty(location);
+		return !StringUtils.isEmpty(locationText.getText());
 	}
 
 	@Override
@@ -63,10 +62,23 @@ public class GitHubSettingsSection implements RepositorySettingsSection {
 			Composite parentComposite, RepoSettings settings) {
 		this.settingsPage = settingsPage;
 		this.settings = settings;
-		Label locationInputLabel = new Label(parentComposite, SWT.NONE);
-		locationInputLabel.setText("Location: ");
+		
+		Label locationLabel = new Label(parentComposite, SWT.NONE);
+		locationLabel.setText("Location: ");
 		createLocationText(parentComposite);
+		
+		
+		Label usernameLabel = new Label(parentComposite, SWT.NONE);
+		usernameLabel.setText("Username: ");
+		createUsernameText(parentComposite);
+
 		bindLocationText();
+	}
+
+	private void createUsernameText(Composite parent) {
+		usernameText = new Text(parent, SWT.BORDER);
+		usernameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.HORIZONTAL_ALIGN_FILL));
 	}
 
 	private RepoSettings getSettings() {
