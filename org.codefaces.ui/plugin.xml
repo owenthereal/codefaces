@@ -97,18 +97,6 @@
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.internal.commands.SwitchBranchCommandHandler"
-            description="Switch to another Repository Branch without switching the repository"
-            id="org.codefaces.ui.internal.commands.switchBranchCommand"
-            name="switchRepositoryBranchCommand">
-         <commandParameter
-               id="org.codefaces.ui.internal.commands.parameters.switchBranchCommand.branchId"
-               name="branchId"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.AboutCommandHandler"
             description="About CodeFaces"
             id="org.codefaces.ui.internal.commands.about"
@@ -159,6 +147,13 @@
             categoryId="org.codefaces.ui.category.command"
             id="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
             name="Show Repo Info Dialog">
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.internal.commands.OpenRepoFromURLCommandHandler"
+            description="Open Repo from URL Parameters"
+            id="org.codefaces.ui.internal.commands.openRepoFromURLCommand"
+            name="name">
       </command>
    </extension>
    <extension

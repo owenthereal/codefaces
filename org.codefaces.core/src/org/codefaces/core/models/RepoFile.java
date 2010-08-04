@@ -5,6 +5,12 @@ public class RepoFile extends RepoResource {
 			String name) {
 		super(root, parent, id, name, RepoResourceType.FILE);
 	}
+	
+	//This method is intended to use only in testing
+	protected RepoFile(RepoFolderRoot root, RepoResource parent, String id,
+			String name, RepoFileInfo info){
+		super(root, parent, id, name, RepoResourceType.FILE, info);
+	}
 
 	@Override
 	protected RepoFileInfo getInfo() {

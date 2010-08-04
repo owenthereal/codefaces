@@ -10,6 +10,7 @@ import org.codefaces.web.internal.urls.URLParsingStrategy;
 public class GitHubUrlParseStrategy implements URLParsingStrategy {
 	//TODO use GitHubConstants
 	private static final String BRANCHES_FOLDER_NAME = "branches";
+	private static final String MASTER_BRANCH = BRANCHES_FOLDER_NAME + "/master";
 	
 	private static final String SCM_KIND = "GitHub";
 	
@@ -41,16 +42,17 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 			String branchName = matcher.group(2);
 
 			if (repoUrl != null) {
-				config.put(SCMConfigurableElement.URL, repoUrl);
+				config.put(SCMConfigurableElement.REPO_URL, repoUrl);
 			}
 
 			if (branchName != null) {
-				config.put(
-						SCMConfigurableElement.BASE_DIRECTORY,
+				config.put(SCMConfigurableElement.BASE_DIRECTORY,
 						BRANCHES_FOLDER_NAME + "/" + branchName);
+			} else {
+				config.put(SCMConfigurableElement.BASE_DIRECTORY, MASTER_BRANCH);
 			}
 			
-			config.put(SCMConfigurableElement.KIND, SCM_KIND);
+			config.put(SCMConfigurableElement.SCM_KIND, SCM_KIND);
 		}
 
 		return config;

@@ -1,7 +1,10 @@
 package org.codefaces.ui;
 
+/**
+ * The only concern is, don't have a name crash with rap url parameters
+ */
 public enum SCMConfigurableElement {
-	URL, KIND, BASE_DIRECTORY,
+	REPO_URL, SCM_KIND, BASE_DIRECTORY,
 
 	OWNER, USER, PASSWORD
 }

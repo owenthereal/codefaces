@@ -69,7 +69,8 @@ public class GitHubSettingsPage extends RepositorySettingsPage {
 
 		monitor.beginTask("Connecting to " + type + " repository " + location,
 				100);
-		Repo repo = Repo.create(type, location);
+		//TODO
+		Repo repo = Repo.create(type, location, null, null);
 		getSettings().put(RepoSettings.REPO, repo);
 		monitor.done();
 	}

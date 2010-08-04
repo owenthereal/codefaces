@@ -14,8 +14,8 @@ import org.junit.Test;
 public class SCMURLConfigurationsTest {
 	
 	private static final String[][] NORMAL_HTML_QUERY_PARAMETERS = {
-		{SCMConfigurableElement.URL.toString().toLowerCase(), "http://testing/url"},
-		{SCMConfigurableElement.KIND.toString().toLowerCase(), "test_kind"},
+		{SCMConfigurableElement.REPO_URL.toString().toLowerCase(), "http://testing/url"},
+		{SCMConfigurableElement.SCM_KIND.toString().toLowerCase(), "test_kind"},
 		{SCMConfigurableElement.USER.toString().toLowerCase(), "test_user"},
 		{SCMConfigurableElement.PASSWORD.toString().toLowerCase(), "test_password"},
 		{SCMConfigurableElement.BASE_DIRECTORY.toString().toLowerCase(), "test/base/dir"},
@@ -24,14 +24,14 @@ public class SCMURLConfigurationsTest {
 	
 	private static final Object[][] HTML_QUERY_PARAMETERS_WITH_2_URLS = {
 		{
-			SCMConfigurableElement.URL.toString().toLowerCase(), 
+			SCMConfigurableElement.REPO_URL.toString().toLowerCase(), 
 			new String[] { "http://testing/url1", "http://testing/url1"}
 		}
 	};
 	
 	private static final String[][] HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS = {
 		{"unknowParameter1", "unknowValue1"},
-		{SCMConfigurableElement.URL.toString().toLowerCase(), "http://testing/url"},
+		{SCMConfigurableElement.REPO_URL.toString().toLowerCase(), "http://testing/url"},
 		{"unknowParameter2", "unknowValue2"}
 	};
 	
@@ -49,8 +49,8 @@ public class SCMURLConfigurationsTest {
 		}
 		
 		SCMURLConfiguration configuration = SCMURLConfiguration.fromHTTPParametersMap(parameters);
-		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[0][1], configuration.get(SCMConfigurableElement.URL));
-		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[1][1], configuration.get(SCMConfigurableElement.KIND));
+		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[0][1], configuration.get(SCMConfigurableElement.REPO_URL));
+		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[1][1], configuration.get(SCMConfigurableElement.SCM_KIND));
 		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[2][1], configuration.get(SCMConfigurableElement.USER));
 		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[3][1], configuration.get(SCMConfigurableElement.PASSWORD));
 		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[4][1], configuration.get(SCMConfigurableElement.BASE_DIRECTORY));
@@ -74,25 +74,25 @@ public class SCMURLConfigurationsTest {
 		}
 		SCMURLConfiguration configuration = SCMURLConfiguration.fromHTTPParametersMap(parameters);
 		assertEquals(1, configuration.getConfigurationsMap().size());
-		assertEquals(HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS[1][1], configuration.get(SCMConfigurableElement.URL));
+		assertEquals(HTML_QUERY_PARAMETERS_WITH_UNKNOWN_PARAMETERS[1][1], configuration.get(SCMConfigurableElement.REPO_URL));
 	}
 	
 	@Test
 	public void queryStringFromedShouldContainsParametersAsExpected() throws Exception{
 		SCMURLConfiguration configurations = new SCMURLConfiguration();
-		configurations.put(SCMConfigurableElement.URL, TEST_URL);
-		configurations.put(SCMConfigurableElement.KIND, TEST_KIND);
+		configurations.put(SCMConfigurableElement.REPO_URL, TEST_URL);
+		configurations.put(SCMConfigurableElement.SCM_KIND, TEST_KIND);
 		
 		String queryString = configurations.toHTTPQueryString();
 		Map<String, List<String>> parsedQueryParametersMap = getParametersMap(queryString);
 		assertEquals(
 				TEST_URL,
 				parsedQueryParametersMap.get(
-						SCMConfigurableElement.URL.toString().toLowerCase()).get(0));
+						SCMConfigurableElement.REPO_URL.toString().toLowerCase()).get(0));
 		assertEquals(
 				TEST_KIND,
 				parsedQueryParametersMap.get(
-						SCMConfigurableElement.KIND.toString().toLowerCase()).get(0));
+						SCMConfigurableElement.SCM_KIND.toString().toLowerCase()).get(0));
 	}
 	
 	@Test

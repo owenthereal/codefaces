@@ -1,22 +1,14 @@
 package org.codefaces.ui.internal.perspectives;
 
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.codefaces.core.models.Repo;
-import org.codefaces.core.models.RepoFolder;
-import org.codefaces.core.models.RepoResource;
-import org.codefaces.core.models.Workspace;
 import org.codefaces.ui.SCMConfigurableElement;
 import org.codefaces.ui.SCMURLConfiguration;
-import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenEditorHandler;
+import org.codefaces.ui.internal.commands.OpenRepoFromURLCommandHandler;
 import org.codefaces.ui.internal.editors.WelcomeEditor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -52,48 +44,32 @@ public class CodeFacesWorkbenchWindowAdvistor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowOpen() {
 		showWelcomeEditor();
-		openRepository();
+		tryOpenRepositoryFromURL();
 	}
 
-	private void openRepository() {
-		@SuppressWarnings("unchecked")
-		Map<String, String[]> urlParameters = RWT.getRequest().getParameterMap();
-		try {
-			SCMURLConfiguration configurations = SCMURLConfiguration.fromHTTPParametersMap(urlParameters);
-			for(SCMConfigurableElement element: configurations.getConfigurationsMap().keySet()){
-				System.out.println(element);
-				System.out.println(configurations.get(element));
-				
-			}
-		} catch (MalformedURLException e) {
-			//ignore it.
-		}
+	private void tryOpenRepositoryFromURL() {
+		String svnKind = RWT.getRequest().getParameter(
+				SCMURLConfiguration.urlEncode(SCMConfigurableElement.SCM_KIND));
+		String repoUrl = RWT.getRequest().getParameter(
+				SCMURLConfiguration.urlEncode(SCMConfigurableElement.REPO_URL));
 		
-		String repoUrl = (String) RWT.getRequest().getParameter("repo");
-		String branchName = (String) RWT.getRequest().getParameter("branch");
-
-		if (repoUrl != null) {
+		if(svnKind != null && repoUrl != null){
+			@SuppressWarnings("unchecked")
+			Map<String, String[]> urlParameters = RWT.getRequest()
+					.getParameterMap();
 			try {
-				Repo repo = Repo.create("GitHub", repoUrl);
-				RepoFolder repoBranch = null;
-				for (RepoResource resource : repo.getRoot().getChildren()) {
-					if (StringUtils.equals(branchName, resource.getName())
-							&& resource instanceof RepoFolder) {
-						repoBranch = (RepoFolder) resource;
-						break;
-					}
-				}
+				SCMURLConfiguration configurations = SCMURLConfiguration
+						.fromHTTPParametersMap(urlParameters);
+				Map<String, Object> variableMap = new HashMap<String, Object>();
+				variableMap.put(OpenRepoFromURLCommandHandler.VARIABLE_SCM_URL_CONFIGUTATION,
+								configurations);
 
-				if (repoBranch != null) {
-					Workspace.getCurrent().update(repoBranch);
-				}
+				CommandExecutor.execute(OpenRepoFromURLCommandHandler.ID, null,
+						variableMap);
 
 			} catch (Exception e) {
-				IStatus status = new Status(Status.ERROR,
-						CodeFacesUIActivator.PLUGIN_ID,
-						"Errors occurs when connecting to repository "
-								+ repoUrl + " with branch " + branchName, e);
-				CodeFacesUIActivator.getDefault().getLog().log(status);
+				// ignore it if there is any error in the parameter,
+				// as user can type anything they like
 			}
 		}
 	}

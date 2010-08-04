@@ -29,6 +29,13 @@ public class RepoResource extends RepoElement {
 			path = parent.getFullPath().append(path);
 		}
 	}
+	
+	//This method is intended to use only in testing
+	protected RepoResource(RepoFolderRoot root, RepoResource parent, String id,
+			String name, RepoResourceType type, RepoResourceInfo info) {
+		this(root, parent, id, name, type);
+		this.info = info;
+	}
 
 	public IPath getFullPath() {
 		return path;
