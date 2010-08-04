@@ -18,8 +18,7 @@ public class SCMURLConfigurationsTest {
 		{SCMConfigurableElement.SCM_KIND.toString().toLowerCase(), "test_kind"},
 		{SCMConfigurableElement.USER.toString().toLowerCase(), "test_user"},
 		{SCMConfigurableElement.PASSWORD.toString().toLowerCase(), "test_password"},
-		{SCMConfigurableElement.BASE_DIRECTORY.toString().toLowerCase(), "test/base/dir"},
-		{SCMConfigurableElement.OWNER.toString().toLowerCase(), "test_owner"}
+		{SCMConfigurableElement.BASE_DIRECTORY.toString().toLowerCase(), "test/base/dir"}
 	};
 	
 	private static final Object[][] HTML_QUERY_PARAMETERS_WITH_2_URLS = {
@@ -54,7 +53,6 @@ public class SCMURLConfigurationsTest {
 		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[2][1], configuration.get(SCMConfigurableElement.USER));
 		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[3][1], configuration.get(SCMConfigurableElement.PASSWORD));
 		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[4][1], configuration.get(SCMConfigurableElement.BASE_DIRECTORY));
-		assertEquals(NORMAL_HTML_QUERY_PARAMETERS[5][1], configuration.get(SCMConfigurableElement.OWNER));
 	}
 	
 	@Test(expected=MalformedURLException.class)

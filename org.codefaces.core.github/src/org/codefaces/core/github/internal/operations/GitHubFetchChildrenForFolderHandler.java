@@ -77,8 +77,8 @@ public class GitHubFetchChildrenForFolderHandler implements SCMOperationHandler 
 	}
 
 	protected String createFetchChildrenUrl(Repo repo, RepoFolder folder) {
-		return GitHubOperationUtil.makeURI(SHOW_GITHUB_CHILDREN, repo
-				.getCredential().getOwner(), repo.getName(), folder.getId());
+		return GitHubOperationUtil.makeURI(SHOW_GITHUB_CHILDREN, (String) repo
+				.getProperty(GitHubOperationConstants.GITHUB_OWNER), repo.getName(), folder.getId());
 	}
 
 	private RepoResource createRepoResourceFromType(String type,

@@ -45,7 +45,8 @@ public class GitHubFetchFileInfoHandlerTest {
 	@Test
 	public void createGetGitHubFileURL() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		RepoFolder folder = new RepoFolder(repo.getRoot(), repo.getRoot(),
 				TEST_FOLDER_SHA, "master");
 
@@ -58,7 +59,8 @@ public class GitHubFetchFileInfoHandlerTest {
 	public void executeReturnsSizeMimeTypeModeContent()
 			throws MalformedURLException {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		RepoFolder folder = new RepoFolder(repo.getRoot(), repo.getRoot(),
 				TEST_FOLDER_SHA, "master");
 		RepoFile file = new RepoFile(repo.getRoot(), folder, "id",

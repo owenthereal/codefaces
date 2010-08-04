@@ -41,9 +41,8 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	 */
 	protected SVNClientAdaptor() {
 		Activator activator = Activator.getDefault();
-		final ISVNClientAdapter client = activator
+		this.client = activator
 				.getClientAdapter(CLIENT_ADAPTOR_ID);
-		this.client = client;
 
 		RWT.getSessionStore().getHttpSession().setAttribute(ID, this);
 	}

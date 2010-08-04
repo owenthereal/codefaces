@@ -80,7 +80,7 @@ public class RepoModelTestingUtils {
 		MockRepoInfo mockRepoInfo = new MockRepoInfo();
 		MockRepoFolderInfo mockRootInfo = new MockRepoFolderInfo();
 		Repo repo = new Repo(mockRepoKind, mockUrl, "repoName",
-				new RepoCredential(null, mockUser, mockPassword), mockRepoInfo, mockRootInfo);
+				new RepoCredential(mockUser, mockPassword), mockRepoInfo, mockRootInfo);
 		mockRepoInfo.addChild(repo.getRoot());
 		
 		String[] segments = mockPath.segments();

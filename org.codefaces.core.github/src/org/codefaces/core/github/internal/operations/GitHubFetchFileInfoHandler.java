@@ -44,8 +44,8 @@ public class GitHubFetchFileInfoHandler implements SCMOperationHandler {
 
 	protected String createFetchFileInfoUrl(Repo repo, RepoFolder folder,
 			String fileName) {
-		return GitHubOperationUtil.makeURI(GET_GITHUB_FILE, repo
-				.getCredential().getOwner(), repo.getName(), folder.getId(),
+		return GitHubOperationUtil.makeURI(GET_GITHUB_FILE, (String) repo
+				.getProperty(GitHubOperationConstants.GITHUB_OWNER), repo.getName(), folder.getId(),
 				fileName);
 	}
 

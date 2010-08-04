@@ -1,6 +1,8 @@
 package org.codefaces.core.models;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -11,6 +13,7 @@ public class RepoResource extends RepoElement {
 	private RepoFolderRoot root;
 	private IPath path;
 	private RepoResourceInfo info;
+	private Map<String, Object> properties = new HashMap<String, Object>();
 
 	protected RepoResource(RepoFolderRoot root, RepoResource parent, String id,
 			String name, RepoResourceType type) {
@@ -35,6 +38,14 @@ public class RepoResource extends RepoElement {
 			String name, RepoResourceType type, RepoResourceInfo info) {
 		this(root, parent, id, name, type);
 		this.info = info;
+	}
+
+	public void setProperty(String key, Object value) {
+		properties.put(key, value);
+	}
+	
+	public Object getProperty(String key) {
+		return properties.get(key);
 	}
 
 	public IPath getFullPath() {

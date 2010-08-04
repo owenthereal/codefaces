@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.codefaces.ui.scmConnectorsUI">
+      <connectorUI
+            description="Connect to a Subversion repository, e.g., http://aurorasdk.googlecode.com/svn/trunk/."
+            id="org.codefaces.ui.svn.scmConnectorsUI.svn"
+            kind="Subversion"
+            settingsSection="org.codefaces.ui.internal.wizard.svn.SVNSettingsSection">
+      </connectorUI>
+   </extension>
+
+</plugin>

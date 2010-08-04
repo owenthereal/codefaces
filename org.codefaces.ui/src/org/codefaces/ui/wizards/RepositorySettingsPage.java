@@ -1,4 +1,4 @@
-package org.codefaces.ui.internal.wizards;
+package org.codefaces.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.codefaces.core.SCMManager;
 import org.codefaces.core.connectors.SCMConnectorDescriber;
+import org.codefaces.ui.internal.CodeFacesUIActivator;
+import org.codefaces.ui.internal.wizards.SCMConnectorUIDescriber;
+import org.codefaces.ui.internal.wizards.SCMConnectorUIManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -23,9 +26,9 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Group;
 
-public abstract class RepositorySettingsPage extends WizardPage {
+public class RepositorySettingsPage extends WizardPage {
 	private final class ConnectorSelectionChangedListener implements
 			ISelectionChangedListener {
 		@Override
@@ -34,6 +37,8 @@ public abstract class RepositorySettingsPage extends WizardPage {
 					.getSelection()).getFirstElement();
 
 			getSettings().put(RepoSettings.REPO_KIND, selectedConnector);
+
+			switchToSettingsSection(selectedConnector);
 			verifyPageComplete();
 		}
 	}
@@ -44,7 +49,13 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 	private RepoSettings settings;
 
-	protected RepositorySettingsPage(RepoSettings settings) {
+	private RepositorySettingsSection settingsSection;
+
+	private Group settingsSectionComposite;
+
+	private Composite dialogAreaComposite;
+
+	public RepositorySettingsPage(RepoSettings settings) {
 		super(TITLE);
 		setTitle(TITLE);
 
@@ -73,28 +84,69 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite dialogAreaComposite = new Composite(parent, SWT.NONE);
+		dialogAreaComposite = new Composite(parent, SWT.NONE);
+		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = IDialogConstants.HORIZONTAL_MARGIN;
+		layout.marginWidth = IDialogConstants.VERTICAL_MARGIN;
+		layout.verticalSpacing = 15;
+		layout.horizontalSpacing = IDialogConstants.HORIZONTAL_SPACING;
+		dialogAreaComposite.setLayout(layout);
+		dialogAreaComposite.setFont(parent.getFont());
+		setControl(dialogAreaComposite);
+
+		Group connectorKindGroup = new Group(dialogAreaComposite, SWT.NONE);
+		connectorKindGroup.setText("Kind");
+		connectorKindGroup.setLayout(new GridLayout());
+		connectorKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
+				| GridData.GRAB_HORIZONTAL));
+		connectorKindGroup.setFont(dialogAreaComposite.getFont());
+
+		createConnectorViewer(connectorKindGroup);
+		bindConnectorViewer();
+
+		populateConnectorViewer();
+	}
+
+	private void switchToSettingsSection(String connectorKind) {
+		if (settingsSectionComposite != null) {
+			settingsSectionComposite.dispose();
+		}
+
+		SCMConnectorUIManager connectorUIManager = CodeFacesUIActivator
+				.getDefault().getConnectorUIManager();
+		SCMConnectorUIDescriber connectorUIDescriber = connectorUIManager
+				.getConnectorUIDescriber(connectorKind);
+		if (connectorUIDescriber == null) {
+			settingsSection = null;
+			return;
+		}
+
+		settingsSectionComposite = new Group(dialogAreaComposite, SWT.NONE);
+		settingsSectionComposite.setText("Connection");
+
+		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
+		layoutData.horizontalSpan = 2;
+		settingsSectionComposite.setLayoutData(layoutData);
+
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginHeight = IDialogConstants.HORIZONTAL_MARGIN;
 		layout.marginWidth = IDialogConstants.VERTICAL_MARGIN;
 		layout.verticalSpacing = IDialogConstants.VERTICAL_SPACING;
 		layout.horizontalSpacing = IDialogConstants.HORIZONTAL_SPACING;
-		dialogAreaComposite.setLayout(layout);
-		dialogAreaComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		dialogAreaComposite.setFont(parent.getFont());
-		setControl(dialogAreaComposite);
+		settingsSectionComposite.setLayout(layout);
 
-		Label connectorLabel = new Label(dialogAreaComposite, SWT.NONE);
-		connectorLabel.setText("Repository: ");
-		createConnectorViewer(dialogAreaComposite);
-		bindConnectorViewer();
+		settingsSectionComposite.setFont(dialogAreaComposite.getFont());
 
-		createSettingsSection(dialogAreaComposite);
+		settingsSection = connectorUIDescriber.createSettingsSection();
+		settingsSection.createSettingsSection(this, settingsSectionComposite,
+				settings);
 
-		populateConnectorViewer();
+		dialogAreaComposite.layout();
+		settingsSection.setFocus();
+
+		setDescription(connectorUIDescriber.getDescription());
 	}
-
-	protected abstract void createSettingsSection(Composite dialogAreaComposite);
 
 	protected ComboViewer getConnectorViewer() {
 		return connectorViewer;
@@ -108,7 +160,9 @@ public abstract class RepositorySettingsPage extends WizardPage {
 			@Override
 			public void run(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {
-				handleConnection(monitor);
+				if (settingsSection != null) {
+					settingsSection.handleConnection(monitor);
+				}
 			}
 		};
 
@@ -121,8 +175,6 @@ public abstract class RepositorySettingsPage extends WizardPage {
 
 		return super.getNextPage();
 	}
-
-	protected abstract void handleConnection(IProgressMonitor monitor);
 
 	protected RepoSettings getSettings() {
 		return settings;
@@ -145,10 +197,8 @@ public abstract class RepositorySettingsPage extends WizardPage {
 		}
 	}
 
-	protected void verifyPageComplete() {
+	public void verifyPageComplete() {
 		setPageComplete(getSettings().get(RepoSettings.REPO_KIND) != null
-				&& isSettingsValid());
+				&& settingsSection != null && settingsSection.isSettingsValid());
 	}
-
-	protected abstract boolean isSettingsValid();
 }

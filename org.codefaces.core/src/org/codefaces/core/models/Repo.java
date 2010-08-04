@@ -44,7 +44,9 @@ public class Repo extends RepoResource {
 		return (RepoInfo) super.getInfo();
 	}
 
-	public static Repo create(String kind, String url, String username, String password) {
+
+	public static Repo create(String kind, String url, String username,
+			String password) {
 		return SCMService.getCurrent().connect(kind, url, username, password);
 	}
 

@@ -30,7 +30,7 @@ public class GitHubFetchTagsHandlerTest {
 	private static final String TEST_REPO_URL = "http://github.com/jingweno/ruby_grep";
 
 	private static final String TEST_TAGS = "release1";
-	
+
 	private GitHubFetchTagsHandler handler;
 
 	private GitHubConnector connector;
@@ -40,36 +40,38 @@ public class GitHubFetchTagsHandlerTest {
 		connector = new GitHubConnector(new ManagedHttpClient());
 		handler = new GitHubFetchTagsHandler();
 	}
-	
+
 	@Test
 	public void createFetchTagsURL() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		String githubShowUrl = handler.createFetchTagsURL(repo);
 
 		assertEquals(TEST_TAGS_URL, githubShowUrl);
 	}
-	
+
 	@Test
 	public void getBranchesDto() {
-		GitHubTagsDTO tagsDto = handler.getTagsDto(connector,
-				TEST_TAGS_URL);
+		GitHubTagsDTO tagsDto = handler.getTagsDto(connector, TEST_TAGS_URL);
 		Map<String, String> tags = tagsDto.getTags();
 
 		assertEquals(1, tags.size());
 		assertTrue(tags.containsKey(TEST_TAGS));
 	}
-	
+
 	@Test
 	public void fetchChildrenFromTagsFolderReturnsExpectedNumberOfTags() {
 		Repo repo = new Repo(KIND_GIT_HUB, TEST_REPO_URL, TEST_REPO_NAME,
-				new RepoCredential(TEST_OWNER_NAME, null, null));
+				new RepoCredential(null, null));
+		repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, TEST_OWNER_NAME);
 		RepoFolder branchesFolder = new RepoFolder(repo.getRoot(),
 				repo.getRoot(), "tags", "tags");
 
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
 		para.addParameter(SCMOperationParameter.REPO_FOLDER,
 				branchesFolder);
+
 		Collection<RepoResource> children = handler.execute(connector, para);
 
 		assertEquals(1, children.size());

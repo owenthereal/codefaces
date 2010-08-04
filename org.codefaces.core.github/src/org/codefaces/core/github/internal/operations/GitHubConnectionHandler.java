@@ -43,9 +43,9 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 			String owner = matcher.group(1);
 			String repoName = matcher.group(2);
 
-			RepoCredential credential = new RepoCredential(owner, null, null);
-
+			RepoCredential credential = new RepoCredential(null, null);
 			Repo repo = new Repo(connector.getKind(), url, repoName, credential);
+			repo.setProperty(GitHubOperationConstants.GITHUB_OWNER, owner);
 
 			try {
 				String repoInfoUrl = createShowRepoInfoURL(repo);
@@ -63,8 +63,9 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 	}
 
 	protected String createShowRepoInfoURL(Repo repo) {
-		return GitHubOperationUtil.makeURI(SHOW_GITHUB_REPO, repo
-				.getCredential().getOwner(), repo.getName());
+		return GitHubOperationUtil.makeURI(SHOW_GITHUB_REPO, (String) repo
+				.getProperty(GitHubOperationConstants.GITHUB_OWNER), repo
+				.getName());
 	}
 
 	private GitHubRepoDataDTO fetchRepoDataDto(GitHubConnector connector,

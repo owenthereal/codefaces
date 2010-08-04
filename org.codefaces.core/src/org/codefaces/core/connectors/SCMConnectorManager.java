@@ -42,11 +42,11 @@ public class SCMConnectorManager {
 						"scmConnectors");
 		for (IConfigurationElement element : elements) {
 			try {
-				String id = element.getAttribute("id");
 				String kind = element.getAttribute("kind");
+				String id = element.getAttribute("id");
 				SCMConnector connector = (SCMConnector) element
 						.createExecutableExtension("class");
-				addConnector(new SCMConnectorDescriber(id, kind, connector));
+				addConnector(new SCMConnectorDescriber(kind, id, connector));
 			} catch (CoreException e) {
 				IStatus status = new Status(Status.ERROR,
 						CodeFacesCoreActivator.PLUGIN_ID,

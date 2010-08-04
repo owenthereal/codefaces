@@ -13,6 +13,7 @@ import org.codefaces.core.operations.SCMOperation;
 import org.codefaces.core.operations.SCMOperationParameter;
 
 public class SCMService {
+
 	public Repo connect(String kind, String url, String username, String password) {
 		SCMOperation operation = SCMOperation.newInstance(kind,
 				SCMOperation.CONNECTION_OPERAION);

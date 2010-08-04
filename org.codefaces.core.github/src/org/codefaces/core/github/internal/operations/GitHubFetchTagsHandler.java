@@ -52,9 +52,9 @@ public class GitHubFetchTagsHandler implements SCMOperationHandler {
 	}
 
 	protected String createFetchTagsURL(Repo repo) {
-		return GitHubOperationUtil.makeURI(SHOW_GITHUB_TAGS, repo
-				.getCredential().getOwner(), repo.getName(),
-				GitHubOperationConstants.TAGS_FOLDER_NAME);
+		return GitHubOperationUtil.makeURI(SHOW_GITHUB_TAGS, (String) repo
+				.getProperty(GitHubOperationConstants.GITHUB_OWNER), repo
+				.getName(), GitHubOperationConstants.TAGS_FOLDER_NAME);
 	}
 
 	private GitHubTagsDTO parseContent(String respBody)

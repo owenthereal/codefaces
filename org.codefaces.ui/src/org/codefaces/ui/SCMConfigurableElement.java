@@ -6,5 +6,5 @@ package org.codefaces.ui;
 public enum SCMConfigurableElement {
 	REPO_URL, SCM_KIND, BASE_DIRECTORY,
 
-	OWNER, USER, PASSWORD
+	USER, PASSWORD
 }

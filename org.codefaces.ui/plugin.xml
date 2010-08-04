@@ -3,6 +3,7 @@
 <plugin
 >
 	<extension-point id="org.codefaces.ui.codeLanguages" name="CodeLanguages" schema="schema/org.codefaces.ui.codeLanguages.exsd"/>
+ <extension-point id="org.codefaces.ui.scmConnectorsUI" name="scmConnectorsUI" schema="schema/org.codefaces.ui.scmConnectorsUI.exsd"/>
     <extension
          point="org.eclipse.rap.ui.entrypoint">
       <entrypoint
@@ -254,11 +255,6 @@
                         ifEmpty="false">
                      <adapt
                            type="org.codefaces.core.models.RepoFile">
-                       <!--
-                        <test
-                              property="org.codefaces.ui.propertyTester.RepoFIle.canOpen">
-                        </test>
-                        -->
                      </adapt>
                   </iterate>
                </with>
@@ -321,16 +317,4 @@
             name="Contact Us">
       </editor>
    </extension>
-    <!--
-    <extension
-          point="org.eclipse.core.expressions.propertyTesters">
-       <propertyTester
-             class="org.codefaces.ui.RepoFilePropertyTester"
-             id="org.codefaces.ui.propertyTester.RepoFIle"
-             namespace="org.codefaces.ui.propertyTester.RepoFIle"
-             properties="canOpen"
-             type="org.codefaces.core.models.RepoFile">
-       </propertyTester>
-    </extension>
-    -->
 </plugin>
