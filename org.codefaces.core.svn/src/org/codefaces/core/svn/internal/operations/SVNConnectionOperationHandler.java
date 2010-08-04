@@ -23,7 +23,7 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 		Object usernamePara = parameter.getParameter(SCMOperationParameter.USER);
 		Assert.isTrue(usernamePara == null || usernamePara instanceof String);
 		Object passwordPara = parameter.getParameter(SCMOperationParameter.PASSWORD);
-		Assert.isTrue(passwordPara == null || usernamePara instanceof String);
+		Assert.isTrue(passwordPara == null || passwordPara instanceof String);
 
 		String url = (String) urlPara;
 

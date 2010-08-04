@@ -13,13 +13,13 @@ import org.junit.Test;
 
 public class SVNConnectionOperationHandlerTest {
 
-	private static final String TEST_NORMAL_URL = "http://subclipse.tigris.org/svn/subclipse/trunk";
-	private static final String TEST_NORMAL_URL_WITH_TRAILING_SLASH = "http://subclipse.tigris.org/svn/subclipse/trunk/";
-	private static final String TEST_NORMAL_USERNAME = "guest";
-	private static final String TEST_NORMAL_PASSWORD = null;
+	private static final String TEST_NORMAL_URL_REQUIRE_USERNAME = "https://gforge.cs.vu.nl/svn/minix/trunk/src";
+	private static final String TEST_NORMAL_URL_WITH_TRAILING_SLASH = "https://gforge.cs.vu.nl/svn/minix/trunk/src/";
+	private static final String TEST_NORMAL_USERNAME = "anonymous";
+	private static final String TEST_NORMAL_PASSWORD = "''";
 	
-	private static final String TEST_URL_WITH_USER_NAME = "http://guest@subclipse.tigris.org/svn/subclipse/trunk";
-	private static final String TEST_USERNAME_IN_URL = "guest";
+	private static final String TEST_URL_WITH_USER_NAME = "https://anonymous@gforge.cs.vu.nl/svn/minix/trunk/src";
+	private static final String TEST_USERNAME_IN_URL = "anonymous";
 	
 	private static final String TEST_NO_SUCH_URL = "http://svn.nosuchurl.org/svn";
 	private static final String TEST_NO_PERMISSION = "https://secure.jms1.net";
@@ -32,16 +32,16 @@ public class SVNConnectionOperationHandlerTest {
 		connector = new MockSCMConnector(TestSvnJavaHlClientAdaptor.getClient());
 		connectionHandler = new SVNConnectionOperationHandler();
 	}
-
+	
 	@Test
 	public void credentialShouldBeSetWhenUsernameAndPasswordArePassedAsParameters(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationParameter.URL, TEST_NORMAL_URL);
+		para.addParameter(SCMOperationParameter.URL, TEST_NORMAL_URL_REQUIRE_USERNAME);
 		para.addParameter(SCMOperationParameter.USER, TEST_NORMAL_USERNAME);
 		para.addParameter(SCMOperationParameter.PASSWORD, TEST_NORMAL_PASSWORD);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
-		assertEquals(TEST_NORMAL_URL, svnRepo.getUrl());
+		assertEquals(TEST_NORMAL_URL_REQUIRE_USERNAME, svnRepo.getUrl());
 		assertEquals(TEST_NORMAL_USERNAME, svnRepo.getCredential().getUser());
 		assertEquals(TEST_NORMAL_PASSWORD, svnRepo.getCredential().getPassword());
 	}
@@ -54,19 +54,18 @@ public class SVNConnectionOperationHandlerTest {
 		para.addParameter(SCMOperationParameter.PASSWORD, TEST_NORMAL_PASSWORD);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
-		assertEquals(TEST_NORMAL_URL, svnRepo.getUrl());		
+		assertEquals(TEST_NORMAL_URL_REQUIRE_USERNAME, svnRepo.getUrl());		
 	}
 	
 	@Test
 	public void credentialShouldBeSetWhenUsernameIsPassedInUrl(){
 		SCMOperationParameters para = SCMOperationParameters.newInstance();
 		para.addParameter(SCMOperationParameter.URL, TEST_URL_WITH_USER_NAME);
+		para.addParameter(SCMOperationParameter.PASSWORD, TEST_NORMAL_PASSWORD);
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertEquals(TEST_USERNAME_IN_URL, svnRepo.getCredential().getUser());
-		assertNull(svnRepo.getCredential().getPassword());
 	}
-	
 	
 	@Test(expected = SCMResponseException.class)
 	public void throwExceptionWhenNoSuchRepository(){
