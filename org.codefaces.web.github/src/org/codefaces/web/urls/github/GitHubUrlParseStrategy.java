@@ -1,11 +1,11 @@
-package org.codefaces.web.internal.urls.github;
+package org.codefaces.web.urls.github;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.codefaces.ui.SCMConfigurableElement;
 import org.codefaces.ui.SCMURLConfiguration;
-import org.codefaces.web.internal.urls.URLParsingStrategy;
+import org.codefaces.web.urls.URLParsingStrategy;
 
 public class GitHubUrlParseStrategy implements URLParsingStrategy {
 	//TODO use GitHubConstants

@@ -1,4 +1,4 @@
-package org.codefaces.web.internal.urls;
+package org.codefaces.web.urls;
 
 import org.codefaces.ui.SCMURLConfiguration;
 

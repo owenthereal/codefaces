@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Github
+Bundle-SymbolicName: org.codefaces.web.github;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.codefaces.web.internal.github.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.codefaces.web
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.codefaces.ui

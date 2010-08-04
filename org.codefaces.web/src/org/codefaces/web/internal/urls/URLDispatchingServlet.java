@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.codefaces.ui.SCMURLConfiguration;
 import org.codefaces.web.internal.CodeFacesWebActivator;
+import org.codefaces.web.urls.URLParsingStrategy;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 

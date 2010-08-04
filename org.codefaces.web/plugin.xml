@@ -144,12 +144,4 @@
             resource="/html/javascripts/highlight/languages/vbscript.js">
       </codeLangauge>
    </extension>
-   <extension
-         point="org.codefaces.web.scmUrlParsingStrategies">
-      <parsingStrategy
-            class="org.codefaces.web.internal.urls.github.GitHubUrlParseStrategy"
-            id="org.codefaces.core.github.parsingStrategy"
-            kind="GitHub">
-      </parsingStrategy>
-   </extension>
 </plugin>

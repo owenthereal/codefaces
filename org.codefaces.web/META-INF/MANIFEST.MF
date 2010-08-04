@@ -3,13 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Web
 Bundle-SymbolicName: org.codefaces.web;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.equinox.http.registry,
- org.eclipse.rap.ui,
- org.codefaces.lib,
+Require-Bundle: org.eclipse.rap.ui,
  org.codefaces.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: javax.servlet,
  javax.servlet.http
 Bundle-Activator: org.codefaces.web.internal.CodeFacesWebActivator
+Export-Package: org.codefaces.web.urls

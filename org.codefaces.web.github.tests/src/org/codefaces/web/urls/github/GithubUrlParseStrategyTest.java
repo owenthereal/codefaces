@@ -1,10 +1,10 @@
-package org.codefaces.web.internal.urls.github;
+package org.codefaces.web.urls.github;
 
 import static org.junit.Assert.*;
 
 import org.codefaces.ui.SCMConfigurableElement;
 import org.codefaces.ui.SCMURLConfiguration;
-import org.codefaces.web.internal.urls.github.GitHubUrlParseStrategy;
+import org.codefaces.web.urls.github.GitHubUrlParseStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
