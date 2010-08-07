@@ -1,5 +1,4 @@
 require 'tasks/helper'
-require 'erb'
 
 TARGET_PLATFORM = "rap-runtime*.zip"
 SERVLET_BRIDGE_BUNDLES = "org.eclipse.equinox*.servletbridge*.jar"
