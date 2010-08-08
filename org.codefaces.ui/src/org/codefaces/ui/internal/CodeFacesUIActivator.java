@@ -86,6 +86,8 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 				"icons/connection.gif");
 		putImageInRegistry(registry, Images.IMG_FAVICON_48,
 				"icons/favicon_48.png");
+		putImageInRegistry(registry, Images.IMG_REPOSITORY,
+				"icons/repository.gif");
 	}
 
 	/**

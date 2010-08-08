@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.codefaces.core.models.RepoResource;
+import org.codefaces.core.models.RepoWorkspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -46,7 +47,7 @@ class RepoResourceContentProviderManager {
 				IStatus status = new Status(Status.ERROR,
 						CodeFacesUIActivator.PLUGIN_ID,
 						"Errors occurs when loading resource "
-								+ resource.getFullPath().toString(), e);
+								+ resource.getPath().toString(), e);
 				CodeFacesUIActivator.getDefault().getLog().log(status);
 			}
 
@@ -74,7 +75,7 @@ class RepoResourceContentProviderManager {
 						IStatus status = new Status(Status.ERROR,
 								CodeFacesUIActivator.PLUGIN_ID,
 								"Errors occurs when getting children "
-										+ resource.getFullPath().toString(), e);
+										+ resource.getPath().toString(), e);
 						CodeFacesUIActivator.getDefault().getLog().log(status);
 					}
 				}
@@ -95,12 +96,31 @@ class RepoResourceContentProviderManager {
 		}
 	}
 
-	public Object[] getElement(Object parent) {
-		if (!(parent instanceof RepoResource)) {
-			return new Object[0];
+	public boolean hasChildren(Object parent) {
+		if (parent instanceof RepoResource) {
+			return ((RepoResource) parent).hasChildren();
 		}
 
-		RepoResource resource = (RepoResource) parent;
+		return false;
+	}
+
+	public Object[] getChildren(Object parent) {
+		if (parent instanceof RepoWorkspace) {
+			return getChildrenForWorkspace((RepoWorkspace) parent);
+		}
+
+		if (parent instanceof RepoResource) {
+			return getChildrenForResource((RepoResource) parent);
+		}
+
+		return new Object[0];
+	}
+
+	private Object[] getChildrenForWorkspace(RepoWorkspace workspace) {
+		return workspace.getProjects().toArray();
+	}
+
+	private Object[] getChildrenForResource(RepoResource resource) {
 		if (!loadedResources.containsKey(resource)) {
 			try {
 				waitingQueue.put(resource);
@@ -108,7 +128,7 @@ class RepoResourceContentProviderManager {
 				IStatus status = new Status(Status.ERROR,
 						CodeFacesUIActivator.PLUGIN_ID,
 						"Errors occurs when loading resource "
-								+ resource.getFullPath().toString(), e);
+								+ resource.getPath().toString(), e);
 				CodeFacesUIActivator.getDefault().getLog().log(status);
 			}
 

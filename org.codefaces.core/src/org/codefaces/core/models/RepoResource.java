@@ -7,13 +7,18 @@ import java.util.Map;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
-public class RepoResource extends RepoElement {
+public class RepoResource extends RepoEntry {
 	private RepoResourceType type;
+
 	private RepoResource parent;
+
 	private RepoFolderRoot root;
+
 	private IPath path;
+
 	private RepoResourceInfo info;
-	private Map<String, Object> properties = new HashMap<String, Object>();
+
+	private Map<String, Object> properties;
 
 	protected RepoResource(RepoFolderRoot root, RepoResource parent, String id,
 			String name, RepoResourceType type) {
@@ -29,11 +34,11 @@ public class RepoResource extends RepoElement {
 		}
 
 		if (parent != null && type != RepoResourceType.FOLDER_ROOT) {
-			path = parent.getFullPath().append(path);
+			path = parent.getPath().append(path);
 		}
 	}
-	
-	//This method is intended to use only in testing
+
+	// This method is intended to use only in testing
 	protected RepoResource(RepoFolderRoot root, RepoResource parent, String id,
 			String name, RepoResourceType type, RepoResourceInfo info) {
 		this(root, parent, id, name, type);
@@ -41,14 +46,21 @@ public class RepoResource extends RepoElement {
 	}
 
 	public void setProperty(String key, Object value) {
+		if (properties == null) {
+			properties = new HashMap<String, Object>();
+		}
 		properties.put(key, value);
 	}
-	
+
 	public Object getProperty(String key) {
+		if (properties == null) {
+			return null;
+		}
+
 		return properties.get(key);
 	}
 
-	public IPath getFullPath() {
+	public IPath getPath() {
 		return path;
 	}
 

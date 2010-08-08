@@ -28,11 +28,11 @@ public class GitHubFetchChildrenForRootHandler implements SCMOperationHandler{
 		Repo repo = root.getRepo();
 
 		RepoFolder branchesFolder = new RepoFolder(root, root,
-				GitHubOperationUtil.makeURI(repo.getFullPath().toString(),
+				GitHubOperationUtil.makeURI(repo.getPath().toString(),
 						GitHubOperationConstants.BRANCHES_FOLDER_NAME),
 						GitHubOperationConstants.BRANCHES_FOLDER_NAME);
 		RepoFolder tagsFolder = new RepoFolder(root, root,
-				GitHubOperationUtil.makeURI(repo.getFullPath().toString(),
+				GitHubOperationUtil.makeURI(repo.getPath().toString(),
 						GitHubOperationConstants.TAGS_FOLDER_NAME),
 						GitHubOperationConstants.TAGS_FOLDER_NAME);
 

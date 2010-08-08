@@ -38,15 +38,11 @@ public class RepoResourceContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parent) {
-		return manager.getElement(parent);
+		return manager.getChildren(parent);
 	}
 
 	@Override
 	public boolean hasChildren(Object parent) {
-		if (parent instanceof RepoResource) {
-			return ((RepoResource) parent).hasChildren();
-		}
-
-		return false;
+		return manager.hasChildren(parent);
 	}
 }

@@ -20,7 +20,7 @@ public class RepoTest {
 		RepoResource resource = repo.getRepoResourceByPath(path);
 		assertEquals("path", resource.getName());
 		assertTrue(resource instanceof RepoFolder);
-		assertEquals(TEST_CORRECT_MOCK_PATH, resource.getFullPath().toString());
+		assertEquals(TEST_CORRECT_MOCK_PATH, resource.getPath().toString());
 	}
 	
 	@Test
@@ -32,7 +32,7 @@ public class RepoTest {
 		RepoResource resource = repo.getRepoResourceByPath(path);
 		assertEquals("path", resource.getName());
 		assertTrue(resource instanceof RepoFile);
-		assertEquals(TEST_CORRECT_MOCK_PATH, resource.getFullPath().toString());
+		assertEquals(TEST_CORRECT_MOCK_PATH, resource.getPath().toString());
 	}
 	
 	@Test

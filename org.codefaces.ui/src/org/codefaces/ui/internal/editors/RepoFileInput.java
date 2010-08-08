@@ -44,7 +44,7 @@ public class RepoFileInput implements IEditorInput {
 
 	@Override
 	public String getToolTipText() {
-		return file.getFullPath().toString().substring(1);
+		return file.getPath().toString().substring(1);
 	}
 
 	@Override

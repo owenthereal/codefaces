@@ -3,13 +3,12 @@ package org.codefaces.ui.internal.views;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.core.events.WorkspaceChangeEvent;
-import org.codefaces.core.events.WorkspaceChangeListener;
+import org.codefaces.core.events.WorkspaceChangedEvent;
+import org.codefaces.core.events.WorkspaceChangedListener;
 import org.codefaces.core.models.RepoFile;
-import org.codefaces.core.models.RepoFolder;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoResourceType;
-import org.codefaces.core.models.Workspace;
+import org.codefaces.core.models.RepoWorkspace;
 import org.codefaces.ui.internal.StatusManager;
 import org.codefaces.ui.internal.commands.CommandExecutor;
 import org.codefaces.ui.internal.commands.OpenFileCommandHandler;
@@ -36,17 +35,16 @@ public class ProjectExplorerViewPart extends ViewPart {
 
 	private TreeViewer viewer;
 
-	private Workspace workspace;
-
 	private StatusManager statusManager;
 
-	private UpdateBaseDirWorkspaceChangeListener updateBaseDirListener = new UpdateBaseDirWorkspaceChangeListener();
+	private UpdateInputListener workspaceChangedListener = new UpdateInputListener();
 
-	private final class UpdateBaseDirWorkspaceChangeListener implements
-			WorkspaceChangeListener {
+	private final class UpdateInputListener implements WorkspaceChangedListener {
 		@Override
-		public void workspaceChanged(WorkspaceChangeEvent evt) {
-			update(evt.getBaseDirectory());
+		public void workspaceChanged(WorkspaceChangedEvent evt) {
+			if (WorkspaceChangedEvent.PROJECT_ADDED == evt.getType()) {
+				update(evt.getWorkspace());
+			}
 		}
 	}
 
@@ -90,17 +88,15 @@ public class ProjectExplorerViewPart extends ViewPart {
 	}
 
 	private void hookWorkspace() {
-		workspace = Workspace.getCurrent();
-		RepoFolder cachedBaseDir = workspace.getWorkingBaseDirectory();
-		if (cachedBaseDir != null) {
-			update(cachedBaseDir);
-		}
-		workspace.addWorkspaceChangeListener(updateBaseDirListener);
+		RepoWorkspace workspce = RepoWorkspace.getCurrent();
+		update(workspce);
+		workspce.addWorkspaceChangeListener(workspaceChangedListener);
 	}
 
 	@Override
 	public void dispose() {
-		workspace.removeWorkspaceChangeListener(updateBaseDirListener);
+		RepoWorkspace workspce = RepoWorkspace.getCurrent();
+		workspce.removeWorkspaceChangeListener(workspaceChangedListener);
 		super.dispose();
 	}
 
@@ -144,8 +140,8 @@ public class ProjectExplorerViewPart extends ViewPart {
 	 * @param newBaseDirectory
 	 *            the new base directory
 	 */
-	public void update(RepoFolder newBaseDirectory) {
-		viewer.setInput(newBaseDirectory);
+	public void update(RepoWorkspace workspace) {
+		viewer.setInput(workspace);
 	}
 
 	@Override

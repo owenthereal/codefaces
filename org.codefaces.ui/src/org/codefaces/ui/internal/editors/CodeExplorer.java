@@ -88,7 +88,7 @@ public class CodeExplorer extends EditorPart {
 			browser.setText(template.toHTML());
 		} catch (Exception e) {
 			String errorMsg = "Errors occurs when loading content of the file "
-					+ repoFile.getFullPath().toString();
+					+ repoFile.getPath().toString();
 			browser.setText(errorMsg);
 			IStatus status = new Status(Status.ERROR,
 					CodeFacesUIActivator.PLUGIN_ID, errorMsg, e);

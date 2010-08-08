@@ -76,7 +76,7 @@
                <iterate
                      ifEmpty="false">
                   <instanceof
-                        value="org.codefaces.core.models.RepoResource">
+                        value="org.codefaces.core.models.RepoProject">
                   </instanceof>
                </iterate>
             </with>
@@ -148,13 +148,18 @@
             categoryId="org.codefaces.ui.category.command"
             id="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
             name="Show Repo Info Dialog">
+         <commandParameter
+               id="org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId"
+               name="name"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
             defaultHandler="org.codefaces.ui.internal.commands.OpenRepoFromURLCommandHandler"
             description="Open Repo from URL Parameters"
             id="org.codefaces.ui.internal.commands.openRepoFromURLCommand"
-            name="name">
+            name="Open Repo from URL Parameters">
       </command>
    </extension>
    <extension
@@ -223,6 +228,10 @@
                   icon="icons/repoinfo.gif"
                   style="push"
                   tooltip="Show Repository Info">
+               <parameter
+                     name="org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId"
+                     value="org.codefaces.ui.view.projectExplorer">
+               </parameter>
             </command>
             <command
                   commandId="org.codefaces.ui.internal.commands.openEditor"
@@ -275,7 +284,7 @@
          <command
                commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
                icon="icons/repoinfo.gif"
-               label="Repository Info"
+               label="Properties"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -283,12 +292,16 @@
                      variable="activeMenuSelection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="org.codefaces.core.models.RepoResource">
-                     </instanceof>
+                     <adapt
+                           type="org.codefaces.core.models.RepoProject">
+                     </adapt>
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId"
+                  value="org.codefaces.ui.view.projectExplorer">
+            </parameter>
          </command>
       </menuContribution>
    </extension>

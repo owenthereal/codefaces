@@ -31,7 +31,7 @@ public class StatusManager implements ISelectionChangedListener {
 
 		StringBuilder builder = new StringBuilder();
 
-		IPath fullPath = resource.getFullPath();
+		IPath fullPath = resource.getPath();
 		String repoUrl = resource.getRoot().getRepo().getUrl();
 
 		String fileName = fullPath.lastSegment();

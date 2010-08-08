@@ -2,12 +2,12 @@ package org.codefaces.core.models;
 
 import org.eclipse.core.runtime.PlatformObject;
 
-public class RepoElement extends PlatformObject {
+public class RepoEntry extends PlatformObject {
 	protected String id;
 
 	protected String name;
 
-	public RepoElement(String id, String name) {
+	public RepoEntry(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -28,7 +28,7 @@ public class RepoElement extends PlatformObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RepoElement other = (RepoElement) obj;
+		RepoEntry other = (RepoEntry) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

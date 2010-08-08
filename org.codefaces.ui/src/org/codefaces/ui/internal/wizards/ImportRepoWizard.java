@@ -1,7 +1,7 @@
 package org.codefaces.ui.internal.wizards;
 
 import org.codefaces.core.models.RepoFolder;
-import org.codefaces.core.models.Workspace;
+import org.codefaces.core.models.RepoWorkspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.views.ProjectExplorerViewPart;
 import org.codefaces.ui.wizards.RepoSettings;
@@ -42,7 +42,7 @@ public class ImportRepoWizard extends Wizard {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 						.getActivePage().showView(ProjectExplorerViewPart.ID);
-				Workspace.getCurrent().update(baseDirectory);
+				RepoWorkspace.getCurrent().createProject(baseDirectory);
 			} catch (PartInitException e) {
 				IStatus status = new Status(Status.ERROR,
 						CodeFacesUIActivator.PLUGIN_ID,

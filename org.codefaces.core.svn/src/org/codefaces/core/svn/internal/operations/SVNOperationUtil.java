@@ -36,7 +36,7 @@ public class SVNOperationUtil {
 		StringBuilder urlBuilder = new StringBuilder();
 		urlBuilder.append(repo.getUrl());
 		urlBuilder.append(SEPARATOR);
-		urlBuilder.append(resource.getFullPath());
+		urlBuilder.append(resource.getPath());
 		svnUrl = urlBuilder.toString();
 		
 		return svnUrl;

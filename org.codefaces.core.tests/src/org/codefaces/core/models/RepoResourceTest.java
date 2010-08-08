@@ -13,9 +13,9 @@ public class RepoResourceTest {
 				"folder", "folder");
 		RepoFile file = new RepoFile(root, folder, "file", "file");
 
-		assertEquals("repo", repo.getFullPath().toString());
-		assertEquals("/", root.getFullPath().toString());
-		assertEquals("/folder", folder.getFullPath().toString());
-		assertEquals("/folder/file", file.getFullPath().toString());
+		assertEquals("repo", repo.getPath().toString());
+		assertEquals("/", root.getPath().toString());
+		assertEquals("/folder", folder.getPath().toString());
+		assertEquals("/folder/file", file.getPath().toString());
 	}
 }
