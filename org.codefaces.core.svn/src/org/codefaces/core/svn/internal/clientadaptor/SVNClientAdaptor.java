@@ -230,5 +230,6 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
 		client.dispose();
+		throw new RuntimeException("SVNClient resource deposed");
 	}
 }
