@@ -5,15 +5,14 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
-
 import org.apache.commons.io.IOUtils;
 import org.codefaces.core.connectors.SCMIOException;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.SessionSingletonBase;
+import org.eclipse.rwt.service.SessionStoreEvent;
+import org.eclipse.rwt.service.SessionStoreListener;
 import org.tigris.subversion.clientadapter.Activator;
 import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
@@ -26,7 +25,7 @@ import org.tigris.subversion.svnclientadapter.SVNUrl;
 /**
  * An abstract layer to adapt the underlining client provider
  */
-public class SVNClientAdaptor implements HttpSessionBindingListener {
+public class SVNClientAdaptor implements SessionStoreListener {
 	private static final String SEPERATOR = "/";
 
 	// id of the default svn client adaptor
@@ -45,6 +44,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 				.getClientAdapter(CLIENT_ADAPTOR_ID);
 
 		RWT.getSessionStore().getHttpSession().setAttribute(ID, this);
+		RWT.getSessionStore().addSessionStoreListener(this);
 	}
 
 	/**
@@ -223,12 +223,7 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	}
 
 	@Override
-	public void valueBound(HttpSessionBindingEvent event) {
-
-	}
-
-	@Override
-	public void valueUnbound(HttpSessionBindingEvent event) {
+	public void beforeDestroy(SessionStoreEvent event) {
 		client.dispose();
 		throw new RuntimeException("SVNClient resource deposed");
 	}

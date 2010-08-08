@@ -30,7 +30,7 @@ environment:
 fetch:
   - description: codefaces main repository
     scm: git
-    branch: master 
+    branch: debug
     repository: "git@github.com:jingweno/code_faces.git"
   
 tools:
