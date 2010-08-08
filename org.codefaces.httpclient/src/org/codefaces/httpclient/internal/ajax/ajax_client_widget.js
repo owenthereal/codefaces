@@ -5,11 +5,7 @@ qx.Class.define("org.codefaces.httpclient.internal.ajax.AjaxClientWidget", {
     this.base(arguments);
   },
   
-  members: {
-    _onLoad : function( evt ) {
-      this.release();
-    },
-    
+  members: { 
     /**
      * send an JSONP request and send back the JSONP response
      *
@@ -19,10 +15,9 @@ qx.Class.define("org.codefaces.httpclient.internal.ajax.AjaxClientWidget", {
      */
     sendJsonpRequest: function(reqId, url, timeout) {
       //function for sending a reply to server
-      var sendResponse = function(status, content) {
-        var wid = org.eclipse.swt.WidgetManager.getInstance().findIdByWidget(this);
-      	var req = org.eclipse.swt.Request.getInstance();
-        
+      var wid = org.eclipse.swt.WidgetManager.getInstance().findIdByWidget(this);
+      var sendResponse = function(wid, status, content) {
+      	var req = org.eclipse.swt.Request.getInstance();   
         req.addParameter(wid + '.requestId', reqId);
         req.addParameter(wid + '.status', status);
         if (content != null) {        	
@@ -41,12 +36,12 @@ qx.Class.define("org.codefaces.httpclient.internal.ajax.AjaxClientWidget", {
 	    
 	    //textStatus is always 'success'
 	    success: function (data, textStatus) {
-	      sendResponse(textStatus, JSON.stringify(data));
+	      sendResponse(wid, textStatus, JSON.stringify(data));
 	    },
 	    
 	    //textStatus can be 'error' or 'timeout'
 	    error: function(xOptions, textStatus){
-	      sendResponse(textStatus, null);
+	      sendResponse(wid, textStatus, null);
 	    }
 	  });
 	}
