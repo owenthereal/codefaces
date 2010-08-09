@@ -31,8 +31,7 @@ public class RepoProject extends RepoFolder {
 	private final RepoFolder wrappedfolder;
 
 	public RepoProject(RepoFolder wrappedfolder) {
-		super(null, null, wrappedfolder.getId(), wrappedfolder.getName(),
-				RepoResourceType.PROJECT);
+		super(null, null, null, null, RepoResourceType.PROJECT);
 		this.wrappedfolder = wrappedfolder;
 		this.id = this.name = buildProjectName(wrappedfolder);
 	}

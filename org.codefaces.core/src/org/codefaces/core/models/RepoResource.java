@@ -26,19 +26,24 @@ public class RepoResource extends RepoEntry {
 		this.root = root;
 		this.type = type;
 		this.parent = parent;
-		this.path = buildPath();
+		this.path = buildPath(type, parent, name);
 	}
 
-	private IPath buildPath() {
-		if (getType() == RepoResourceType.FOLDER_ROOT) {
+	private IPath buildPath(RepoResourceType type, RepoResource parent,
+			String name) {
+		if (type == RepoResourceType.FOLDER_ROOT) {
 			return Path.ROOT;
 		}
 
+		if (name == null) {
+			return null;
+		}
+
 		IPath path = null;
-		if (getParent() != null) {
-			path = getParent().getPath().append(getName());
+		if (parent != null) {
+			path = parent.getPath().append(name);
 		} else {
-			path = new Path(getName());
+			path = new Path(name);
 		}
 
 		return path;
