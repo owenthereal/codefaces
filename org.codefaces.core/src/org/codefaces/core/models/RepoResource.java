@@ -26,16 +26,22 @@ public class RepoResource extends RepoEntry {
 		this.root = root;
 		this.type = type;
 		this.parent = parent;
+		this.path = buildPath();
+	}
 
-		if (type == RepoResourceType.FOLDER_ROOT) {
-			path = Path.ROOT;
+	private IPath buildPath() {
+		if (getType() == RepoResourceType.FOLDER_ROOT) {
+			return Path.ROOT;
+		}
+
+		IPath path = null;
+		if (getParent() != null) {
+			path = getParent().getPath().append(getName());
 		} else {
-			path = new Path(name);
+			path = new Path(getName());
 		}
 
-		if (parent != null && type != RepoResourceType.FOLDER_ROOT) {
-			path = parent.getPath().append(path);
-		}
+		return path;
 	}
 
 	// This method is intended to use only in testing
