@@ -25,6 +25,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class RepositoryResourcePage extends WizardPage {
 	private class TreeViewSelectionChangedListener implements
@@ -185,8 +187,17 @@ public class RepositoryResourcePage extends WizardPage {
 		}
 
 		private void runOnUIThread(Runnable runnable) {
-			RepositoryResourcePage.this.getShell().getDisplay()
-					.asyncExec(runnable);
+			Shell shell = RepositoryResourcePage.this.getShell();
+			if (shell == null || shell.isDisposed()) {
+				return;
+			}
+
+			Display display = shell.getDisplay();
+			if (display == null || display.isDisposed()) {
+				return;
+			}
+
+			display.asyncExec(runnable);
 		}
 
 	}
