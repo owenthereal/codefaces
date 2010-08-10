@@ -13,6 +13,8 @@ public class RepoSettings {
 	public static final String REPO_PASSWORD = "REPO_PASSWORD";
 
 	public static final String REPO = "REPO";
+	
+	public static final String REPO_URL = "REPO_URL";
 
 	private Map<String, Object> settings;
 

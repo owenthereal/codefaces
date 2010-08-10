@@ -59,7 +59,7 @@ public class GitHubConnectionHandler implements SCMOperationHandler {
 			return repo;
 		}
 
-		throw new SCMURLException("Invalid repository url: " + url);
+		throw new SCMURLException("Invalid GitHub repository url: " + url);
 	}
 
 	protected String createShowRepoInfoURL(Repo repo) {

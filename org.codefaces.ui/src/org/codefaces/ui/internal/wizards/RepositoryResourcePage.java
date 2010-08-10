@@ -1,6 +1,7 @@
 package org.codefaces.ui.internal.wizards;
 
 import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoFolderRoot;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.ui.internal.commons.RepoFolderOpenListener;
 import org.codefaces.ui.internal.commons.RepoFolderViewFilter;
@@ -9,12 +10,17 @@ import org.codefaces.ui.internal.commons.RepoResourceContentProvider;
 import org.codefaces.ui.internal.commons.RepoResourceLabelProvider;
 import org.codefaces.ui.wizards.RepoSettings;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -92,26 +98,96 @@ public class RepositoryResourcePage extends WizardPage {
 		repoStructureViewer.setComparator(new RepoResourceComparator());
 	}
 
-	private void populateRepoStructureViewer() {
-		Object repo = settings.get(RepoSettings.REPO);
-		Assert.isTrue(repo instanceof Repo);
-
-		try {
-			repoStructureViewer.setInput(((Repo) repo).getRoot());
-			repoStructureViewer.setSelection(null);
-			setErrorMessage(null);
-		} catch (Exception e) {
-			repoStructureViewer.setInput(null);
-			repoStructureViewer.setSelection(null);
-			setErrorMessage(e.getMessage());
+	private void populateRepoStructureViewer(Repo repo) {
+		RepoFolderRoot root = null;
+		if (repo != null) {
+			root = repo.getRoot();
 		}
+
+		repoStructureViewer.setInput(root);
+		repoStructureViewer.setSelection(null);
 	}
 
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if (visible) {
-			populateRepoStructureViewer();
+			new ConnectorToRepositoryJob().schedule();
 		}
+	}
+
+	private void connectToRepository() {
+		Object typePara = settings.get(RepoSettings.REPO_KIND);
+		Assert.isTrue(typePara instanceof String);
+
+		Object locationPara = settings.get(RepoSettings.REPO_URL);
+		Assert.isTrue(locationPara instanceof String);
+
+		Object userNamePara = settings.get(RepoSettings.REPO_USER);
+		Assert.isTrue(userNamePara == null || userNamePara instanceof String);
+
+		Object passwordPara = settings.get(RepoSettings.REPO_PASSWORD);
+		Assert.isTrue(passwordPara == null || passwordPara instanceof String);
+
+		final String type = (String) typePara;
+		final String location = (String) locationPara;
+		final String username = (String) userNamePara;
+		final String password = (String) passwordPara;
+
+		Repo repo = Repo.create(type, location, username, password);
+		settings.put(RepoSettings.REPO, repo);
+	}
+
+	private class ConnectorToRepositoryJob extends Job {
+		public ConnectorToRepositoryJob() {
+			super("Connectoring to repository");
+			setSystem(true);
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			runOnUIThread(new Runnable() {
+				@Override
+				public void run() {
+					populateRepoStructureViewer(null);
+					setErrorMessage(null);
+				}
+			});
+
+			try {
+				UICallBack.runNonUIThreadWithFakeContext(
+						RepositoryResourcePage.this.getShell().getDisplay(),
+						new Runnable() {
+							@Override
+							public void run() {
+								connectToRepository();
+							}
+						});
+
+				runOnUIThread(new Runnable() {
+					@Override
+					public void run() {
+						populateRepoStructureViewer((Repo) settings
+								.get(RepoSettings.REPO));
+					}
+				});
+
+			} catch (final Exception e) {
+				runOnUIThread(new Runnable() {
+					@Override
+					public void run() {
+						setErrorMessage(e.getMessage());
+					}
+				});
+			}
+
+			return Status.OK_STATUS;
+		}
+
+		private void runOnUIThread(Runnable runnable) {
+			RepositoryResourcePage.this.getShell().getDisplay()
+					.asyncExec(runnable);
+		}
+
 	}
 }

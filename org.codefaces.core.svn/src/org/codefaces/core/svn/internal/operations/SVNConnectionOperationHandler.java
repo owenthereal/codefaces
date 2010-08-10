@@ -51,7 +51,7 @@ public class SVNConnectionOperationHandler implements SCMOperationHandler {
 					repoInfo.getUuid(), credential);
 
 		} catch (URISyntaxException e) {
-			throw new SCMURLException("Invalid repository url: " + url);
+			throw new SCMURLException("Invalid Subversion repository url: " + url);
 		}
 
 	}

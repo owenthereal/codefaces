@@ -55,8 +55,8 @@ public class RepoInfoDialog extends TitleAreaDialog {
 
 	private void createRepoInfoSection(Composite parent, RepoProject project) {
 		Label lblRepoURL = new Label(parent, SWT.NONE);
-		lblRepoURL.setText("Location:");
-		Text repoURLText = new Text(parent, SWT.NONE);
+		lblRepoURL.setText("Location: ");
+		Text repoURLText = new Text(parent, SWT.SEARCH);
 		repoURLText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.HORIZONTAL_ALIGN_FILL));
 		Repo repo = project.getRoot().getRepo();

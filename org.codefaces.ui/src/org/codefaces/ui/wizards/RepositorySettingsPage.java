@@ -1,6 +1,5 @@
 package org.codefaces.ui.wizards;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +8,7 @@ import org.codefaces.core.connectors.SCMConnectorDescriber;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
 import org.codefaces.ui.internal.wizards.SCMConnectorUIDescriber;
 import org.codefaces.ui.internal.wizards.SCMConnectorUIManager;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -19,7 +16,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -95,14 +91,7 @@ public class RepositorySettingsPage extends WizardPage {
 		dialogAreaComposite.setFont(parent.getFont());
 		setControl(dialogAreaComposite);
 
-		Group connectorKindGroup = new Group(dialogAreaComposite, SWT.NONE);
-		connectorKindGroup.setText("Kind");
-		connectorKindGroup.setLayout(new GridLayout());
-		connectorKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.GRAB_HORIZONTAL));
-		connectorKindGroup.setFont(dialogAreaComposite.getFont());
-
-		createConnectorViewer(connectorKindGroup);
+		createConnectorViewer(dialogAreaComposite);
 		bindConnectorViewer();
 
 		populateConnectorViewer();
@@ -152,29 +141,29 @@ public class RepositorySettingsPage extends WizardPage {
 		return connectorViewer;
 	}
 
-	@Override
-	public IWizardPage getNextPage() {
-		setErrorMessage(null);
-
-		IRunnableWithProgress op = new IRunnableWithProgress() {
-			@Override
-			public void run(IProgressMonitor monitor)
-					throws InvocationTargetException, InterruptedException {
-				if (settingsSection != null) {
-					settingsSection.handleConnection(monitor);
-				}
-			}
-		};
-
-		try {
-			getContainer().run(false, true, op);
-		} catch (Exception e) {
-			setErrorMessage(e.getCause().getMessage());
-			return null;
-		}
-
-		return super.getNextPage();
-	}
+	// @Override
+	// public IWizardPage getNextPage() {
+	// setErrorMessage(null);
+	//
+	// IRunnableWithProgress op = new IRunnableWithProgress() {
+	// @Override
+	// public void run(IProgressMonitor monitor)
+	// throws InvocationTargetException, InterruptedException {
+	// if (settingsSection != null) {
+	// settingsSection.handleConnection(monitor);
+	// }
+	// }
+	// };
+	//
+	// try {
+	// getContainer().run(false, true, op);
+	// } catch (Exception e) {
+	// setErrorMessage(e.getCause().getMessage());
+	// return null;
+	// }
+	//
+	// return super.getNextPage();
+	// }
 
 	protected RepoSettings getSettings() {
 		return settings;
