@@ -13,7 +13,7 @@ public class RepoProject extends RepoFolder {
 		StringBuilder nameBuilder = new StringBuilder();
 
 		nameBuilder.append(isRoot(resource) ? ROOT : resource.getPath()
-				.toString());
+				.toString().substring(1).trim());
 		nameBuilder.append(AT);
 		nameBuilder.append(getRepo(resource).getUrl());
 
