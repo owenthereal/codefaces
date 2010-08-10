@@ -1,6 +1,7 @@
 package org.codefaces.ui.internal.dialogs;
 
 import org.codefaces.core.models.Repo;
+import org.codefaces.core.models.RepoCredential;
 import org.codefaces.core.models.RepoProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -54,23 +55,29 @@ public class RepoInfoDialog extends TitleAreaDialog {
 	}
 
 	private void createRepoInfoSection(Composite parent, RepoProject project) {
+		Repo repo = project.getRoot().getRepo();
+		createInfoEntry(parent, "Location: ", repo.getUrl());
+
+		RepoCredential credential = repo.getCredential();
+		String username = credential.getUser();
+		if (username != null) {
+			createInfoEntry(parent, "User name: ", username);
+		}
+		
+		String password = credential.getPassword();
+		if (password != null) {
+			createInfoEntry(parent, "Password: ", password);
+		}
+	}
+
+	private void createInfoEntry(Composite parent, String label, String text) {
 		Label lblRepoURL = new Label(parent, SWT.NONE);
-		lblRepoURL.setText("Location: ");
+		lblRepoURL.setText(label);
 		Text repoURLText = new Text(parent, SWT.SEARCH);
 		repoURLText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.HORIZONTAL_ALIGN_FILL));
-		Repo repo = project.getRoot().getRepo();
-		repoURLText.setText(repo.getUrl());
+		repoURLText.setText(text);
 		repoURLText.setEditable(false);
-
-		String username = repo.getCredential().getUser();
-		Label lblRepoUser = new Label(parent, SWT.NONE);
-		lblRepoUser.setText("User name:");
-		Text repoUserText = new Text(parent, SWT.NONE);
-		repoUserText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
-		repoUserText.setText(username == null ? "" : username);
-		repoUserText.setEditable(false);
 	}
 
 	private void setWindowTitle(String windowTitle) {
