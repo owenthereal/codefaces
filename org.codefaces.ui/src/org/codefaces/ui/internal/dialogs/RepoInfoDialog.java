@@ -70,14 +70,14 @@ public class RepoInfoDialog extends TitleAreaDialog {
 		}
 	}
 
-	private void createInfoEntry(Composite parent, String label, String text) {
-		Label lblRepoURL = new Label(parent, SWT.NONE);
-		lblRepoURL.setText(label);
-		Text repoURLText = new Text(parent, SWT.SEARCH);
-		repoURLText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+	private void createInfoEntry(Composite parent, String labelString, String textString) {
+		Label label = new Label(parent, SWT.NONE);
+		label.setText(labelString);
+		Text text = new Text(parent, SWT.SEARCH);
+		text.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.HORIZONTAL_ALIGN_FILL));
-		repoURLText.setText(text);
-		repoURLText.setEditable(false);
+		text.setText(textString);
+		text.setEditable(false);
 	}
 
 	private void setWindowTitle(String windowTitle) {
