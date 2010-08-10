@@ -43,7 +43,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		@Override
 		public void workspaceChanged(WorkspaceChangedEvent evt) {
 			if (WorkspaceChangedEvent.PROJECT_ADDED == evt.getType()) {
-				update(evt.getWorkspace());
+				viewer.refresh();
 			}
 		}
 	}
@@ -78,8 +78,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
-
-		hookWorkspace();
+		hookWorkspaceChangedListener();
 
 		statusManager = new StatusManager(getViewSite().getActionBars()
 				.getStatusLineManager(), getViewer());
@@ -87,17 +86,20 @@ public class ProjectExplorerViewPart extends ViewPart {
 		registerContextMenu(viewer);
 	}
 
-	private void hookWorkspace() {
+	private void hookWorkspaceChangedListener() {
 		RepoWorkspace workspce = RepoWorkspace.getCurrent();
-		update(workspce);
 		workspce.addWorkspaceChangeListener(workspaceChangedListener);
 	}
 
 	@Override
 	public void dispose() {
+		unhookWorkspaceChangedListener();
+		super.dispose();
+	}
+
+	private void unhookWorkspaceChangedListener() {
 		RepoWorkspace workspce = RepoWorkspace.getCurrent();
 		workspce.removeWorkspaceChangeListener(workspaceChangedListener);
-		super.dispose();
 	}
 
 	/**
@@ -132,16 +134,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 		viewer.setComparator(new RepoResourceComparator());
 		viewer.addOpenListener(new FileOpenListener());
 		viewer.addOpenListener(new RepoFolderOpenListener());
-	}
-
-	/**
-	 * Update the Explorer input to the given RepoFolder.
-	 * 
-	 * @param newBaseDirectory
-	 *            the new base directory
-	 */
-	public void update(RepoWorkspace workspace) {
-		viewer.setInput(workspace);
+		viewer.setInput(RepoWorkspace.getCurrent());
 	}
 
 	@Override

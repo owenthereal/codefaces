@@ -2,9 +2,8 @@ package org.codefaces.core.models;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.codefaces.core.events.WorkspaceChangedEvent;
 import org.codefaces.core.events.WorkspaceChangedListener;
@@ -16,9 +15,9 @@ public class RepoWorkspace {
 				.getInstance(RepoWorkspace.class);
 	}
 
-	private final List<WorkspaceChangedListener> changeListeners = new CopyOnWriteArrayList<WorkspaceChangedListener>();
+	private final Collection<WorkspaceChangedListener> changeListeners = new HashSet<WorkspaceChangedListener>();
 
-	private ConcurrentHashMap<RepoProject, RepoProject> projects = new ConcurrentHashMap<RepoProject, RepoProject>();
+	private Set<RepoProject> projects = new HashSet<RepoProject>();
 
 	public void addWorkspaceChangeListener(WorkspaceChangedListener listener) {
 		changeListeners.add(listener);
@@ -26,12 +25,16 @@ public class RepoWorkspace {
 
 	public void createProject(RepoFolder input) {
 		RepoProject project = new RepoProject(input);
-		projects.putIfAbsent(project, project);
+		if (projects.contains(project)) {
+			return;
+		}
+
+		projects.add(project);
 		notifyListeners(WorkspaceChangedEvent.PROJECT_ADDED, project);
 	}
 
 	public Collection<RepoProject> getProjects() {
-		return Collections.unmodifiableCollection(projects.keySet());
+		return Collections.unmodifiableCollection(projects);
 	}
 
 	private void notifyListeners(String type, RepoProject project) {
