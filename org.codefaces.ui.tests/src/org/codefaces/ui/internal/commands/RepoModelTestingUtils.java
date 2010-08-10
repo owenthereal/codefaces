@@ -17,8 +17,6 @@ import org.codefaces.core.models.RepoResourceType;
 import org.eclipse.core.runtime.IPath;
 
 public class RepoModelTestingUtils {
-
-	
 	private static class MockRepoFolderInfo extends RepoFolderInfo{
 		public MockRepoFolderInfo() {
 			super(null);

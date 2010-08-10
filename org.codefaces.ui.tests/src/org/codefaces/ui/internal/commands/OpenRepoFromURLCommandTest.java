@@ -33,7 +33,7 @@ public class OpenRepoFromURLCommandTest {
 	private static final String TEST_USER = "guest";
 	private static final String TEST_PASSWORD = null;
 
-	private static final String TEST_CORRECT_PROJECT_NAME = "/correct/path";
+	private static final String TEST_CORRECT_PROJECT_NAME = "correct/path";
 
 	private static final String TEST_CORRECT_BASE_DIRECTORY_WITH_PREFIX_SLASH = "/correct/path";
 	private static final String TEST_INCORRECT_BASE_DIRECTORY = "incorrect/path";
