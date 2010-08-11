@@ -8,10 +8,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.codefaces.core.models.RepoResource;
 import org.codefaces.core.models.RepoWorkspace;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
@@ -25,35 +23,9 @@ class RepoResourceContentProviderManager {
 
 	private BlockingQueue<RepoResource> waitingQueue = new LinkedBlockingQueue<RepoResource>();
 
-	private RepoResourceLoadingJob loadingJob;
+	private Thread loadingThread;
 
-	private class RepoResourceLoadingJob extends Job {
-		private static final String JOB_NAME = "Repository resource fetching";
-
-		public RepoResourceLoadingJob() {
-			super(JOB_NAME);
-			setSystem(true);
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			RepoResource resource = null;
-			try {
-				while ((resource = waitingQueue.take()) != null) {
-					loadResource(resource);
-				}
-			} catch (InterruptedException e) {
-				@SuppressWarnings("null")
-				IStatus status = new Status(Status.ERROR,
-						CodeFacesUIActivator.PLUGIN_ID,
-						"Errors occurs when loading resource "
-								+ resource.getPath().toString(), e);
-				CodeFacesUIActivator.getDefault().getLog().log(status);
-			}
-
-			return Status.OK_STATUS;
-		}
-
+	private class RepoResourceLoadingRunnable implements Runnable {
 		private void loadResource(final RepoResource resource) {
 			// running get children in session;
 			UICallBack.runNonUIThreadWithFakeContext(display, new Runnable() {
@@ -67,33 +39,39 @@ class RepoResourceContentProviderManager {
 			display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					try {
-						if (!viewer.getControl().isDisposed()) {
-							viewer.refresh(resource, true);
-						}
-					} catch (Exception e) {
-						IStatus status = new Status(Status.ERROR,
-								CodeFacesUIActivator.PLUGIN_ID,
-								"Errors occurs when getting children "
-										+ resource.getPath().toString(), e);
-						CodeFacesUIActivator.getDefault().getLog().log(status);
+					if (!viewer.getControl().isDisposed()) {
+						viewer.refresh(resource, true);
 					}
+					
+					UICallBack.deactivate(getUICallBackId());
 				}
 			});
+		}
+
+		@Override
+		public void run() {
+			RepoResource resource = null;
+			try {
+				while ((resource = waitingQueue.take()) != null) {
+					loadResource(resource);
+				}
+			} catch (InterruptedException e) {
+				// do nothing
+			}
 		}
 	}
 
 	public RepoResourceContentProviderManager(TreeViewer treeView) {
 		this.viewer = treeView;
 		display = viewer.getControl().getDisplay();
-		loadingJob = new RepoResourceLoadingJob();
-		loadingJob.schedule();
+		loadingThread = new Thread(new RepoResourceLoadingRunnable());
+		loadingThread.setDaemon(true);
+		loadingThread.start();
 	}
 
 	public void dispose() {
-		if (loadingJob.getState() != Job.NONE) {
-			loadingJob.cancel();
-		}
+		loadingThread.interrupt();
+		loadingThread = null;
 	}
 
 	public boolean hasChildren(Object parent) {
@@ -123,6 +101,7 @@ class RepoResourceContentProviderManager {
 	private Object[] getChildrenForResource(RepoResource resource) {
 		if (!loadedResources.containsKey(resource)) {
 			try {
+				UICallBack.activate(getUICallBackId());
 				waitingQueue.put(resource);
 			} catch (InterruptedException e) {
 				IStatus status = new Status(Status.ERROR,
@@ -138,4 +117,8 @@ class RepoResourceContentProviderManager {
 		return resource.getChildren().toArray();
 	}
 
+	private String getUICallBackId() {
+		return String.valueOf(RepoResourceContentProviderManager.this
+				.hashCode());
+	}
 }

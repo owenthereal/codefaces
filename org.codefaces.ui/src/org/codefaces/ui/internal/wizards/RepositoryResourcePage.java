@@ -173,7 +173,6 @@ public class RepositoryResourcePage extends WizardPage {
 								.get(RepoSettings.REPO));
 					}
 				});
-
 			} catch (final Exception e) {
 				runOnUIThread(new Runnable() {
 					@Override
