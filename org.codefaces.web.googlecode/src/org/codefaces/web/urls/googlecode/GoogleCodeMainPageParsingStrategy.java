@@ -45,7 +45,7 @@ public class GoogleCodeMainPageParsingStrategy implements URLParsingStrategy{
 		if(isUrlExists(svnUrl)){
 			return svnStrategy.buildConfigurations(svnUrl);
 		}
-		return null;
+		return new SCMURLConfiguration();
 	}
 
 	@Override
