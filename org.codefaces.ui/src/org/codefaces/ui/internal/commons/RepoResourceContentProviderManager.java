@@ -36,16 +36,22 @@ class RepoResourceContentProviderManager {
 				}
 			});
 
-			display.asyncExec(new Runnable() {
+			display.syncExec(new Runnable() {
 				@Override
 				public void run() {
 					if (!viewer.getControl().isDisposed()) {
 						viewer.refresh(resource, true);
 					}
-					
-					UICallBack.deactivate(getUICallBackId());
 				}
 			});
+
+			display.syncExec(new Runnable() {
+				@Override
+				public void run() {
+					UICallBack.deactivate(resource.getId());
+				}
+			});
+
 		}
 
 		@Override
@@ -101,7 +107,7 @@ class RepoResourceContentProviderManager {
 	private Object[] getChildrenForResource(RepoResource resource) {
 		if (!loadedResources.containsKey(resource)) {
 			try {
-				UICallBack.activate(getUICallBackId());
+				UICallBack.activate(resource.getId());
 				waitingQueue.put(resource);
 			} catch (InterruptedException e) {
 				IStatus status = new Status(Status.ERROR,
@@ -115,10 +121,5 @@ class RepoResourceContentProviderManager {
 		}
 
 		return resource.getChildren().toArray();
-	}
-
-	private String getUICallBackId() {
-		return String.valueOf(RepoResourceContentProviderManager.this
-				.hashCode());
 	}
 }
