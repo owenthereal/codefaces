@@ -57,9 +57,4 @@ public class GitHubUrlParseStrategy implements URLParsingStrategy {
 
 		return config;
 	}
-
-	@Override
-	public String getScmKind() {
-		return SCM_KIND;
-	}
 }
