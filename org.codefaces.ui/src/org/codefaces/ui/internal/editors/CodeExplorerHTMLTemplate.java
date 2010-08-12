@@ -1,16 +1,11 @@
 package org.codefaces.ui.internal.editors;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 
 import org.antlr.stringtemplate.StringTemplate;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codefaces.ui.internal.CodeFacesUIActivator;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 
 public class CodeExplorerHTMLTemplate {
@@ -19,7 +14,7 @@ public class CodeExplorerHTMLTemplate {
 
 	// Performance consideration. we only read the template once
 	// I would be happy if there is better approach
-	private static String TEMPLATE = initTemplate();
+	private static final String TEMPLATE = initTemplate();
 
 	private final String title;
 	private final String lang;
@@ -68,7 +63,8 @@ public class CodeExplorerHTMLTemplate {
 	private static String initTemplate() {
 		String template = null;
 		try {
-			template = readFile(TEMPLATE_PATH);
+			template = CodeFacesUIActivator.getDefault().readFileContent(
+					TEMPLATE_PATH);
 		} catch (IOException e) {
 			IStatus status = new Status(Status.ERROR,
 					CodeFacesUIActivator.PLUGIN_ID,
@@ -78,29 +74,6 @@ public class CodeExplorerHTMLTemplate {
 		}
 
 		return template;
-	}
-
-	/**
-	 * Read the template file and return it as a string
-	 * 
-	 * @param path
-	 *            the path of the template
-	 * @return a string representation of that file
-	 * @throws IOException
-	 * @throws IOException
-	 *             if there is IO problem
-	 */
-	private static String readFile(String path) throws IOException {
-		InputStream stream = FileLocator.openStream(CodeFacesUIActivator
-				.getDefault().getBundle(), new Path(TEMPLATE_PATH), false);
-		StringWriter writer = new StringWriter();
-		try {
-			IOUtils.copy(stream, writer);
-		} finally {
-			stream.close();
-			writer.close();
-		}
-		return writer.toString();
 	}
 
 }

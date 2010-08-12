@@ -1,7 +1,14 @@
 package org.codefaces.ui.internal;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+
+import org.apache.commons.io.IOUtils;
 import org.codefaces.ui.internal.codeLanguages.CodeLanguages;
 import org.codefaces.ui.internal.wizards.SCMConnectorUIManager;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -88,6 +95,29 @@ public class CodeFacesUIActivator extends AbstractUIPlugin {
 				"icons/favicon_48.png");
 		putImageInRegistry(registry, Images.IMG_REPOSITORY,
 				"icons/repository.gif");
+	}
+
+	/**
+	 * Read the template file and return it as a string
+	 * 
+	 * @param path
+	 *            the path of the template
+	 * @return a string representation of that file
+	 * @throws IOException
+	 * @throws IOException
+	 *             if there is IO problem
+	 */
+	public String readFileContent(String path) throws IOException {
+		InputStream stream = FileLocator.openStream(getBundle(),
+				new Path(path), false);
+		StringWriter writer = new StringWriter();
+		try {
+			IOUtils.copy(stream, writer);
+		} finally {
+			stream.close();
+			writer.close();
+		}
+		return writer.toString();
 	}
 
 	/**
