@@ -121,18 +121,7 @@
 
 #######################################################################
 # Output Chain
-# Allow outgoing DNS. Mainly for apt-get update
-  -A OUTPUT -p udp --dport domain -j ACCEPT
-# Allow outgoing http, https. Mainly for downloading 
-  -A OUTPUT -p tcp -m multiport --dports http,https -j ACCEPT
-# Allow outgoing ssh
-  -A OUTPUT -p tcp --dport ssh -j ACCEPT
-# Allow outgoing icmp
-  -A OUTPUT -p icmp -j ACCEPT
-# Allow NTP time sync
-  -A OUTPUT -p udp --sport 123 -j ACCEPT
-# Disable all other outgoing traffic
-  -A OUTPUT -j REJECT --reject-with icmp-host-prohibited
+# Enable all
 
 #######################################################################
 # Commit
