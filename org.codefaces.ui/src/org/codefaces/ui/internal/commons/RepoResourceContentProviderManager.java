@@ -36,7 +36,7 @@ class RepoResourceContentProviderManager {
 				}
 			});
 
-			display.syncExec(new Runnable() {
+			display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					if (!viewer.getControl().isDisposed()) {
@@ -45,7 +45,7 @@ class RepoResourceContentProviderManager {
 				}
 			});
 
-			display.syncExec(new Runnable() {
+			display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					UICallBack.deactivate(resource.getId());
