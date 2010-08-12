@@ -120,7 +120,7 @@ yes | cp templates/iptables_load /etc/network/if-pre-up.d/iptables_load
 #####################################################################
 # Restart SSH
 #
-echo "Restart SSH, connect should be lost"
+echo "Restart SSH"
 echo 'The new SSH PORT is '$SSH_PORT ' with user '$ADMIN_USER
 echo "and login to run iptables-restore < /etc/network/iptables/iptables.rule"
 /etc/init.d/ssh restart
