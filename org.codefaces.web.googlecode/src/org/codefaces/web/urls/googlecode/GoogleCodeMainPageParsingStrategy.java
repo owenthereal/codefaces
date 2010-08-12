@@ -1,7 +1,5 @@
 package org.codefaces.web.urls.googlecode;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.codefaces.ui.SCMURLConfiguration;
 import org.codefaces.web.urls.URLParsingStrategy;
 
-//TODO extract scmKind to extensionPoint
 public class GoogleCodeMainPageParsingStrategy implements URLParsingStrategy{
 	
 	private static final String PROTOCOL_HTTP = "http";
@@ -42,10 +39,7 @@ public class GoogleCodeMainPageParsingStrategy implements URLParsingStrategy{
 	public SCMURLConfiguration buildConfigurations(String url) {
 		String projectName = getProjectNameFromUrl(url);
 		String svnUrl = reconstructUrl(projectName, GoogleCodeConstants.SVN_SCM_KIND);
-		if(isUrlExists(svnUrl)){
-			return svnStrategy.buildConfigurations(svnUrl);
-		}
-		return new SCMURLConfiguration();
+		return svnStrategy.buildConfigurations(svnUrl);
 	}
 
 	@Override
@@ -71,16 +65,5 @@ public class GoogleCodeMainPageParsingStrategy implements URLParsingStrategy{
 			return "http://" + projectName + GoogleCodeConstants.HG_DOMAIN; 
 		}
 		return null;
-	}
-	
-	private boolean isUrlExists(String url){
-		try {
-			HttpURLConnection con = (HttpURLConnection) new URL(url)
-					.openConnection();
-			con.setRequestMethod("HEAD");
-			return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-		} catch (Exception e) {
-			return false;
-		}
 	}
 }
