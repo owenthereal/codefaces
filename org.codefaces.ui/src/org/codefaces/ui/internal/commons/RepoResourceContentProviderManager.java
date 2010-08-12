@@ -51,7 +51,14 @@ class RepoResourceContentProviderManager {
 					UICallBack.deactivate(resource.getId());
 				}
 			});
-
+			
+			// Make sure that all events in the asynchronous event queue
+			// are dispatched.
+			display.syncExec(new Runnable() {
+				public void run() {
+					// do nothing
+				}
+			});
 		}
 
 		@Override
