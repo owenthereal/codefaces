@@ -14,14 +14,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class RepoInfoDialog extends TitleAreaDialog {
+public class RepoPropertiesDialog extends TitleAreaDialog {
 
 	private static final String TITLE = "Repository";
-	private static final String DESCRIPTION = "Repository Information";
+	private static final String DESCRIPTION = "Repository Properties";
 	private static final String WINDOW_TITLE = "Properties";
 	private final RepoProject project;
 
-	public RepoInfoDialog(Shell parentShell, RepoProject project) {
+	public RepoPropertiesDialog(Shell parentShell, RepoProject project) {
 		super(parentShell);
 		this.project = project;
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
@@ -63,14 +63,15 @@ public class RepoInfoDialog extends TitleAreaDialog {
 		if (username != null) {
 			createInfoEntry(parent, "User name: ", username);
 		}
-		
+
 		String password = credential.getPassword();
 		if (password != null) {
 			createInfoEntry(parent, "Password: ", password);
 		}
 	}
 
-	private void createInfoEntry(Composite parent, String labelString, String textString) {
+	private void createInfoEntry(Composite parent, String labelString,
+			String textString) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelString);
 		Text text = new Text(parent, SWT.SEARCH);

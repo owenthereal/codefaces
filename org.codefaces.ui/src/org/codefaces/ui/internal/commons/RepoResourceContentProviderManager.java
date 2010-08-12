@@ -48,10 +48,10 @@ class RepoResourceContentProviderManager {
 			display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					UICallBack.deactivate(resource.getId());
+					UICallBack.deactivate(String.valueOf(resource.hashCode()));
 				}
 			});
-			
+
 			// Make sure that all events in the asynchronous event queue
 			// are dispatched.
 			display.syncExec(new Runnable() {
@@ -114,7 +114,7 @@ class RepoResourceContentProviderManager {
 	private Object[] getChildrenForResource(RepoResource resource) {
 		if (!loadedResources.containsKey(resource)) {
 			try {
-				UICallBack.activate(resource.getId());
+				UICallBack.activate(String.valueOf(resource.hashCode()));
 				waitingQueue.put(resource);
 			} catch (InterruptedException e) {
 				IStatus status = new Status(Status.ERROR,

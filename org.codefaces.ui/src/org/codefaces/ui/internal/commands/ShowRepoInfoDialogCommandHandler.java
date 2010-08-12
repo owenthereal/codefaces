@@ -3,7 +3,7 @@ package org.codefaces.ui.internal.commands;
 import java.util.Iterator;
 
 import org.codefaces.core.models.RepoProject;
-import org.codefaces.ui.internal.dialogs.RepoInfoDialog;
+import org.codefaces.ui.internal.dialogs.RepoPropertiesDialog;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,7 +24,7 @@ public class ShowRepoInfoDialogCommandHandler extends AbstractHandler {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		RepoProject project = getSelectedProject(event);
 		
-		RepoInfoDialog dialog = new RepoInfoDialog(shell, project);
+		RepoPropertiesDialog dialog = new RepoPropertiesDialog(shell, project);
 		dialog.open();
 		
 		return null;
