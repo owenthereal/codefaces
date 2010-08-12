@@ -1,9 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GoogleCode
-Bundle-SymbolicName: org.codefaces.web.googlecode
+Bundle-SymbolicName: org.codefaces.web.googlecode;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.codefaces.web.internal.googlecode.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.codefaces.web,
  org.codefaces.ui
