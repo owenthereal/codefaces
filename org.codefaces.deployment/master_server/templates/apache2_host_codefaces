@@ -1,0 +1,36 @@
+JkWorkersFile /etc/apache2/workers.properties
+JkLogFile "|/usr/bin/cronolog /var/log/apache2/mod_jk/%Y/%m/mod_jk.%Y-%m-%d"
+JkOptions     +ForwardURICompatUnparsed
+
+<VirtualHost *:80>
+        ServerAdmin webmaster@codefaces.org
+        ServerName codefaces.org
+
+        JkMount / bal1
+        JkMount /* bal1
+
+        <Directory /var/lib/tomcat6/webapps/ROOT>
+                Options FollowSymLinks
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog "|/usr/bin/cronolog /var/log/apache2/error/%Y/%m/error_log.%Y-%m-%d"
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog "|/usr/bin/cronolog /var/log/apache2/access/%Y/%m/access_log.%Y-%m-%d" combined
+
+    Alias /doc/ "/usr/share/doc/"
+    <Directory "/usr/share/doc/">
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride None
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.0/255.0.0.0 ::1/128
+    </Directory>
+
+</VirtualHost>
+
