@@ -1,0 +1,132 @@
+#######################################################################
+# iptables rule file, KK Lo, 2010
+# This file follows the rule set in GotRoot.com:
+#  http://www.gotroot.com/Linux+Firewall+rules
+
+#######################################################################
+# Default Policies. Enable all, otherwise, flushing the rules
+# will cause the service disconnect immediately. We will drop all
+# unnecessary packets in the later part of this file
+*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+
+#######################################################################
+# Additional Chains
+#
+# Port Scan Attempt
+  -N PORTSCAN
+# Prevent Syn Flood
+  -N SYN_FLOOD
+# Handle SSH Connection
+  -N SSH_CONNECTION
+# Handle Ping Request
+  -N PING_REQUEST
+
+#######################################################################
+# Port Scan Detector
+# When detected, added to POSTSCAN chain 
+# Ref:
+#   GOTROOT.com: http://www.gotroot.com/Linux+Firewall+rules
+#
+# NMAP FIN/URG/PSH
+  -A INPUT -i all -p tcp --tcp-flags ALL FIN,URG,PSH -j PORTSCAN
+# SYN/RST
+  -A INPUT -i all -p tcp --tcp-flags SYN,RST SYN,RST -j PORTSCAN
+# SYN/FIN -- Scan(probably)
+  -A INPUT -i all -p tcp --tcp-flags SYN,FIN SYN,FIN -j PORTSCAN
+# NMAP FIN Stealth
+  -A INPUT -i all -p tcp --tcp-flags ALL FIN -j PORTSCAN
+# ALL/ALL Scan
+  -A INPUT -i all -p tcp --tcp-flags ALL ALL -j PORTSCAN
+# NMAP Null Scan
+  -A INPUT -i all -p tcp --tcp-flags ALL NONE -j PORTSCAN
+# XMAS
+  -A INPUT -i all -p tcp  --tcp-flags ALL ALL -j PORTSCAN
+  -A INPUT -i all -p tcp  --tcp-flags ALL SYN,RST,ACK,FIN,URG -j PORTSCAN
+# Now we log the event at a limited rate
+  -A PORTSCAN  -m limit --limit 1/minute -j LOG --log-prefix "** PORTSCAN **"
+# Drop all packets
+  -A PORTSCAN -j DROP
+
+#######################################################################
+# Prevent SYN Flood
+# Every Incoming packet is pushed to SYN_FLOOD chain first, if the
+# traffic rate is not too high, move it back to INPUT chain, else
+# DROP
+# Ref:
+#   GOTROOT.com: http://www.gotroot.com/Linux+Firewall+rules
+#
+# put all incoming tcp packet to SYN_FLOOD
+  -A INPUT -p tcp --syn -j SYN_FLOOD
+# monitor the rate and put them back to INPUT chain
+  -A SYN_FLOOD -m limit --limit 70/s --limit-burst 100 -j RETURN
+# Now we log the event
+  -A SYN_FLOOD -m limit --limit 1/minute -j LOG --log-prefix "** SYN FLOOD **"
+# Drop all packets
+  -A SYN_FLOOD -j DROP
+
+#######################################################################
+# Prevent SSH Brute Force Attack
+# We limit the number of SSH connections per minute, and reject the other.
+# This prevent SSH Brute Force attack
+# Ref: http://www.debian-administration.org/articles/187
+  -A INPUT -p tcp --dport $SSH_PORT --syn -m state --state NEW -m recent --name sshconnect --set -j SSH_CONNECTION
+# Reject when there is too much connection attempts
+  -A SSH_CONNECTION -m recent --name sshconnect --update --seconds 180 --hitcount 10 --rttl -j REJECT --reject-with icmp-host-prohibited
+# Return to INPUT Chain
+  -A SSH_CONNECTION -j RETURN
+
+#######################################################################
+# Prevent Ping Flood
+# We put all the ping requests into the PING_REQUEST Chain first
+  -A INPUT -p icmp --icmp-type echo-request -m state --state NEW -j PING_REQUEST
+# monitor the rate and put them back to INPUT chain
+  -A PING_REQUEST -m limit --limit 1/s --limit-burst 1 -j RETURN
+# Drop all the request
+  -A PING_REQUEST -j DROP
+
+#######################################################################
+# Allow established connections for both public and private connections.
+# Notice that we set the NEW and INVALID states to be dropped by default.
+# That is, new connection is disallowed unless an allow rule is specified.
+  -A INPUT -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+  -A INPUT -i eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+  -A OUTPUT -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+  -A OUTPUT -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+#######################################################################
+# Allow loopback taffic. Because we have tomcat-apache communication
+  -A INPUT -i lo -j ACCEPT
+  -A OUTPUT -o lo -j ACCEPT
+
+#######################################################################
+# Forward Chain
+# Reject all packets
+  -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+#######################################################################
+# Input Chain
+# then we open the following ports. 
+# * For TCP, we ensure every SYN flag is followed by a NEW state 
+# Allow http with only syn frag to establish connection
+  -A INPUT -p tcp --dport http --syn -m state --state NEW -j ACCEPT
+# Allow SSH
+  -A INPUT -p tcp --dport $SSH_PORT --syn -m state --state NEW -m recent --name sshconnect --set -j ACCEPT
+# Allow Ping 
+  -A INPUT -p icmp --icmp-type echo-request -m state --state NEW -j ACCEPT
+# Allow SMTP
+#  -A INPUT -p tcp --dport smtp --syn -m state --state NEW -j ACCEPT
+# Allow IMAP
+#  -A INPUT -p tcp --dport 49047 --syn -m state --state NEW -j ACCEPT
+# Disable all other incoming traffic
+  -A INPUT -j DROP
+
+#######################################################################
+# Output Chain
+# Enable all
+
+#######################################################################
+# Commit
+COMMIT

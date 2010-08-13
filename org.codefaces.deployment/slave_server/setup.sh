@@ -17,10 +17,7 @@
 #   6. secure SSH
 #   7. secure iptables
 #
-# After finished the tasks. Please update the iptables using
-# iptables-restore
-#
-# KK Lo, July 4, 2010
+# KK Lo, August 12, 2010
 #
 
 ADMIN_USER=admin
@@ -106,6 +103,14 @@ sed -e 's/\$SSH_PORT/'$SSH_PORT'/g' \
     templates/sshd_config > /etc/ssh/sshd_config
 
 #####################################################################
+# Restart SSH
+#
+echo "Restart SSH"
+echo 'The new SSH PORT is '$SSH_PORT ' with user '$ADMIN_USER
+echo "and login to run iptables-restore < /etc/network/iptables/iptables.rule"
+/etc/init.d/ssh restart
+
+#####################################################################
 # Setting iptables
 #
 echo "Setting iptables"
@@ -116,11 +121,4 @@ sed -e 's/\$SSH_PORT/'$SSH_PORT'/g' \
     templates/iptables.rule > /etc/network/iptables/iptables.rule
 chmod 640 /etc/network/iptables/iptables.rule
 yes | cp templates/iptables_load /etc/network/if-pre-up.d/iptables_load
-
-#####################################################################
-# Restart SSH
-#
-echo "Restart SSH"
-echo 'The new SSH PORT is '$SSH_PORT ' with user '$ADMIN_USER
-echo "and login to run iptables-restore < /etc/network/iptables/iptables.rule"
-/etc/init.d/ssh restart
+iptables-restore < /etc/network/iptables/iptables.rule
