@@ -42,10 +42,11 @@ public class CodeExplorer extends EditorPart {
 			});
 
 			display.asyncExec(new Runnable() {
-
 				@Override
 				public void run() {
-					setContent(file);
+					if (browser != null && !browser.isDisposed()) {
+						setContent(file);
+					}
 				}
 			});
 
