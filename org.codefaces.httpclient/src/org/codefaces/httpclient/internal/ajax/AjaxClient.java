@@ -2,6 +2,7 @@ package org.codefaces.httpclient.internal.ajax;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.codefaces.core.connectors.SCMResponseException;
 import org.eclipse.swt.widgets.Display;
@@ -12,7 +13,9 @@ public class AjaxClient {
 	protected ConcurrentLinkedQueue<JsonGet> requestQueue = new ConcurrentLinkedQueue<JsonGet>();
 
 	protected ConcurrentHashMap<String, JsonResponse> responseMap = new ConcurrentHashMap<String, JsonResponse>();
-
+	
+	private ReentrantLock lock = new ReentrantLock();
+	
 	public AjaxClient(AjaxClientWidget ajaxClientWidget) {
 		this.ajaxClientWidget = ajaxClientWidget;
 	}
@@ -60,12 +63,17 @@ public class AjaxClient {
 	}
 
 	public String getResponseBody(String url) throws SCMResponseException {
-		JsonResponse resp = execute(new JsonGet(url));
+		try {
+			lock.lock();
+			JsonResponse resp = execute(new JsonGet(url));
 
-		if (resp.getStatus() != JsonResponse.Status.SUCCESS) {
-			throw new SCMResponseException("Errors loading " + url + ".");
+			if (resp.getStatus() != JsonResponse.Status.SUCCESS) {
+				throw new SCMResponseException("Errors loading " + url + ".");
+			}
+
+			return resp.getContent();
+		} finally {
+			lock.unlock();
 		}
-
-		return resp.getContent();
 	}
 }

@@ -25,12 +25,23 @@ public class RepoWorkspace {
 
 	public void createProject(RepoFolder input) {
 		RepoProject project = new RepoProject(input);
-		if (projects.contains(project)) {
+		addProject(project);
+	}
+
+	public void addProject(RepoProject project) {
+		if (!projects.add(project)) {
 			return;
 		}
 
-		projects.add(project);
 		notifyListeners(WorkspaceChangedEvent.PROJECT_ADDED, project);
+	}
+
+	public void removeProject(RepoProject project) {
+		if (!projects.remove(project)) {
+			return;
+		}
+
+		notifyListeners(WorkspaceChangedEvent.PROJECT_REMOVED, project);
 	}
 
 	public Collection<RepoProject> getProjects() {
