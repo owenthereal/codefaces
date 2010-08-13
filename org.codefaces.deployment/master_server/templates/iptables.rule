@@ -116,10 +116,6 @@
   -A INPUT -p tcp --dport $SSH_PORT --syn -m state --state NEW -m recent --name sshconnect --set -j ACCEPT
 # Allow Ping 
   -A INPUT -p icmp --icmp-type echo-request -m state --state NEW -j ACCEPT
-# Allow SMTP
-#  -A INPUT -p tcp --dport smtp --syn -m state --state NEW -j ACCEPT
-# Allow IMAP
-#  -A INPUT -p tcp --dport 49047 --syn -m state --state NEW -j ACCEPT
 # Disable all other incoming traffic
   -A INPUT -j DROP
 
