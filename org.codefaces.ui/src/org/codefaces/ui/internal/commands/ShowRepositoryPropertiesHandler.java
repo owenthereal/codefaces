@@ -14,7 +14,7 @@ import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ShowRepoInfoDialogCommandHandler extends AbstractHandler {
+public class ShowRepositoryPropertiesHandler extends AbstractHandler {
 	public static final String ID = "org.codefaces.ui.internal.commands.showRepoInfoDialogCommand";
 
 	private static final String PARAM_VIEW_ID = "org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId";
@@ -50,5 +50,4 @@ public class ShowRepoInfoDialogCommandHandler extends AbstractHandler {
 
 		return null;
 	}
-
 }
