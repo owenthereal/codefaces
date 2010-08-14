@@ -17,8 +17,12 @@
 #   6. secure SSH
 #   7. secure iptables
 #
-# KK Lo, August 12, 2010
+# KK Lo, August 14, 2010
 #
+
+MACHINE_HOST_NAME=spica
+MACHINE_DOMAIN_NAME=codefaces.org
+MACHINE_IP=173.203.92.105
 
 ADMIN_USER=admin
 LOAD_BALANCER_IP=173.203.92.105
@@ -26,6 +30,12 @@ SSH_PORT=42597
 TOMCAT_HOME=/var/lib/tomcat6
 AJP_PORT=47330
 JVMROUTE=tomcat2
+
+#####################################################################
+# Configurate hostname and domain name
+# 
+echo "$MACHINE_IP  $MACHINE_HOST_NAME.$MACHINE_DOMAIN_NAME  $MACHINE_HOST_NAME" >> /etc/hosts
+/etc/init.d/networking restart
 
 #####################################################################
 # Overriding bashrc for environmental variables
