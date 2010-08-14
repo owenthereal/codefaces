@@ -42,9 +42,7 @@ public class ProjectExplorerViewPart extends ViewPart {
 	private final class UpdateInputListener implements WorkspaceChangedListener {
 		@Override
 		public void workspaceChanged(WorkspaceChangedEvent evt) {
-			if (WorkspaceChangedEvent.PROJECT_ADDED == evt.getType()) {
-				viewer.refresh();
-			}
+			viewer.refresh();
 		}
 	}
 
