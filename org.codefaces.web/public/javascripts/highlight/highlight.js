@@ -1,19 +1,18 @@
 /*
 Syntax highlighting with language autodetection.
 http://softwaremaniacs.org/soft/highlight/
-
-This is an modified version of Highlight.js.
-1. Mr Er.. (http://mrer.org.ua/?is=be_careful_guru&t=codeigniter_table_custom_columns_and_cells_styles)
-   added line number supports to the original javascript.
-
-2. KK Lo. (codefaces.org) based on (1), extends the line number support to
-   'no-hightline'
 */
 
 var hljs = new function() {
   var LANGUAGES = {}
+  // selected_languages is used to support legacy mode of selecting languages
+  // available for highlighting by passing them as arguments into
+  // initHighlighting function. Currently the whole library is expected to
+  // contain only those language definitions that are actually get used.
   var selected_languages = {};
   var NO_HIGHLIGHT = 'no-highlight'
+
+  /* Utility functions */
 
   function escape(value) {
     return value.replace(/&/gm, '&amp;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
@@ -27,6 +26,135 @@ var hljs = new function() {
         return true;
     return false;
   }
+
+  function langRe(language, value, global) {
+    var mode =  'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : '');
+    return new RegExp(value, mode);
+  }
+
+  function findCode(pre) {
+    for (var i = 0; i < pre.childNodes.length; i++) {
+      node = pre.childNodes[i];
+      if (node.nodeName == 'CODE')
+        return node;
+      if (!(node.nodeType == 3 && node.nodeValue.match(/\s+/)))
+        return null;
+    }
+  }
+
+  function blockText(block) {
+    var result = '';
+    for (var i = 0; i < block.childNodes.length; i++)
+      if (block.childNodes[i].nodeType == 3)
+        result += block.childNodes[i].nodeValue;
+      else if (block.childNodes[i].nodeName == 'BR')
+        result += '\n';
+      else
+        result += blockText(block.childNodes[i]);
+    return result;
+  }
+
+  function blockLanguage(block) {
+    var classes = block.className.split(/\s+/)
+    classes = classes.concat(block.parentNode.className.split(/\s+/));
+    for (var i = 0; i < classes.length; i++) {
+      var class_ = classes[i].replace(/^language-/, '');
+      if (class_ == NO_HIGHLIGHT) {
+        return NO_HIGHLIGHT;
+      }
+      if (LANGUAGES[class_]) {
+        return class_;
+      }
+    }
+  }
+
+  /* Stream merging */
+
+  function nodeStream(node) {
+    var result = [];
+    (function (node, offset) {
+      for (var i = 0; i < node.childNodes.length; i++) {
+        if (node.childNodes[i].nodeType == 3)
+          offset += node.childNodes[i].nodeValue.length;
+        else if (node.childNodes[i].nodeName == 'BR')
+          offset += 1
+        else {
+          result.push({
+            event: 'start',
+            offset: offset,
+            node: node.childNodes[i]
+          });
+          offset = arguments.callee(node.childNodes[i], offset)
+          result.push({
+            event: 'stop',
+            offset: offset,
+            node: node.childNodes[i]
+          });
+        }
+      }
+      return offset;
+    })(node, 0);
+    return result;
+  }
+
+  function mergeStreams(stream1, stream2, value) {
+    var processed = 0;
+    var result = '';
+    var nodeStack = [];
+
+    function selectStream() {
+      if (stream1.length && stream2.length) {
+        if (stream1[0].offset != stream2[0].offset)
+          return (stream1[0].offset < stream2[0].offset) ? stream1 : stream2;
+        else
+          return (stream1[0].event == 'start' && stream2[0].event == 'stop') ? stream2 : stream1;
+      } else {
+        return stream1.length ? stream1 : stream2;
+      }
+    }
+
+    function open(node) {
+      var result = '<' + node.nodeName.toLowerCase();
+      for (var i = 0; i < node.attributes.length; i++) {
+        var attribute = node.attributes[i];
+        result += ' ' + attribute.nodeName.toLowerCase();
+        if (attribute.nodeValue != undefined) {
+          result += '="' + escape(attribute.nodeValue) + '"';
+        }
+      }
+      return result + '>';
+    }
+
+    function close(node) {
+      return '</' + node.nodeName.toLowerCase() + '>';
+    }
+
+    while (stream1.length || stream2.length) {
+      var current = selectStream().splice(0, 1)[0];
+      result += escape(value.substr(processed, current.offset - processed));
+      processed = current.offset;
+      if ( current.event == 'start') {
+        result += open(current.node);
+        nodeStack.push(current.node);
+      } else if (current.event == 'stop') {
+        var i = nodeStack.length;
+        do {
+          i--;
+          var node = nodeStack[i];
+          result += close(node);
+        } while (node != current.node);
+        nodeStack.splice(i, 1);
+        while (i < nodeStack.length) {
+          result += open(nodeStack[i]);
+          i++;
+        }
+      }
+    }
+    result += value.substr(processed);
+    return result;
+  }
+
+  /* Core highlighting function */
 
   function highlight(language_name, value) {
     function compileSubModes(mode, language) {
@@ -173,7 +301,7 @@ var hljs = new function() {
     }
 
     function startNewMode(mode, lexem) {
-      var markup = mode.noMarkup?'':'<span class="' + mode.className + '">';
+      var markup = mode.noMarkup?'':'<span class="' + mode.displayClassName + '">';
       if (mode.returnBegin) {
         result += markup;
         mode.buffer = '';
@@ -271,183 +399,7 @@ var hljs = new function() {
     }
   }
 
-  function blockText(block) {
-    var result = '';
-    for (var i = 0; i < block.childNodes.length; i++)
-      if (block.childNodes[i].nodeType == 3)
-        result += block.childNodes[i].nodeValue;
-      else if (block.childNodes[i].nodeName == 'BR')
-        result += '\n';
-      else
-        result += blockText(block.childNodes[i]);
-    return result;
-  }
-
-  function blockLanguage(block) {
-    var classes = block.className.split(/\s+/)
-    classes = classes.concat(block.parentNode.className.split(/\s+/));
-    for (var i = 0; i < classes.length; i++) {
-      var class_ = classes[i].replace(/^language-/, '');
-      if (class_ == NO_HIGHLIGHT) {
-        return NO_HIGHLIGHT;
-      }
-
-      if (LANGUAGES[class_]) {
-        return class_;
-      }
-    }
-  }
-
-  function nodeStream(node) {
-    var result = [];
-    (function (node, offset) {
-      for (var i = 0; i < node.childNodes.length; i++) {
-        if (node.childNodes[i].nodeType == 3)
-          offset += node.childNodes[i].nodeValue.length;
-        else if (node.childNodes[i].nodeName == 'BR')
-          offset += 1
-        else {
-          result.push({
-            event: 'start',
-            offset: offset,
-            node: node.childNodes[i]
-          });
-          offset = arguments.callee(node.childNodes[i], offset)
-          result.push({
-            event: 'stop',
-            offset: offset,
-            node: node.childNodes[i]
-          });
-        }
-      }
-      return offset;
-    })(node, 0);
-    return result;
-  }
-
-  function mergeStreams(stream1, stream2, value) {
-    var processed = 0;
-    var result = '';
-    var nodeStack = [];
-
-    function selectStream() {
-      if (stream1.length && stream2.length) {
-        if (stream1[0].offset != stream2[0].offset)
-          return (stream1[0].offset < stream2[0].offset) ? stream1 : stream2;
-        else
-          return (stream1[0].event == 'start' && stream2[0].event == 'stop') ? stream2 : stream1;
-      } else {
-        return stream1.length ? stream1 : stream2;
-      }
-    }
-
-    function open(node) {
-      var result = '<' + node.nodeName.toLowerCase();
-      for (var i = 0; i < node.attributes.length; i++) {
-        result += ' ' + node.attributes[i].nodeName.toLowerCase()  + '="' + escape(node.attributes[i].nodeValue) + '"';
-      }
-      return result + '>';
-    }
-
-    function close(node) {
-      return '</' + node.nodeName.toLowerCase() + '>';
-    }
-
-    while (stream1.length || stream2.length) {
-      var current = selectStream().splice(0, 1)[0];
-      result += escape(value.substr(processed, current.offset - processed));
-      processed = current.offset;
-      if ( current.event == 'start') {
-        result += open(current.node);
-        nodeStack.push(current.node);
-      } else if (current.event == 'stop') {
-        var i = nodeStack.length;
-        do {
-          i--;
-          var node = nodeStack[i];
-          result += close(node);
-        } while (node != current.node);
-        nodeStack.splice(i, 1);
-        while (i < nodeStack.length) {
-          result += open(nodeStack[i]);
-          i++;
-        }
-      }
-    }
-    result += value.substr(processed);
-    return result;
-  }
-
-  function highlightBlock(block, tabReplace, showPages) {
-    var text = blockText(block);
-    var language = blockLanguage(block);
-
-
-    if (language) {
-      if (language != NO_HIGHLIGHT){
-        /* language is specified */
-        var result = highlight(language, text).value;
-      }
-      else{ /* no highlight */
-        var result = escape(text);
-      }
-    }
-    else { /* do the guessing */
-      var max_relevance = 0;
-      for (var key in selected_languages) {
-        if (!selected_languages.hasOwnProperty(key))
-          continue;
-        var lang_result = highlight(key, text);
-        var relevance = lang_result.keyword_count + lang_result.relevance;
-        if (relevance > max_relevance) {
-          max_relevance = relevance;
-          var result = lang_result.value;
-          language = key;
-        }
-      }
-    }
-
-    if (result) {
-      if (tabReplace) {
-        result = result.replace(/^(\t+)/gm, function(match, p1, offset, s) {
-          return p1.replace(/\t/g, tabReplace);
-        })
-      }
-      var class_name = block.className;
-      if (!class_name.match(language)) {
-        class_name += ' ' + language;
-    }
-      var original = nodeStream(block);
-      if (original.length) {
-        var pre = document.createElement('pre');
-        pre.innerHTML = result;
-        result = mergeStreams(original, nodeStream(pre), text);
-      }
-	  if(showPages) {
-		  var m = result.match(/([^\n\r]*)(?:\n\r|\r\n|\r|\n|$)/g);
-		  var pages = '<div class="codePages">';
-		  for(var j=0; j < m.length-1; j++) { pages += (1+j) + '<br/>'; }
-		  pages += '</div>';
-	  }
-	  result = result.replace(/\/\*&lt;b&gt;\*\//g,'<b>');
-	  result = result.replace(/\/\*&lt;\/b&gt;\*\//g,'</b>');
-	  
-      // See these 4 lines? This is IE's notion of "block.innerHTML = result". Love this browser :-/
-      var container = document.createElement('div');
-	  if(showPages) {
-		container.innerHTML = '<pre><code class="' + class_name + '">' + pages + '<div class="codeContent">' + result + '</div>' + '</code></pre>';
-	  } else {
-		container.innerHTML = '<pre><code class="' + class_name + '">' + result + '</code></pre>';
-	  }
-      var environment = block.parentNode.parentNode;
-      environment.replaceChild(container.firstChild, block.parentNode);
-    }
-  }
-
-  function langRe(language, value, global) {
-    var mode =  'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : '');
-    return new RegExp(value, mode);
-  }
+  /* Initialization */
 
   function compileModes() {
     for (var i in LANGUAGES) {
@@ -455,15 +407,19 @@ var hljs = new function() {
         continue;
       var language = LANGUAGES[i];
       for (var j = 0; j < language.modes.length; j++) {
-        if (language.modes[j].begin)
-          language.modes[j].beginRe = langRe(language, '^' + language.modes[j].begin);
-        if (language.modes[j].end)
-          language.modes[j].endRe = langRe(language, '^' + language.modes[j].end);
-        if (language.modes[j].illegal)
-          language.modes[j].illegalRe = langRe(language, '^(?:' + language.modes[j].illegal + ')');
+        var mode = language.modes[j];
+        if (mode.begin)
+          mode.beginRe = langRe(language, '^' + mode.begin);
+        if (mode.end)
+          mode.endRe = langRe(language, '^' + mode.end);
+        if (mode.illegal)
+          mode.illegalRe = langRe(language, '^(?:' + mode.illegal + ')');
         language.defaultMode.illegalRe = langRe(language, '^(?:' + language.defaultMode.illegal + ')');
-        if (language.modes[j].relevance == undefined) {
-          language.modes[j].relevance = 1;
+        if (mode.relevance == undefined) {
+          mode.relevance = 1;
+        }
+        if (!mode.displayClassName) {
+          mode.displayClassName = mode.className;
         }
       }
     }
@@ -496,13 +452,68 @@ var hljs = new function() {
     }
   }
 
-  function findCode(pre) {
-    for (var i = 0; i < pre.childNodes.length; i++) {
-      node = pre.childNodes[i];
-      if (node.nodeName == 'CODE')
-        return node;
-      if (!(node.nodeType == 3 && node.nodeValue.match(/\s+/)))
-        return null;
+  function initialize() {
+    if (initialize.called)
+        return;
+    initialize.called = true;
+    compileModes();
+    compileKeywords();
+    selected_languages = LANGUAGES;
+  }
+
+  /* Public library functions */
+
+  function highlightBlock(block, tabReplace, showLineNumber) {
+    initialize();
+
+    try {
+      var text = blockText(block);
+      var language = blockLanguage(block);
+    } catch (e) {
+      language = NO_HIGHLIGHT;
+    }
+
+    if (language == NO_HIGHLIGHT){
+        var result = escape(text);
+    }
+    else{ /* no highlight */
+        /* language is specified */
+        var result = highlight(language, text).value;
+    }
+
+    if (result) {
+      var class_name = block.className;
+      if (!class_name.match(language)) {
+        class_name += ' ' + language;
+      }
+      var original = nodeStream(block);
+      if (original.length) {
+        var pre = document.createElement('pre');
+        pre.innerHTML = result;
+        result = mergeStreams(original, nodeStream(pre), text);
+      }
+      if (tabReplace) {
+        result = result.replace(/^((<[^>]+>|\t)+)/gm, function(match, p1, offset, s) {
+          return p1.replace(/\t/g, tabReplace);
+        })
+      }
+      if(showLineNumber) {
+        var m = result.match(/([^\n\r]*)(?:\n\r|\r\n|\r|\n|$)/g);
+        var line_no = '<div class="line_number">';
+        for(var j=0; j < m.length-1; j++) { line_no += (1+j) + '<br/>'; }
+        line_no += '</div>';
+      }
+      // See these 4 lines? This is IE's notion of "block.innerHTML = result". Love this browser :-/
+      var container = document.createElement('div');
+      
+      if(showLineNumber) {
+        container.innerHTML = '<pre><code class="' + class_name + '">' + line_no + '<div class="codeContent">' + result + '</div>' + '</code></pre>';
+      } else {
+        container.innerHTML = '<pre><code class="' + class_name + '">' + result + '</code></pre>';
+      }
+
+      var environment = block.parentNode.parentNode;
+      environment.replaceChild(container.firstChild, block.parentNode);
     }
   }
 
@@ -510,21 +521,19 @@ var hljs = new function() {
     if (initHighlighting.called)
       return;
     initHighlighting.called = true;
-    compileModes();
-    compileKeywords();
+    initialize();
     if (arguments.length) {
       for (var i = 0; i < arguments.length; i++) {
         if (LANGUAGES[arguments[i]]) {
           selected_languages[arguments[i]] = LANGUAGES[arguments[i]];
         }
       }
-    } else
-      selected_languages = LANGUAGES;
+    }
     var pres = document.getElementsByTagName('pre');
     for (var i = 0; i < pres.length; i++) {
-      var code = findCode(pres[i]); 
+      var code = findCode(pres[i]);
       if (code)
-        highlightBlock(code, hljs.tabReplace, hljs.showPages);
+        highlightBlock(code, hljs.tabReplace, hljs.showLineNumber);
     }
   }
 
@@ -539,6 +548,8 @@ var hljs = new function() {
     else
       window.onload = handler;
   }
+
+  /* Interface definition */
 
   this.LANGUAGES = LANGUAGES;
   this.initHighlightingOnLoad = initHighlightingOnLoad;
