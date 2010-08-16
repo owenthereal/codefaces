@@ -473,10 +473,9 @@ var hljs = new function() {
       language = NO_HIGHLIGHT;
     }
 
-    if (language == NO_HIGHLIGHT){
+    if (language == NO_HIGHLIGHT) {
         var result = escape(text);
-    }
-    else{ /* no highlight */
+    } else {
         /* language is specified */
         var result = highlight(language, text).value;
     }
