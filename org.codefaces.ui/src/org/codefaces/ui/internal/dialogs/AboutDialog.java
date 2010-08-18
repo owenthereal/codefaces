@@ -30,11 +30,13 @@ public class AboutDialog extends IconAndMessageDialog {
 	private static final String TITLE = "About";
 	private static final String LOGO_TOOLTIPS_TEXT = "contact us";
 
-	private static final String MESSAGE = "CodeFaces\n"
+	private static final String MESSAGE =
+			 "Copyright (c) 2010 CodeFaces. All rights reserved.\n" 
 			+ "Version: "
 			+ CodeFacesUIActivator.getDefault().getBundle().getVersion()
 					.toString()
-			+ "\n(c) Copyright CodeFaces 2010. All rights reserved. Visit <a>http://codefaces.org/</a>.";
+			+ ". \n"
+			+ "Visit <a>http://codefaces.org/</a>.";
 
 	public AboutDialog(Shell parentShell) {
 		super(parentShell);
