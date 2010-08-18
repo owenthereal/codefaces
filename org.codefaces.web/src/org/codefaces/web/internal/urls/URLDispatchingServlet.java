@@ -24,6 +24,12 @@ public class URLDispatchingServlet extends HttpServlet {
 	private static final long serialVersionUID = 25248922633642477L;
 
 	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doGet(req, resp);
+	}
+
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String uri = req.getRequestURI();
@@ -50,7 +56,7 @@ public class URLDispatchingServlet extends HttpServlet {
 		url.append(CODE_FACES_URL);
 
 		String queryString = config.toHTTPQueryString();
-		if(queryString != null){
+		if (queryString != null) {
 			url.append(queryString);
 		}
 		return url.toString();

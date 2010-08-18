@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CodeFaces Core
 Bundle-SymbolicName: org.codefaces.core;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.codefaces.core.internal.CodeFacesCoreActivator
 Export-Package: org.codefaces.core,
  org.codefaces.core.connectors,
@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
+Bundle-Vendor: CodeFaces

@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui
+Bundle-Name: CodeFaces UI
 Bundle-SymbolicName: org.codefaces.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.codefaces.ui.internal.CodeFacesUIActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui,
@@ -15,4 +15,5 @@ Import-Package: javax.servlet,
  javax.servlet.http
 Export-Package: org.codefaces.ui,
  org.codefaces.ui.wizards
+Bundle-Vendor: CodeFaces
 

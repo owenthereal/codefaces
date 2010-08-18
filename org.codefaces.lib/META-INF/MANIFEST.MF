@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Lib
+Bundle-Name: CodeFaces Lib
 Bundle-SymbolicName: org.codefaces.lib;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
@@ -96,3 +96,4 @@ Export-Package: com.google.gson,
  org.apache.james.mime4j.parser,
  org.apache.james.mime4j.storage,
  org.apache.james.mime4j.util
+Bundle-Vendor: CodeFaces
