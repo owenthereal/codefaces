@@ -36,7 +36,7 @@ public class AboutDialog extends IconAndMessageDialog {
 			+ CodeFacesUIActivator.getDefault().getBundle().getVersion()
 					.toString()
 			+ ". \n"
-			+ "Visit <a>http://codefaces.org/</a>.";
+			+ "Visit <a>http://codefaces.org/</a> for more information.";
 
 	public AboutDialog(Shell parentShell) {
 		super(parentShell);
