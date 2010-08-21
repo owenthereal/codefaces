@@ -1,9 +1,11 @@
 package org.codefaces.core.connectors;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.core.CodeFacesCoreActivator;
+import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
@@ -30,17 +32,21 @@ public class SCMConnectorManager {
 		return null;
 	}
 
+	public Collection<SCMConnectorDescriber> getConnectorDescribers() {
+		return Collections.unmodifiableCollection(connectorMap.values());
+	}
+
 	private void readExtensions() {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
 				.getConfigurationElementsFor("org.codefaces.core",
-						"SCMConnectors");
+						"scmConnectors");
 		for (IConfigurationElement element : elements) {
 			try {
-				String id = element.getAttribute("id");
 				String kind = element.getAttribute("kind");
+				String id = element.getAttribute("id");
 				SCMConnector connector = (SCMConnector) element
 						.createExecutableExtension("class");
-				addConnector(new SCMConnectorDescriber(id, kind, connector));
+				addConnector(new SCMConnectorDescriber(kind, id, connector));
 			} catch (CoreException e) {
 				IStatus status = new Status(Status.ERROR,
 						CodeFacesCoreActivator.PLUGIN_ID,

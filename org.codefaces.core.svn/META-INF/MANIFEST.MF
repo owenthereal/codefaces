@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CodeFaces Core Subversion
+Bundle-SymbolicName: org.codefaces.core.svn;singleton:=true
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: org.codefaces.core.svn.internal.SVNActivator
+Require-Bundle: org.eclipse.core.runtime,
+ org.codefaces.core,
+ org.eclipse.rap.rwt,
+ org.tigris.subversion.clientadapter
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: javax.servlet.http
+Bundle-Vendor: CodeFaces

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.codefaces.web.scmUrlParsingStrategies">
+      <parsingStrategy
+            class="org.codefaces.web.urls.github.GitHubUrlParseStrategy"
+            id="org.codefaces.web.urls.github.parsingStrategy">
+      </parsingStrategy>
+   </extension>
+</plugin>

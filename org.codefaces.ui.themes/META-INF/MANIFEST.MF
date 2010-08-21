@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Themes
+Bundle-Name: CodeFaces Themes
 Bundle-SymbolicName: org.codefaces.ui.themes;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Require-Bundle: org.eclipse.rap.ui;bundle-version="1.3.0"
+Bundle-Vendor: CodeFaces

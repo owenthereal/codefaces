@@ -1,5 +1,5 @@
 package org.codefaces.core.models;
 
 public enum RepoResourceType {
-	REPO, BRANCH, FILE, FOLDER, FOLDER_ROOT;
+	REPO, FILE, FOLDER, FOLDER_ROOT, PROJECT;
 }

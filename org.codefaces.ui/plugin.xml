@@ -3,10 +3,11 @@
 <plugin
 >
 	<extension-point id="org.codefaces.ui.codeLanguages" name="CodeLanguages" schema="schema/org.codefaces.ui.codeLanguages.exsd"/>
+ <extension-point id="org.codefaces.ui.scmConnectorsUI" name="scmConnectorsUI" schema="schema/org.codefaces.ui.scmConnectorsUI.exsd"/>
     <extension
          point="org.eclipse.rap.ui.entrypoint">
       <entrypoint
-            class="org.codefaces.ui.entryPoints.CodeFacesEntryPoint"
+            class="org.codefaces.ui.internal.entryPoints.CodeFacesEntryPoint"
             id="org.codefaces.ui.entrypoint.codefaces"
             parameter="codefaces">
       </entrypoint>
@@ -14,7 +15,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.codefaces.ui.perspectives.CodeFacesPerspectiveFactory"
+            class="org.codefaces.ui.internal.perspectives.CodeFacesPerspectiveFactory"
             id="org.codefaces.ui.perspective.codefaces"
             name="CodeFaces">
       </perspective>
@@ -28,7 +29,7 @@
       <view
             allowMultiple="false"
             category="org.codefaces.ui.category.codefaces"
-            class="org.codefaces.ui.views.ProjectExplorerViewPart"
+            class="org.codefaces.ui.internal.views.ProjectExplorerViewPart"
             icon="icons/navigator.gif"
             id="org.codefaces.ui.view.projectExplorer"
             name="Project Explorer"
@@ -65,6 +66,38 @@
       </branding>
    </extension>
    <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.codefaces.ui.internal.commands.ShowRepositoryPropertiesHandler"
+            commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="org.codefaces.core.models.RepoProject">
+                  </instanceof>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.codefaces.ui.internal.commands.RemoveProjectHandler"
+            commandId="org.codefaces.ui.commands.removeProjectCommand">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="org.codefaces.core.models.RepoProject">
+                  </instanceof>
+               </iterate>
+            </with></enabledWhen>
+      </handler>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <category
             id="org.codefaces.ui.category.command"
@@ -72,69 +105,84 @@
       </category>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.ImportRepositoryCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.ImportRepoCommandHandler"
             description="Import from a repository"
-            id="org.codefaces.ui.commands.importRepositoryCommand"
+            id="org.codefaces.ui.internal.commands.importRepositoryCommand"
             name="ImportRepositoryCommand">
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.SwitchBranchCommandHandler"
-            description="Switch to another Repository Branch without switching the repository"
-            id="org.codefaces.ui.commands.switchBranchCommand"
-            name="switchRepositoryBranchCommand">
-         <commandParameter
-               id="org.codefaces.ui.commands.parameters.switchBranchCommand.branchId"
-               name="branchId"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.AboutCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.AboutCommandHandler"
             description="About CodeFaces"
-            id="org.codefaces.ui.command.about"
+            id="org.codefaces.ui.internal.commands.about"
             name="About">
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.OpenFileCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.OpenFileCommandHandler"
             description="Open selected file(s)"
-            id="org.codefaces.ui.commands.openFileCommand"
+            id="org.codefaces.ui.internal.commands.openFileCommand"
             name="Open File">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.openFileCommand.mode"
+               id="org.codefaces.ui.internal.commands.parameters.openFileCommand.mode"
                name="mode"
                optional="false">
          </commandParameter>
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
+               id="org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId"
                name="viewId"
                optional="true">
          </commandParameter>
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.ShowViewCommandHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.ShowViewCommandHandler"
             description="Open a view"
-            id="org.codefaces.ui.commands.showViewCommand"
+            id="org.codefaces.ui.internal.commands.showViewCommand"
             name="Show view">
          <commandParameter
-               id="org.codefaces.ui.commands.parameters.showViewCommand.viewId"
+               id="org.codefaces.ui.internal.commands.parameters.showViewCommand.viewId"
                name="viewId"
                optional="false">
          </commandParameter>
       </command>
       <command
             categoryId="org.codefaces.ui.category.command"
-            defaultHandler="org.codefaces.ui.commands.OpenEditorHandler"
+            defaultHandler="org.codefaces.ui.internal.commands.OpenEditorHandler"
             description="Open a editor"
-            id="org.codefaces.ui.command.openEditor"
+            id="org.codefaces.ui.internal.commands.openEditor"
             name="Open a editor">
          <commandParameter
-               id="org.codefaces.ui.command.openEditor.editorId"
+               id="org.codefaces.ui.internal.commands.openEditor.editorId"
                name="editorId"
                optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            id="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+            name="Show Repo Info Dialog">
+         <commandParameter
+               id="org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId"
+               name="View Id"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            defaultHandler="org.codefaces.ui.internal.commands.OpenRepoFromURLCommandHandler"
+            description="Open Repo from URL Parameters"
+            id="org.codefaces.ui.internal.commands.openRepoFromURLCommand"
+            name="Open Repo from URL Parameters">
+      </command>
+      <command
+            categoryId="org.codefaces.ui.category.command"
+            id="org.codefaces.ui.commands.removeProjectCommand"
+            name="Remove Project">
+         <commandParameter
+               id="org.codefaces.ui.commands.removeProjectCommand.viewId"
+               name="View Id"
+               optional="true">
          </commandParameter>
       </command>
    </extension>
@@ -146,11 +194,22 @@
                id="org.codefaces.menu.repository"
                label="Repository">
             <command
-                  commandId="org.codefaces.ui.commands.importRepositoryCommand"
+                  commandId="org.codefaces.ui.internal.commands.importRepositoryCommand"
                   icon="icons/import.gif"
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
+            </command>
+            <command
+                  commandId="org.codefaces.ui.commands.removeProjectCommand"
+                  icon="icons/delete.gif"
+                  label="Remove..."
+                  style="push"
+                  tooltip="Remove a project from workspace">
+               <parameter
+                     name="org.codefaces.ui.commands.removeProjectCommand.viewId"
+                     value="org.codefaces.ui.view.projectExplorer">
+               </parameter>
             </command>
          </menu>
          <menu
@@ -160,8 +219,8 @@
                   icon="icons/window.gif"
                   label="Show View">
                <dynamic
-                     class="org.codefaces.ui.actions.ShowViewMenu"
-                     id="org.codefaces.ui.actions.showViewMenu">
+                     class="org.codefaces.ui.internal.actions.ShowViewMenu"
+                     id="org.codefaces.ui.internal.actions.showViewMenu">
                </dynamic>
             </menu>
          </menu>
@@ -169,18 +228,18 @@
                id="org.codefaces.menu.help"
                label="Help">
             <command
-                  commandId="org.codefaces.ui.command.openEditor"
+                  commandId="org.codefaces.ui.internal.commands.openEditor"
                   icon="icons/welcome.gif"
                   label="Welcome"
                   style="push"
                   tooltip="Open the welcome page">
                <parameter
-                     name="org.codefaces.ui.command.openEditor.editorId"
+                     name="org.codefaces.ui.internal.commands.openEditor.editorId"
                      value="org.codefaces.ui.editor.welcomeEditor">
                </parameter>
             </command>
             <command
-                  commandId="org.codefaces.ui.command.about"
+                  commandId="org.codefaces.ui.internal.commands.about"
                   icon="icons/help.gif"
                   label="About"
                   style="push"
@@ -193,29 +252,53 @@
          <toolbar
                id="org.codefaces.ui.toolbar.codefaces">
             <command
-                  commandId="org.codefaces.ui.commands.importRepositoryCommand"
+                  commandId="org.codefaces.ui.internal.commands.importRepositoryCommand"
                   icon="icons/import.gif"
                   label="Import..."
                   style="push"
                   tooltip="Import project from a repository">
             </command>
             <command
-                  commandId="org.codefaces.ui.command.openEditor"
+                  commandId="org.codefaces.ui.commands.removeProjectCommand"
+                  icon="icons/delete.gif"
+                  label="Remove..."
+                  style="push"
+                  tooltip="Remove a project from workspace">
+               <parameter
+                     name="org.codefaces.ui.commands.removeProjectCommand.viewId"
+                     value="org.codefaces.ui.view.projectExplorer">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+                  icon="icons/repoinfo.gif"
+                  style="push"
+                  tooltip="Show Repository Info">
+               <parameter
+                     name="org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId"
+                     value="org.codefaces.ui.view.projectExplorer">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.codefaces.ui.internal.commands.openEditor"
                   icon="icons/welcome.gif"
                   label="Welcome"
                   style="push"
                   tooltip="Open the welcome page">
                <parameter
-                     name="org.codefaces.ui.command.openEditor.editorId"
+                     name="org.codefaces.ui.internal.commands.openEditor.editorId"
                      value="org.codefaces.ui.editor.welcomeEditor">
                </parameter>
             </command>
          </toolbar>
       </menuContribution>
       <menuContribution
+            locationURI="toolbar:org.codefaces.ui.view.projectExplorer">
+      </menuContribution>
+      <menuContribution
             locationURI="popup:org.codefaces.ui.view.projectExplorer#viewer">
          <command
-               commandId="org.codefaces.ui.commands.openFileCommand"
+               commandId="org.codefaces.ui.internal.commands.openFileCommand"
                label="Open"
                style="push"
                tooltip="open the selected file(s)">
@@ -223,24 +306,69 @@
                   checkEnabled="false">
                <with
                      variable="activeMenuSelection">
-                  <iterate>
+                  <iterate
+                        ifEmpty="false">
                      <adapt
                            type="org.codefaces.core.models.RepoFile">
-                       <!--
-                        <test
-                              property="org.codefaces.ui.propertyTester.RepoFIle.canOpen">
-                        </test>
-                        -->
                      </adapt>
                   </iterate>
                </with>
             </visibleWhen>
             <parameter
-                  name="org.codefaces.ui.commands.parameters.openFileCommand.mode"
+                  name="org.codefaces.ui.internal.commands.parameters.openFileCommand.mode"
                   value="selectionFromView">
             </parameter>
             <parameter
-                  name="org.codefaces.ui.commands.parameters.openFileCommand.viewId"
+                  name="org.codefaces.ui.internal.commands.parameters.openFileCommand.viewId"
+                  value="org.codefaces.ui.view.projectExplorer">
+            </parameter>
+         </command>
+         <command
+               commandId="org.codefaces.ui.commands.removeProjectCommand"
+               icon="icons/delete.gif"
+               label="Remove..."
+               style="push"
+               tooltip="Remove a project from workspace">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.codefaces.core.models.RepoProject">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="org.codefaces.ui.commands.removeProjectCommand.viewId"
+                  value="org.codefaces.ui.view.projectExplorer">
+            </parameter>
+         </command>
+         <separator
+               name="separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.codefaces.ui.internal.commands.showRepoInfoDialogCommand"
+               icon="icons/repoinfo.gif"
+               label="Properties"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.codefaces.core.models.RepoProject">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="org.codefaces.ui.internal.commands.parameters.showRepoInfoCommand.viewId"
                   value="org.codefaces.ui.view.projectExplorer">
             </parameter>
          </command>
@@ -249,38 +377,26 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.codefaces.ui.editors.CodeExplorer"
-            contributorClass="org.codefaces.ui.editors.CodeExplorerActionBarConbributor"
+            class="org.codefaces.ui.internal.editors.CodeExplorer"
+            contributorClass="org.codefaces.ui.internal.editors.CodeExplorerActionBarConbributor"
             default="true"
             icon="icons/file.gif"
             id="org.codefaces.ui.editor.codeExplorer"
             name="Code Explorer">
       </editor>
       <editor
-            class="org.codefaces.ui.editors.WelcomeEditor"
+            class="org.codefaces.ui.internal.editors.WelcomeEditor"
             default="true"
             icon="icons/welcome.gif"
             id="org.codefaces.ui.editor.welcomeEditor"
             name="Welcome">
       </editor>
       <editor
-            class="org.codefaces.ui.editors.SupportEditor"
+            class="org.codefaces.ui.internal.editors.SupportEditor"
             default="false"
             icon="icons/contact_us.gif"
             id="org.codefaces.ui.editor.supportEditor"
             name="Contact Us">
       </editor>
    </extension>
-    <!--
-    <extension
-          point="org.eclipse.core.expressions.propertyTesters">
-       <propertyTester
-             class="org.codefaces.ui.RepoFilePropertyTester"
-             id="org.codefaces.ui.propertyTester.RepoFIle"
-             namespace="org.codefaces.ui.propertyTester.RepoFIle"
-             properties="canOpen"
-             type="org.codefaces.core.models.RepoFile">
-       </propertyTester>
-    </extension>
-    -->
 </plugin>

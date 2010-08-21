@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CodeFaces UI GitHub
+Bundle-SymbolicName: org.codefaces.ui.github;singleton:=true
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.rap.ui,
+ org.codefaces.ui
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: CodeFaces

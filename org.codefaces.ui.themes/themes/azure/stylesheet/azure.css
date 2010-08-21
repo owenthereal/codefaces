@@ -335,7 +335,7 @@ Button[PUSH], Button[TOGGLE], Button[BORDER] {
   border-radius: 3px;
   padding: 2px 5px;
   background-image: gradient(linear, left top, left bottom, from(white), color-stop(48%, #f0f0f0), color-stop(52%, #e0e0e0), to(white));
-  animation: hoverOut 500ms ease-out;
+  /*animation: hoverOut 500ms ease-out;*/
 }
 
 /* line 20, ../../../private/azure/src/_partials/button.scss */

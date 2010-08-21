@@ -3,7 +3,7 @@ package org.codefaces.core.operations;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codefaces.core.CodeFacesCoreActivator;
+import org.codefaces.core.internal.CodeFacesCoreActivator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
@@ -44,7 +44,7 @@ public class SCMOperationHandlerManager {
 	private void readExtensions() {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
 				.getConfigurationElementsFor("org.codefaces.core",
-						"SCMOperationHandlers");
+						"scmOperationHandlers");
 		for (IConfigurationElement element : elements) {
 			try {
 				String kind = element.getAttribute("kind");

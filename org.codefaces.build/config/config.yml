@@ -30,9 +30,9 @@ environment:
 fetch:
   - description: codefaces main repository
     scm: git
-    branch: master
+    branch: master 
     repository: "git@github.com:jingweno/code_faces.git"
-      
+  
 tools:
   eclipse_platform:
     description: Eclipse Platfrom
@@ -57,6 +57,20 @@ tools:
       name: org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar
       scm: http
       repository: "http://mirrors.xmission.com/eclipse/equinox/drops/R-3.6-201006080911/org.eclipse.equinox.http.servletbridge_1.0.200.v20100503.jar"
+
+  subclipse:
+    description: Subclipse SVN Client Adaptor
+    name: "subclipse-1.6.12.zip"
+    scm: http
+    unpack: true
+    repository: "http://subclipse.tigris.org/files/documents/906/47653/site-1.6.12.zip"
+
+  svnkit:
+    description: SvnKit Bundles
+    name: "org.tmatesoft.svn_1.3.3.eclipse.zip"
+    scm: http
+    unpack: true
+    repository: "http://www.svnkit.com/org.tmatesoft.svn_1.3.3.eclipse.zip"
 
   compressor:
     description: YUI compressor

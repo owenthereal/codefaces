@@ -7,7 +7,7 @@ public class RepoFileInfo extends RepoResourceInfo {
 
 	private String mode;
 
-	private int size;
+	private long size;
 
 	private String content;
 
@@ -26,12 +26,12 @@ public class RepoFileInfo extends RepoResourceInfo {
 	 * This constructor is only for data transportation, no context information
 	 * is set.
 	 */
-	public RepoFileInfo(String content, String mimeType, String mode, int size) {
+	public RepoFileInfo(String content, String mimeType, String mode, long size) {
 		super(null);
 		fill(content, mimeType, mode, size);
 	}
 
-	private void fill(String content, String mimeType, String mode, int size) {
+	private void fill(String content, String mimeType, String mode, long size) {
 		this.content = content;
 		this.mimeType = mimeType;
 		this.mode = mode;
@@ -66,7 +66,7 @@ public class RepoFileInfo extends RepoResourceInfo {
 		return mode;
 	}
 
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 }

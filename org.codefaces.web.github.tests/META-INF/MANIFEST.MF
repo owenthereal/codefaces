@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CodeFaces Web GitHub Test
+Bundle-SymbolicName: org.codefaces.web.github.tests
+Bundle-Version: 1.1.0.qualifier
+Fragment-Host: org.codefaces.web.github
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

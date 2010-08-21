@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.codefaces.web.scmUrlParsingStrategies" name="SCMURLParsingStrategies" schema="schema/org.codefaces.web.scmUrlParsingStrategies.exsd"/>
    <extension
          point="org.eclipse.equinox.http.registry.resources">
       <resource
@@ -12,7 +13,7 @@
          point="org.eclipse.equinox.http.registry.servlets">
       <servlet
             alias="/"
-            class="org.codefaces.web.UrlDispatcher"
+            class="org.codefaces.web.internal.urls.URLDispatchingServlet"
             load-on-startup="true">
       </servlet>
    </extension>
@@ -20,16 +21,16 @@
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
-            class="org.codefaces.web.resources.JQuery">
+            class="org.codefaces.web.internal.resources.JQuery">
       </resource>
       <resource
-            class="org.codefaces.web.resources.Jsonp">
+            class="org.codefaces.web.internal.resources.Jsonp">
       </resource>
       <resource
-            class="org.codefaces.web.resources.Json2">
+            class="org.codefaces.web.internal.resources.Json2">
       </resource>
       <resource
-            class="org.codefaces.web.resources.GoogleAnalytics">
+            class="org.codefaces.web.internal.resources.GoogleAnalytics">
       </resource>
    </extension>
    <extension

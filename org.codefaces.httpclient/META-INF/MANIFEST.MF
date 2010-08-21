@@ -1,14 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rap
+Bundle-Name: CodeFaces Http Client
 Bundle-SymbolicName: org.codefaces.httpclient;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.codefaces.httpclient.internal.CodeFacesHttpClientActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui;visibility:=reexport,
- org.codefaces.lib
+ org.codefaces.lib,
+ org.codefaces.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.codefaces.httpclient,
- org.codefaces.httpclient.ajax,
- org.codefaces.httpclient.http
+ org.codefaces.httpclient.internal.ajax,
+ org.codefaces.httpclient.internal.http
+Bundle-Vendor: CodeFaces

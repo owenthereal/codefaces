@@ -25,7 +25,7 @@ public class SCMOperation {
 		return new SCMOperation(kind, operationId);
 	}
 
-	public SCMOperation addParameter(String key, Object value) {
+	public SCMOperation addParameter(SCMOperationParameter key, Object value) {
 		parameter.addParameter(key, value);
 		return this;
 	}
