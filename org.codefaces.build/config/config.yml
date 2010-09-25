@@ -118,12 +118,12 @@ package:
 # Setting for deployment
 deploy:
   servers:
-    - server: web2.codefaces.org
+    - server: stella.codefaces.org
       ssh_user: admin
       ssh_port: 42597
       tomcat_home: /var/lib/tomcat6
 
-    - server: codefaces.org
+    - server: luna.codefaces.org
       ssh_user: admin
       ssh_port: 42597
       tomcat_home: /var/lib/tomcat6
