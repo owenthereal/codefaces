@@ -102,8 +102,8 @@ sysctl -p
 echo "Create Non-root admin"
 yes | cp templates/sudoers /etc/sudoers
 chmod 440 /etc/sudoers
-adduser admin
-adduser admin sudo
+adduser $ADMIN_USER
+adduser $ADMIN_USER sudo
 
 #####################################################################
 # Securing SSH
