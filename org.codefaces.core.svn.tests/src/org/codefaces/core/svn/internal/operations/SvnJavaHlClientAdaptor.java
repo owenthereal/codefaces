@@ -7,7 +7,7 @@ import org.tigris.subversion.svnclientadapter.javahl.JhlClientAdapterFactory;
 
 // Since SvnKitAdaptor bundle does not expose its packages, using it will require a
 // Plugin test. For simplicity, we use JavaHL for testing
-public class TestSvnJavaHlClientAdaptor {
+public class SvnJavaHlClientAdaptor {
 
 	private static String CLIENT = JhlClientAdapterFactory.JAVAHL_CLIENT;
 	

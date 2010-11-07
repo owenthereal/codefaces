@@ -26,7 +26,7 @@ public class SVNConnectionOperationHandlerTest {
 
 	@Before
 	public void setUp(){
-		connector = new MockSCMConnector(TestSvnJavaHlClientAdaptor.getClient());
+		connector = new MockSCMConnector(SvnJavaHlClientAdaptor.getClient());
 		connectionHandler = new SVNConnectionOperationHandler();
 	}
 	
