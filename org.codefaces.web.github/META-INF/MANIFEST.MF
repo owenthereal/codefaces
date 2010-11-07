@@ -3,9 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: CodeFaces Web GitHub
 Bundle-SymbolicName: org.codefaces.web.github;singleton:=true
 Bundle-Version: 1.1.0.qualifier
-Require-Bundle: org.eclipse.core.runtime,
- org.codefaces.web
+Require-Bundle: org.codefaces.web
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.codefaces.ui
-Bundle-ActivationPolicy: lazy
 Bundle-Vendor: CodeFaces
+Bundle-ActivationPolicy: lazy

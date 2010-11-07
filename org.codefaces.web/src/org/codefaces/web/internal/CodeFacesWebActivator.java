@@ -90,7 +90,7 @@ public class CodeFacesWebActivator extends Plugin {
 						CodeFacesWebActivator.PLUGIN_ID,
 						"Errors occurs when loading URL Parsing Strategy extensions",
 						e);
-				CodeFacesWebActivator.getDefault().getLog().log(status);
+				getLog().log(status);
 			}
 		}
 		return parsingStrategies;
