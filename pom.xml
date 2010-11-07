@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
+	<groupId>org.codefaces</groupId>
+	<artifactId>codefaces-parent</artifactId>
+	<version>1.1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>CodeFaces</name>
+
+	<mailingLists>
+		<mailingList>
+			<name>CodeFaces Mailing List</name>
+			<post>codefaces@googlegroups.com</post>
+			<subscribe>http://groups.google.com/group/codefaces</subscribe>
+		</mailingList>
+	</mailingLists>
+
+	<issueManagement>
+		<url>http://codefaces.lighthouseapp.com</url>
+		<system>Lighthouse</system>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>N/A</name>
+			<comments>
+				N/A
+			</comments>
+		</license>
+	</licenses>
+
+	<properties>
+		<tycho.targetPlatform>./targetPlatform</tycho.targetPlatform>
+		<codefaces-groupId>org.codefaces</codefaces-groupId>
+		<codefaces-version>1.1.0-SNAPSHOT</codefaces-version>
+		<tycho-version>0.10.0</tycho-version>
+	</properties>
+
+	<modules>
+		<module>org.codefaces.lib</module>
+
+		<module>org.codefaces.httpclient</module>
+		<module>org.codefaces.httpclient.tests</module>
+
+		<module>org.codefaces.core</module>
+		<module>org.codefaces.core.tests</module>
+
+		<module>org.codefaces.core.github</module>
+		<module>org.codefaces.core.github.tests</module>
+
+		<module>org.codefaces.core.svn</module>
+		<module>org.codefaces.core.svn.tests</module>
+
+		<module>org.codefaces.ui</module>
+		<module>org.codefaces.ui.tests</module>
+
+		<module>org.codefaces.ui.github</module>
+		
+		<module>org.codefaces.ui.svn</module>
+		
+		<module>org.codefaces.ui.themes</module>
+
+		<module>org.codefaces.web</module>
+		
+		<module>org.codefaces.web.github</module>
+		<module>org.codefaces.web.github.tests</module>
+		
+		<module>org.codefaces.web.googlecode</module>
+		<module>org.codefaces.web.googlecode.tests</module>
+
+		<module>org.codefaces.feature</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>			
+		</plugins>
+	</build>
+</project>

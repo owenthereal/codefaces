@@ -3,6 +3,3 @@
 */.settings
 *.scssc
 */target
-org.tigris.subversion*
-org.tmatesoft.svnkit*
-

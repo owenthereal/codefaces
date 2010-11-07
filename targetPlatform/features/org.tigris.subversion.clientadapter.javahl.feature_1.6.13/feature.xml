@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.tigris.subversion.clientadapter.javahl.feature"
+      label="Subversion JavaHL Native Library Adapter (Required)"
+      version="1.6.13"
+      provider-name="tigris.org"
+      plugin="org.tigris.subversion.clientadapter.javahl"
+      colocation-affinity="org.tigris.subversion.subclipse">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="http://subclipse.tigris.org/">
+      http://subclipse.tigris.org/
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://subclipse.tigris.org/update_1.6.x"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.tigris.subversion.clientadapter" version="1.6.12" match="equivalent"/>
+   </requires>
+
+   <plugin
+         id="org.tigris.subversion.clientadapter.javahl"
+         download-size="0"
+         install-size="0"
+         version="1.6.13"
+         unpack="false"/>
+
+   <plugin
+         id="org.tigris.subversion.clientadapter.javahl.win32"
+         os="win32"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="1.6.13"
+         fragment="true"/>
+
+</feature>
