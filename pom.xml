@@ -85,11 +85,15 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
 				<configuration>
-					<resolver>local</resolver>
-					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+					<encoding>UTF-8</encoding>
 				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
 	</build>
 </project>
