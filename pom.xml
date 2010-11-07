@@ -62,16 +62,16 @@
 		<module>org.codefaces.ui.tests</module>
 
 		<module>org.codefaces.ui.github</module>
-		
+
 		<module>org.codefaces.ui.svn</module>
-		
+
 		<module>org.codefaces.ui.themes</module>
 
 		<module>org.codefaces.web</module>
-		
+
 		<module>org.codefaces.web.github</module>
 		<module>org.codefaces.web.github.tests</module>
-		
+
 		<module>org.codefaces.web.googlecode</module>
 		<module>org.codefaces.web.googlecode.tests</module>
 
@@ -85,6 +85,10 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<resolver>local</resolver>
+					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+				</configuration>
 			</plugin>			
 		</plugins>
 	</build>

@@ -3,3 +3,4 @@
 */.settings
 *.scssc
 */target
+.DS_Store
