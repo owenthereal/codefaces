@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.codefaces</groupId>
+	<artifactId>org.codefaces.target</artifactId>
+	<version>1.1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<eclipse-rap-runtime>http://mirror.csclub.uwaterloo.ca/eclipse/rt/rap/1.3/rap-runtime-1.3.1-R-20100915-2301.zip</eclipse-rap-runtime>
+		<subclipse-url>http://subclipse.tigris.org/files/documents/906/48441/site-1.6.15.zip</subclipse-url>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target name="Setting up target platform">
+								<macrodef name="curl-and-unzip">
+									<attribute name="url"/>
+									<attribute name="dest"/>
+									<sequential>
+										<local name="filename"/>
+										<local name="outputfile"/>
+										<basename property="filename" file="@{url}"/>
+										<property name="outputfile" value="@{dest}/${filename}"/>
+										<echo>Downloading @{url} to ${outputfile}</echo>
+										<exec executable="curl">
+											<arg value="-L"/>
+											<arg value="@{url}"/>
+											<arg value="-o"/>
+											<arg value="${outputfile}"/>
+											<arg value="-b"/>
+											<arg value="cookies.txt"/>
+											<arg value="-s"/>
+										</exec>
+										<unzip src="${outputfile}" dest="@{dest}/work"/>
+									</sequential>
+								</macrodef>
+								<curl-and-unzip url="${eclipse-rap-runtime}" dest="${project.build.directory}"/>
+								<curl-and-unzip url="${subclipse-url}" dest="${project.build.directory}"/>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
