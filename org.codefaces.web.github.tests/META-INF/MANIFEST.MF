@@ -5,3 +5,4 @@ Bundle-SymbolicName: org.codefaces.web.github.tests
 Bundle-Version: 1.1.0.qualifier
 Fragment-Host: org.codefaces.web.github
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.8.1"

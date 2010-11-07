@@ -5,4 +5,5 @@ Bundle-SymbolicName: org.codefaces.core.svn.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.codefaces.core.svn
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.tigris.subversion.clientadapter.javahl;bundle-version="1.6.12"
+Require-Bundle: org.tigris.subversion.clientadapter.javahl;bundle-version="1.6.12",
+ org.junit;bundle-version="4.8.1"

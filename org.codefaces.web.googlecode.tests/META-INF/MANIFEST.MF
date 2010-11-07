@@ -6,3 +6,4 @@ Bundle-Version: 1.1.0.qualifier
 Fragment-Host: org.codefaces.web.googlecode;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: CodeFaces
+Require-Bundle: org.junit;bundle-version="4.8.1"

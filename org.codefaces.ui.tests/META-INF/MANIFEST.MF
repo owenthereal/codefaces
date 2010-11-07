@@ -7,3 +7,4 @@ Bundle-ActivationPolicy: lazy
 Fragment-Host: org.codefaces.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: CodeFaces
+Require-Bundle: org.junit;bundle-version="4.8.1"
