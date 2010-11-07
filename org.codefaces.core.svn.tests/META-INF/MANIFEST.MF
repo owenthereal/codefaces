@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests
+Bundle-Name: CodeFaces Core SVN Tests
 Bundle-SymbolicName: org.codefaces.core.svn.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Fragment-Host: org.codefaces.core.svn
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.tigris.subversion.clientadapter.javahl;bundle-version="1.6.12",
- org.junit;bundle-version="4.8.1"
+Require-Bundle: org.junit;bundle-version="4.8.1",
+ org.tigris.subversion.clientadapter.javahl
+Bundle-Vendor: CodeFaces
