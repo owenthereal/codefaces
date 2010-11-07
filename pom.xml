@@ -37,7 +37,7 @@
 	</licenses>
 
 	<properties>
-		<tycho.targetPlatform>./target-platform</tycho.targetPlatform>
+		<tycho.targetPlatform>./targetPlatform</tycho.targetPlatform>
 		<codefaces-groupId>org.codefaces</codefaces-groupId>
 		<codefaces-version>1.1.0-SNAPSHOT</codefaces-version>
 		<tycho-version>0.10.0</tycho-version>
