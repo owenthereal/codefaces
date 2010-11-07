@@ -2,8 +2,7 @@
 /.metadata
 */.settings
 *.scssc
-org.tigris.subversion.*
-org.tmatesoft.svnkit*/*
-/target
-/org.codefaces.build/.bundle*/*
-/org.codefaces.build/vendor*/*
+*/target
+org.tigris.subversion*
+org.tmatesoft.svnkit*
+
