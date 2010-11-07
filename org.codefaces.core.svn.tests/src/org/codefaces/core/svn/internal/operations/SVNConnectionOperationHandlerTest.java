@@ -13,13 +13,10 @@ import org.junit.Test;
 
 public class SVNConnectionOperationHandlerTest {
 
-	private static final String TEST_NORMAL_URL_REQUIRE_USERNAME = "https://gforge.cs.vu.nl/svn/minix/trunk/src";
-	private static final String TEST_NORMAL_URL_WITH_TRAILING_SLASH = "https://gforge.cs.vu.nl/svn/minix/trunk/src/";
-	private static final String TEST_NORMAL_USERNAME = "anonymous";
+	private static final String TEST_NORMAL_URL_REQUIRE_USERNAME = "http://subclipse.tigris.org/svn/subclipse/trunk";
+	private static final String TEST_NORMAL_URL_WITH_TRAILING_SLASH = "http://subclipse.tigris.org/svn/subclipse/trunk/";
+	private static final String TEST_NORMAL_USERNAME = "guest";
 	private static final String TEST_NORMAL_PASSWORD = "''";
-	
-	private static final String TEST_URL_WITH_USER_NAME = "https://anonymous@gforge.cs.vu.nl/svn/minix/trunk/src";
-	private static final String TEST_USERNAME_IN_URL = "anonymous";
 	
 	private static final String TEST_NO_SUCH_URL = "http://svn.nosuchurl.org/svn";
 	private static final String TEST_NO_PERMISSION = "https://secure.jms1.net";
@@ -55,16 +52,6 @@ public class SVNConnectionOperationHandlerTest {
 		
 		Repo svnRepo = connectionHandler.execute(connector, para);
 		assertEquals(TEST_NORMAL_URL_REQUIRE_USERNAME, svnRepo.getUrl());		
-	}
-	
-	@Test
-	public void credentialShouldBeSetWhenUsernameIsPassedInUrl(){
-		SCMOperationParameters para = SCMOperationParameters.newInstance();
-		para.addParameter(SCMOperationParameter.URL, TEST_URL_WITH_USER_NAME);
-		para.addParameter(SCMOperationParameter.PASSWORD, TEST_NORMAL_PASSWORD);
-		
-		Repo svnRepo = connectionHandler.execute(connector, para);
-		assertEquals(TEST_USERNAME_IN_URL, svnRepo.getCredential().getUser());
 	}
 	
 	@Test(expected = SCMResponseException.class)
