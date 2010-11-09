@@ -17,15 +17,18 @@ public class GithubUrlParseStrategyTest {
 
 	private static final String MASTER_BRANCH = GITHUB_BRANCHES_DIR + "/master";
 
+	private static final String NON_MASTER_BRANCH = GITHUB_BRANCHES_DIR
+			+ "/refactoring";
+
 	private static final String HTTP_GITHUB_MASTER_BRANCH_URL = "http://github.com/jingweno/ruby_grep";
 
 	private static final String HTTP_GITHUB_MASTER_BRANCH_URL_WITH_TRAILING_SLASH = "http://github.com/jingweno/ruby_grep/";
 
 	private static final String HTTP_GITHUB_MASTER_BRANCH_FILE_URL = "http://github.com/jingweno/ruby_grep/blob/master/lib/ruby_grep.rb";
 
-	private static final String HTTP_GITHUB_BRANCH_URL = "http://github.com/schacon/ruby-git/tree/internals";
+	private static final String HTTP_GITHUB_BRANCH_URL = "http://github.com/jingweno/ruby_grep/tree/refactoring";
 
-	private static final String HTTP_GITHUB_BRANCH_URL_WITH_TRAILING_SLASH = "http://github.com/schacon/ruby-git/tree/internals/";
+	private static final String HTTP_GITHUB_BRANCH_URL_WITH_TRAILING_SLASH = "http://github.com/jingweno/ruby_grep/tree/refactoring/";
 
 	private static final String HTTPS_GITHUB_MASTER_BRANCH_URL = "https://github.com/cowboyd/hudson.rb";
 
@@ -76,11 +79,11 @@ public class GithubUrlParseStrategyTest {
 		SCMURLConfiguration config = strategy
 				.buildConfigurations(HTTP_GITHUB_BRANCH_URL);
 
-		assertEquals("http://github.com/schacon/ruby-git",
+		assertEquals(HTTP_GITHUB_MASTER_BRANCH_URL,
 				config.get(SCMConfigurableElement.REPO_URL));
 		assertEquals(SCM_KIND_GITHUB,
 				config.get(SCMConfigurableElement.SCM_KIND));
-		assertEquals(GITHUB_BRANCHES_DIR + "/" + "internals",
+		assertEquals(NON_MASTER_BRANCH,
 				config.get(SCMConfigurableElement.BASE_DIRECTORY));
 	}
 
@@ -89,11 +92,11 @@ public class GithubUrlParseStrategyTest {
 		SCMURLConfiguration config = strategy
 				.buildConfigurations(HTTP_GITHUB_BRANCH_URL_WITH_TRAILING_SLASH);
 
-		assertEquals("http://github.com/schacon/ruby-git",
+		assertEquals(HTTP_GITHUB_MASTER_BRANCH_URL,
 				config.get(SCMConfigurableElement.REPO_URL));
 		assertEquals(SCM_KIND_GITHUB,
 				config.get(SCMConfigurableElement.SCM_KIND));
-		assertEquals(GITHUB_BRANCHES_DIR + "/" + "internals",
+		assertEquals(NON_MASTER_BRANCH,
 				config.get(SCMConfigurableElement.BASE_DIRECTORY));
 	}
 
