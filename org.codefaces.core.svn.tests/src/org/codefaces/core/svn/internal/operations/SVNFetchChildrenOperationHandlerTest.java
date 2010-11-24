@@ -15,6 +15,8 @@ import org.codefaces.core.operations.SCMOperationParameter;
 import org.codefaces.core.operations.SCMOperationParameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
+import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 
 public class SVNFetchChildrenOperationHandlerTest {
 
@@ -36,7 +38,12 @@ public class SVNFetchChildrenOperationHandlerTest {
 
 	@Before
 	public void setUp() {
-		connector = new MockSCMConnector(TestSvnJavaHlClientAdaptor.getClient());
+		 //Set up connection protocols support:
+		 //http:// and https://
+		DAVRepositoryFactory.setup();
+		 //svn://, svn+xxx:// (svn+ssh:// in particular)
+		SVNRepositoryFactoryImpl.setup();
+		connector = new MockSVNConnector();
 		handler = new SVNFetchChildrenOperationHandler();
 	}
 

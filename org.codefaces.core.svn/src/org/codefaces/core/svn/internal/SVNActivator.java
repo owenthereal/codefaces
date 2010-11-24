@@ -2,6 +2,8 @@ package org.codefaces.core.svn.internal;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
+import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -18,6 +20,11 @@ public class SVNActivator extends Plugin {
 	 * The constructor
 	 */
 	public SVNActivator() {
+		 //Set up connection protocols support:
+		 //http:// and https://
+		 DAVRepositoryFactory.setup();
+		 //svn://, svn+xxx:// (svn+ssh:// in particular)
+		 SVNRepositoryFactoryImpl.setup();
 	}
 
 	/*

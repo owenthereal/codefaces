@@ -1,5 +1,5 @@
 package org.codefaces.core.svn.internal.clientadaptor;
 
 public enum SVNResourceKind {
-	DIRECTORY, FILE, UNKNOWN;
+	DIRECTORY, FILE, UNKNOWN, NONE;
 }

@@ -1,39 +1,38 @@
 package org.codefaces.core.svn.internal.clientadaptor;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import org.apache.commons.io.IOUtils;
 import org.codefaces.core.connectors.SCMIOException;
 import org.codefaces.core.connectors.SCMResponseException;
 import org.codefaces.core.connectors.SCMURLException;
 import org.eclipse.rwt.SessionSingletonBase;
-import org.tigris.subversion.clientadapter.Activator;
-import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
-import org.tigris.subversion.svnclientadapter.ISVNDirEntry;
-import org.tigris.subversion.svnclientadapter.ISVNInfo;
-import org.tigris.subversion.svnclientadapter.SVNClientException;
-import org.tigris.subversion.svnclientadapter.SVNNodeKind;
-import org.tigris.subversion.svnclientadapter.SVNRevision;
-import org.tigris.subversion.svnclientadapter.SVNUrl;
+
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNProperties;
+import org.tmatesoft.svn.core.SVNProperty;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
+import org.tmatesoft.svn.core.io.SVNRepository;
+import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
+import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 /**
  * An abstract layer to adapt the underlining client provider
  */
 public class SVNClientAdaptor implements HttpSessionBindingListener {
-	private static final String SEPERATOR = "/";
-
-	// id of the default svn client adaptor
-	private static final String CLIENT_ADAPTOR_ID = "svnkit";
-
-	private ISVNClientAdapter client;
-
+	//private static final String SEPERATOR = "/";
+	private static final DateFormat ISO8601_FORMAT_IN = 
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+	
 	private ReentrantLock resourceLock = new ReentrantLock();
 
 	private ReentrantLock repoLock = new ReentrantLock();
@@ -44,23 +43,8 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	 * no parameter constructor for session singleton use
 	 */
 	protected SVNClientAdaptor() {
-		Activator activator = Activator.getDefault();
-		this.client = activator.getClientAdapter(CLIENT_ADAPTOR_ID);
 	}
 
-	/**
-	 * constructor for testing purpose
-	 */
-	protected SVNClientAdaptor(ISVNClientAdapter client) {
-		this.client = client;
-	}
-
-	/**
-	 * @return underlining client
-	 */
-	private ISVNClientAdapter getClient() {
-		return client;
-	}
 
 	/**
 	 * @return the info of the given svn repository
@@ -74,36 +58,50 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	public SVNRepoInfo getRepoInfo(String url, String username, String password) {
 		SVNRepoInfo svnInfo = null;
 		try {
-			SVNUrl svnUrl = new SVNUrl(url);
-			ISVNClientAdapter client = getClient();
+		    String urlString;
+		    String uuid;
+		    long latestRevision;
+		    
+			SVNRepository repository = createSvnRepository(url, username, password);
 
-			String svnUsername = (username == null ? "" : username);
-			String svnPassword = (password == null ? "" : password);
-			client.setUsername(svnUsername);
-			client.setPassword(svnPassword);
-
-			ISVNInfo info = null;
 			try {
 				repoLock.lock();
-				info = client.getInfo(svnUrl);
+				urlString = repository.getLocation().toString();
+				uuid = repository.getRepositoryUUID(true);
+				latestRevision = repository.getLatestRevision();
+				svnInfo = new SVNRepoInfo(urlString, uuid, latestRevision);
 			} finally {
+				repository.closeSession();
 				repoLock.unlock();
 			}
-
-			if (info == null) {
-				throw new SCMResponseException("Couldn't read entry " + svnUrl
-						+ " from repository.");
-			}
-
-			svnInfo = new SVNRepoInfo(info.getUrlString(), info.getUuid(), info
-					.getRevision().getNumber());
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
-		} catch (SVNClientException e) {
-			throw constructSCMResponseException(e);
+		} catch (SVNException e) {
+			throw new SCMResponseException(e.getMessage(), e);
 		}
 
 		return svnInfo;
+	}
+
+	/**
+	 * @return a configured SVNRepository
+	 * @throws MalformedURLException if the URL is invalid
+	 */
+	private SVNRepository createSvnRepository(String url, String username,
+			String password) throws MalformedURLException {
+		SVNRepository repository = null;
+		try{
+			SVNURL svnURL = SVNURL.parseURIDecoded(url);
+			repository = SVNRepositoryFactory.create(svnURL);
+		}catch(SVNException e){
+			throw new MalformedURLException();
+		}
+		String svnUsername = (username == null ? "" : username);
+		String svnPassword = (password == null ? "" : password);
+		ISVNAuthenticationManager authManager = 
+		     SVNWCUtil.createDefaultAuthenticationManager(svnUsername, svnPassword);
+		repository.setAuthenticationManager(authManager);
+		return repository;
 	}
 
 	/**
@@ -117,46 +115,26 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	 */
 	public SVNDirectoryEntry[] getDirectoryEntries(String url, String username,
 			String password) {
-		SVNDirectoryEntry[] svnEntries = null;
+		DirEntryInfoCollector entryInfoCollector = new DirEntryInfoCollector();
+		
 		try {
-			SVNUrl svnUrl = new SVNUrl(url);
-			ISVNClientAdapter client = getClient();
+			SVNRepository repository = createSvnRepository(url, username, password);
 
-			String svnUsername = (username == null ? "" : username);
-			String svnPassword = (password == null ? "" : password);
-			client.setUsername(svnUsername);
-			client.setPassword(svnPassword);
-
-			ISVNDirEntry[] entries = null;
 			try {
 				listLock.lock();
-				entries = client.getList(svnUrl, SVNRevision.HEAD, false);
+				repository.getDir("", repository.getLatestRevision(), null,
+						entryInfoCollector);
+				
 			} finally {
 				listLock.unlock();
+				repository.closeSession();
 			}
-
-			if (entries == null) {
-				throw new SCMResponseException("Couldn't read entry " + svnUrl
-						+ " from repository.");
-			}
-
-			svnEntries = new SVNDirectoryEntry[entries.length];
-			for (int i = 0; i < entries.length; i++) {
-				ISVNDirEntry entry = entries[i];
-				svnEntries[i] = new SVNDirectoryEntry(svnUrl + SEPERATOR
-						+ entry.getPath(), entry.getPath(),
-						getResourceKind(entry.getNodeKind()), entry.getSize(),
-						entry.getLastChangedDate(), entry
-								.getLastChangedRevision().getNumber());
-			}
-
-			return svnEntries;
-
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
-		} catch (SVNClientException e) {
-			throw constructSCMResponseException(e);
+		} catch (SVNException e) {
+			throw new SCMResponseException(e.getMessage(), e);
 		}
+		return entryInfoCollector.getEntries().toArray(new SVNDirectoryEntry[0]);
 	}
 
 	/**
@@ -164,44 +142,31 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 	 */
 	public SVNResource getResource(String url, String username, String password) {
 		SVNResource resource = null;
-		InputStream stream = null;
-		StringWriter writer = null;
-
+		SVNProperties fileProperties = new SVNProperties();
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		try {
-			SVNUrl svnUrl = new SVNUrl(url);
-			ISVNClientAdapter client = getClient();
-
-			String svnUsername = (username == null ? "" : username);
-			String svnPassword = (password == null ? "" : password);
-			client.setUsername(svnUsername);
-			client.setPassword(svnPassword);
-
-			ISVNDirEntry entry = null;
+			SVNRepository repository = createSvnRepository(url, username, password);
 			try {
 				resourceLock.lock();
-				entry = client.getDirEntry(svnUrl, SVNRevision.HEAD);
-				stream = client.getContent(svnUrl, SVNRevision.HEAD);
+				repository.getFile("",
+						repository.getLatestRevision(), fileProperties, stream);
+				resource = new SVNResource(fileProperties.getStringValue(SVNProperty.URL),
+						fileProperties.getStringValue(SVNProperty.NAME) , 
+						fileProperties.getStringValue(SVNProperty.MIME_TYPE),
+						SVNProperty.longValue(fileProperties.getStringValue(SVNProperty.WORKING_SIZE)),
+						stream.toString(),
+						parseDate(fileProperties.getStringValue(SVNProperty.TEXT_TIME)),
+						SVNProperty.longValue(fileProperties.getStringValue(SVNProperty.REVISION)));
+			
 			} finally {
 				resourceLock.unlock();
+				repository.closeSession();
 			}
-
-			if (entry == null) {
-				throw new SCMResponseException("Couldn't read entry " + svnUrl
-						+ " from repository.");
-			}
-
-			writer = new StringWriter();
-			IOUtils.copy(stream, writer);
-
-			resource = new SVNResource(svnUrl + SEPERATOR + entry.getPath(),
-					entry.getPath(), null, entry.getSize(), writer.toString(),
-					entry.getLastChangedDate(), entry.getLastChangedRevision()
-							.getNumber());
 
 		} catch (MalformedURLException e) {
 			throw new SCMURLException("Invalid repository url: " + url);
-		} catch (SVNClientException e) {
-			throw constructSCMResponseException(e);
+		} catch (SVNException e) {
+			throw new SCMResponseException(e.getMessage(), e);
 		} catch (IOException e) {
 			throw new SCMIOException(e.getMessage(), e);
 		} finally {
@@ -209,46 +174,10 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 				if (stream != null) {
 					stream.close();
 				}
-				if (writer != null) {
-					writer.close();
-				}
 			} catch (IOException e) {
 			}
 		}
 		return resource;
-	}
-
-	/**
-	 * The orginal SVNClientException error message is not so meaningful. We
-	 * construct a new SCMResponseException
-	 * 
-	 * @return SCMResponseException based on the original error message
-	 * @param e
-	 *            the original exception
-	 */
-	private SCMResponseException constructSCMResponseException(
-			SVNClientException e) {
-		String rawErrMsg = e.getMessage().toLowerCase();
-		String errMsg;
-		if (rawErrMsg.contains("authentication")) {
-			errMsg = "Authorization failed. Wrong username or password.";
-		} else {
-			errMsg = "Unable to connect to the repository.";
-		}
-		return new SCMResponseException(errMsg, e);
-	}
-
-	/**
-	 * Map the nodekind of the underlining client to SVNResourceKind
-	 */
-	private SVNResourceKind getResourceKind(SVNNodeKind nodeKind) {
-		if (nodeKind == SVNNodeKind.DIR) {
-			return SVNResourceKind.DIRECTORY;
-		}
-		if (nodeKind == SVNNodeKind.FILE) {
-			return SVNResourceKind.FILE;
-		}
-		return SVNResourceKind.UNKNOWN;
 	}
 
 	/**
@@ -258,6 +187,19 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 		return (SVNClientAdaptor) SessionSingletonBase
 				.getInstance(SVNClientAdaptor.class);
 	}
+	
+	private Date parseDate(String str) {
+		if (str == null) {
+			return new Date(0);
+		}
+		// truncate last nanoseconds.
+		str = str.substring(0, 23);
+		try {
+			return ISO8601_FORMAT_IN.parse(str);
+		} catch (Throwable e) {
+		}
+		return new Date(0);
+	}
 
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
@@ -266,6 +208,6 @@ public class SVNClientAdaptor implements HttpSessionBindingListener {
 
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
-		client.dispose();
+		
 	}
 }
